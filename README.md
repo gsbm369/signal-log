@@ -176,6 +176,23 @@ live in the line body so Grafana parses them with `| json`.
 sum(sum_over_time({job="signal-log"} | json | unwrap cost_usd [24h]))
 ```
 
+### Grafana dashboard
+
+`grafana/signal-log-dashboard.json` — import it via **Dashboards → New → Import** and pick
+the Loki datasource when prompted (it is a dashboard variable, so no UID is hardcoded).
+
+Twelve panels: problem-cycle and spend counters, outcomes over time as a stacked bar
+(`ok` / `degraded` / `failed` / `skipped`), cost and tokens per run, articles
+fetched/new/kept, feed health, and log panels for problem cycles and the full record
+stream. Every query was validated against the live Loki before shipping.
+
+Note: this Grafana container has **no volume mounts** — its config lives in the container's
+internal SQLite, so an imported dashboard is lost if the container is recreated. Keeping
+the JSON in git is the durable copy. Worth giving Grafana a volume separately.
+
+Shipping failures never fail the cycle — `ship_to_loki.py` swallows connection errors and
+still prints the record locally.
+
 Shipping failures never fail the cycle — `ship_to_loki.py` swallows connection errors and
 still prints the record locally.
 
