@@ -182,6 +182,22 @@ from the running system entirely — this is the trade that made that possible.
 
 Scope: `signal-log` only — Contents: read/write, Metadata: read (mandatory).
 
+**Deliberately NOT granted: Workflows.** GitHub refuses a push that touches
+`.github/workflows/` without it:
+
+```
+! [remote rejected] main -> main (refusing to allow a Personal Access Token to
+  create or update workflow `.github/workflows/deploy.yml` without `workflow` scope)
+```
+
+That refusal is the desired behaviour, not an obstacle. The workflow holds `pages: write`
+and `id-token: write` — it *is* the deployment. A token that can rewrite it can redirect
+the deployment anywhere. The workflow is therefore added once through the GitHub web UI,
+and the cron token can only ever append Markdown to `site/src/content/posts/`.
+
+Changing the pipeline is a human action through a reviewed path; publishing content is
+automated. That split is the whole point of the scope.
+
 #### How it is stored
 
 Never in the remote URL, never in an argument. A `https://<token>@github.com/...` remote
