@@ -3,12 +3,17 @@
 # cost-control vars in ansible/deploy.yml (or -e on the command line) instead.
 #
 # RSS sources the curator polls each run.
-# `weight` nudges how many candidates are taken from each feed.
+#   fetch  — how many entries to pull from this feed
+#   weight — ranking multiplier, clamped to [0.85, 1.30]. It breaks ties between
+#            comparably relevant stories; it must not lift an irrelevant one to
+#            the top. Hacker News is deliberately the LOWEST: it is a noisy
+#            general feed and carries the most off-topic material.
 feeds:
 {% for f in blog_feeds %}
   - name: {{ f.name }}
     url: {{ f.url }}
-    weight: {{ f.weight | default(1) }}
+    weight: {{ f.weight | default(1.0) }}
+    fetch: {{ f.fetch | default(15) }}
 {% endfor %}
 
 settings:
@@ -20,6 +25,9 @@ settings:
   summarizer: {{ summarizer_backend }}
   # Max articles any single feed may contribute to one run.
   per_source_cap: {{ per_source_cap }}
+  # Apply this project's extra noise patterns (listicles, deals, Ask HN) on top
+  # of the ported list. The ported list alone is tuned for LWN/vendor feeds.
+  extra_noise_filter: {{ extra_noise_filter | lower }}
   # Max candidate articles handed to Claude in one run — the input-token driver.
   max_candidates: {{ max_candidates }}
   # How many stories Claude is asked to publish per run — the output-token driver.

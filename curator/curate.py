@@ -157,7 +157,10 @@ def save_seen(seen: dict[str, str]) -> None:
 
 def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]:
     name, url = feed["name"], feed["url"]
-    take = max(4, int(feed.get("weight", 1)) * 8)
+    # `fetch` is how many entries to pull; `weight` is the ranking multiplier.
+    # These were the same field, so compressing weights to the 0.85-1.30 band
+    # would have silently cut every feed's contribution to ~7 entries.
+    take = max(4, int(feed.get("fetch", 15)))
     try:
         parsed = feedparser.parse(
             url,
@@ -354,8 +357,11 @@ def _run() -> int:
         return 0
 
     # --- rank (deterministic, no model) ---
-    weights = {f["name"]: float(f.get("weight", 1)) for f in feeds}
-    ranked, rstats = ranker.rank(fresh, weights, limit=want, per_source_cap=per_source_cap)
+    weights = {f["name"]: float(f.get("weight", ranker.DEFAULT_SOURCE_WEIGHT)) for f in feeds}
+    ranked, rstats = ranker.rank(
+        fresh, weights, limit=want, per_source_cap=per_source_cap,
+        extra_noise=bool(settings.get("extra_noise_filter", True)),
+    )
     METRICS["articles_ranked"] = rstats["in"]
     METRICS["dropped_noise"] = rstats["noise"] + rstats["stub"]
     METRICS["dropped_dupe"] = rstats["dupe_url"] + rstats["dupe_title"]

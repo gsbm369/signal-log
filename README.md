@@ -510,12 +510,43 @@ the logic, not the language. Six stages:
 
 1. **Noise filter** — drops digest/roundup/listicle/deals posts and HN discussion threads.
 2. **Recency decay** — exponential, 36-hour half-life.
-3. **Source weighting** — the per-feed `weight` from `feeds.yml`, multiplicative with recency.
-4. **Relevance boost** — focus-stack hits **counted from the title alone**. The body may add
-   tags the title did not produce, but it cannot lift the score. See below.
+3. **Source weighting** — per-feed `weight`, clamped to a deliberately narrow **[0.85, 1.30]**.
+4. **Relevance multiplier** — focus-stack hits **counted from the title alone**.
 5. **Cross-source dedupe** — normalised title (stopwords stripped, sorted) plus canonical URL
    (tracking params, `www`, AMP suffixes and fragments removed).
 6. **Per-source cap** — applied in score order, so each feed keeps its best.
+
+The score is a plain product:
+
+```
+score     = recency(age_hours) x source_weight x relevance
+relevance = 1 + focus_hits x 0.5 + (0.15 if any topics else 0)
+```
+
+**Relevance is a multiplier, not an addend, and this is structural.** It starts at a
+neutral 1.0, so source weight and relevance compete in the same unit. Under an additive
+lift, a weight-2.0 source with zero relevance beat a weight-1.0 source with two focus
+hits — the source was doing the ranking. As a multiplier, `0.95 x 1.00 = 0.95` loses to
+`0.90 x 1.65 = 1.49`.
+
+**The weight band is narrow on purpose.** Source weight should break ties between
+comparably relevant stories, not lift an irrelevant one to the top; a 2.0-vs-1.0 spread
+makes the source the ranking. Weights are clamped, so a `feeds.yml` typo cannot widen it.
+Hacker News sits at the **floor** — it is the noisiest general feed and carries the most
+off-topic material:
+
+| Feed | weight |
+|---|---|
+| IEEE Spectrum | 1.20 |
+| MIT Technology Review | 1.15 |
+| Ars Technica | 1.10 |
+| The Verge | 1.00 |
+| TechCrunch / Hacker News Best | 0.95 |
+| Hacker News | 0.85 |
+
+`weight` and the fetch quota used to be the same field (`take = weight * 8`), so
+compressing the band would have silently cut every feed to ~7 entries. `fetch` is now its
+own field.
 
 It ranks ~70 articles in well under a second and costs nothing.
 
@@ -551,16 +582,26 @@ Re-approve an intentional change with `--print` and paste the emitted block over
 `EXPECTED_ORDER`. The expectation carries the reasoning for each position, so it doubles as
 documentation of why one story outranks another.
 
-**One tradeoff it makes visible:** source weight is multiplicative with recency, while
-relevance is an additive lift capped at +108%. So an irrelevant story from a weight-2.0
-source outranks a relevant one from a weight-1.0 source (positions 4 and 5). Raising
-`RELEVANCE_SCALE` flips them. That is a real editorial choice, and it is now a conscious
-diff rather than drift.
+**It has already earned its keep twice.** Regenerating the expectation after the
+multiplicative change reported `dupe_url = 0` for a fixture that plainly contained a URL
+twin — an article dropped as a *title* duplicate never registered its URL, so a third
+article sharing that URL sailed through. Rejected duplicates now register both keys. And
+the strict-boundary bug (`exploit` missing "actively exploited") surfaced the same way.
+Neither was visible to any filter test.
 
 > **Constants were reconstructed, not copied.** `feeds.mjs` has not been reachable from
 > this host at any point. Half-life, weights, the focus-stack list, the noise patterns and
 > the per-source cap were written from a description and are isolated at the top of
 > `ranker.py`.
+>
+> **Taken verbatim:** the NOISE regex list (`NOISE_PATTERNS_ORIGINAL`) and the scoring
+> structure — `recency x sourceWeight x relevance`, with
+> `relevance = 1 + focusHits*0.5 + (topics ? 0.15 : 0)`.
+>
+> **Kept separate:** `NOISE_PATTERNS_EXTRA`. The original polls LWN, Phoronix and vendor
+> blogs; this project polls Hacker News and TechCrunch, which produce listicles, deals and
+> discussion threads the original never had to filter. The ported list stays verbatim and
+> auditable; the extras are opt-out via `extra_noise_filter: false`.
 >
 > Two deliberate divergences from the original, both requested:
 > - Short, collision-prone terms (`iac`, `aws`, `gcp`) use word boundaries rather than the
@@ -570,7 +611,11 @@ diff rather than drift.
 >   are prefix-matched so inflections count. Strict boundaries made `exploit` miss
 >   "actively exploited", which is exactly the headline shape that should score highest.
 >
-> **Still outstanding:** the NOISE regex list is reconstructed, not verbatim.
+> Term matching is the one place this does **not** align to the original. The original uses
+> `.includes()` on stems, which catches inflections for free but is what produced the
+> arm-in-alarm failure and forced the literal-space workaround. The synthesis here — a
+> leading word boundary with prefix matching for stems (`\bexploit`), full boundaries for
+> short exact terms (`\barm\b`) — gets the inflections without the false positives.
 
 ## Editorial behaviour
 

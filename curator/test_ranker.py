@@ -65,10 +65,12 @@ print("\n-- title-first classification (the LWN trap) --")
 digest = ("Security updates for Thursday",
           "Updates for kubernetes, docker, postgres, python and the linux kernel.")
 score, tags = ranker.classify(*digest)
-check("body-only terms score ZERO", score, 0.0)
+check("body-only terms give the topic bonus only", round(score, 4), 1.15)
 check("body-only terms still become tags", len(tags) >= 4, True)
 real = ranker.classify("Kubernetes 1.35 ships", "")
-check("title terms do score", real[0] > 0, True)
+check("one title hit -> 1 + 0.5 + 0.15", round(real[0], 4), 1.65)
+check("two title hits -> 1 + 1.0 + 0.15", round(ranker.classify("docker and kubernetes", "")[0], 4), 2.15)
+check("no topics at all -> neutral 1.0", round(ranker.classify("a rooster clock", "")[0], 4), 1.0)
 check("title outscores an identically-worded body",
       ranker.classify("kubernetes docker", "")[0] > ranker.classify("nothing here", "kubernetes docker")[0], True)
 t2 = ranker.classify("Docker ships a feature", "this also mentions kubernetes")
@@ -124,10 +126,42 @@ print("\n-- stub filter --")
 _, st2 = ranker.rank([art("Too short", "HN", 1)], {"HN": 1.0}, now=NOW)
 check("two-word title rejected as stub", st2["stub"], 1)
 
+print("\n-- relevance MULTIPLIES, so it competes with source weight --")
+r, _ = ranker.rank(
+    [art("Postgres 18 adds asynchronous IO", "Light", 3, "postgres"),
+     art("A rooster alarm clock app", "Heavy", 1, "it crows")],
+    {"Light": 0.90, "Heavy": 0.95}, now=NOW)
+check("relevant light source beats irrelevant heavier one", r[0]["source"], "Light")
+
+print("\n-- source weight is clamped to the band --")
+check("3.0 clamps to max", ranker.clamp_weight(3.0), ranker.SOURCE_WEIGHT_MAX)
+check("0.1 clamps to min", ranker.clamp_weight(0.1), ranker.SOURCE_WEIGHT_MIN)
+check("1.0 passes through", ranker.clamp_weight(1.0), 1.0)
+
+print("\n-- ported NOISE list, verbatim patterns --")
+for t in ["Security updates for Thursday", "[$] A subscriber-only article",
+          "Weekly Edition for September 5", "Kernel prepatch 6.19-rc4",
+          "Stable kernel 6.18.2", "Friday Five: what shipped",
+          "This week in Rust #601", "Week in review: containers"]:
+    check_true(f"ported noise: {t[:32]!r}", ranker.is_noise(t, extra=False))
+check("ported list alone does not drop a listicle",
+      ranker.is_noise("Top 10 laptops for 2026", extra=False), False)
+check("extra list does drop it", ranker.is_noise("Top 10 laptops for 2026", extra=True), True)
+
+print("\n-- dedupe registers keys even for rejected items --")
+pool2 = [
+    art("Chromium RCE exploited", "A", 1, url="https://ex.com/rce"),
+    art("Chromium RCE exploited!", "B", 2, url="https://other.com/rce-bug"),   # title dupe
+    art("Totally different words here", "C", 3, url="https://www.ex.com/rce/?utm_source=n"),
+]
+_, st3 = ranker.rank(pool2, {"A": 1.0, "B": 1.0, "C": 1.0}, now=NOW)
+check("title dupe caught", st3["dupe_title"], 1)
+check("url dupe caught even though its twin was itself rejected", st3["dupe_url"], 1)
+
 print("\n-- source weight matters, all else equal --")
 r, _ = ranker.rank([art("Kubernetes ships a thing", "Weak", 1, "kubernetes"),
-                    art("Kubernetes ships something", "Strong", 1, "kubernetes")],
-                   {"Weak": 1.0, "Strong": 5.0}, now=NOW)
+                    art("Kubernetes ships something else", "Strong", 1, "kubernetes")],
+                   {"Weak": 0.85, "Strong": 1.30}, now=NOW)
 check("heavier source ranks first", r[0]["source"], "Strong")
 
 print()

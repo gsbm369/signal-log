@@ -31,11 +31,28 @@ from typing import Any, Iterable
 # --------------------------------------------------------------------------- #
 
 HALF_LIFE_HOURS = 36.0        # score halves every 36 hours
-TITLE_HIT_WEIGHT = 2.0        # focusHits are counted from the title alone
-RELEVANCE_CAP = 6.0           # stop rewarding keyword stuffing past this
-RELEVANCE_SCALE = 0.18        # how much each capped hit lifts the score
+
+# Relevance is a MULTIPLIER, not an addend, and starts at a neutral 1.0:
+#
+#     score     = recency * source_weight * relevance
+#     relevance = 1 + focus_hits * FOCUS_HIT_BONUS + (TOPIC_BONUS if topics else 0)
+#
+# This is structural, and it is what keeps source weight from becoming the
+# ranking. Under an additive lift, a weight-2.0 source with zero relevance beat
+# a weight-1.0 source with two focus hits. As a multiplier they compete in the
+# same unit: 2.00 x 1.00 = 2.00 loses to 1.00 x 2.15 = 2.15.
+FOCUS_HIT_BONUS = 0.5         # each TITLE focus hit
+TOPIC_BONUS = 0.15            # flat bonus if the item has any topic at all
+
 PER_SOURCE_CAP = 3            # max articles from any one feed in the final list
 MIN_TITLE_WORDS = 3           # anything shorter is a stub, not a story
+
+# Source weight breaks ties between comparably relevant stories. It must not be
+# able to lift an irrelevant one to the top, so the band is deliberately narrow
+# (+/-25%). A 2.0-vs-1.0 spread makes the source the ranking.
+SOURCE_WEIGHT_MIN = 0.85
+SOURCE_WEIGHT_MAX = 1.30
+DEFAULT_SOURCE_WEIGHT = 1.00
 
 # Topics the blog actually cares about. A hit boosts; a miss is not a penalty.
 FOCUS_STACK: tuple[str, ...] = (
@@ -91,8 +108,28 @@ def _compile_focus(terms: Iterable[str]) -> tuple[tuple[str, re.Pattern[str]], .
 FOCUS_PATTERNS = _compile_focus(FOCUS_STACK)
 
 
-# Routine digest / roundup / listicle posts. Matched against the title.
-NOISE_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
+# --------------------------------------------------------------------------- #
+# Noise
+# --------------------------------------------------------------------------- #
+
+# VERBATIM from netlify/functions/news/feeds.mjs. Routine daily posts that rank
+# high on recency and say nothing. Do not edit without editing the original.
+NOISE_PATTERNS_ORIGINAL: tuple[re.Pattern[str], ...] = (
+    re.compile(r"^security updates for ", re.I),
+    re.compile(r"^\[\$\]"),                                       # LWN subscriber-only teasers
+    re.compile(r"^(weekly edition|kernel prepatch|stable kernel)", re.I),
+    re.compile(r"^friday five", re.I),
+    re.compile(r"^(this week|week) in ", re.I),
+)
+
+# Additional patterns for THIS project's feeds. The original polls LWN, Phoronix
+# and vendor blogs; this one polls Hacker News and TechCrunch, which produce a
+# different kind of routine post — listicles, deals, and discussion threads —
+# that the original never needed to filter. Kept separate so the ported list
+# above stays verbatim and auditable.
+#
+# Disable with `extra_noise_filter: false` in feeds.yml.
+NOISE_PATTERNS_EXTRA: tuple[re.Pattern[str], ...] = tuple(
     re.compile(p, re.I)
     for p in (
         r"^\s*(daily|weekly|monthly)\s+(digest|roundup|round-up|recap|briefing|newsletter)",
@@ -100,12 +137,14 @@ NOISE_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
         r"\bbest\s+\d+\b|\btop\s+\d+\b|\b\d+\s+(best|things|ways|tips|tools|reasons)\b",
         r"\b(deals?|discount|coupon|sale|black friday|cyber monday|prime day)\b",
         r"\b(giveaway|sweepstake|sponsored|advertisement)\b",
-        r"^\s*(ask|tell)\s+hn\s*:",           # discussion threads, not news
+        r"^\s*(ask|tell)\s+hn\s*:",
         r"\b(open thread|weekly thread|who is hiring|freelancer\?)\b",
         r"\b(live ?blog|liveblog|as it happened)\b",
         r"\b(horoscope|recipe|wordle|crossword)\b",
     )
 )
+
+NOISE_PATTERNS: tuple[re.Pattern[str], ...] = NOISE_PATTERNS_ORIGINAL + NOISE_PATTERNS_EXTRA
 
 # Query/tracking params stripped when canonicalising a URL.
 TRACKING_PARAMS = re.compile(
@@ -151,8 +190,9 @@ def normalise_title(title: str) -> str:
     return " ".join(sorted(words[:12]))
 
 
-def is_noise(title: str) -> bool:
-    return any(p.search(title or "") for p in NOISE_PATTERNS)
+def is_noise(title: str, extra: bool = True) -> bool:
+    patterns = NOISE_PATTERNS if extra else NOISE_PATTERNS_ORIGINAL
+    return any(p.search(title or "") for p in patterns)
 
 
 # --------------------------------------------------------------------------- #
@@ -180,18 +220,18 @@ def classify(title: str, summary: str) -> tuple[float, list[str]]:
     about Kubernetes; a headline that does, is.
     """
     t, b = title or "", summary or ""
-    score = 0.0
     title_tags: list[str] = []
     body_tags: list[str] = []
 
     for term, pat in FOCUS_PATTERNS:
         if pat.search(t):
-            score += TITLE_HIT_WEIGHT
             title_tags.append(term)
         elif pat.search(b):
-            body_tags.append(term)      # tag only — contributes no score
+            body_tags.append(term)      # tag only — contributes no focus hit
 
-    return min(score, RELEVANCE_CAP), title_tags + body_tags
+    topics = title_tags + body_tags
+    relevance = 1.0 + len(title_tags) * FOCUS_HIT_BONUS + (TOPIC_BONUS if topics else 0.0)
+    return relevance, topics
 
 
 # Kept as an alias so existing callers and tests read naturally.
@@ -200,17 +240,22 @@ relevance_hits = classify
 
 def score_article(art: dict[str, Any], source_weight: float, now: datetime) -> dict[str, Any]:
     recency = recency_factor(art["published"], now)
-    rel, matched = classify(art["title"], art.get("summary", ""))
-    # Source weight and recency are multiplicative — a weak source with a fresh
-    # story should not outrank a strong source's fresh story. Relevance is an
-    # additive lift so a niche-but-relevant piece can still surface.
-    score = (source_weight * recency) * (1.0 + rel * RELEVANCE_SCALE)
+    relevance, topics = classify(art["title"], art.get("summary", ""))
+    weight = clamp_weight(source_weight)
+    score = recency * weight * relevance
     art = dict(art)
     art["_score"] = round(score, 5)
     art["_recency"] = round(recency, 4)
-    art["_relevance"] = round(rel, 2)
-    art["_matched"] = matched[:6]
+    art["_relevance"] = round(relevance, 3)
+    art["_weight"] = round(weight, 3)
+    art["_matched"] = topics[:6]
     return art
+
+
+def clamp_weight(w: float) -> float:
+    """Keep source weight inside the narrow band. A feeds.yml typo of 3.0 would
+    otherwise silently turn source into the whole ranking."""
+    return max(SOURCE_WEIGHT_MIN, min(SOURCE_WEIGHT_MAX, float(w)))
 
 
 # --------------------------------------------------------------------------- #
@@ -224,6 +269,7 @@ def rank(
     limit: int | None = None,
     per_source_cap: int = PER_SOURCE_CAP,
     now: datetime | None = None,
+    extra_noise: bool = True,
 ) -> tuple[list[dict[str, Any]], dict[str, int]]:
     """Rank and thin a candidate pool. Returns (ranked, stats)."""
     now = now or datetime.now(timezone.utc)
@@ -234,13 +280,14 @@ def rank(
     for art in articles:
         stats["in"] += 1
         title = art.get("title", "")
-        if is_noise(title):
+        if is_noise(title, extra=extra_noise):
             stats["noise"] += 1
             continue
         if len(title.split()) < MIN_TITLE_WORDS:
             stats["stub"] += 1
             continue
-        scored.append(score_article(art, float(weights.get(art.get("source", ""), 1.0)), now))
+        scored.append(score_article(
+            art, float(weights.get(art.get("source", ""), DEFAULT_SOURCE_WEIGHT)), now))
 
     # Highest score first, so the survivor of a duplicate pair is the best one.
     scored.sort(key=lambda a: a["_score"], reverse=True)
@@ -251,15 +298,25 @@ def rank(
     for art in scored:
         cu = canonical_url(art.get("url", ""))
         nt = normalise_title(art.get("title", ""))
+        dropped = False
+
         if cu and cu in seen_urls:
             stats["dupe_url"] += 1
-            continue
-        if nt and nt in seen_titles:
+            dropped = True
+        elif nt and nt in seen_titles:
             stats["dupe_title"] += 1
-            continue
+            dropped = True
+
+        # Register BOTH keys even when dropping. A rejected duplicate still
+        # claims its identity: without this, an article discarded as a title
+        # duplicate never registers its URL, so a third article sharing that
+        # URL sails through. Surfaced by the golden test reporting dupe_url=0
+        # where the fixture plainly contained a URL twin.
         seen_urls.add(cu)
         seen_titles.add(nt)
-        deduped.append(art)
+
+        if not dropped:
+            deduped.append(art)
 
     # Per-source cap, applied in score order so each source keeps its best.
     per_source: dict[str, int] = {}

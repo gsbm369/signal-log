@@ -33,12 +33,13 @@ import ranker  # noqa: E402
 # deterministic regardless of when it runs.
 NOW = datetime(2026, 9, 5, 12, 0, 0, tzinfo=timezone.utc)
 
+# Narrow band, as in the original. Hacker News sits at the floor.
 SOURCE_WEIGHTS = {
-    "Hacker News": 3.0,
-    "TechCrunch": 2.0,
-    "Ars Technica": 2.0,
-    "LWN": 1.0,
-    "Random Blog": 1.0,
+    "Ars Technica": 1.10,
+    "LWN": 1.10,
+    "TechCrunch": 0.95,
+    "Random Blog": 0.90,
+    "Hacker News": 0.85,
 }
 
 
@@ -58,50 +59,61 @@ def item(title, source, hours_old, summary="", url=None):
 # --------------------------------------------------------------------------- #
 
 FIXTURE = [
-    # Strong source, fresh, focus terms in the TITLE ("exploited", "rce").
+    # Lowest-weight source, fresh, two title hits ("exploited", "rce").
+    # Relevance must carry this past heavier but irrelevant sources.
     item("Actively exploited RCE in Chromium sandbox", "Hacker News", 2,
          "A CVE with an exploit in the wild.", url="https://ex.com/chromium-rce"),
 
-    # Same story reworded, weaker source, older -> deduped on normalised TITLE
-    # (its URL is deliberately different, so only the title stage can catch it).
+    # Same story reworded, different URL -> only the title stage can catch it.
     item("Actively exploited RCE in Chromium sandbox!", "TechCrunch", 6,
          "cve exploit", url="https://other.com/chromium-sandbox-rce-bug"),
 
-    # The LWN trap: headline says nothing, body stuffed with five focus terms.
-    # Title-first classification must give this 0 relevance.
+    # THE NOISE LIST, verbatim pattern /^security updates for /i. Freshest item
+    # in the set; must be dropped before scoring ever runs.
     item("Security updates for Thursday", "LWN", 1,
          "Updates for kubernetes, docker, postgres, python and the linux kernel.",
          url="https://lwn.net/Articles/1001/"),
 
-    # Relevant headline but a full half-life old (36h -> x0.5). 4th HN item,
-    # so the per-source cap should remove it.
+    # THE TITLE-FIRST TRAP, and not caught by any noise pattern. Headline carries
+    # no focus term; body carries four. Must score relevance 1.15 (topic bonus
+    # only, no focus hits) rather than 3.0.
+    item("Architecting memory and storage in the AI era", "Ars Technica", 1,
+         "Covers kubernetes, docker, inference and the linux kernel in depth.",
+         url="https://ex.com/architecting-memory"),
+
+    # Relevant headline but a full half-life old (36h -> x0.5). 4th Hacker News
+    # item, so the per-source cap removes it.
     item("Kubernetes 1.35 ships with in-place pod resizing", "Hacker News", 36,
          "kubernetes release", url="https://ex.com/k8s-135"),
 
-    # Fresh, heavy source, zero focus terms in the title.
+    # Fresh, heavier source, zero focus terms. Under an ADDITIVE relevance this
+    # outranked the Postgres item below; under a multiplicative one it must not.
     item("A rooster alarm clock app arrives on iOS", "TechCrunch", 1,
          "It crows at you.", url="https://ex.com/rooster"),
 
-    # Weakest source, fresh, strong title relevance.
+    # Lightest source, fresh, one title hit. The additive-vs-multiplicative test.
     item("Postgres 18 adds asynchronous IO", "Random Blog", 3,
          "postgres performance", url="https://ex.com/pg18-aio"),
 
-    # 2nd and 3rd Hacker News items.
+    # Further Hacker News items, so the per-source cap of 3 actually fires.
+    item("Grafana 12 adds native Loki trace correlation", "Hacker News", 5,
+         "grafana loki observability", url="https://ex.com/grafana-12"),
     item("Terraform provider for Proxmox reaches 1.0", "Hacker News", 8,
          "terraform proxmox", url="https://ex.com/tf-proxmox"),
     item("eBPF tracing lands in the mainline kernel", "Hacker News", 10,
          "ebpf linux", url="https://ex.com/ebpf-mainline"),
 
-    # Noise: dropped outright despite being the freshest item in the set.
+    # Extra-list noise (listicle). Not in the ported list; this project's feeds
+    # produce these and the original's never did.
     item("Top 10 laptops for 2026", "Ars Technica", 0.5, "listicle",
          url="https://ex.com/top-10-laptops"),
 
-    # Duplicate URL after canonicalisation (www + utm + trailing slash), and
-    # deliberately LOWER-scoring than its twin so the survivor is the better one.
+    # Duplicate URL after canonicalisation, deliberately lower-scoring than its
+    # twin so the survivor is the better one.
     item("Chromium sandbox escape under active attack", "Ars Technica", 20,
          "cve", url="https://www.ex.com/chromium-rce/?utm_source=newsletter"),
 
-    # Stub: too short to be a story.
+    # Stub.
     item("Breaking news", "TechCrunch", 0.2, "docker kubernetes",
          url="https://ex.com/breaking"),
 ]
@@ -111,50 +123,54 @@ FIXTURE = [
 # --------------------------------------------------------------------------- #
 
 EXPECTED_ORDER = [
-    # 1. score=4.9651  rec=0.96  rel=4.0  Hacker News
-    #    Heaviest source, nearly fresh, two title hits ("exploited", "rce").
-    #    "exploited" only matches because `exploit` is a PREFIX term — with a
-    #    strict ... it scored 2.0 and fell to third. This test caught that.
-    "Actively exploited RCE in Chromium sandbox",
+    # 1. 1.8197 = rec 0.89 x w 0.95 x rel 2.15   TechCrunch
+    #    NOTE: this is the REWORDED TWIN, not the Hacker News original, which is
+    #    4h fresher. TechCrunch 0.95 vs Hacker News 0.85 outweighs 4 hours of
+    #    decay, so dedupe keeps the TechCrunch copy. Correct under the model and
+    #    worth freezing: within a narrow band, source can still decide a tie.
+    "Actively exploited RCE in Chromium sandbox!",
 
-    # 2. score=4.4234  rec=0.86  rel=4.0  Hacker News
-    #    Same source and relevance as #3; wins on being 2h fresher.
+    # 2. 1.6598 = rec 0.91 x w 0.85 x rel 2.15   Hacker News
+    #    Two title hits (grafana, loki). Beats #3 and #4 on recency alone.
+    "Grafana 12 adds native Loki trace correlation",
+
+    # 3. 1.5666 = rec 0.86 x w 0.85 x rel 2.15   Hacker News
     "Terraform provider for Proxmox reaches 1.0",
 
-    # 3. score=4.2563  rec=0.82  rel=4.0  Hacker News
+    # 4. 1.5074 = rec 0.82 x w 0.85 x rel 2.15   Hacker News
     #    Third and last Hacker News item the per-source cap allows.
     "eBPF tracing lands in the mainline kernel",
 
-    # 4. score=1.9619  rec=0.98  rel=0.0  TechCrunch
-    #    A DELIBERATE, VISIBLE TRADEOFF: an irrelevant story from a weight-2.0
-    #    source outranks a relevant one from a weight-1.0 source, because source
-    #    weight is multiplicative with recency while relevance is an additive
-    #    lift capped at +108% (RELEVANCE_CAP 6.0 x RELEVANCE_SCALE 0.18).
-    #    Raising RELEVANCE_SCALE, or making relevance multiplicative, would flip
-    #    #4 and #5. That is a real editorial choice — this line is where it is
-    #    recorded, and changing it must be a conscious diff.
-    "A rooster alarm clock app arrives on iOS",
-
-    # 5. score=1.2837  rec=0.94  rel=2.0  Random Blog
-    #    Weakest source, but relevance lifts it clear of the LWN digest below.
+    # 5. 1.4017 = rec 0.94 x w 0.90 x rel 1.65   Random Blog
+    #    THE MULTIPLICATIVE-RELEVANCE TEST. One title hit on the LIGHTEST source
+    #    in the set, and it still beats the irrelevant TechCrunch item at #7.
+    #    Under the previous additive lift this sat BELOW the rooster app: source
+    #    weight was doing the ranking. Relevance and weight now compete in the
+    #    same unit, so 0.90 x 1.65 = 1.49 beats 0.95 x 1.00 = 0.95.
     "Postgres 18 adds asynchronous IO",
 
-    # 6. score=0.9809  rec=0.98  rel=0.0  LWN
-    #    THE LWN TRAP. Freshest item in the set (1h) with five focus terms in the
-    #    body — kubernetes, docker, postgres, python, linux — and a headline that
-    #    says nothing. Title-first classification gives it rel=0.0, so recency
-    #    alone cannot carry it. Scoring combined title+summary put this FIRST.
-    "Security updates for Thursday",
+    # 6. 1.2409 = rec 0.98 x w 1.10 x rel 1.15   Ars Technica
+    #    THE TITLE-FIRST TRAP. Body names kubernetes, docker, inference and the
+    #    linux kernel; the headline names none of them. rel = 1.15 is the topic
+    #    bonus ALONE — zero focus hits. Scoring combined text would give this
+    #    1 + 4x0.5 + 0.15 = 3.15 and put it first. Not caught by any noise
+    #    pattern, so only title-first classification stops it.
+    "Architecting memory and storage in the AI era",
+
+    # 7. 0.9319 = rec 0.98 x w 0.95 x rel 1.00   TechCrunch
+    #    Freshest survivor, decent source, zero topics -> neutral 1.0 multiplier.
+    "A rooster alarm clock app arrives on iOS",
 
     # Absent by design:
-    #   "Kubernetes 1.35 ..."          4th Hacker News item -> per-source cap
-    #   "Actively exploited RCE ...!"  reworded twin        -> title dedupe
-    #   "Chromium sandbox escape ..."  www+utm twin of #1   -> URL dedupe
-    #   "Top 10 laptops for 2026"      listicle             -> noise filter
-    #   "Breaking news"                two words            -> stub filter
+    #   "Security updates for Thursday"   ported NOISE /^security updates for /i
+    #   "Top 10 laptops for 2026"         extra NOISE (listicle)
+    #   "Actively exploited RCE ..."      HN original -> title dedupe, lost to #1
+    #   "Chromium sandbox escape ..."     www+utm twin -> URL dedupe
+    #   "Kubernetes 1.35 ..."             4th Hacker News item -> per-source cap
+    #   "Breaking news"                   two words -> stub filter
 ]
 
-EXPECTED_STATS = {"noise": 1, "stub": 1, "dupe_url": 1, "dupe_title": 1, "capped": 1}
+EXPECTED_STATS = {"noise": 2, "stub": 1, "dupe_url": 1, "dupe_title": 1, "capped": 1}
 
 
 def run():
@@ -203,10 +219,18 @@ def main() -> int:
 
     print("\n-- invariants that must hold whatever the constants are --")
     inv = [
-        ("body-stuffed digest scores 0 relevance",
-         next(a["_relevance"] for a in ranked if a["title"].startswith("Security updates")) == 0.0),
-        ("digest does not take the top slot",
-         not ranked[0]["title"].startswith("Security updates")),
+        ("noise-listed digest never reaches scoring",
+         not any(a["title"].startswith("Security updates") for a in ranked)),
+        ("body-stuffed item gets the topic bonus only, no focus hits",
+         abs(next(a["_relevance"] for a in ranked
+                  if a["title"].startswith("Architecting")) - 1.15) < 1e-9),
+        ("body-stuffed item does not take the top slot",
+         not ranked[0]["title"].startswith("Architecting")),
+        ("relevance multiplies: a relevant light source beats an irrelevant heavier one",
+         [a["title"] for a in ranked].index("Postgres 18 adds asynchronous IO")
+         < [a["title"] for a in ranked].index("A rooster alarm clock app arrives on iOS")),
+        ("source weights stay inside the band",
+         all(ranker.SOURCE_WEIGHT_MIN <= a["_weight"] <= ranker.SOURCE_WEIGHT_MAX for a in ranked)),
         ("scores are non-increasing",
          all(ranked[i]["_score"] >= ranked[i + 1]["_score"] for i in range(len(ranked) - 1))),
         ("per-source cap respected",
