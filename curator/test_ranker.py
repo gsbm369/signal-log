@@ -52,8 +52,28 @@ check("'go' no longer matches prose", "golang" in ranker.relevance_hits("we go t
 check("golang matches", "golang" in ranker.relevance_hits("A golang rewrite", "")[1], True)
 check("prefix term fine-tun matches fine-tuning",
       "fine-tun" in ranker.relevance_hits("fine-tuning a model", "")[1], True)
-check("title hit outweighs summary hit",
-      ranker.relevance_hits("kubernetes news", "")[0] > ranker.relevance_hits("x", "kubernetes news")[0], True)
+check("exploit matches 'exploited' (verb form)",
+      "exploit" in ranker.classify("Actively exploited flaw", "")[1], True)
+check("short terms are boundary-guarded: aws",
+      "aws" in ranker.classify("AWS, us-east-1 down", "")[1], True)
+check("aws does not match inside a word",
+      "aws" in ranker.classify("He guffaws at the outage", "")[1], False)
+check("gcp matches at start of title",
+      "gcp" in ranker.classify("GCP raises egress prices", "")[1], True)
+
+print("\n-- title-first classification (the LWN trap) --")
+digest = ("Security updates for Thursday",
+          "Updates for kubernetes, docker, postgres, python and the linux kernel.")
+score, tags = ranker.classify(*digest)
+check("body-only terms score ZERO", score, 0.0)
+check("body-only terms still become tags", len(tags) >= 4, True)
+real = ranker.classify("Kubernetes 1.35 ships", "")
+check("title terms do score", real[0] > 0, True)
+check("title outscores an identically-worded body",
+      ranker.classify("kubernetes docker", "")[0] > ranker.classify("nothing here", "kubernetes docker")[0], True)
+t2 = ranker.classify("Docker ships a feature", "this also mentions kubernetes")
+check("title tag comes first", t2[1][0], "docker")
+check("body adds only tags the title lacked", "kubernetes" in t2[1], True)
 
 print("\n-- noise filter --")
 for t in ["Daily digest: everything that happened", "Top 10 laptops for 2026",

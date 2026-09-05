@@ -31,8 +31,7 @@ from typing import Any, Iterable
 # --------------------------------------------------------------------------- #
 
 HALF_LIFE_HOURS = 36.0        # score halves every 36 hours
-TITLE_HIT_WEIGHT = 2.0        # a focus-stack term in the title counts double
-SUMMARY_HIT_WEIGHT = 1.0
+TITLE_HIT_WEIGHT = 2.0        # focusHits are counted from the title alone
 RELEVANCE_CAP = 6.0           # stop rewarding keyword stuffing past this
 RELEVANCE_SCALE = 0.18        # how much each capped hit lifts the score
 PER_SOURCE_CAP = 3            # max articles from any one feed in the final list
@@ -44,6 +43,11 @@ FOCUS_STACK: tuple[str, ...] = (
     "docker", "kubernetes", "k8s", "ansible", "terraform", "proxmox", "nginx",
     "self-hosted", "selfhosted", "homelab", "observability", "grafana",
     "prometheus", "loki", "systemd", "linux", "kernel", "ebpf", "networking",
+    # Short, collision-prone terms. The original guarded these with literal
+    # surrounding spaces (' iac ', ' aws ', ' gcp '), which silently misses a
+    # title that STARTS with the term and any trailing punctuation — "AWS,"
+    # and "AWS outage" both fail that test. Word boundaries handle both.
+    "iac", "aws", "gcp", "azure", "cloudflare",
     # data
     "postgres", "postgresql", "sqlite", "redis", "clickhouse", "duckdb",
     # languages / runtime  ("go" alone is too ambiguous in prose — golang only)
@@ -60,7 +64,13 @@ FOCUS_STACK: tuple[str, ...] = (
 )
 
 # Terms matched as a prefix, so "fine-tun" also catches "fine-tuning"/"fine-tuned".
-PREFIX_TERMS: frozenset[str] = frozenset({"fine-tun", "vulnerab", "embedding"})
+# Terms whose inflections matter. Strict \b...\b would make "exploit" miss
+# "actively exploited", which is exactly the headline shape that should score
+# highest. Caught by the golden test, not by any filter test.
+PREFIX_TERMS: frozenset[str] = frozenset({
+    "fine-tun", "vulnerab", "embedding", "exploit", "breach", "benchmark",
+    "inference", "transformer",
+})
 
 
 def _compile_focus(terms: Iterable[str]) -> tuple[tuple[str, re.Pattern[str]], ...]:
@@ -157,21 +167,40 @@ def recency_factor(published: datetime, now: datetime | None = None) -> float:
     return math.pow(2.0, -age_h / HALF_LIFE_HOURS)
 
 
-def relevance_hits(title: str, summary: str) -> tuple[float, list[str]]:
-    """Weighted focus-stack hits. Title matches count for more than body ones."""
-    t, s = title or "", summary or ""
-    score, matched = 0.0, []
+def classify(title: str, summary: str) -> tuple[float, list[str]]:
+    """Title-first classification, matching the original's classify().
+
+    The score (focusHits) is counted from the TITLE ALONE. The body may add tags
+    the title did not already produce, but it cannot lift the score.
+
+    This asymmetry is load-bearing, not an oversight. Scoring combined text was
+    the original's first-version bug: LWN package-list digests match five topics
+    from their body and took the top slot on relevance alone, despite the
+    headline saying nothing. A body that mentions Kubernetes is not a story
+    about Kubernetes; a headline that does, is.
+    """
+    t, b = title or "", summary or ""
+    score = 0.0
+    title_tags: list[str] = []
+    body_tags: list[str] = []
+
     for term, pat in FOCUS_PATTERNS:
-        in_t, in_s = bool(pat.search(t)), bool(pat.search(s))
-        if in_t or in_s:
-            score += TITLE_HIT_WEIGHT if in_t else SUMMARY_HIT_WEIGHT
-            matched.append(term)
-    return min(score, RELEVANCE_CAP), matched
+        if pat.search(t):
+            score += TITLE_HIT_WEIGHT
+            title_tags.append(term)
+        elif pat.search(b):
+            body_tags.append(term)      # tag only — contributes no score
+
+    return min(score, RELEVANCE_CAP), title_tags + body_tags
+
+
+# Kept as an alias so existing callers and tests read naturally.
+relevance_hits = classify
 
 
 def score_article(art: dict[str, Any], source_weight: float, now: datetime) -> dict[str, Any]:
     recency = recency_factor(art["published"], now)
-    rel, matched = relevance_hits(art["title"], art.get("summary", ""))
+    rel, matched = classify(art["title"], art.get("summary", ""))
     # Source weight and recency are multiplicative — a weak source with a fresh
     # story should not outrank a strong source's fresh story. Relevance is an
     # additive lift so a niche-but-relevant piece can still surface.

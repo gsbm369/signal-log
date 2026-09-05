@@ -511,25 +511,66 @@ the logic, not the language. Six stages:
 1. **Noise filter** — drops digest/roundup/listicle/deals posts and HN discussion threads.
 2. **Recency decay** — exponential, 36-hour half-life.
 3. **Source weighting** — the per-feed `weight` from `feeds.yml`, multiplicative with recency.
-4. **Relevance boost** — focus-stack keyword hits, title weighted 2× over summary, capped so
-   keyword stuffing does not pay.
+4. **Relevance boost** — focus-stack hits **counted from the title alone**. The body may add
+   tags the title did not produce, but it cannot lift the score. See below.
 5. **Cross-source dedupe** — normalised title (stopwords stripped, sorted) plus canonical URL
    (tracking params, `www`, AMP suffixes and fragments removed).
 6. **Per-source cap** — applied in score order, so each feed keeps its best.
 
 It ranks ~70 articles in well under a second and costs nothing.
 
-`curator/test_ranker.py` covers all six stages — 30 assertions, no network, no API key:
+### Title-first classification
+
+Scoring the combined title + summary is wrong, and it fails in a specific way: package-list
+digests ("Security updates for Thursday") match five focus terms from their body and take
+the top slot on relevance alone, while the headline says nothing. A body that mentions
+Kubernetes is not a story about Kubernetes; a headline that does, is.
+
+So `classify()` counts focus hits from the **title only**. The body contributes tags —
+useful for the tag chips — but no score. The golden test asserts this directly.
+
+### Tests
 
 ```bash
 docker compose run --rm --no-deps --entrypoint python3 builder /app/curator/test_ranker.py
+docker compose run --rm --no-deps --entrypoint python3 builder /app/curator/test_ranker_golden.py
 ```
 
-> **Constants were reconstructed, not copied.** `feeds.mjs` was not reachable from the
-> server — not on disk, not in `gsbm-homelab`/`helpdesk-kb`/`paws-palette`, and both
-> function endpoints 404. Half-life, weights, the focus-stack list, the noise patterns and
-> the per-source cap were written from the description and are isolated at the top of
-> `ranker.py`. If ordering differs from the original, those constants are where to look.
+`test_ranker.py` — 38 assertions covering each stage in isolation.
+
+`test_ranker_golden.py` — a frozen fixture at fixed timestamps asserting the **full ranked
+order**. Filter tests prove a stage fires; they cannot catch a constant change that quietly
+degrades ranking while every filter still passes. Demonstrated:
+
+| Change | `test_ranker.py` | `test_ranker_golden.py` |
+|---|---|---|
+| `HALF_LIFE_HOURS` 36 → 12 | caught (direct assertion) | caught |
+| `RELEVANCE_SCALE` 0.18 → 0.60 | **"All ranker tests passed"** | **caught — positions 4/5 swapped** |
+
+Re-approve an intentional change with `--print` and paste the emitted block over
+`EXPECTED_ORDER`. The expectation carries the reasoning for each position, so it doubles as
+documentation of why one story outranks another.
+
+**One tradeoff it makes visible:** source weight is multiplicative with recency, while
+relevance is an additive lift capped at +108%. So an irrelevant story from a weight-2.0
+source outranks a relevant one from a weight-1.0 source (positions 4 and 5). Raising
+`RELEVANCE_SCALE` flips them. That is a real editorial choice, and it is now a conscious
+diff rather than drift.
+
+> **Constants were reconstructed, not copied.** `feeds.mjs` has not been reachable from
+> this host at any point. Half-life, weights, the focus-stack list, the noise patterns and
+> the per-source cap were written from a description and are isolated at the top of
+> `ranker.py`.
+>
+> Two deliberate divergences from the original, both requested:
+> - Short, collision-prone terms (`iac`, `aws`, `gcp`) use word boundaries rather than the
+>   original's literal surrounding spaces, which miss a title that starts with the term and
+>   any trailing punctuation — `" aws "` never matches `"AWS, us-east-1 down"`.
+> - `exploit`, `breach`, `vulnerab`, `fine-tun`, `benchmark`, `inference` and `transformer`
+>   are prefix-matched so inflections count. Strict boundaries made `exploit` miss
+>   "actively exploited", which is exactly the headline shape that should score highest.
+>
+> **Still outstanding:** the NOISE regex list is reconstructed, not verbatim.
 
 ## Editorial behaviour
 
