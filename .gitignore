@@ -1,0 +1,21 @@
+# secrets — never commit
+.env
+.env.local
+*.pem
+*.key
+
+# build artefacts
+node_modules/
+dist/
+.astro/
+public_html/
+__pycache__/
+*.pyc
+
+# runtime state
+curator/state/
+logs/
+
+# generated content — the curator rewrites these every cycle
+site/src/content/posts/*.md
+!site/src/content/posts/.gitkeep

@@ -1,0 +1,65 @@
+name: aiblog
+
+services:
+  web:
+    image: nginx:1.27-alpine
+    container_name: aiblog-web
+    restart: unless-stopped
+    ports:
+      - "${BLOG_PORT:-8080}:80"
+    volumes:
+      # Serves ./public_html/current, a symlink swapped atomically by run-cycle.sh.
+      - ./public_html:/usr/share/nginx/html:ro
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - default
+      - proxy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # One-shot job: curate -> build -> validate -> publish -> ship metrics.
+  # Invoked by cron, never left running.
+  builder:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.builder
+    image: aiblog-builder:latest
+    container_name: aiblog-builder
+    restart: "no"
+    # UID/GID of the host user that owns the bind mounts. Set by Ansible in .env
+    # so the project is not tied to uid 1000 on one machine.
+    user: "${BLOG_UID:-1000}:${BLOG_GID:-1000}"
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ:-UTC}
+      LOKI_URL: ${LOKI_URL:-}
+      LOKI_JOB: ${LOKI_JOB:-signal-log}
+      LOKI_HOST_LABEL: ${LOKI_HOST_LABEL:-}
+      CURATOR_MODEL: ${CURATOR_MODEL:-claude-opus-5}
+    volumes:
+      - ./public_html:/out
+      - ./site/src/content/posts:/app/site/src/content/posts
+      - ./curator/state:/data/state
+      - ./curator/feeds.yml:/app/curator/feeds.yml:ro
+    networks:
+      - default
+      - proxy
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+networks:
+  default:
+  # Shared homelab network: lets Nginx Proxy Manager reach aiblog-web and lets the
+  # builder reach Loki by container name. Ansible creates it if absent.
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-proxy-stack_proxy-net}

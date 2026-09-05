@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+};
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, source, sourceUrl, tags, heat, readMinutes } = post.data;
+
+const date = pubDate.toLocaleDateString('en-GB', {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
+});
+const bars = Math.max(1, Math.round((heat / 100) * 5));
+---
+
+<BaseLayout title={`${title} — signal.log`} description={description}>
+  <a
+    href="/"
+    class="inline-flex items-center gap-2 font-mono text-[0.8rem] text-faint no-underline transition-colors duration-300 hover:text-accent"
+  >
+    &larr; index
+  </a>
+
+  <article class="mt-7">
+    <header class="border-b border-dashed border-line pb-8">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[0.76rem]">
+        <span class="text-dim">{source}</span>
+        <span class="text-faint">&middot;</span>
+        <span class="text-faint">{date}</span>
+        <span class="text-faint">&middot;</span>
+        <span class="text-faint">{readMinutes} min read</span>
+        <span class="ml-auto flex items-center gap-[3px]" title={`Heat score ${heat}/100`}>
+          {
+            Array.from({ length: 5 }).map((_, i) => (
+              <span
+                class="block h-[10px] w-[3px] rounded-full"
+                style={`background:${i < bars ? 'var(--color-accent)' : 'var(--color-faint)'};opacity:${i < bars ? 1 : 0.45}`}
+              />
+            ))
+          }
+        </span>
+      </div>
+
+      <h1 class="mt-4 font-head text-[1.9rem] font-bold leading-[1.2] tracking-[-0.8px] text-ink sm:text-[2.3rem]">
+        {title}
+      </h1>
+
+      <p class="mt-4 max-w-[680px] text-[1rem] leading-[1.75] text-dim">{description}</p>
+
+      {
+        tags.length > 0 && (
+          <div class="mt-6 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span class="rounded-full border border-line px-[0.6rem] py-[0.2rem] font-mono text-[0.68rem] lowercase text-faint">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    <div class="prose mt-9 max-w-[720px]">
+      <Content />
+    </div>
+
+    {
+      sourceUrl && (
+        <div class="panel mt-12 p-6">
+          <p class="font-mono text-[0.72rem] uppercase tracking-[1px] text-faint">original source</p>
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-2 block break-all font-mono text-[0.86rem] text-accent no-underline transition-opacity duration-300 hover:opacity-75"
+          >
+            {sourceUrl} &nearr;
+          </a>
+        </div>
+      )
+    }
+  </article>
+</BaseLayout>

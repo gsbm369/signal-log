@@ -1,0 +1,16 @@
+---
+interface Props {
+  idx: string;
+  title: string;
+  lead?: string;
+}
+const { idx, title, lead } = Astro.props;
+---
+<div class="relative mb-10">
+  <span class="wm-num">{idx}</span>
+  <h2 class="relative z-10 flex items-baseline gap-3 font-head text-[1.55rem] font-semibold text-ink">
+    <span class="font-mono text-[0.9rem] text-accent">{idx}</span>
+    {title}
+  </h2>
+  {lead && <p class="relative z-10 mt-3 max-w-[680px] text-[0.96rem] leading-[1.75] text-dim">{lead}</p>}
+</div>

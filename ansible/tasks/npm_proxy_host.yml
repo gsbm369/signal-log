@@ -1,0 +1,107 @@
+---
+# Registers the blog with Nginx Proxy Manager via its API.
+# Idempotent: creates the proxy host only if one for blog_hostname is absent.
+#
+# Required vars: blog_hostname, npm_email, npm_password
+# Optional     : npm_url (default http://127.0.0.1:81)
+#                blog_ssl (default false) — request a Let's Encrypt certificate.
+#                Only works if this host's port 80 is reachable from the public
+#                internet and blog_hostname resolves there publicly.
+
+- name: Authenticate against Nginx Proxy Manager
+  ansible.builtin.uri:
+    url: "{{ npm_url | default('http://127.0.0.1:81') }}/api/tokens"
+    method: POST
+    body_format: json
+    body:
+      identity: "{{ npm_email }}"
+      secret: "{{ npm_password }}"
+    status_code: 200
+  register: npm_token
+  changed_when: false
+  no_log: true
+
+- name: List existing proxy hosts
+  ansible.builtin.uri:
+    url: "{{ npm_url | default('http://127.0.0.1:81') }}/api/nginx/proxy-hosts"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ npm_token.json.token }}"
+    status_code: 200
+  register: npm_hosts
+  changed_when: false
+  no_log: true
+
+- name: Determine whether the blog is already registered
+  ansible.builtin.set_fact:
+    existing_host: >-
+      {{ npm_hosts.json | selectattr('domain_names', 'contains', blog_hostname) | list | first | default(none) }}
+
+- name: Request a Let's Encrypt certificate
+  when:
+    - blog_ssl | default(false) | bool
+    - existing_host is none
+  block:
+    - name: Create the certificate
+      ansible.builtin.uri:
+        url: "{{ npm_url | default('http://127.0.0.1:81') }}/api/nginx/certificates"
+        method: POST
+        body_format: json
+        headers:
+          Authorization: "Bearer {{ npm_token.json.token }}"
+        body:
+          provider: letsencrypt
+          nice_name: "{{ blog_hostname }}"
+          domain_names: ["{{ blog_hostname }}"]
+          meta:
+            letsencrypt_email: "{{ letsencrypt_email | default(npm_email) }}"
+            letsencrypt_agree: true
+            dns_challenge: false
+        status_code: [200, 201]
+        timeout: 180
+      register: npm_cert
+      no_log: true
+
+    - name: Record the certificate id
+      ansible.builtin.set_fact:
+        blog_cert_id: "{{ npm_cert.json.id }}"
+
+- name: Create the proxy host
+  ansible.builtin.uri:
+    url: "{{ npm_url | default('http://127.0.0.1:81') }}/api/nginx/proxy-hosts"
+    method: POST
+    body_format: json
+    headers:
+      Authorization: "Bearer {{ npm_token.json.token }}"
+    body:
+      domain_names: ["{{ blog_hostname }}"]
+      forward_scheme: http
+      forward_host: aiblog-web        # resolvable on the shared proxy network
+      forward_port: 80
+      access_list_id: 0
+      certificate_id: "{{ blog_cert_id | default(0) }}"
+      ssl_forced: "{{ blog_ssl | default(false) | bool }}"
+      http2_support: "{{ blog_ssl | default(false) | bool }}"
+      hsts_enabled: "{{ blog_ssl | default(false) | bool }}"
+      hsts_subdomains: false
+      block_exploits: true
+      caching_enabled: true
+      allow_websocket_upgrade: false
+      advanced_config: ""
+      locations: []
+      meta:
+        letsencrypt_agree: "{{ blog_ssl | default(false) | bool }}"
+        dns_challenge: false
+    status_code: [200, 201]
+  register: npm_created
+  when: existing_host is none
+  changed_when: existing_host is none
+  no_log: true
+
+- name: Report the proxy host state
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Created proxy host ' ~ blog_hostname ~ ' -> aiblog-web:80'
+           ~ (' with SSL' if (blog_ssl | default(false) | bool) else ' (HTTP only)')
+         if existing_host is none
+         else 'Proxy host ' ~ blog_hostname ~ ' already registered — left unchanged' }}

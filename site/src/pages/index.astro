@@ -1,0 +1,133 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import SectionHead from '../components/SectionHead.astro';
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const latest = posts[0];
+const sources = [...new Set(posts.map((p) => p.data.source))];
+const lastRun = latest
+  ? latest.data.pubDate.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
+  : '—';
+---
+
+<BaseLayout title="signal.log — AI-curated technology briefing">
+  <!-- Hero -->
+  <section class="reveal in">
+    <div class="panel p-8 backdrop-blur-[10px] sm:p-10">
+      <div class="flex items-start gap-6">
+        <div class="mt-1.5 grid shrink-0 grid-cols-3 grid-rows-3 gap-[3px]">
+          {
+            Array.from({ length: 9 }).map((_, i) => {
+              const accent = i === 0 || i === 4 || i === 8;
+              const wire = i === 2 || i === 6;
+              return (
+                <span
+                  class="block h-[14px] w-[14px] rounded-[3px]"
+                  style={
+                    accent
+                      ? 'background:var(--color-accent);box-shadow:0 0 10px rgba(214,255,63,0.5)'
+                      : wire
+                        ? 'background:var(--color-wire)'
+                        : 'background:var(--color-faint)'
+                  }
+                />
+              );
+            })
+          }
+        </div>
+
+        <div class="min-w-0">
+          <h1 class="font-head text-[2rem] font-bold leading-[1.15] tracking-[-1px] text-ink sm:text-[2.4rem]">
+            signal<span class="text-accent">.</span>log
+          </h1>
+          <p class="mt-1 font-mono text-[1rem] text-accent">tech news, minus the noise</p>
+          <p class="mt-4 max-w-[520px] font-mono text-[0.86rem] leading-[1.65] text-dim">
+            An autonomous briefing. Every few hours a bot pulls the major tech feeds,
+            asks Claude which stories actually matter, and rewrites them short.
+            No press releases, no engagement bait.
+          </p>
+        </div>
+      </div>
+
+      <div class="my-7 border-t border-dashed border-line"></div>
+
+      <dl class="flex flex-col gap-[9px] text-[0.9rem]">
+        <div class="grid grid-cols-[86px_1fr] gap-4">
+          <dt class="font-mono text-accent">stories</dt>
+          <dd class="text-dim">{posts.length} curated</dd>
+        </div>
+        <div class="grid grid-cols-[86px_1fr] gap-4">
+          <dt class="font-mono text-accent">sources</dt>
+          <dd class="truncate font-mono text-[0.85rem] text-dim">
+            {sources.length ? sources.join(' · ') : 'awaiting first run'}
+          </dd>
+        </div>
+        <div class="grid grid-cols-[86px_1fr] gap-4">
+          <dt class="font-mono text-accent">updated</dt>
+          <dd class="font-mono text-[0.85rem] text-dim">{lastRun}</dd>
+        </div>
+        <div class="grid grid-cols-[86px_1fr] gap-4">
+          <dt class="font-mono text-accent">engine</dt>
+          <dd class="font-mono text-[0.85rem] text-dim">claude · astro · docker</dd>
+        </div>
+      </dl>
+
+      <div class="mt-8 flex gap-[6px]">
+        {
+          ['#08090a', '#46484b', '#8a8d8f', '#f2f1ea', '#8a9bff', '#d6ff3f'].map((c) => (
+            <span class="block h-[12px] w-[20px] rounded-[3px] border border-line" style={`background:${c}`} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Feed -->
+  <section id="feed" class="border-t border-line pt-16 mt-16">
+    <SectionHead
+      idx="01"
+      title="The Feed"
+      lead="Ranked by a heat score Claude assigns to each story — how much it actually changes things, not how loudly it was announced."
+    />
+
+    {
+      posts.length === 0 ? (
+        <div class="panel p-10 text-center">
+          <p class="font-mono text-[0.9rem] text-dim">no stories yet</p>
+          <p class="mt-2 font-mono text-[0.8rem] text-faint">
+            the curator runs on a cron — first batch lands within a few hours
+          </p>
+        </div>
+      ) : (
+        <div class="flex flex-col gap-[1.1rem]">
+          {posts.map((post, i) => <PostCard post={post} index={i} />)}
+        </div>
+      )
+    }
+  </section>
+
+  <!-- About -->
+  <section id="about" class="border-t border-line pt-16 mt-16">
+    <SectionHead idx="02" title="How this works" />
+    <div class="grid gap-[1.1rem] sm:grid-cols-3">
+      {
+        [
+          { n: '01', t: 'Collect', d: 'A Python job pulls RSS from Hacker News, TechCrunch, Ars Technica, The Verge and more.' },
+          { n: '02', t: 'Curate', d: 'Claude reads the batch, drops the noise, scores what is left on genuine significance, and rewrites it.' },
+          { n: '03', t: 'Publish', d: 'Summaries land as Markdown, Astro rebuilds the static site, nginx serves it. All inside Docker.' },
+        ].map((s) => (
+          <div class="panel panel-hover reveal p-6">
+            <span class="font-mono text-[0.75rem] text-accent">{s.n}</span>
+            <h3 class="mt-2 font-head text-[1.05rem] font-semibold text-ink">{s.t}</h3>
+            <p class="mt-2 text-[0.88rem] leading-[1.7] text-dim">{s.d}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

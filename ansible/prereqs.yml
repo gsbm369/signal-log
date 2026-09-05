@@ -1,0 +1,95 @@
+---
+# Ensures the host has the IaC toolchain. Idempotent — safe to re-run.
+# Needs privilege escalation only when something is actually missing.
+- name: Ensure Ansible and Terraform are installed
+  hosts: blog
+  gather_facts: true
+  become: false
+
+  vars:
+    terraform_apt_key: https://apt.releases.hashicorp.com/gpg
+    terraform_apt_repo: "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+
+  tasks:
+    - name: Probe for existing tooling
+      ansible.builtin.command: "{{ item.bin }} {{ item.arg }}"
+      loop:
+        - { name: ansible,   bin: ansible,   arg: "--version" }
+        - { name: terraform, bin: terraform, arg: "version" }
+        - { name: docker,    bin: docker,    arg: "--version" }
+      register: tool_probe
+      changed_when: false
+      failed_when: false
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Record which tools are missing
+      ansible.builtin.set_fact:
+        missing_tools: "{{ tool_probe.results | selectattr('rc', 'ne', 0) | map(attribute='item.name') | list }}"
+
+    - name: Report toolchain status
+      ansible.builtin.debug:
+        msg: >-
+          {{ 'All required tooling present: ' ~ (tool_probe.results | selectattr('rc','eq',0)
+             | map(attribute='stdout_lines') | map('first') | list | join(' | '))
+             if missing_tools | length == 0
+             else 'Missing and will be installed: ' ~ (missing_tools | join(', ')) }}
+
+    - name: Install missing tooling
+      when: missing_tools | length > 0
+      become: true
+      block:
+        - name: Install APT prerequisites
+          ansible.builtin.apt:
+            name: [gnupg, software-properties-common, curl, ca-certificates]
+            state: present
+            update_cache: true
+            cache_valid_time: 3600
+
+        - name: Install Ansible
+          ansible.builtin.apt:
+            name: ansible
+            state: present
+          when: "'ansible' in missing_tools"
+
+        - name: Add HashiCorp APT signing key
+          ansible.builtin.apt_key:
+            url: "{{ terraform_apt_key }}"
+            keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            state: present
+          when: "'terraform' in missing_tools"
+
+        - name: Add HashiCorp APT repository
+          ansible.builtin.apt_repository:
+            repo: "{{ terraform_apt_repo }}"
+            filename: hashicorp
+            state: present
+          when: "'terraform' in missing_tools"
+
+        - name: Install Terraform
+          ansible.builtin.apt:
+            name: terraform
+            state: present
+            update_cache: true
+          when: "'terraform' in missing_tools"
+
+        - name: Fail clearly if Docker is absent
+          ansible.builtin.fail:
+            msg: >-
+              Docker is not installed. Install Docker Engine and add {{ ansible_user_id }}
+              to the 'docker' group, then re-run this playbook.
+          when: "'docker' in missing_tools"
+
+    - name: Re-probe and report final versions
+      ansible.builtin.shell: |
+        set -e
+        printf 'ansible   : '; ansible --version | head -1
+        printf 'terraform : '; terraform version | head -1
+        printf 'docker    : '; docker --version
+      args: { executable: /bin/bash }
+      register: final_versions
+      changed_when: false
+
+    - name: Toolchain
+      ansible.builtin.debug:
+        msg: "{{ final_versions.stdout_lines }}"
