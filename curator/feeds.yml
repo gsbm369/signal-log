@@ -1,3 +1,7 @@
+# MANAGED BY ANSIBLE — ansible/templates/feeds.yml.j2
+# Local edits are overwritten on the next deploy. Change `blog_feeds` and the
+# cost-control vars in ansible/deploy.yml (or -e on the command line) instead.
+#
 # RSS sources the curator polls each run.
 # `weight` nudges how many candidates are taken from each feed.
 feeds:
@@ -24,9 +28,9 @@ feeds:
     weight: 1
 
 settings:
-  # Max candidate articles handed to Claude in one run.
+  # Max candidate articles handed to Claude in one run — the input-token driver.
   max_candidates: 40
-  # How many stories Claude is asked to publish per run.
+  # How many stories Claude is asked to publish per run — the output-token driver.
   publish_count: 5
   # Keep at most this many posts on the site; oldest are pruned.
   max_posts: 60

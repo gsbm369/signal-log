@@ -265,7 +265,79 @@ The first playbook reported `changed` on every run because `docker compose build
 
 Second consecutive run is now `changed=0`.
 
-### 6. One feed was quietly malformed
+### 6. `stat: follow: true` made a clean deploy silently serve a placeholder
+
+The playbook creates a bootstrap placeholder so nginx has a root on first deploy, then
+decides whether to run a publish cycle by checking what `public_html/current` points at:
+
+```yaml
+- ansible.builtin.stat:
+    path: "{{ blog_root }}/public_html/current"
+    follow: true            # <- the bug
+  register: current_release
+- set_fact:
+    do_cycle: "{{ ... or (current_release.stat.path) is search('bootstrap') }}"
+```
+
+With `follow: true` the module stats the symlink's **target**, so `stat.lnk_target` is
+never populated at all and `stat.path` merely echoes the path that was queried. The
+`search('bootstrap')` test could therefore never be true. Since the bootstrap task always
+creates `current` before the stat runs, `stat.exists` was always true and `do_cycle`
+always evaluated false.
+
+The result on a fresh machine: the placeholder is served indefinitely while the playbook
+exits green. The `uri` probe gets a cheerful `200` — *from the placeholder* — and the post
+count reads Markdown files on disk that were never actually published.
+
+Two fixes, because either alone is insufficient:
+
+- `follow: false`, and test `stat.lnk_target` (which is only populated when not following).
+- The verification step now pulls `return_content: true` and **asserts** the served page is
+  not the placeholder. A 200 is not evidence of a deploy; the content is.
+
+Reproduced and confirmed with an isolated playbook:
+
+```
+follow:true  -> path=/tmp/statdemo/current  lnk_target=<<UNDEFINED>>  search=False
+follow:false -> lnk_target=releases/bootstrap                         search=True
+```
+
+**Lesson:** when a check exists to catch a failure, test that it actually fires. This one
+was written, looked right, and had never once evaluated true.
+
+### 7. Config written by regex, and other quiet assumptions
+
+Three smaller things in the same family — each works until it doesn't, and fails silently:
+
+- **`lineinfile` on `feeds.yml`** matched `^  max_candidates:` by indentation. If those keys
+  ever moved nesting level the regex would miss and append at the wrong scope, producing
+  valid YAML that means something else. Replaced with a Jinja template that renders the
+  whole file from `blog_feeds` and the cost vars.
+- **The cron job hardcoded `/usr/bin/docker` and `/usr/bin/flock`.** Both are now resolved
+  at deploy time with `command -v` and written into `.env`, with a PATH-based fallback in
+  the wrapper and a clear `FATAL` if neither resolves.
+- **`flock -n` silently swallowed an overlapping run.** A skipped cycle now emits the same
+  JSON record as any other outcome, with `cycle_status: "skipped"` and
+  `reason: "overlapping_run_lock_held"`, so a job that never runs is visible in Grafana
+  rather than being indistinguishable from a job that never fired.
+
+That last one exposed a further wrinkle: the cron wrapper runs on the **host**, where
+`http://loki:3100` does not resolve — that name only exists on the container network. The
+first skip record failed with `HTTP 000`. There are now two Loki URLs, `LOKI_URL` for the
+container and `LOKI_URL_HOST` for the host side.
+
+### 8. `site_url` regressed to localhost on every plain re-run
+
+Astro builds RSS links from `site` at build time. `site_url` defaulted to
+`http://localhost:8080`, and the playbook wrote that default into `.env` on every run — so
+deploying with `-e site_url=https://...` once, then running the playbook plainly, silently
+reverted every link in the published feed to localhost.
+
+`site_url` now defaults to empty and resolves as: explicit `-e` > whatever `.env` already
+holds > localhost. The read has to happen *before* the `.env` write task, which is a
+mistake worth making only once.
+
+### 9. One feed was quietly malformed
 
 `hnrss.org/show` returned XML that feedparser rejected with `mismatched tag`. Because the
 collector catches per-feed errors and continues, this showed up only as one warning line

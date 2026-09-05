@@ -27,7 +27,8 @@
     proxy_network: proxy-stack_proxy-net
 
     # Observability
-    loki_url: "http://loki:3100"
+    loki_url: "http://loki:3100"          # from inside the container network
+    loki_url_host: "http://127.0.0.1:3100" # from the host, for cron-side skip records
     loki_job: signal-log
 
     # Cost control
@@ -35,10 +36,24 @@
     cron_minute: 17
     max_candidates: 40          # articles sent to the model per run (cost driver)
     publish_count: 5            # articles summarised and published per run
+    max_posts: 60               # posts kept on the site before pruning
+    max_age_hours: 36           # ignore anything older than this
     curator_model: claude-opus-5
 
-    # Publishing
-    site_url: "http://localhost:{{ blog_port }}"
+    # Rendered to curator/feeds.yml via templates/feeds.yml.j2. Templated rather
+    # than regex-edited so nesting changes cannot write to the wrong place.
+    blog_feeds:
+      - { name: Hacker News,           url: "https://hnrss.org/frontpage?points=150",        weight: 3 }
+      - { name: TechCrunch,            url: "https://techcrunch.com/feed/",                  weight: 2 }
+      - { name: Ars Technica,          url: "https://feeds.arstechnica.com/arstechnica/index", weight: 2 }
+      - { name: The Verge,             url: "https://www.theverge.com/rss/index.xml",        weight: 2 }
+      - { name: MIT Technology Review, url: "https://www.technologyreview.com/feed/",        weight: 1 }
+      - { name: Hacker News Best,      url: "https://hnrss.org/best",                        weight: 2 }
+      - { name: IEEE Spectrum,         url: "https://spectrum.ieee.org/feeds/feed.rss",      weight: 1 }
+
+    # Publishing. Leave site_url unset to keep whatever is already in .env —
+    # otherwise a plain re-run would silently regress the feed to localhost.
+    site_url: ""
     keep_releases: 5
 
     force_cycle: false          # publish even if a release already exists
@@ -58,8 +73,22 @@
         msg: "No docker-compose.yml under {{ blog_root }} — is blog_root set correctly?"
       when: not project_stat.stat.exists
 
+    # `command -v` is a shell builtin, so this needs the shell module.
+    - name: Resolve the docker and flock binaries
+      ansible.builtin.shell: "command -v {{ item }}"
+      args: { executable: /bin/bash }
+      loop: [docker, flock]
+      register: bin_probe
+      changed_when: false
+      # `command -v` exits 1 when not found; the shell module fails on that by default.
+
+    - name: Record the resolved binary paths
+      ansible.builtin.set_fact:
+        docker_bin: "{{ bin_probe.results[0].stdout | trim }}"
+        flock_bin: "{{ bin_probe.results[1].stdout | trim }}"
+
     - name: Verify the Docker daemon is reachable
-      ansible.builtin.command: docker version --format '{{ "{{" }}.Server.Version{{ "}}" }}'
+      ansible.builtin.command: "{{ docker_bin }} version"
       register: docker_version
       changed_when: false
 
@@ -102,6 +131,21 @@
         path: "{{ blog_root }}/.env"
         mode: "0600"
 
+    - name: Read the SITE_URL already configured in .env
+      ansible.builtin.shell: "grep -E '^SITE_URL=' {{ blog_root }}/.env | tail -1 | cut -d= -f2- || true"
+      args: { executable: /bin/bash }
+      register: existing_site_url
+      changed_when: false
+
+    # Precedence: explicit -e site_url  >  what .env already holds  >  localhost.
+    - name: Settle the effective site URL
+      ansible.builtin.set_fact:
+        site_url: >-
+          {{ site_url if site_url | length > 0
+             else (existing_site_url.stdout | trim
+                   if existing_site_url.stdout | trim | length > 0
+                   else 'http://localhost:' ~ blog_port) }}
+
     - name: Write deployment-managed settings into .env
       ansible.builtin.lineinfile:
         path: "{{ blog_root }}/.env"
@@ -115,26 +159,24 @@
         - { key: BLOG_PORT,       value: "{{ blog_port }}" }
         - { key: SITE_URL,        value: "{{ site_url }}" }
         - { key: LOKI_URL,        value: "{{ loki_url }}" }
+        - { key: LOKI_URL_HOST,   value: "{{ loki_url_host }}" }
         - { key: LOKI_JOB,        value: "{{ loki_job }}" }
         - { key: LOKI_HOST_LABEL, value: "{{ ansible_hostname }}" }
         - { key: PROXY_NETWORK,   value: "{{ proxy_network }}" }
         - { key: CURATOR_MODEL,   value: "{{ curator_model }}" }
         - { key: KEEP_RELEASES,   value: "{{ keep_releases }}" }
+        - { key: DOCKER_BIN,      value: "{{ docker_bin }}" }
+        - { key: FLOCK_BIN,       value: "{{ flock_bin }}" }
+        - { key: LOCK_FILE,       value: "{{ lockfile }}" }
       loop_control:
         label: "{{ item.key }}"
       no_log: true
 
-    - name: Apply cost-control settings to feeds.yml
-      ansible.builtin.lineinfile:
-        path: "{{ blog_root }}/curator/feeds.yml"
-        regexp: "^  {{ item.key }}:"
-        line: "  {{ item.key }}: {{ item.value }}"
-        state: present
-      loop:
-        - { key: max_candidates, value: "{{ max_candidates }}" }
-        - { key: publish_count,  value: "{{ publish_count }}" }
-      loop_control:
-        label: "{{ item.key }}"
+    - name: Render curator/feeds.yml from template
+      ansible.builtin.template:
+        src: templates/feeds.yml.j2
+        dest: "{{ blog_root }}/curator/feeds.yml"
+        mode: "0644"
 
     - name: Check whether an API key is configured
       ansible.builtin.shell: |
@@ -232,10 +274,14 @@
       tags: [deploy]
 
     # ---------------------------------------------------------- publish cycle
-    - name: Check whether the site has ever been published
+    # follow:false is load-bearing. With follow:true the module stats the TARGET,
+    # so stat.lnk_target is never populated and stat.path just echoes the path we
+    # asked about — the bootstrap test could never match and a clean deploy would
+    # serve the placeholder forever while the play exited green.
+    - name: Check whether the site has ever really been published
       ansible.builtin.stat:
         path: "{{ blog_root }}/public_html/current"
-        follow: true
+        follow: false
       register: current_release
 
     - name: Decide whether to run a publish cycle
@@ -243,7 +289,16 @@
         do_cycle: >-
           {{ force_cycle | bool
              or not current_release.stat.exists
-             or (current_release.stat.path | default('')) is search('bootstrap') }}
+             or not (current_release.stat.islnk | default(false))
+             or (current_release.stat.lnk_target | default('')) is search('bootstrap') }}
+
+    - name: Show the publish-cycle decision
+      ansible.builtin.debug:
+        msg: >-
+          current -> {{ current_release.stat.lnk_target | default('(absent)') }}
+          | do_cycle = {{ do_cycle }}
+          {{ '(placeholder detected — publishing)' if (current_release.stat.lnk_target | default('')) is search('bootstrap')
+             else ('(forced)' if force_cycle | bool else '(already published)') }}
 
     - name: Run a publish cycle (curate -> build -> validate -> publish)
       ansible.builtin.command: "{{ compose }} run --rm builder"
@@ -269,10 +324,7 @@
         user: "{{ ansible_user_id }}"
         minute: "{{ cron_minute }}"
         hour: "*/{{ cycle_hours }}"
-        job: >-
-          /usr/bin/flock -n {{ lockfile }}
-          /usr/bin/docker compose --project-directory {{ blog_root }} run --rm builder
-          >> {{ blog_root }}/logs/cycle.log 2>&1
+        job: "{{ blog_root }}/scripts/cron-cycle.sh >> {{ blog_root }}/logs/cycle.log 2>&1"
         state: present
       tags: [cron]
 
@@ -287,6 +339,38 @@
       tags: [cron]
 
     # ------------------------------------------------- reverse proxy (opt-in)
+    # A conditional dynamic include is not covered by --syntax-check, so verify
+    # the file exists before relying on it.
+    - name: Confirm the proxy-host task file is present
+      ansible.builtin.stat:
+        path: "{{ playbook_dir }}/tasks/npm_proxy_host.yml"
+      register: npm_task_file
+      when: blog_hostname is defined
+      tags: [proxy]
+
+    - name: Fail clearly if the proxy-host task file is missing
+      ansible.builtin.fail:
+        msg: >-
+          blog_hostname is set but {{ playbook_dir }}/tasks/npm_proxy_host.yml does not
+          exist. Restore it from git (ansible/tasks/npm_proxy_host.yml) or unset
+          blog_hostname to skip reverse-proxy registration.
+      when:
+        - blog_hostname is defined
+        - not (npm_task_file.stat.exists | default(false))
+      tags: [proxy]
+
+    - name: Warn when a public hostname is set but site_url still points at localhost
+      ansible.builtin.fail:
+        msg: >-
+          blog_hostname is {{ blog_hostname }} but site_url is {{ site_url }}.
+          RSS links are generated from site_url, so the published feed would contain
+          unusable localhost URLs. Pass -e site_url=https://{{ blog_hostname }} (and
+          the cycle will rebuild the feed).
+      when:
+        - blog_hostname is defined
+        - site_url is search('localhost|127\\.0\\.0\\.1')
+      tags: [proxy]
+
     - name: Register the site with Nginx Proxy Manager
       ansible.builtin.include_tasks: tasks/npm_proxy_host.yml
       when:
@@ -300,11 +384,26 @@
       ansible.builtin.uri:
         url: "http://127.0.0.1:{{ blog_port }}/"
         status_code: 200
+        return_content: true
       register: probe
       retries: 12
       delay: 5
       until: probe.status == 200
       changed_when: false
+      tags: [verify]
+
+    # A 200 is not proof of a deploy: the bootstrap placeholder also returns 200.
+    - name: Assert the served page is the real site, not the bootstrap placeholder
+      ansible.builtin.assert:
+        that:
+          - "'First build in progress' not in probe.content"
+          - "'signal.log' in probe.content"
+          - probe.content | length > 2000
+        success_msg: "Served page is a real build ({{ probe.content | length }} bytes)."
+        fail_msg: >-
+          The site is still serving the bootstrap placeholder
+          ({{ probe.content | length }} bytes). The publish cycle did not run or did
+          not succeed — re-run with -e force_cycle=true and check logs/cycle.log.
       tags: [verify]
 
     - name: Verify the RSS feed
@@ -337,6 +436,12 @@
           - "Site                : http://{{ ansible_default_ipv4.address | default('127.0.0.1') }}:{{ blog_port }}/  (HTTP {{ probe.status }})"
           - "Public hostname     : {{ blog_hostname | default('not configured — LAN only') }}"
           - "RSS                 : {{ site_url }}/rss.xml  ({{ feed.content | regex_findall('<item>') | length }} item(s))"
+          - >-
+            {{ '*** WARNING: site_url is ' ~ site_url ~ ' — every link in the published feed is
+            unusable by an external consumer. Re-deploy with -e site_url=https://<public-host>
+            -e force_cycle=true once the hostname is decided. ***'
+            if site_url is search('localhost|127\\.0\\.0\\.1')
+            else 'Feed URLs           : absolute, rooted at ' ~ site_url }}
           - "Posts published     : {{ posts.matched }}"
           - "Curation schedule   : every {{ cycle_hours }}h at :{{ '%02d' | format(cron_minute | int) }}"
           - "Cost cap            : <= {{ max_candidates }} articles sent, {{ publish_count }} published, model {{ curator_model }}"
