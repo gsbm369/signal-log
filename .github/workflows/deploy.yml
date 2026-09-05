@@ -1,0 +1,72 @@
+name: Build and deploy to Pages
+
+# The homelab pushes CONTENT (Markdown). This workflow is the only thing that
+# builds and publishes, so the site is reproducible from a clone and the homelab
+# is not a single point of failure for the published artifact.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never cancel a running deploy; queue behind it. A cron push landing mid-deploy
+# should wait, not abort a half-finished publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Show what is being published
+        run: |
+          echo "posts: $(find site/src/content/posts -name '*.md' | wc -l)"
+          find site/src/content/posts -name '*.md' -printf '  %f\n' | sort | head -20
+
+      - name: Build
+        working-directory: site
+        run: npm run build
+
+      - name: Verify the build output
+        run: |
+          test -s site/dist/index.html || { echo "::error::dist/index.html missing or empty"; exit 1; }
+          test -s site/dist/rss.xml    || { echo "::error::rss.xml missing"; exit 1; }
+          test -s site/dist/CNAME      || { echo "::error::CNAME missing — custom domain would break"; exit 1; }
+          echo "index.html $(stat -c%s site/dist/index.html) bytes"
+          echo "CNAME       $(cat site/dist/CNAME)"
+          echo "post pages  $(find site/dist/posts -name index.html | wc -l)"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

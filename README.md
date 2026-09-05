@@ -12,6 +12,30 @@ interestingly, in making it fail safely when it doesn't.
 ## Architecture
 
 ```
+  homelab (cron, 6h)              GitHub                    GitHub Pages
+  ┌──────────────────┐          ┌──────────────┐          ┌───────────────┐
+  │ curate           │  push    │ Actions      │ artifact │ blog.gs-bm.com│
+  │ rank             │ markdown │ npm ci       │─────────>│ + HTTPS       │
+  │ summarize(none)  │─────────>│ astro build  │          │               │
+  │ write .md        │   main   │ deploy-pages │          │               │
+  │ build + validate │          └──────────────┘          └───────────────┘
+  └──────────────────┘                 │
+          │                            └── public, dated logs = evidence
+          └── local preview on :8080, Loki metrics
+```
+
+**The homelab pushes content, not built HTML.** Not a shortcut worth taking: separating
+content from build means the site rebuilds from the repo alone, so the homelab is not a
+single point of failure for the published artifact; anyone can reproduce the build from a
+clone; and the Actions log is public, dated evidence that the pipeline works. Pushing
+`dist/` to a `gh-pages` branch would cost all three.
+
+The local nginx on :8080 stays as a preview and as a pre-push validation gate — if the
+content breaks the build, that is caught here before anything is pushed.
+
+## Local architecture
+
+```
                         ┌──────────────── every 6h (cron + flock) ─────────────────┐
                         ▼                                                          │
    RSS feeds ──▶ curate.py ──▶ Claude API ──▶ site/src/content/posts/*.md          │
@@ -58,11 +82,37 @@ Four independent guards, each verified by an injected-failure test:
 | Failure | Behaviour |
 |---|---|
 | Claude API unreachable / auth fails | Curator logs the error, cycle continues, site rebuilds from existing posts and republishes. Status `degraded`. |
-| `astro build` fails | Publish is skipped entirely. Live symlink untouched. Status `failed`. |
+| `astro build` fails | Publish skipped, nothing pushed. Live symlink untouched. Status `failed`. |
+| `git push` fails | Status **`publish_failed`**, exit 1. The commit is kept so the next cycle retries it. |
+| Actions run fails or times out | Status **`publish_failed`**, exit 1. |
+| No new content | Status `ok`, `push_status: nothing_to_push`. No empty commit, no pointless deploy. |
 | Build output missing or `index.html` under 500 B | Publish refused. Status `failed`. |
 | Post count drops by more than half | Publish refused as suspected data loss. Override with `FORCE_PUBLISH=1`. |
 
-The rule throughout: **a bad build is never allowed to replace a good one.**
+The rule throughout: **a bad build is never allowed to replace a good one**, and **a green
+local build is never reported as a successful publish.** `cycle_status: publish_failed` is
+its own terminal state precisely because "built fine here, never reached production" is the
+failure most easily mistaken for success.
+
+Commits are conditional — `git diff --cached --quiet || commit`. An unconditional 6-hourly
+commit turns both the git history and the Actions log into noise inside a week.
+
+### Alerting
+
+`grafana/alerting/signal-log-alerts.yaml` — one rule: **no successful cycle reached
+production in 48h → email**, via the Postfix relay Grafana is already pointed at.
+
+```bash
+ansible-playbook deploy.yml -e grafana_user=admin -e grafana_password=... --tags alert
+```
+
+It watches `reached_production`, not `exit_code`. A cycle that builds cleanly and finds
+nothing new is a healthy no-op, and `reached_production` covers published / nothing-to-
+publish / deliberately-skipped while excluding every failure mode. `noDataState: Alerting`,
+because a curator that has stopped reporting is worse than one reporting failures.
+
+The rule routes straight to its own contact point via `notification_settings`, so the
+existing homelab notification policy tree is not touched.
 
 ---
 
@@ -97,6 +147,40 @@ The rule throughout: **a bad build is never allowed to replace a good one.**
 | `public_html/` | Generated. `releases/` + `current` symlink. Not in git. |
 
 ---
+
+## Publishing
+
+| Piece | Where | Notes |
+|---|---|---|
+| Content | `site/src/content/posts/*.md`, tracked in git | The payload. |
+| Build | `.github/workflows/deploy.yml` | `npm ci` → `astro build` → `deploy-pages`. |
+| Domain | `site/public/CNAME` | Committed, so every build emits it. |
+| DNS | `blog.gs-bm.com  CNAME  gsbm369.github.io` | **CNAME, not an A record.** |
+
+Repository settings that are not in code:
+
+- **Pages source must be "GitHub Actions"**, not "deploy from a branch".
+- The repo must be **public** — Actions minutes are then unlimited and free.
+
+`astro.config.mjs` sets `base: '/'`, which is correct *because* there is a custom domain.
+Without one it would need `base: '/signal-log'`, and every internal link would break in a
+way that only appears in production. The CNAME is committed rather than left to the repo
+setting, because the artifact deploy flow does not reliably preserve a setting-only value.
+
+### The only secret in the system
+
+A fine-grained PAT, scoped to this one repository, `Contents: write`, nothing else. It can
+add commits to one public repo. That is the entire blast radius.
+
+It replaces an Anthropic API key, which was billable, usable from anywhere, and scoped to
+an account rather than a resource. A leaked PAT means someone can commit to a public repo
+whose entire content is already public and machine-generated; a leaked API key means
+someone spends your money. Moving the summarizer default to `none` removed the API key
+from the running system entirely — this is the trade that made that possible.
+
+The token lives in `.env` (mode 0600, gitignored) and is injected into the remote URL only
+for the duration of the push; it is never written to `.git/config` and is redacted from any
+error output.
 
 ## Setup
 

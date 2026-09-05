@@ -1,0 +1,95 @@
+---
+# Applies the signal.log alert to Grafana through its provisioning API.
+#
+# Required: grafana_user, grafana_password  (or grafana_token)
+# Optional: grafana_url (default http://127.0.0.1:3000), alert_email
+#
+# Idempotent: contact point and rule are addressed by fixed UIDs, so re-applying
+# updates in place. It does NOT touch the notification policy tree — the rule
+# routes straight to its own contact point via notification_settings, so an
+# existing homelab alerting setup is left completely alone.
+
+- name: Set Grafana API auth header
+  ansible.builtin.set_fact:
+    _gf_url: "{{ grafana_url | default('http://127.0.0.1:3000') }}"
+    _gf_headers: >-
+      {{ {'Authorization': 'Bearer ' ~ grafana_token} if grafana_token is defined
+         else {'Authorization': 'Basic ' ~ (grafana_user ~ ':' ~ grafana_password) | b64encode} }}
+  no_log: true
+
+- name: Find the Loki datasource
+  ansible.builtin.uri:
+    url: "{{ _gf_url }}/api/datasources"
+    headers: "{{ _gf_headers }}"
+    status_code: 200
+  register: gf_ds
+  changed_when: false
+  no_log: true
+
+- name: Extract the Loki datasource UID
+  ansible.builtin.set_fact:
+    loki_uid: >-
+      {{ (gf_ds.json | selectattr('type', 'equalto', 'loki') | list | first | default({})).uid | default('') }}
+
+- name: Fail if no Loki datasource is configured
+  ansible.builtin.fail:
+    msg: >-
+      No Loki datasource found in Grafana. Add one pointing at
+      {{ loki_url | default('http://loki:3100') }} before provisioning the alert.
+  when: loki_uid | length == 0
+
+- name: Report the datasource
+  ansible.builtin.debug:
+    msg: "Loki datasource uid = {{ loki_uid }}"
+
+- name: Create or update the contact point
+  ansible.builtin.uri:
+    url: "{{ _gf_url }}/api/v1/provisioning/contact-points"
+    method: POST
+    headers: "{{ _gf_headers | combine({'X-Disable-Provenance': 'true'}) }}"
+    body_format: json
+    body:
+      uid: signal-log-email
+      name: signal-log-email
+      type: email
+      settings:
+        addresses: "{{ alert_email | default('nikita@gs-bm.com') }}"
+        singleEmail: true
+      disableResolveMessage: false
+    status_code: [200, 201, 202, 409]
+  register: gf_cp
+  changed_when: gf_cp.status in [200, 201, 202]
+  no_log: true
+
+- name: Load the alert rule definition
+  ansible.builtin.set_fact:
+    alert_rule: "{{ lookup('file', playbook_dir ~ '/../grafana/alerting/signal-log-alerts.yaml') | from_yaml }}"
+
+- name: Create or update the alert rule
+  ansible.builtin.uri:
+    url: "{{ _gf_url }}/api/v1/provisioning/alert-rules/signal-log-stalled"
+    method: PUT
+    headers: "{{ _gf_headers | combine({'X-Disable-Provenance': 'true'}) }}"
+    body_format: json
+    body: >-
+      {{ (alert_rule.groups[0].rules[0]
+          | combine({'ruleGroup': alert_rule.groups[0].name,
+                     'folderUID': grafana_folder_uid | default('signal-log'),
+                     'orgID': 1,
+                     'for': '30m'}))
+         | to_json | replace('LOKI_DATASOURCE_UID', loki_uid) | from_json }}
+    status_code: [200, 201, 202]
+  register: gf_rule
+  changed_when: gf_rule.status in [200, 201, 202]
+  failed_when: false
+
+- name: Report the alert state
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Alert provisioned: "signal.log has not published in 48h" -> '
+         ~ (alert_email | default('nikita@gs-bm.com'))
+         if gf_rule.status | default(0) in [200, 201, 202]
+         else 'Alert NOT provisioned (HTTP ' ~ (gf_rule.status | default('?'))
+              ~ '). The folder may need creating first, or apply
+              grafana/alerting/signal-log-alerts.yaml by hand. Detail: '
+              ~ (gf_rule.json | default(gf_rule.content) | default('') | string | truncate(300)) }}

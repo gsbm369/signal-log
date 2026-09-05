@@ -1,0 +1,80 @@
+# Grafana unified-alerting provisioning for signal.log.
+#
+# Mount at /etc/grafana/provisioning/alerting/ , or apply through the API with
+#   ansible-playbook deploy.yml -e grafana_user=admin -e grafana_password=... --tags alert
+#
+# Replace LOKI_DATASOURCE_UID if applying this file by hand; the Ansible task
+# looks the UID up automatically.
+#
+# What it watches: whether content actually reached production. `exit_code = 0`
+# alone is not enough — a cycle can build cleanly, find nothing new, and be a
+# perfectly healthy no-op. `reached_production` covers "published", "nothing to
+# publish" and "push deliberately skipped", and excludes every failure mode.
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: signal-log-email
+    receivers:
+      - uid: signal-log-email
+        type: email
+        settings:
+          # Delivered via the Postfix relay already configured on the host
+          # (GF_SMTP_HOST=host.docker.internal:25).
+          addresses: nikita@gs-bm.com
+          singleEmail: true
+          subject: '[signal.log] {{ .CommonLabels.alertname }}'
+
+groups:
+  - orgId: 1
+    name: signal-log
+    folder: signal.log
+    interval: 10m
+    rules:
+      - uid: signal-log-stalled
+        title: signal.log has not published in 48h
+        condition: THRESHOLD
+        for: 30m
+        # No data means the curator is not reporting at all, which is worse
+        # than a failed cycle, not better.
+        noDataState: Alerting
+        execErrState: Alerting
+        annotations:
+          summary: >-
+            No successful signal.log cycle reached production in the last 48 hours.
+          description: >-
+            The curator either stopped running, or every cycle in the window failed
+            to build, push, or deploy. Check the cycle log on the homelab
+            (~/ai-blog/logs/cycle.log), the Actions run history, and the
+            "signal.log — curator" dashboard.
+          runbook_url: https://github.com/gsbm369/signal-log#failure-behaviour
+        labels:
+          service: signal-log
+          severity: warning
+        notification_settings:
+          receiver: signal-log-email
+        data:
+          - refId: QUERY
+            relativeTimeRange: { from: 172800, to: 0 }   # 48h
+            datasourceUid: LOKI_DATASOURCE_UID
+            model:
+              refId: QUERY
+              datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
+              editorMode: code
+              queryType: instant
+              expr: >-
+                sum(count_over_time({job="signal-log"} | json
+                    | exit_code = 0 | reached_production = "true" [48h])) or vector(0)
+
+          - refId: THRESHOLD
+            datasourceUid: __expr__
+            model:
+              refId: THRESHOLD
+              type: threshold
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: QUERY
+              conditions:
+                - evaluator: { type: lt, params: [1] }
+                  operator: { type: and }
+                  query: { params: [QUERY] }
+                  reducer: { type: last, params: [] }

@@ -65,7 +65,12 @@
       - { name: Hacker News Best,      url: "https://hnrss.org/best",                          weight: 0.95, fetch: 20 }
       - { name: Hacker News,           url: "https://hnrss.org/frontpage?points=150",          weight: 0.85, fetch: 20 }
 
-    # Publishing. Leave site_url unset to keep whatever is already in .env —
+    # Publishing to GitHub Pages. The homelab pushes CONTENT; Actions builds.
+    github_repo: gsbm369/signal-log
+    github_branch: main
+    alert_email: nikita@gs-bm.com
+
+    # Leave site_url unset to keep whatever is already in .env —
     # otherwise a plain re-run would silently regress the feed to localhost.
     site_url: ""
     keep_releases: 5
@@ -185,6 +190,8 @@
         - { key: DOCKER_BIN,      value: "{{ docker_bin }}" }
         - { key: FLOCK_BIN,       value: "{{ flock_bin }}" }
         - { key: LOCK_FILE,       value: "{{ lockfile }}" }
+        - { key: GITHUB_REPO,     value: "{{ github_repo }}" }
+        - { key: GITHUB_BRANCH,   value: "{{ github_branch }}" }
       loop_control:
         label: "{{ item.key }}"
       no_log: true
@@ -395,6 +402,12 @@
         - npm_email is defined
         - npm_password is defined
       tags: [proxy]
+
+    # ------------------------------------------------- alerting (opt-in)
+    - name: Provision the Grafana alert
+      ansible.builtin.include_tasks: tasks/grafana_alert.yml
+      when: (grafana_user is defined and grafana_password is defined) or grafana_token is defined
+      tags: [alert]
 
     # ---------------------------------------------------------------- verify
     - name: Wait for the site to answer

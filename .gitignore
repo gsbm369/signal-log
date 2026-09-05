@@ -8,14 +8,17 @@
 node_modules/
 dist/
 .astro/
-public_html/
 __pycache__/
 *.pyc
 
-# runtime state
-curator/state/
+# generated output — GitHub Actions builds the published site from source
+public_html/
 logs/
 
-# generated content — the curator rewrites these every cycle
-site/src/content/posts/*.md
-!site/src/content/posts/.gitkeep
+# runtime state
+curator/state/
+
+# NOTE: site/src/content/posts/*.md is deliberately NOT ignored.
+# Curated Markdown is the payload the homelab pushes; GitHub Actions builds the
+# site from it. Ignoring it made `git diff --cached` always empty, so every
+# cycle reported "nothing to push" and nothing ever reached production.

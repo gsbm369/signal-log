@@ -24,18 +24,22 @@ EXIT_CODE=0
 
 log() { printf '[%s] %s\n' "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" "$*"; }
 
-# Always report, whatever happened above.
+# Leave a machine-readable outcome for the host orchestrator, which owns the
+# push, the deploy verification and the single Loki record for the cycle. This
+# container has no git repo and cannot know whether content reached production,
+# so it must not claim to.
 report() {
   local dur=$(( $(date +%s) - CYCLE_START ))
   local live=-1
   [ -d "${CURRENT}" ] && live=$(find -L "${CURRENT}/posts" -name index.html 2>/dev/null | wc -l)
-  python3 /app/curator/ship_to_loki.py \
-    --build-status   "${BUILD_STATUS}" \
-    --publish-status "${PUBLISH_STATUS}" \
-    --exit-code      "${EXIT_CODE}" \
-    --duration       "${dur}" \
-    --posts-live     "${live}" || log "WARN: metric shipping failed"
-  log "=== cycle finished: build=${BUILD_STATUS} publish=${PUBLISH_STATUS} exit=${EXIT_CODE} in ${dur}s ==="
+  python3 - "$BUILD_STATUS" "$PUBLISH_STATUS" "$EXIT_CODE" "$dur" "$live" <<'PY' || log "WARN: could not write build.json"
+import json, os, sys
+p = os.path.join(os.environ.get("STATE_DIR", "/data/state"), "build.json")
+b, pub, rc, dur, live = sys.argv[1:6]
+json.dump({"build_status": b, "publish_status": pub, "exit_code": int(rc),
+           "build_duration_s": float(dur), "posts_live": int(live)}, open(p, "w"), indent=2)
+PY
+  log "=== build finished: build=${BUILD_STATUS} publish=${PUBLISH_STATUS} exit=${EXIT_CODE} in ${dur}s ==="
 }
 trap report EXIT
 
@@ -125,4 +129,5 @@ for d in "${OLD[@]:-}"; do
   [ -n "$d" ] && [ "$(readlink -f "$d")" != "$(readlink -f "$CURRENT")" ] && rm -rf "$d" && log "pruned old release $(basename "$d")"
 done
 
-log "=== ${NEW_POSTS} post(s) live, $(find "$CONTENT_DIR" -name '*.md' | wc -l) markdown source(s) on disk ==="
+log "local preview updated — ${NEW_POSTS} post(s), $(find "$CONTENT_DIR" -name '*.md' | wc -l) markdown source(s) on disk"
+log "(production publishing is the host orchestrator's job — see scripts/cron-cycle.sh)"

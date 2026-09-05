@@ -30,12 +30,22 @@ JOB_NAME = os.environ.get("LOKI_JOB", "signal-log")
 HOSTNAME = os.environ.get("LOKI_HOST_LABEL") or socket.gethostname()
 
 
-def load_metrics() -> dict:
-    path = STATE_DIR / "metrics.json"
+def _read(name: str) -> dict:
     try:
-        return json.loads(path.read_text())
+        return json.loads((STATE_DIR / name).read_text())
     except (OSError, json.JSONDecodeError):
-        return {"curator_status": "unknown", "error": "metrics.json missing or unreadable"}
+        return {}
+
+
+def load_metrics() -> dict:
+    """Merge the container's curation metrics with its build outcome. The
+    container writes both; the host adds push/deploy status on top."""
+    m = _read("metrics.json")
+    if not m:
+        m = {"curator_status": "unknown", "error": "metrics.json missing or unreadable"}
+    m.update({k: v for k, v in _read("build.json").items()
+              if k in ("posts_live", "build_duration_s")})
+    return m
 
 
 def push(record: dict, level: str, m: dict | None = None) -> str:
@@ -84,6 +94,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--build-status", default="unknown")
     ap.add_argument("--publish-status", default="unknown")
+    ap.add_argument("--push-status", default="unknown")
+    ap.add_argument("--deploy-status", default="unknown")
     ap.add_argument("--exit-code", type=int, default=0)
     ap.add_argument("--duration", type=float, default=0.0)
     ap.add_argument("--posts-live", type=int, default=-1)
@@ -92,10 +104,15 @@ def main() -> int:
     m = load_metrics()
     curator_status = m.get("curator_status", "unknown")
 
-    if args.exit_code != 0:
+    # publish_failed is its own terminal state, distinct from a build failure.
+    # It means the site built fine HERE and never reached production — the one
+    # outcome most easily mistaken for success.
+    if args.push_status == "failed" or args.deploy_status in ("failed", "timeout", "not_reached"):
+        level, cycle_status = "error", "publish_failed"
+    elif args.exit_code != 0:
         level, cycle_status = "error", "failed"
     elif curator_status in ("error", "refused", "no_articles", "backend_unavailable") \
-            or args.build_status != "ok":
+            or args.build_status != "ok" or args.deploy_status == "unverified":
         level, cycle_status = "warn", "degraded"
     else:
         level, cycle_status = "info", "ok"
@@ -107,6 +124,11 @@ def main() -> int:
         "curator_status": curator_status,
         "build_status": args.build_status,
         "publish_status": args.publish_status,
+        "push_status": args.push_status,
+        "deploy_status": args.deploy_status,
+        # The single field an alert should watch: did content reach production
+        # this cycle, or was there legitimately nothing to publish?
+        "reached_production": args.deploy_status in ("ok", "not_needed", "skipped"),
         "exit_code": args.exit_code,
         "duration_s": round(args.duration, 1),
         "curator_duration_s": m.get("duration_s", 0.0),
@@ -125,7 +147,7 @@ def main() -> int:
         "output_tokens": m.get("output_tokens", 0),
         "cache_read_tokens": m.get("cache_read_tokens", 0),
         "cost_usd": m.get("cost_usd", 0.0),
-        "posts_live": args.posts_live,
+        "posts_live": args.posts_live if args.posts_live >= 0 else m.get("posts_live", -1),
         "error": m.get("error"),
     }
 
