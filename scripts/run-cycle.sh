@@ -44,14 +44,14 @@ mkdir -p "$CONTENT_DIR" "$STATE_DIR" "$RELEASES"
 log "=== publish cycle starting (${STAMP}) ==="
 
 # ---------------------------------------------------------------- 1. curate
+# The default backend is `none`, which needs no API key and costs nothing, so
+# curation runs unconditionally. curate.py refuses cleanly if the configured
+# backend is unusable, and that is reported rather than skipped silently.
 if [ "${SKIP_CURATE:-0}" = "1" ]; then
   log "step 1/3: SKIP_CURATE=1 — building from existing posts only"
-  printf '{"curator_status":"skipped_flag","model":"","cost_usd":0}' > "${STATE_DIR}/metrics.json"
-elif [ -z "${ANTHROPIC_API_KEY:-}" ]; then
-  log "step 1/3: WARN ANTHROPIC_API_KEY empty — skipping curation"
-  printf '{"curator_status":"skipped_no_key","model":"","cost_usd":0}' > "${STATE_DIR}/metrics.json"
+  printf '{"curator_status":"skipped_flag","backend":"","model":"","cost_usd":0}' > "${STATE_DIR}/metrics.json"
 else
-  log "step 1/3: curating feeds with Claude"
+  log "step 1/3: curating feeds (backend=${SUMMARIZER_BACKEND:-none})"
   # A curator failure is survivable: we still rebuild and republish what we have.
   if python3 /app/curator/curate.py; then
     log "curation complete"

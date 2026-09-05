@@ -38,7 +38,18 @@
     publish_count: 5            # articles summarised and published per run
     max_posts: 60               # posts kept on the site before pruning
     max_age_hours: 36           # ignore anything older than this
-    curator_model: claude-opus-5
+    per_source_cap: 3           # one prolific feed cannot dominate a run
+
+    # Summarizer backend: none | ollama | anthropic.
+    # `none` is the default: no model, no API key, no spend. Selection is
+    # deterministic in every mode, so switching backends changes prose only.
+    summarizer_backend: none
+    # Only consulted when summarizer_backend is anthropic. Haiku, not Opus:
+    # "summarise a blurb in three sentences" does not need a frontier model,
+    # and the Batch API halves it again.
+    curator_model: claude-haiku-4-5
+    ollama_url: "http://ollama:11434"
+    ollama_model: "llama3.2:3b"
 
     # Rendered to curator/feeds.yml via templates/feeds.yml.j2. Templated rather
     # than regex-edited so nesting changes cannot write to the wrong place.
@@ -163,7 +174,10 @@
         - { key: LOKI_JOB,        value: "{{ loki_job }}" }
         - { key: LOKI_HOST_LABEL, value: "{{ ansible_hostname }}" }
         - { key: PROXY_NETWORK,   value: "{{ proxy_network }}" }
-        - { key: CURATOR_MODEL,   value: "{{ curator_model }}" }
+        - { key: CURATOR_MODEL,      value: "{{ curator_model }}" }
+        - { key: SUMMARIZER_BACKEND, value: "{{ summarizer_backend }}" }
+        - { key: OLLAMA_URL,         value: "{{ ollama_url }}" }
+        - { key: OLLAMA_MODEL,       value: "{{ ollama_model }}" }
         - { key: KEEP_RELEASES,   value: "{{ keep_releases }}" }
         - { key: DOCKER_BIN,      value: "{{ docker_bin }}" }
         - { key: FLOCK_BIN,       value: "{{ flock_bin }}" }
@@ -444,8 +458,13 @@
             else 'Feed URLs           : absolute, rooted at ' ~ site_url }}
           - "Posts published     : {{ posts.matched }}"
           - "Curation schedule   : every {{ cycle_hours }}h at :{{ '%02d' | format(cron_minute | int) }}"
-          - "Cost cap            : <= {{ max_candidates }} articles sent, {{ publish_count }} published, model {{ curator_model }}"
+          - "Summarizer          : {{ summarizer_backend }}{{ ' (' ~ curator_model ~ ', Batch API)' if summarizer_backend == 'anthropic' else (' (' ~ ollama_model ~ ')' if summarizer_backend == 'ollama' else ' — feed descriptions, no model, $0') }}"
+          - "Selection           : deterministic ranker, no model in any mode"
+          - "Volume caps         : <= {{ max_candidates }} candidates, {{ publish_count }} published, {{ per_source_cap }} per source"
           - "Last run metrics    : {{ (metrics_raw.content | default('') | b64decode | from_json) if metrics_raw.content is defined else 'none yet' }}"
           - "Logs                : {{ blog_root }}/logs/cycle.log  +  Loki job={{ loki_job }}"
-          - "API key configured  : {{ 'yes' if api_key_set else 'NO — add it to .env, then: ansible-playbook deploy.yml -e force_cycle=true' }}"
+          - >-
+            {{ ('API key configured  : ' ~ ('yes' if api_key_set else 'NO — required for summarizer_backend=anthropic'))
+               if summarizer_backend == 'anthropic'
+               else 'API key             : not required by the ' ~ summarizer_backend ~ ' backend' }}
       tags: [verify]

@@ -136,20 +136,97 @@ baked into the image (see "problems hit" below).
 
 ---
 
+## Summarizer backends
+
+Two stages, deliberately separated:
+
+| Stage | Where | Uses a model? |
+|---|---|---|
+| **Selection** — what gets published | `curator/ranker.py` | **Never**, in any mode |
+| **Summary** — how it reads | `curator/summarizers.py` | Depends on the backend |
+
+Selection is a pure heuristic and costs nothing, so choosing a backend only changes the
+prose, never which stories appear. All three satisfy one interface:
+
+```python
+backend.name                 -> str
+backend.health()             -> (ok: bool, detail: str)
+backend.summarize(articles)  -> list[Summary]   # one per input, same order, none dropped
+backend.usage                -> {"model", "input_tokens", "output_tokens", "cost_usd"}
+```
+
+A backend that fails on an individual article falls back to the feed description rather
+than losing the story, so a partial outage degrades quality, not coverage.
+
+| Backend | What it does | Needs | Cost |
+|---|---|---|---|
+| **`none`** *(default)* | Uses each feed's own `<description>`, cleaned up. | nothing | **$0** |
+| `ollama` | A local model on the Docker host, over HTTP. | a container + RAM | $0 |
+| `anthropic` | `claude-haiku-4-5` via the **Batch API**. | API key | ~$0.70–1.40/mo |
+
+Switch with one variable — no code change:
+
+```bash
+ansible-playbook deploy.yml -e summarizer_backend=ollama -e force_cycle=true
+ansible-playbook deploy.yml -e summarizer_backend=anthropic -e force_cycle=true
+```
+
+### `ollama` — RAM is the constraint
+
+Ollama needs the whole model resident; CPU only affects speed. Budget roughly:
+
+| Model | Resident RAM | Notes |
+|---|---|---|
+| `llama3.2:3b` *(default)* | ~3–4 GB | Adequate for compressing a feed blurb. |
+| `llama3.1:8b` | ~6–8 GB | Noticeably better prose. |
+| `mistral-nemo:12b` | ~9–12 GB | Diminishing returns for this task. |
+
+This host has other containers running (Grafana, Loki, NPM, Portainer, Prometheus) — check
+free memory before pulling anything above 8B. Add the service and pull the model:
+
+```bash
+docker run -d --name ollama --restart unless-stopped \
+  --network proxy-stack_proxy-net -v ollama:/root/.ollama ollama/ollama
+docker exec ollama ollama pull llama3.2:3b
+```
+
+`health()` fails loudly if the endpoint is unreachable *or* the model was never pulled —
+a common and otherwise silent misconfiguration.
+
+### `anthropic` — Haiku, and Batch
+
+Two deliberate choices. **Haiku 4.5, not Opus**: "compress a blurb into three sentences" is
+not a frontier-model task, and Opus costs 5× the input and 5× the output for it. **The Batch
+API**, because a scheduled job is not latency-sensitive and batch is half price. Results
+come back in arbitrary order and are matched by `custom_id`, never by position.
+
 ## Cost control
 
-The recurring cost is one Claude call per cycle. Everything that drives it is a variable
-in `ansible/deploy.yml`:
+On the default `none` backend the recurring cost is **zero** — no model is called at any
+stage. The figures below apply only when `summarizer_backend=anthropic`.
+
+Everything that drives cost is a variable in `ansible/deploy.yml`:
 
 | Variable | Default | Effect |
 |---|---|---|
 | `cycle_hours` | 6 | Calls per day = 24 / this |
 | `max_candidates` | 40 | Articles sent to the model — the input-token driver |
 | `publish_count` | 5 | Articles summarised — the output-token driver |
-| `curator_model` | `claude-opus-5` | Per-token rate |
+| `curator_model` | `claude-haiku-4-5` | Per-token rate |
+| `per_source_cap` | 3 | Stops one prolific feed dominating |
 
-`curate.py` prices each run from `PRICING` and writes `cost_usd` into `metrics.json`, so
-actual spend is in Loki rather than estimated.
+Measured against ~25K input / 4K output per run:
+
+| Model | Cadence | Approx / month |
+|---|---|---|
+| Opus 5 | every 6h | ~$27 |
+| Haiku 4.5 | every 6h | ~$5 |
+| Haiku 4.5 | daily | ~$1.40 |
+| Haiku 4.5 | daily, Batch API | **~$0.70** |
+| **`none`** | any | **$0** |
+
+`summarizers.py` prices each run from `PRICING` (halved for Batch) and writes `cost_usd`
+into `metrics.json`, so actual spend is in Loki rather than estimated.
 
 Only *unseen* articles are sent — `seen.json` means a quiet cycle costs almost nothing,
 and a cycle with no new articles skips the API call entirely.
@@ -425,6 +502,34 @@ rotting is visible in Grafana rather than buried. Replaced with `hnrss.org/best`
 IEEE Spectrum.
 
 ---
+
+## Ranking
+
+`curator/ranker.py` is a port of the heuristic from `netlify/functions/news/feeds.mjs` —
+the logic, not the language. Six stages:
+
+1. **Noise filter** — drops digest/roundup/listicle/deals posts and HN discussion threads.
+2. **Recency decay** — exponential, 36-hour half-life.
+3. **Source weighting** — the per-feed `weight` from `feeds.yml`, multiplicative with recency.
+4. **Relevance boost** — focus-stack keyword hits, title weighted 2× over summary, capped so
+   keyword stuffing does not pay.
+5. **Cross-source dedupe** — normalised title (stopwords stripped, sorted) plus canonical URL
+   (tracking params, `www`, AMP suffixes and fragments removed).
+6. **Per-source cap** — applied in score order, so each feed keeps its best.
+
+It ranks ~70 articles in well under a second and costs nothing.
+
+`curator/test_ranker.py` covers all six stages — 30 assertions, no network, no API key:
+
+```bash
+docker compose run --rm --no-deps --entrypoint python3 builder /app/curator/test_ranker.py
+```
+
+> **Constants were reconstructed, not copied.** `feeds.mjs` was not reachable from the
+> server — not on disk, not in `gsbm-homelab`/`helpdesk-kb`/`paws-palette`, and both
+> function endpoints 404. Half-life, weights, the focus-stack list, the noise patterns and
+> the per-source cap were written from the description and are isolated at the top of
+> `ranker.py`. If ordering differs from the original, those constants are where to look.
 
 ## Editorial behaviour
 

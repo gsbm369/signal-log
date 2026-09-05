@@ -38,11 +38,12 @@ def load_metrics() -> dict:
         return {"curator_status": "unknown", "error": "metrics.json missing or unreadable"}
 
 
-def push(record: dict, level: str) -> str:
+def push(record: dict, level: str, m: dict | None = None) -> str:
     """Push one line to Loki. Returns a short status string; never raises."""
     if not LOKI_URL:
         return "disabled (LOKI_URL unset)"
 
+    m = m or {}
     payload = {
         "streams": [
             {
@@ -53,6 +54,7 @@ def push(record: dict, level: str) -> str:
                     "host": HOSTNAME,
                     "level": level,
                     "status": str(record.get("cycle_status", "unknown")),
+                    "backend": str(m.get("backend") or "none"),
                 },
                 "values": [[str(time.time_ns()), json.dumps(record, separators=(",", ":"))]],
             }
@@ -92,7 +94,8 @@ def main() -> int:
 
     if args.exit_code != 0:
         level, cycle_status = "error", "failed"
-    elif curator_status in ("error", "refused", "no_articles") or args.build_status != "ok":
+    elif curator_status in ("error", "refused", "no_articles", "backend_unavailable") \
+            or args.build_status != "ok":
         level, cycle_status = "warn", "degraded"
     else:
         level, cycle_status = "info", "ok"
@@ -110,6 +113,11 @@ def main() -> int:
         "articles_fetched": m.get("articles_fetched", 0),
         "articles_new": m.get("articles_new", 0),
         "articles_kept": m.get("articles_kept", 0),
+        "articles_ranked": m.get("articles_ranked", 0),
+        "dropped_noise": m.get("dropped_noise", 0),
+        "dropped_dupe": m.get("dropped_dupe", 0),
+        "dropped_capped": m.get("dropped_capped", 0),
+        "backend": m.get("backend", ""),
         "feeds_ok": m.get("feeds_ok", 0),
         "feeds_failed": m.get("feeds_failed", 0),
         "model": m.get("model", ""),
@@ -123,7 +131,7 @@ def main() -> int:
 
     # Local log file (cron redirects stdout here) always gets the record.
     print("METRIC " + json.dumps(record, separators=(",", ":")), flush=True)
-    print(f"loki push: {push(record, level)}", flush=True)
+    print(f"loki push: {push(record, level, m)}", flush=True)
     return 0
 
 

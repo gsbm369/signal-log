@@ -28,6 +28,14 @@ feeds:
     weight: 1
 
 settings:
+  # Summarizer backend: none | ollama | anthropic
+  #   none      feed's own <description>. No model, no key, $0. DEFAULT.
+  #   ollama    local model on the Docker host. Free, self-hosted.
+  #   anthropic claude-haiku-4-5 via the Batch API (half price).
+  # Ranking and selection are deterministic in all three — see curator/ranker.py.
+  summarizer: none
+  # Max articles any single feed may contribute to one run.
+  per_source_cap: 3
   # Max candidate articles handed to Claude in one run — the input-token driver.
   max_candidates: 40
   # How many stories Claude is asked to publish per run — the output-token driver.
