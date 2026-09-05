@@ -181,6 +181,68 @@ still prints the record locally.
 
 ---
 
+## TLS and the two domains
+
+The homelab has two similarly-named domains and they are not interchangeable:
+
+| Domain | State | Usable for TLS? |
+|---|---|---|
+| `gsbm.com` | Registered, delegated to Google Cloud DNS, but the nameservers answer **REFUSED** — no hosted zone exists there, so public resolvers `SERVFAIL`. All `*.gsbm.com` homelab names work only through the LAN resolver. | **No** — neither HTTP-01 nor DNS-01 can work until the zone is recreated. |
+| `gs-bm.com` | Live. `NOERROR`, A records at GitHub Pages, NS at `domaincontrol.com` (GoDaddy). Serves HTTPS 200. | **Yes** — `blog.gs-bm.com` is `NXDOMAIN` and free to create with one additive A record. |
+
+`gs-bm.com` also carries live email — Microsoft 365 MX, `v=spf1 include:secureserver.net -all`,
+and an M365 domain-verification TXT — all served by GoDaddy's nameservers. **Adding an A
+record is additive and safe. Moving the nameservers is not**, and no TLS path documented
+here requires it.
+
+### Why not Cloudflare Tunnel
+
+A tunnel removes the need for any inbound port, which is attractive. But a named tunnel
+routes a hostname via a CNAME to `<tunnel-uuid>.cfargotunnel.com`, and that name only
+yields an address when it is resolved inside a Cloudflare zone with the record proxied.
+From a public resolver it is `NOERROR` with no address:
+
+```
+dig @8.8.8.8 test.cfargotunnel.com A   ->  status: NOERROR, no A record
+dig @a.gtld-servers.net cfargotunnel.com NS  ->  dell/kurt.ns.cloudflare.com
+```
+
+A CNAME pointing there from GoDaddy would therefore resolve to nothing. Using a tunnel with
+a custom hostname means putting the zone on Cloudflare — an NS move, which is exactly the
+change that endangers the live mail. So a tunnel is not a drop-in fallback here.
+
+### The DNS-01 fallback that needs no NS move
+
+If inbound port 80 turns out to be blocked, DNS-01 is the path, and it does **not** require
+moving nameservers. Two variants, in order of preference:
+
+1. **CNAME delegation of the challenge only.** Add one static record in GoDaddy —
+   `_acme-challenge.blog.gs-bm.com  CNAME  <target in a zone you control>` — and let acme.sh
+   answer there. GoDaddy then needs no API access at all, and the delegation is set once.
+   Immune to GoDaddy's API eligibility rules.
+2. **acme.sh with the GoDaddy DNS API** (`dns_gd`), using a key/secret from the GoDaddy
+   developer portal. Simpler conceptually, but GoDaddy gates DNS API access by account
+   tier, so confirm the key works before committing to it.
+
+### Preflight
+
+`ansible/preflight-acme.yml` answers the port-80 question authoritatively before anything is
+changed. It checks public DNS, compares against the egress IP, verifies NPM serves
+`/.well-known/acme-challenge/` locally, then asks **Let's Encrypt staging** to validate over
+HTTP-01 with `--dry-run` and an isolated config dir — so nothing under `/etc/letsencrypt` or
+any existing proxy host is touched.
+
+```bash
+ansible-playbook preflight-acme.yml -e blog_hostname=blog.gs-bm.com
+```
+
+A previous manual attempt in June never reached a challenge at all — it failed at
+`new-order` with `rejectedIdentifier` for `portainer.local` ("Domain name does not end with
+a valid public suffix"). That is why `/etc/letsencrypt` has an `accounts/` directory but no
+`live/`, and it means **inbound port 80 has never actually been tested** on this host.
+
+---
+
 ## Problems hit while building this
 
 ### 1. The named volume was owned by root, and nothing could write to it

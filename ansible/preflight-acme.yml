@@ -1,0 +1,154 @@
+---
+# Determines whether HTTP-01 will work for blog_hostname, BEFORE touching the
+# live Nginx Proxy Manager config or requesting a real certificate.
+#
+#   ansible-playbook preflight-acme.yml -e blog_hostname=blog.gs-bm.com
+#
+# Non-destructive. It writes one probe file into NPM's ACME webroot and removes
+# it, and runs certbot against the Let's Encrypt STAGING environment with
+# --dry-run and an isolated config dir, so nothing under /etc/letsencrypt or any
+# existing proxy host is modified.
+#
+# Stages, each reported separately so the failure is unambiguous:
+#   1. public DNS resolution
+#   2. does it point at this host's egress IP
+#   3. is the challenge path served locally
+#   4. can Let's Encrypt actually reach it  <- this is the port-80 answer
+
+- name: ACME preflight
+  hosts: blog
+  gather_facts: false
+  become: false
+
+  vars:
+    npm_container: npm
+    npm_webroot: /data/letsencrypt-acme-challenge
+    acme_email: "{{ letsencrypt_email | default('nikita@gs-bm.com') }}"
+    resolvers: ['8.8.8.8', '1.1.1.1']
+
+  tasks:
+    - name: Require a hostname
+      ansible.builtin.fail:
+        msg: "Pass -e blog_hostname=blog.example.com"
+      when: blog_hostname is not defined
+
+    # ------------------------------------------------ 1. public DNS
+    - name: Resolve the hostname on public resolvers
+      ansible.builtin.command: "dig +short +time=5 +tries=2 @{{ item }} A {{ blog_hostname }}"
+      loop: "{{ resolvers }}"
+      register: dns_probe
+      changed_when: false
+      failed_when: false
+
+    - name: Collect the resolved addresses
+      ansible.builtin.set_fact:
+        resolved_ips: "{{ dns_probe.results | map(attribute='stdout_lines') | flatten | select('match', '^[0-9.]+$') | unique | list }}"
+
+    - name: Find this host's egress IP
+      ansible.builtin.uri:
+        url: https://api.ipify.org
+        return_content: true
+        timeout: 10
+      register: egress
+      changed_when: false
+      failed_when: false
+
+    - name: Report DNS stage
+      ansible.builtin.debug:
+        msg:
+          - "hostname   : {{ blog_hostname }}"
+          - "resolves to: {{ resolved_ips | join(', ') if resolved_ips | length else 'NXDOMAIN / no A record' }}"
+          - "egress IP  : {{ egress.content | default('unknown') | trim }}"
+          - "verdict    : {{ 'points here' if (egress.content | default('') | trim) in resolved_ips
+                             else ('DOES NOT POINT HERE' if resolved_ips | length else 'NOT RESOLVABLE') }}"
+
+    - name: Stop if the hostname does not resolve publicly
+      ansible.builtin.fail:
+        msg: >-
+          {{ blog_hostname }} does not resolve on public DNS. Add an A record
+          pointing at {{ egress.content | default('<this host>') | trim }} in the
+          registrar's DNS panel, wait for it to propagate, then re-run this playbook.
+          Nothing has been changed.
+      when: resolved_ips | length == 0
+
+    - name: Stop if the hostname points somewhere else
+      ansible.builtin.fail:
+        msg: >-
+          {{ blog_hostname }} resolves to {{ resolved_ips | join(', ') }} but this host's
+          egress IP is {{ egress.content | default('unknown') | trim }}. Let's Encrypt would
+          validate against the wrong machine. Fix the A record first. Nothing has been changed.
+      when:
+        - resolved_ips | length > 0
+        - (egress.content | default('') | trim) not in resolved_ips
+
+    # ------------------------------------- 2. is the challenge path served
+    - name: Write a probe token into the NPM ACME webroot
+      ansible.builtin.command: >-
+        docker exec {{ npm_container }} sh -c
+        'mkdir -p {{ npm_webroot }}/.well-known/acme-challenge &&
+         printf preflight-%s > {{ npm_webroot }}/.well-known/acme-challenge/preflight-probe'
+      args: { creates: null }
+      changed_when: true
+
+    - name: Fetch the probe locally
+      ansible.builtin.uri:
+        url: "http://127.0.0.1/.well-known/acme-challenge/preflight-probe"
+        headers: { Host: "{{ blog_hostname }}" }
+        return_content: true
+        status_code: 200
+      register: local_probe
+      changed_when: false
+      failed_when: false
+
+    - name: Report local challenge-path stage
+      ansible.builtin.debug:
+        msg: >-
+          NPM serves /.well-known/acme-challenge locally:
+          {{ 'YES (HTTP ' ~ local_probe.status ~ ')' if local_probe.status | default(0) == 200
+             else 'NO (HTTP ' ~ (local_probe.status | default('n/a')) ~ ') — HTTP-01 cannot work until this does' }}
+
+    # ------------------------------- 3. the real question: inbound port 80
+    - name: Ask Let's Encrypt STAGING to validate over HTTP-01 (dry run)
+      ansible.builtin.command: >-
+        docker exec {{ npm_container }} /opt/certbot/bin/certbot certonly
+        --non-interactive --dry-run --agree-tos
+        --authenticator webroot --webroot-path {{ npm_webroot }}
+        --preferred-challenges http
+        --config-dir /tmp/acme-preflight/config
+        --work-dir   /tmp/acme-preflight/work
+        --logs-dir   /tmp/acme-preflight/logs
+        --email {{ acme_email }}
+        --cert-name preflight
+        --domains {{ blog_hostname }}
+      register: acme
+      changed_when: false
+      failed_when: false
+
+    - name: Remove the probe token
+      ansible.builtin.command: >-
+        docker exec {{ npm_container }} rm -f
+        {{ npm_webroot }}/.well-known/acme-challenge/preflight-probe
+      changed_when: true
+
+    - name: Extract the exact ACME failure
+      ansible.builtin.set_fact:
+        acme_detail: >-
+          {{ (acme.stdout | default('') ~ "\n" ~ acme.stderr | default(''))
+             | regex_findall('(?i)^.*(?:Detail:|Domain:|Type:|urn:ietf:params:acme|Timeout|Connection refused|unauthorized|error).*$', multiline=True)
+             | unique | list }}
+
+    - name: VERDICT
+      ansible.builtin.debug:
+        msg: >-
+          {{ ['HTTP-01 IS VIABLE — Let’s Encrypt reached this host on port 80.',
+              'Proceed: ansible-playbook deploy.yml -e blog_hostname=' ~ blog_hostname ~
+              ' -e site_url=https://' ~ blog_hostname ~ ' -e blog_ssl=true -e npm_email=... -e npm_password=... -e force_cycle=true']
+             if acme.rc == 0
+             else (['HTTP-01 FAILED (certbot rc=' ~ acme.rc ~ '). Exact ACME output:'] + acme_detail
+                   + ['', 'If the failure is a connection timeout, inbound port 80 is blocked '
+                        ~ '(router forwarding or ISP). Use a DNS-01 fallback instead — see README.']) }}
+
+    - name: Clean up the isolated preflight state
+      ansible.builtin.command: >-
+        docker exec {{ npm_container }} rm -rf /tmp/acme-preflight
+      changed_when: true
