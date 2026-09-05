@@ -1,11 +1,24 @@
 # signal.log
 
-A dark, minimal tech blog that writes itself. A cron job pulls the major technology RSS
-feeds, asks Claude which stories actually matter, writes them up as Markdown, rebuilds a
-static Astro site, and swaps the result into place atomically.
+A dark, minimal tech blog that keeps itself current. Every six hours a homelab cron job
+pulls the major technology RSS feeds, ranks them with a deterministic heuristic, writes the
+survivors as Markdown, and pushes that content to this repository. GitHub Actions builds
+the Astro site and deploys it to Pages.
 
-Built as a homelab exercise in making an LLM do useful unattended work — and, more
-interestingly, in making it fail safely when it doesn't.
+**No model runs in the shipped default, and the system needs no API key.** Selection is a
+scored heuristic — exponential recency decay, per-source weighting, title-first topic
+relevance, cross-source deduplication, a noise filter and a per-source cap — and it is
+covered by a golden test that freezes the exact ranked order, so a change to any constant
+has to be consciously re-approved rather than drifting. Summaries come from each feed's own
+`<description>`. Running cost: **zero**.
+
+Summarisation is a pluggable backend, and an LLM is one of the three options
+(`none` · `ollama` · `anthropic`). Switching is one variable and changes prose only — never
+which stories appear, because ranking uses no model in any mode.
+
+Built as a homelab exercise in unattended publishing: what it takes for a pipeline to run
+on its own for months, fail safely when a feed rots or a token expires, and prove it is
+still working rather than merely appearing to.
 
 ---
 
@@ -197,6 +210,16 @@ and the cron token can only ever append Markdown to `site/src/content/posts/`.
 
 Changing the pipeline is a human action through a reviewed path; publishing content is
 automated. That split is the whole point of the scope.
+
+**The security property, stated plainly: the publishing automation cannot modify its own
+deployment pipeline.** If the curator were ever compromised — a hostile feed, a parsing bug,
+a bad dependency — it could publish bad content to a public blog. It could not alter CI to
+reach secrets, exfiltrate the repository, or push anywhere else. The workflow is added once
+by a human through the GitHub web UI, and the cron token never holds the permission at all.
+
+That asymmetry is deliberate: the automation pushes content every six hours and touches the
+workflow perhaps once a month. Granting a permanent capability to serve a one-time action
+would invert the tradeoff.
 
 #### How it is stored
 

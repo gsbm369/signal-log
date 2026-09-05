@@ -66,13 +66,12 @@
       - { name: Hacker News,           url: "https://hnrss.org/frontpage?points=150",          weight: 0.85, fetch: 20 }
 
     # Publishing to GitHub Pages. The homelab pushes CONTENT; Actions builds.
+    # The canonical hostname lives in site/public/CNAME and nowhere else.
     github_repo: gsbm369/signal-log
     github_branch: main
     alert_email: nikita@gs-bm.com
 
-    # Leave site_url unset to keep whatever is already in .env —
-    # otherwise a plain re-run would silently regress the feed to localhost.
-    site_url: ""
+    site_url: ""            # optional staging override; normally derived from CNAME
     keep_releases: 5
 
     force_cycle: false          # publish even if a release already exists
@@ -150,21 +149,6 @@
         path: "{{ blog_root }}/.env"
         mode: "0600"
 
-    - name: Read the SITE_URL already configured in .env
-      ansible.builtin.shell: "grep -E '^SITE_URL=' {{ blog_root }}/.env | tail -1 | cut -d= -f2- || true"
-      args: { executable: /bin/bash }
-      register: existing_site_url
-      changed_when: false
-
-    # Precedence: explicit -e site_url  >  what .env already holds  >  localhost.
-    - name: Settle the effective site URL
-      ansible.builtin.set_fact:
-        site_url: >-
-          {{ site_url if site_url | length > 0
-             else (existing_site_url.stdout | trim
-                   if existing_site_url.stdout | trim | length > 0
-                   else 'http://localhost:' ~ blog_port) }}
-
     - name: Write deployment-managed settings into .env
       ansible.builtin.lineinfile:
         path: "{{ blog_root }}/.env"
@@ -176,7 +160,6 @@
         - { key: BLOG_UID,        value: "{{ blog_uid }}" }
         - { key: BLOG_GID,        value: "{{ blog_gid }}" }
         - { key: BLOG_PORT,       value: "{{ blog_port }}" }
-        - { key: SITE_URL,        value: "{{ site_url }}" }
         - { key: LOKI_URL,        value: "{{ loki_url }}" }
         - { key: LOKI_URL_HOST,   value: "{{ loki_url_host }}" }
         - { key: LOKI_JOB,        value: "{{ loki_job }}" }
@@ -201,6 +184,20 @@
         src: templates/feeds.yml.j2
         dest: "{{ blog_root }}/curator/feeds.yml"
         mode: "0644"
+
+    - name: Read the canonical hostname from site/public/CNAME
+      ansible.builtin.slurp:
+        src: "{{ blog_root }}/site/public/CNAME"
+      register: cname_raw
+      failed_when: false
+
+    - name: Settle the effective site URL
+      ansible.builtin.set_fact:
+        site_url: >-
+          {{ site_url if site_url | length > 0
+             else ('https://' ~ (cname_raw.content | b64decode | trim))
+                  if (cname_raw.content is defined and (cname_raw.content | b64decode | trim) | length > 0)
+                  else 'http://localhost:' ~ blog_port }}
 
     - name: Check whether an API key is configured
       ansible.builtin.shell: |
