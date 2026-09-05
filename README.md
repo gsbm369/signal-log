@@ -178,9 +178,42 @@ whose entire content is already public and machine-generated; a leaked API key m
 someone spends your money. Moving the summarizer default to `none` removed the API key
 from the running system entirely — this is the trade that made that possible.
 
-The token lives in `.env` (mode 0600, gitignored) and is injected into the remote URL only
-for the duration of the push; it is never written to `.git/config` and is redacted from any
-error output.
+**Issued 2026-09-05, expires 2026-12-04** (90 days). Renew before then.
+
+Scope: `signal-log` only — Contents: read/write, Metadata: read (mandatory).
+
+#### How it is stored
+
+Never in the remote URL, never in an argument. A `https://<token>@github.com/...` remote
+writes the secret into `.git/config`, where it surfaces in `git remote -v`, in every
+diagnostic dump, and in any log that prints the remote — the most common way these leak.
+Arguments are worse: `ps` exposes them to every process on the box for the lifetime of the
+command.
+
+```
+~/.config/signal-log/          drwx------   (700)
+~/.config/signal-log/git-credentials   -rw-------   (600)
+```
+
+```bash
+git config --local credential.helper \
+    'store --file=/home/nikita/.config/signal-log/git-credentials'
+```
+
+Only that path lands in `.git/config`. `push-content.sh` handles no token at all — it
+pushes by remote *name* and lets the helper authenticate, and it refuses to run if no local
+credential helper is configured. `wait-for-deploy.sh` needs the token for the GitHub API and
+reads it from the credential file *inside* a Python process, using it from memory; it is
+never a curl argument.
+
+`.env` holds no token. The credential file is the only copy on the machine.
+
+#### When it expires
+
+Pushes start failing. That surfaces as `cycle_status: publish_failed` in Loki and, if it
+goes unnoticed, as the 48h Grafana alert. **An expired token must arrive as an alert, not
+as a site that quietly stops updating** — which is why both are wired before this stage
+counts as done.
 
 ## Setup
 
