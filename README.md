@@ -130,8 +130,17 @@ lacks Workflows scope.
 
 ### Alerting
 
-`grafana/alerting/signal-log-alerts.yaml` — one rule: **no successful cycle reached
-production in 48h → email**, via the Postfix relay Grafana is already pointed at.
+`grafana/alerting/signal-log-alerts.yaml` — **two tiers**, both emailing through the
+Postfix relay Grafana is already pointed at:
+
+| Window | Severity | Meaning |
+|---|---|---|
+| **12h** | warning | Two consecutive 6-hourly cycles missed. Something is wrong. This is the tier that should tell you. |
+| **48h** | critical | Backstop. It should almost never be what tells you — if it fires without the 12h having fired first, that is a bug in the alerting, not just the pipeline. |
+
+48h alone was too slow for a 6-hourly job: a curator dying just after a good cycle would
+go unnoticed for two days, which is the difference between noticing during a workday and
+noticing after a weekend.
 
 ```bash
 ansible-playbook deploy.yml -e grafana_user=admin -e grafana_password=... --tags alert
@@ -530,6 +539,36 @@ a valid public suffix"). That is why `/etc/letsencrypt` has an `accounts/` direc
 `live/`, and it means **inbound port 80 has never actually been tested** on this host.
 
 ---
+
+## A theme: checks that quietly rested on something else
+
+Three separate bugs in this project share one shape. In each, a check appeared to work,
+was never observed doing its job, and was actually depending on a mechanism nobody had
+looked at. None produced an error. All three were found by making the check fail on
+purpose.
+
+| Where | Looked like | Actually depended on |
+|---|---|---|
+| `stat: follow: true` | A guard deciding whether to publish | `stat.lnk_target`, which `follow: true` never populates — the test could not evaluate true, ever |
+| `ansible-playbook --syntax-check … \| tail -3 && echo "syntax OK"` | A syntax gate | `tail`'s exit code. It printed "syntax OK" over a real YAML parse error |
+| The stalled-curator alert | Detecting a dead curator | `noDataState`, a side setting — because without `or vector(0)` the query returns an *empty result* on silence rather than `0` |
+
+The third is the sharpest: the alert whose entire purpose was to notice silence was itself
+resting on a dropdown, and would have been reported as working. The fix is one operator,
+and the reason it matters is that it moves the detection into the expression where it can
+be tested.
+
+**The rule this project now follows: a check is not verified until it has been observed
+failing.** Every guard here has a matching negative test —
+
+- the publish guards, by injecting a broken build, an emptied posts directory, and an
+  invalid token
+- the ranking constants, by a golden test that is watched to fail on a deliberate
+  `RELEVANCE_SCALE` change while every filter test still passes
+- the site-URL assertion, by deleting `public/CNAME` under `CI=true`
+- the stalled-curator alert, by stopping cron and watching the expression go to `0`
+
+"It looks right" is how all three of these shipped.
 
 ## Problems hit while building this
 

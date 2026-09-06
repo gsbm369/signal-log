@@ -61,24 +61,28 @@
   changed_when: gf_cp.status in [200, 201, 202]
   no_log: true
 
-- name: Load the alert rule definition
+- name: Load the alert rule definitions
   ansible.builtin.set_fact:
     alert_rule: "{{ lookup('file', playbook_dir ~ '/../grafana/alerting/signal-log-alerts.yaml') | from_yaml }}"
 
-- name: Create or update the alert rule
+# Two tiers: 12h warning (two consecutive cycles missed) and 48h critical
+# (backstop). If the critical ever fires without the warning having fired first,
+# that is a bug in the alerting, not only in the pipeline.
+- name: Create or update each alert rule
   ansible.builtin.uri:
-    url: "{{ _gf_url }}/api/v1/provisioning/alert-rules/signal-log-stalled"
+    url: "{{ _gf_url }}/api/v1/provisioning/alert-rules/{{ item.uid }}"
     method: PUT
     headers: "{{ _gf_headers | combine({'X-Disable-Provenance': 'true'}) }}"
     body_format: json
     body: >-
-      {{ (alert_rule.groups[0].rules[0]
-          | combine({'ruleGroup': alert_rule.groups[0].name,
-                     'folderUID': grafana_folder_uid | default('signal-log'),
-                     'orgID': 1,
-                     'for': '30m'}))
+      {{ (item | combine({'ruleGroup': alert_rule.groups[0].name,
+                          'folderUID': grafana_folder_uid | default('signal-log'),
+                          'orgID': 1}))
          | to_json | replace('LOKI_DATASOURCE_UID', loki_uid) | from_json }}
     status_code: [200, 201, 202]
+  loop: "{{ alert_rule.groups[0].rules }}"
+  loop_control:
+    label: "{{ item.uid }} ({{ item.labels.severity }})"
   register: gf_rule
   changed_when: gf_rule.status in [200, 201, 202]
   failed_when: false
@@ -86,10 +90,11 @@
 - name: Report the alert state
   ansible.builtin.debug:
     msg: >-
-      {{ 'Alert provisioned: "signal.log has not published in 48h" -> '
-         ~ (alert_email | default('nikita@gs-bm.com'))
-         if gf_rule.status | default(0) in [200, 201, 202]
-         else 'Alert NOT provisioned (HTTP ' ~ (gf_rule.status | default('?'))
-              ~ '). The folder may need creating first, or apply
-              grafana/alerting/signal-log-alerts.yaml by hand. Detail: '
-              ~ (gf_rule.json | default(gf_rule.content) | default('') | string | truncate(300)) }}
+      {{ (gf_rule.results | default([])
+          | map(attribute='item.uid') | list | join(', ') ~ ' -> '
+          ~ (alert_email | default('nikita@gs-bm.com')))
+         if (gf_rule.results | default([]) | selectattr('status', 'defined')
+             | rejectattr('status', 'in', [200, 201, 202]) | list | length == 0)
+         else 'Some rules NOT provisioned. The folder may need creating first, or apply
+               grafana/alerting/signal-log-alerts.yaml by hand. Detail: '
+              ~ (gf_rule.results | default([]) | map(attribute='status') | list | string) }}

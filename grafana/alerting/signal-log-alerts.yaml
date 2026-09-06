@@ -31,7 +31,7 @@ contactPoints:
           # (GF_SMTP_HOST=host.docker.internal:25).
           addresses: nikita@gs-bm.com
           singleEmail: true
-          subject: '[signal.log] {{ .CommonLabels.alertname }}'
+          subject: '[signal.log][{{ .CommonLabels.severity }}] {{ .CommonLabels.alertname }}'
 
 groups:
   - orgId: 1
@@ -39,8 +39,57 @@ groups:
     folder: signal.log
     interval: 10m
     rules:
+      - uid: signal-log-stalled-12h
+        title: signal.log has missed two consecutive cycles
+        condition: THRESHOLD
+        for: 20m
+        noDataState: Alerting
+        execErrState: Alerting
+        annotations:
+          summary: >-
+            No successful signal.log cycle reached production in the last 12 hours —
+            two consecutive 6-hourly cycles missed.
+          description: >-
+            This is the tier that should tell you. Check the cycle log on the homelab
+            (~/ai-blog/logs/cycle.log), the Actions run history, and whether cron is
+            still installed. If the 48h critical rule ever fires without this one having
+            fired first, that is a bug in the alerting itself, not just in the pipeline.
+          runbook_url: https://github.com/gsbm369/signal-log#failure-behaviour
+        labels:
+          service: signal-log
+          severity: warning
+        notification_settings:
+          receiver: signal-log-email
+        data:
+          - refId: QUERY
+            relativeTimeRange: { from: 43200, to: 0 }   # 12h
+            datasourceUid: LOKI_DATASOURCE_UID
+            model:
+              refId: QUERY
+              datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
+              editorMode: code
+              queryType: instant
+              # `or vector(0)` — see the note on the 48h rule. Without it this
+              # silently depends on noDataState.
+              expr: >-
+                sum(count_over_time({job="signal-log"} | json
+                    | exit_code = 0 | deploy_status =~ "ok|not_needed" [12h])) or vector(0)
+
+          - refId: THRESHOLD
+            datasourceUid: __expr__
+            model:
+              refId: THRESHOLD
+              type: threshold
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: QUERY
+              conditions:
+                - evaluator: { type: lt, params: [1] }
+                  operator: { type: and }
+                  query: { params: [QUERY] }
+                  reducer: { type: last, params: [] }
+
       - uid: signal-log-stalled
-        title: signal.log has not published in 48h
+        title: signal.log has not published in 48h (backstop)
         condition: THRESHOLD
         for: 30m
         # No data means the curator is not reporting at all, which is worse
@@ -51,14 +100,15 @@ groups:
           summary: >-
             No successful signal.log cycle reached production in the last 48 hours.
           description: >-
-            The curator either stopped running, or every cycle in the window failed
-            to build, push, or deploy. Check the cycle log on the homelab
-            (~/ai-blog/logs/cycle.log), the Actions run history, and the
-            "signal.log — curator" dashboard.
+            BACKSTOP. The 12h warning should have fired eight hours earlier; if it did
+            not, investigate the alerting itself as well as the pipeline. At 48h on a
+            6-hourly job a curator that dies just after a good cycle stays unnoticed
+            across a weekend, which is why this tier is the fallback and not the
+            primary signal.
           runbook_url: https://github.com/gsbm369/signal-log#failure-behaviour
         labels:
           service: signal-log
-          severity: warning
+          severity: critical
         notification_settings:
           receiver: signal-log-email
         data:
