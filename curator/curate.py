@@ -247,6 +247,7 @@ def write_post(summary: summarizers.Summary) -> Path:
         f"sourceUrl: {yaml_str(src['url'])}",
         f"tags: [{', '.join(yaml_str(t) for t in tags)}]",
         f"heat: {heat}",
+        f"score: {summary.score}",
         f"readMinutes: {read_minutes}",
         "---",
     ])

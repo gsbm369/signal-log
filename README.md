@@ -128,6 +128,16 @@ updater rots, and an updater without a pin is just a floating tag with extra ste
 Like the workflow, this file must be committed by a human — the deploy token deliberately
 lacks Workflows scope.
 
+### Mail delivery is not mail acceptance
+
+The digest reports `delivered` only after inspecting the local mail queue. `smtplib`
+returning cleanly means Postfix accepted the message; relay authentication can fail
+minutes later, leaving the mail deferred while the sender logs success. `queued_deferred`
+is a failure state that exits non-zero and ships the relay's own error text to Loki.
+
+This matters beyond the digest: **Grafana's alert emails traverse the same relay.** An
+alert that cannot be delivered is not an alert.
+
 ### Alerting
 
 `grafana/alerting/signal-log-alerts.yaml` — **two tiers**, both emailing through the
@@ -552,6 +562,7 @@ purpose.
 | `stat: follow: true` | A guard deciding whether to publish | `stat.lnk_target`, which `follow: true` never populates — the test could not evaluate true, ever |
 | `ansible-playbook --syntax-check … \| tail -3 && echo "syntax OK"` | A syntax gate | `tail`'s exit code. It printed "syntax OK" over a real YAML parse error |
 | The stalled-curator alert | Detecting a dead curator | `noDataState`, a side setting — because without `or vector(0)` the query returns an *empty result* on silence rather than `0` |
+| `smtplib.send_message()` returning cleanly | Mail delivered | Postfix *accepting* it. The relay then deferred every message with `525 Unauthorized IP address`, and the sender reported success |
 
 The third is the sharpest: the alert whose entire purpose was to notice silence was itself
 resting on a dropdown, and would have been reported as working. The fix is one operator,
@@ -568,7 +579,12 @@ failing.** Every guard here has a matching negative test —
 - the site-URL assertion, by deleting `public/CNAME` under `CI=true`
 - the stalled-curator alert, by stopping cron and watching the expression go to `0`
 
-"It looks right" is how all three of these shipped.
+The fourth is the same shape as one this project had already solved: `git push` succeeding
+is not the same as deployed, which is why `wait-for-deploy.sh` exists. The identical
+distinction in the mail path was missed until the queue was actually inspected —
+**a lesson learned in one subsystem did not transfer to the next.**
+
+"It looks right" is how all four of these shipped.
 
 ## Problems hit while building this
 

@@ -5,7 +5,8 @@ pubDate: 2026-09-05T22:49:55+00:00
 source: "TechCrunch"
 sourceUrl: "https://techcrunch.com/2026/09/05/seattle-times-and-newsday-are-the-latest-publications-to-sue-openai-and-microsoft/"
 tags: ["openai"]
-heat: 100
+heat: 90
+score: 1.0482
 readMinutes: 1
 ---
 

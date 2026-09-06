@@ -5,7 +5,8 @@ pubDate: 2026-09-05T19:35:24+00:00
 source: "TechCrunch"
 sourceUrl: "https://techcrunch.com/2026/09/05/hikers-rescued-after-using-google-gemini-for-planning/"
 tags: ["gemini"]
-heat: 84
+heat: 86
+score: 0.98477
 readMinutes: 1
 ---
 

@@ -53,6 +53,14 @@ class Summary:
     heat: int
     source_article: dict[str, Any] = field(default_factory=dict)
 
+    @property
+    def score(self) -> float:
+        """The ranker's RAW score. `heat` is normalised against the best story in
+        its own run, which makes it useless for comparing across runs — every
+        run's leader scores 100. The weekly digest needs a cross-run ordering,
+        so the raw score is persisted alongside it."""
+        return round(float(self.source_article.get("_score", 0.0)), 5)
+
 
 class Summarizer(Protocol):
     name: str
@@ -69,6 +77,15 @@ class Summarizer(Protocol):
 _SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
 
 
+# hnrss puts navigation boilerplate in <description>, not a summary:
+#   "Article URL: https://... Comments URL: https://... Points: 154 # Comments: 100"
+# Verbatim, that is what the `none` backend was publishing as the story summary.
+_HN_BOILERPLATE = re.compile(
+    r"\s*(?:Article URL:\s*\S+|Comments URL:\s*\S+|Points:\s*\d+|#\s*Comments:\s*\d+)\s*",
+    re.I,
+)
+
+
 def _clean(text: str) -> str:
     text = re.sub(r"<[^>]+>", " ", text or "")
     text = re.sub(r"&nbsp;?|&#160;?", " ", text)
@@ -79,6 +96,7 @@ def _clean(text: str) -> str:
     text = re.sub(r"&(?:gt|#62);", ">", text)
     text = re.sub(r"&[a-z]+;|&#\d+;", " ", text)
     text = re.sub(r"\[\s*[.…]+\s*\]\s*$", "", text)   # feedparser's "[ ... ]" truncation marker
+    text = _HN_BOILERPLATE.sub(" ", text)
     text = re.sub(r"\s+", " ", text)
     return text.strip()
 
@@ -112,8 +130,11 @@ def _fallback_summary(article: dict[str, Any], pool_best: float) -> Summary:
     """The `none` backend's output, and every other backend's safety net."""
     blurb = _clean(article.get("summary", ""))
     title = _clean(article.get("title", "")).rstrip(".")
-    if not blurb:
-        blurb = f"{article.get('source', 'The source')} published this without a summary."
+    if len(blurb.split()) < 6:
+        # Nothing usable left after cleaning — common for link-aggregator feeds
+        # whose description is only navigation. Say so rather than pad it.
+        blurb = (f"{article.get('source', 'The source')} linked this without a summary. "
+                 f"Follow the link for the article.")
     desc = _sentences(blurb, 2)[:220] or title[:220]
     body_parts = [blurb]
     body_parts.append(

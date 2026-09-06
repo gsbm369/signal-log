@@ -23,6 +23,9 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from loki import push  # noqa: E402  shared with weekly_digest.py
+
 STATE_DIR = Path(os.environ.get("STATE_DIR", "/data/state"))
 LOKI_URL = os.environ.get("LOKI_URL", "").strip()
 LOKI_TIMEOUT = float(os.environ.get("LOKI_TIMEOUT", "5"))
@@ -46,48 +49,6 @@ def load_metrics() -> dict:
     m.update({k: v for k, v in _read("build.json").items()
               if k in ("posts_live", "build_duration_s")})
     return m
-
-
-def push(record: dict, level: str, m: dict | None = None) -> str:
-    """Push one line to Loki. Returns a short status string; never raises."""
-    if not LOKI_URL:
-        return "disabled (LOKI_URL unset)"
-
-    m = m or {}
-    payload = {
-        "streams": [
-            {
-                # Labels stay low-cardinality — numbers live in the line, not here.
-                "stream": {
-                    "job": JOB_NAME,
-                    "service": "curator",
-                    "host": HOSTNAME,
-                    "level": level,
-                    "status": str(record.get("cycle_status", "unknown")),
-                    "backend": str(m.get("backend") or "none"),
-                },
-                "values": [[str(time.time_ns()), json.dumps(record, separators=(",", ":"))]],
-            }
-        ]
-    }
-
-    req = urllib.request.Request(
-        LOKI_URL.rstrip("/") + "/loki/api/v1/push",
-        data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    tenant = os.environ.get("LOKI_TENANT_ID")
-    if tenant:
-        req.add_header("X-Scope-OrgID", tenant)
-
-    try:
-        with urllib.request.urlopen(req, timeout=LOKI_TIMEOUT) as resp:
-            return f"ok (HTTP {resp.status})"
-    except urllib.error.HTTPError as exc:
-        return f"FAILED (HTTP {exc.code}: {exc.read()[:200].decode(errors='replace')})"
-    except (urllib.error.URLError, OSError, socket.timeout) as exc:
-        return f"FAILED ({exc})"
 
 
 def main() -> int:
@@ -163,7 +124,9 @@ def main() -> int:
 
     # Local log file (cron redirects stdout here) always gets the record.
     print("METRIC " + json.dumps(record, separators=(",", ":")), flush=True)
-    print(f"loki push: {push(record, level, m)}", flush=True)
+    print("loki push: " + push(record, level=level, status=cycle_status,
+                                extra_labels={"backend": str(m.get("backend") or "none")}),
+          flush=True)
     return 0
 
 

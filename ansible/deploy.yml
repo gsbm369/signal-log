@@ -71,6 +71,18 @@
     github_branch: main
     alert_email: nikita@gs-bm.com
 
+    # Weekly digest — reuses the host's existing Postfix relay.
+    digest_enabled: true
+    digest_to: nikita@gs-bm.com
+    digest_from: "signal.log <alerts@gs-bm.com>"
+    digest_smtp_host: "127.0.0.1"
+    digest_smtp_port: 25
+    digest_count: 10
+    digest_days: 7
+    digest_weekday: 0          # Sunday
+    digest_hour: 8
+    digest_minute: 30
+
     site_url: ""            # optional staging override; normally derived from CNAME
     keep_releases: 5
 
@@ -175,6 +187,12 @@
         - { key: LOCK_FILE,       value: "{{ lockfile }}" }
         - { key: GITHUB_REPO,     value: "{{ github_repo }}" }
         - { key: GITHUB_BRANCH,   value: "{{ github_branch }}" }
+        - { key: DIGEST_TO,        value: "{{ digest_to }}" }
+        - { key: DIGEST_FROM,      value: "{{ digest_from }}" }
+        - { key: DIGEST_SMTP_HOST, value: "{{ digest_smtp_host }}" }
+        - { key: DIGEST_SMTP_PORT, value: "{{ digest_smtp_port }}" }
+        - { key: DIGEST_COUNT,     value: "{{ digest_count }}" }
+        - { key: DIGEST_DAYS,      value: "{{ digest_days }}" }
       loop_control:
         label: "{{ item.key }}"
       no_log: true
@@ -349,6 +367,17 @@
         state: present
       tags: [cron]
 
+    - name: Install the weekly digest cron job
+      ansible.builtin.cron:
+        name: "signal.log — weekly digest email"
+        user: "{{ ansible_user_id }}"
+        minute: "{{ digest_minute }}"
+        hour: "{{ digest_hour }}"
+        weekday: "{{ digest_weekday }}"
+        job: "{{ blog_root }}/scripts/weekly-digest.sh >> {{ blog_root }}/logs/digest.log 2>&1"
+        state: "{{ 'present' if digest_enabled | bool else 'absent' }}"
+      tags: [cron, digest]
+
     - name: Install nightly log rotation for the cycle log
       ansible.builtin.cron:
         name: "signal.log — trim cycle log"
@@ -475,6 +504,7 @@
           - "Selection           : deterministic ranker, no model in any mode"
           - "Volume caps         : <= {{ max_candidates }} candidates, {{ publish_count }} published, {{ per_source_cap }} per source"
           - "Last run metrics    : {{ (metrics_raw.content | default('') | b64decode | from_json) if metrics_raw.content is defined else 'none yet' }}"
+          - "Weekly digest       : {{ ('Sunday %02d:%02d -> ' ~ digest_to ~ ' via ' ~ digest_smtp_host ~ ':' ~ digest_smtp_port) | format(digest_hour | int, digest_minute | int) if digest_enabled | bool else 'disabled' }}"
           - "Logs                : {{ blog_root }}/logs/cycle.log  +  Loki job={{ loki_job }}"
           - >-
             {{ ('API key configured  : ' ~ ('yes' if api_key_set else 'NO — required for summarizer_backend=anthropic'))

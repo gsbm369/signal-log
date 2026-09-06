@@ -5,7 +5,8 @@ pubDate: 2026-09-06T19:04:22+00:00
 source: "The Verge"
 sourceUrl: "https://www.theverge.com/science/990906/isar-aerospace-europe-orbital-rocket-launch"
 tags: ["tech"]
-heat: 100
+heat: 86
+score: 0.98739
 readMinutes: 1
 ---
 
