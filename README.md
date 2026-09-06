@@ -563,7 +563,22 @@ The first version of the feed emitted `<source>Hacker News</source>` for provena
 a `url` attribute — strict readers reject or misinterpret it. All custom fields moved to
 their own namespace (`xmlns:signal`), so `signal:source`, `signal:heat`, etc.
 
-### 5. Making Ansible genuinely idempotent
+### 5. A custom domain does not re-point an existing Pages deployment
+
+With the Actions deploy flow, registering a custom domain in Pages settings changes only
+what Pages will serve **from the next deployment onward**. An artifact deployed before the
+domain was registered keeps being served on the `*.github.io` URL, and the custom domain
+returns 404 — with a *valid* certificate, which makes it look like a routing bug rather
+than a stale deployment.
+
+The fix is to deploy again; any push touching `site/**` does it, and so does the next cron
+cycle. Worth knowing because the symptom (valid TLS, 404 body) points away from the cause.
+
+Note also that `workflow_dispatch` only appears once the workflow sits on the **default
+branch** — a stale default branch hides the Run-workflow button entirely, on top of
+blocking branch deletion.
+
+### 6. Making Ansible genuinely idempotent
 
 The first playbook reported `changed` on every run because `docker compose build` and
 `docker compose run` were plain `command` tasks with `changed_when: true`. Two fixes:
@@ -577,7 +592,7 @@ The first playbook reported `changed` on every run because `docker compose build
 
 Second consecutive run is now `changed=0`.
 
-### 6. `stat: follow: true` made a clean deploy silently serve a placeholder
+### 7. `stat: follow: true` made a clean deploy silently serve a placeholder
 
 The playbook creates a bootstrap placeholder so nginx has a root on first deploy, then
 decides whether to run a publish cycle by checking what `public_html/current` points at:
@@ -617,7 +632,7 @@ follow:false -> lnk_target=releases/bootstrap                         search=Tru
 **Lesson:** when a check exists to catch a failure, test that it actually fires. This one
 was written, looked right, and had never once evaluated true.
 
-### 7. Config written by regex, and other quiet assumptions
+### 8. Config written by regex, and other quiet assumptions
 
 Three smaller things in the same family — each works until it doesn't, and fails silently:
 
@@ -638,7 +653,7 @@ That last one exposed a further wrinkle: the cron wrapper runs on the **host**, 
 first skip record failed with `HTTP 000`. There are now two Loki URLs, `LOKI_URL` for the
 container and `LOKI_URL_HOST` for the host side.
 
-### 8. `site_url` regressed to localhost on every plain re-run
+### 9. `site_url` regressed to localhost on every plain re-run
 
 Astro builds RSS links from `site` at build time. `site_url` defaulted to
 `http://localhost:8080`, and the playbook wrote that default into `.env` on every run — so
@@ -649,7 +664,7 @@ reverted every link in the published feed to localhost.
 holds > localhost. The read has to happen *before* the `.env` write task, which is a
 mistake worth making only once.
 
-### 9. One feed was quietly malformed
+### 10. One feed was quietly malformed
 
 `hnrss.org/show` returned XML that feedparser rejected with `mismatched tag`. Because the
 collector catches per-feed errors and continues, this showed up only as one warning line
