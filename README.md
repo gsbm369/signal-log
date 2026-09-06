@@ -138,6 +138,23 @@ is a failure state that exits non-zero and ships the relay's own error text to L
 This matters beyond the digest: **Grafana's alert emails traverse the same relay.** An
 alert that cannot be delivered is not an alert.
 
+#### Known fragility: delivery depends on an IP allowlist against a dynamic address
+
+The relay authenticates to Brevo, which enforces an **Authorized IPs** list. The homelab
+sits on a residential Partner Communications line — a *dynamic* address. The current
+failure is simply that the address is not on the list; it is not a credential problem and
+not an address rotation (the IP was verified unchanged).
+
+But once it is authorised, **an ISP lease change silently kills the relay again**, and it
+fails exactly the way it failed this time: accepted by Postfix, deferred in the queue,
+invisible unless something inspects it. The queue check is the only thing standing between
+that and silent loss of every alert, which makes it considerably more load-bearing than it
+looks for a digest feature.
+
+This is a known fragility, not a solved problem. The durable fix is a static public IP —
+moving the relay to the planned Oracle Cloud instance retires the entire class of failure.
+That is a concrete engineering reason for that phase, not just an exercise.
+
 ### Alerting
 
 `grafana/alerting/signal-log-alerts.yaml` — **two tiers**, both emailing through the
@@ -310,6 +327,46 @@ Pushes start failing. That surfaces as `cycle_status: publish_failed` in Loki an
 goes unnoticed, as the 48h Grafana alert. **An expired token must arrive as an alert, not
 as a site that quietly stops updating** — which is why both are wired before this stage
 counts as done.
+
+## Security headers, and what is not possible here
+
+The site sends **no security headers**, because GitHub Pages cannot set them. That is a
+platform limit rather than a misconfiguration, and the risk is low for a static,
+read-only site with no forms, no cookies and no user input.
+
+What *is* possible is done: a `Content-Security-Policy` in a `<meta>` tag, scoped to what
+the site genuinely loads.
+
+```
+default-src 'self';
+script-src  'self' 'sha256-…';        one script, hashed from the bytes that ship
+style-src   'self' 'unsafe-inline' https://fonts.googleapis.com;
+font-src    'self' https://fonts.gstatic.com;
+img-src     'self' data:;  connect-src 'self';
+object-src 'none'; base-uri 'self'; form-action 'none'; frame-src 'none';
+upgrade-insecure-requests
+```
+
+Three things worth stating plainly rather than glossing:
+
+- **`script-src` uses a hash, not `'unsafe-inline'`.** There is exactly one script and its
+  bytes are known at build time, so the hash is computed from the same string that is
+  emitted — and verified against the built page, because a hash that drifts from its script
+  is another control that silently stops applying.
+- **`style-src` needs `'unsafe-inline'`.** The design sets ~165 inline `style` attributes
+  per page (heat meters, logo grid, palette swatches). Hashes do not apply to style
+  attributes, so removing this means refactoring those into classes. It is a real weakening
+  of the policy and it is recorded, not hidden.
+- **`frame-ancestors` cannot be set at all.** It is ignored in a `<meta>` tag by
+  specification and can only be delivered as a real header. **Clickjacking protection is
+  therefore unavailable on this host**, as are `X-Frame-Options`,
+  `X-Content-Type-Options`, HSTS and `Referrer-Policy` as headers (the last has a `<meta>`
+  equivalent, which is set).
+
+A CDN in front of Pages would fix all of it. That was **rejected**: every option requires
+moving the domain's nameservers, and `gs-bm.com` carries live Microsoft 365 mail — MX, SPF
+and a domain-verification TXT. Trading a working mail domain for headers on a static blog
+is the wrong trade. The limitation is accepted knowingly.
 
 ## Setup
 
@@ -550,41 +607,43 @@ a valid public suffix"). That is why `/etc/letsencrypt` has an `accounts/` direc
 
 ---
 
-## A theme: checks that quietly rested on something else
+## Controls that were never exercised
 
-Three separate bugs in this project share one shape. In each, a check appeared to work,
-was never observed doing its job, and was actually depending on a mechanism nobody had
-looked at. None produced an error. All three were found by making the check fail on
-purpose.
+This is the dominant failure mode of this system. Not a run of bad luck — five instances
+across five unrelated technologies, all with the same shape: **a control that reads
+correctly, is never observed doing its job, and is therefore believed.** None produced an
+error. Every one was found by making it fail on purpose.
 
-| Where | Looked like | Actually depended on |
+| Where | Read as | Actually did |
 |---|---|---|
-| `stat: follow: true` | A guard deciding whether to publish | `stat.lnk_target`, which `follow: true` never populates — the test could not evaluate true, ever |
-| `ansible-playbook --syntax-check … \| tail -3 && echo "syntax OK"` | A syntax gate | `tail`'s exit code. It printed "syntax OK" over a real YAML parse error |
-| The stalled-curator alert | Detecting a dead curator | `noDataState`, a side setting — because without `or vector(0)` the query returns an *empty result* on silence rather than `0` |
-| `smtplib.send_message()` returning cleanly | Mail delivered | Postfix *accepting* it. The relay then deferred every message with `525 Unauthorized IP address`, and the sender reported success |
+| **Ansible** — `stat: follow: true` | A guard deciding whether to publish | Nothing. `follow: true` never populates `stat.lnk_target`, so the condition could not evaluate true — a clean deploy served a placeholder forever while the play exited green |
+| **Shell** — `ansible-playbook --syntax-check … \| tail -3 && echo "syntax OK"` | A syntax gate | Tested `tail`'s exit code. Printed "syntax OK" over a real YAML parse error |
+| **Grafana** — the stalled-curator alert | Detecting a dead curator | Leaned on `noDataState`, a dropdown. Without `or vector(0)` the query returns an *empty result* on silence, not `0` — the alert built to notice silence rested on a side setting |
+| **Mail** — `smtplib.send_message()` returning cleanly | Delivered | Postfix *accepting* it. The relay then deferred every message with `525 Unauthorized IP address` while the sender logged success |
+| **Netlify** *(portfolio side)* — a `[[redirects]]` rule blocking function sources | Blocking `feeds.mjs` from being served | Nothing. A rule with `status` but no `to` is invalid and Netlify drops it **silently** — the file was served as a static asset the whole time |
 
-The third is the sharpest: the alert whose entire purpose was to notice silence was itself
-resting on a dropdown, and would have been reported as working. The fix is one operator,
-and the reason it matters is that it moves the detection into the expression where it can
-be tested.
+The mail one is the worst, because this project had **already solved it**. `git push`
+succeeding is not deployed — that is precisely why `wait-for-deploy.sh` exists. The
+identical distinction in the mail path was missed anyway. A lesson learned in one
+subsystem did not transfer to the next.
 
-**The rule this project now follows: a check is not verified until it has been observed
-failing.** Every guard here has a matching negative test —
+### The rule this project now works by
 
-- the publish guards, by injecting a broken build, an emptied posts directory, and an
-  invalid token
-- the ranking constants, by a golden test that is watched to fail on a deliberate
-  `RELEVANCE_SCALE` change while every filter test still passes
-- the site-URL assertion, by deleting `public/CNAME` under `CI=true`
-- the stalled-curator alert, by stopping cron and watching the expression go to `0`
+> **A control is not in force until you have watched it refuse something.**
 
-The fourth is the same shape as one this project had already solved: `git push` succeeding
-is not the same as deployed, which is why `wait-for-deploy.sh` exists. The identical
-distinction in the mail path was missed until the queue was actually inspected —
-**a lesson learned in one subsystem did not transfer to the next.**
+Configuring it is not evidence. Reading it back is not evidence. Every guard here now has a
+matching negative test, and the ones that had none are exactly the ones that were broken:
 
-"It looks right" is how all four of these shipped.
+| Control | Watched refusing |
+|---|---|
+| Publish guards | a broken build, an emptied posts directory, an invalid token |
+| Ranking constants | a golden test failing on a deliberate `RELEVANCE_SCALE` change, while every filter test still passed |
+| Site-URL assertion | `public/CNAME` deleted under `CI=true` |
+| Stalled-curator alert | cron stopped — the expression went to `0`, then back to `1` on recovery |
+| Mail delivery | the queue inspected after a "successful" send |
+| CSP script hash | recomputed from the emitted bytes and compared |
+
+"It looks right" is how all five shipped.
 
 ## Problems hit while building this
 

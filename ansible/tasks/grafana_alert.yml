@@ -61,6 +61,28 @@
   changed_when: gf_cp.status in [200, 201, 202]
   no_log: true
 
+# The rules cannot be created before their folder exists — Grafana returns
+# "invalid alert rule: folder does not exist" rather than creating it.
+- name: Ensure the alert folder exists
+  ansible.builtin.uri:
+    url: "{{ _gf_url }}/api/folders"
+    method: POST
+    headers: "{{ _gf_headers }}"
+    body_format: json
+    body:
+      uid: "{{ grafana_folder_uid | default('signal-log') }}"
+      title: "{{ grafana_folder_title | default('signal.log') }}"
+    status_code: [200, 201, 409, 412]
+  register: gf_folder
+  changed_when: gf_folder.status in [200, 201]
+  no_log: true
+
+- name: Report the folder
+  ansible.builtin.debug:
+    msg: >-
+      Folder '{{ grafana_folder_uid | default('signal-log') }}'
+      {{ 'created' if gf_folder.status in [200, 201] else 'already present' }}
+
 - name: Load the alert rule definitions
   ansible.builtin.set_fact:
     alert_rule: "{{ lookup('file', playbook_dir ~ '/../grafana/alerting/signal-log-alerts.yaml') | from_yaml }}"
@@ -68,33 +90,65 @@
 # Two tiers: 12h warning (two consecutive cycles missed) and 48h critical
 # (backstop). If the critical ever fires without the warning having fired first,
 # that is a bug in the alerting, not only in the pipeline.
-- name: Create or update each alert rule
+# Does the rule already exist? PUT on this endpoint is update-only and returns
+# 404 for a rule that has never been created, so create and update are different
+# calls and the choice has to be made per rule.
+- name: Check which alert rules already exist
   ansible.builtin.uri:
     url: "{{ _gf_url }}/api/v1/provisioning/alert-rules/{{ item.uid }}"
+    method: GET
+    headers: "{{ _gf_headers }}"
+    status_code: [200, 404]
+  loop: "{{ alert_rule.groups[0].rules }}"
+  loop_control:
+    label: "{{ item.uid }}"
+  register: gf_existing
+  changed_when: false
+  no_log: true
+
+- name: Create alert rules that do not exist yet
+  ansible.builtin.uri:
+    url: "{{ _gf_url }}/api/v1/provisioning/alert-rules"
+    method: POST
+    headers: "{{ _gf_headers | combine({'X-Disable-Provenance': 'true'}) }}"
+    body_format: json
+    body: >-
+      {{ (item.item | combine({'ruleGroup': alert_rule.groups[0].name,
+                               'folderUID': grafana_folder_uid | default('signal-log'),
+                               'orgID': 1}))
+         | to_json | replace('LOKI_DATASOURCE_UID', loki_uid) | from_json }}
+    status_code: [200, 201, 202]
+  loop: "{{ gf_existing.results }}"
+  loop_control:
+    label: "{{ item.item.uid }} ({{ item.item.labels.severity }})"
+  when: item.status == 404
+  register: gf_created
+  changed_when: true
+
+- name: Update alert rules that already exist
+  ansible.builtin.uri:
+    url: "{{ _gf_url }}/api/v1/provisioning/alert-rules/{{ item.item.uid }}"
     method: PUT
     headers: "{{ _gf_headers | combine({'X-Disable-Provenance': 'true'}) }}"
     body_format: json
     body: >-
-      {{ (item | combine({'ruleGroup': alert_rule.groups[0].name,
-                          'folderUID': grafana_folder_uid | default('signal-log'),
-                          'orgID': 1}))
+      {{ (item.item | combine({'ruleGroup': alert_rule.groups[0].name,
+                               'folderUID': grafana_folder_uid | default('signal-log'),
+                               'orgID': 1}))
          | to_json | replace('LOKI_DATASOURCE_UID', loki_uid) | from_json }}
     status_code: [200, 201, 202]
-  loop: "{{ alert_rule.groups[0].rules }}"
+  loop: "{{ gf_existing.results }}"
   loop_control:
-    label: "{{ item.uid }} ({{ item.labels.severity }})"
+    label: "{{ item.item.uid }} ({{ item.item.labels.severity }})"
+  when: item.status == 200
   register: gf_rule
-  changed_when: gf_rule.status in [200, 201, 202]
-  failed_when: false
+  # An existing rule with identical content is not a change.
+  changed_when: false
 
 - name: Report the alert state
   ansible.builtin.debug:
     msg: >-
-      {{ (gf_rule.results | default([])
-          | map(attribute='item.uid') | list | join(', ') ~ ' -> '
-          ~ (alert_email | default('nikita@gs-bm.com')))
-         if (gf_rule.results | default([]) | selectattr('status', 'defined')
-             | rejectattr('status', 'in', [200, 201, 202]) | list | length == 0)
-         else 'Some rules NOT provisioned. The folder may need creating first, or apply
-               grafana/alerting/signal-log-alerts.yaml by hand. Detail: '
-              ~ (gf_rule.results | default([]) | map(attribute='status') | list | string) }}
+      {{ alert_rule.groups[0].rules | map(attribute='uid') | list | join(', ')
+         ~ ' -> ' ~ (alert_email | default('nikita@gs-bm.com'))
+         ~ '  (created: ' ~ (gf_created.results | default([]) | rejectattr('skipped', 'defined') | list | length)
+         ~ ', already present: ' ~ (gf_rule.results | default([]) | rejectattr('skipped', 'defined') | list | length) ~ ')' }}

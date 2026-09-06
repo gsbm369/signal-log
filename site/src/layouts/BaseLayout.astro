@@ -1,4 +1,5 @@
 ---
+import { createHash } from 'node:crypto';
 import '../styles/global.css';
 
 interface Props {
@@ -10,6 +11,54 @@ const { title, description = 'Technology news ranked by a deterministic heuristi
 const year = new Date().getFullYear();
 // Absolute, derived from `site` (which comes from public/CNAME).
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:8080').href;
+
+// The one script this site runs. Kept as a string so its CSP hash can be
+// computed from the exact bytes that ship — a hash that drifts from the script
+// is a control that silently stops applying, which is the failure mode this
+// project keeps finding.
+const revealScript = `const io = new IntersectionObserver(
+  (entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }
+  },
+  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+);
+document.querySelectorAll('.reveal').forEach((el) => io.observe(el));`;
+
+const scriptHash = `'sha256-${createHash('sha256').update(revealScript).digest('base64')}'`;
+
+// Content-Security-Policy, scoped to what this site actually loads:
+//   self            its own CSS, favicon and RSS
+//   fonts.googleapis.com   the Google Fonts stylesheet
+//   fonts.gstatic.com      the font files that stylesheet pulls
+// Outbound <a href> links to source articles are navigation, not resource
+// loads, so they need no allowance.
+//
+// script-src carries a hash rather than 'unsafe-inline' — there is exactly one
+// script and its bytes are known at build time.
+//
+// style-src DOES need 'unsafe-inline': the design sets ~165 inline `style`
+// attributes per page for the heat meters, logo grid and palette swatches.
+// Hashes do not apply to style attributes, so removing this would mean
+// refactoring those into classes. Recorded rather than hidden.
+//
+// frame-ancestors is ABSENT and cannot be added: it is ignored in a meta tag
+// and can only be delivered as a real header, which GitHub Pages does not
+// allow. See the README — clickjacking protection is unavailable on this host.
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' ${scriptHash}`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data:",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'none'",
+  "frame-src 'none'",
+  'upgrade-insecure-requests',
+].join('; ');
 ---
 <html lang="en">
   <head>
@@ -27,6 +76,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:80
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="theme-color" content="#08090a" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="signal.log" href="/rss.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -74,19 +125,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:80
       </div>
     </footer>
 
-    <script>
-      const io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (e.isIntersecting) {
-              e.target.classList.add('in');
-              io.unobserve(e.target);
-            }
-          }
-        },
-        { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-      );
-      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
-    </script>
+    <script type="module" is:inline set:html={revealScript}></script>
   </body>
 </html>

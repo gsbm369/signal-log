@@ -422,7 +422,10 @@
       tags: [proxy]
 
     - name: Register the site with Nginx Proxy Manager
-      ansible.builtin.include_tasks: tasks/npm_proxy_host.yml
+      ansible.builtin.include_tasks:
+        file: tasks/npm_proxy_host.yml
+        apply:
+          tags: [proxy]
       when:
         - blog_hostname is defined
         - npm_email is defined
@@ -430,8 +433,13 @@
       tags: [proxy]
 
     # ------------------------------------------------- alerting (opt-in)
+    # `apply` is required: tasks inside a dynamic include do NOT inherit the
+    # include's tags, so `--tags alert` would include the file and run nothing.
     - name: Provision the Grafana alert
-      ansible.builtin.include_tasks: tasks/grafana_alert.yml
+      ansible.builtin.include_tasks:
+        file: tasks/grafana_alert.yml
+        apply:
+          tags: [alert]
       when: (grafana_user is defined and grafana_password is defined) or grafana_token is defined
       tags: [alert]
 
