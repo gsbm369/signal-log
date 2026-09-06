@@ -8,7 +8,7 @@ export async function GET(context) {
 
   return rss({
     title: 'signal.log',
-    description: 'AI-curated technology briefing. Tech news, minus the noise.',
+    description: 'Technology news ranked by a deterministic heuristic — recency, source weight and topic relevance. No model in the ranking. Tech news, minus the noise.',
     site: context.site,
     trailingSlash: true,
     // Custom fields live in their own namespace so they cannot collide with

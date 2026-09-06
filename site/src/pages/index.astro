@@ -15,7 +15,10 @@ const lastRun = latest
   : '—';
 ---
 
-<BaseLayout title="signal.log — AI-curated technology briefing">
+<BaseLayout
+  title="signal.log — technology news, deterministically ranked"
+  description="Tech feeds ranked by an open, deterministic heuristic: recency decay, source weighting, topic relevance, deduplication. No model decides what appears."
+>
   <!-- Hero -->
   <section class="reveal in">
     <div class="panel p-8 backdrop-blur-[10px] sm:p-10">
@@ -47,9 +50,9 @@ const lastRun = latest
           </h1>
           <p class="mt-1 font-mono text-[1rem] text-accent">tech news, minus the noise</p>
           <p class="mt-4 max-w-[520px] font-mono text-[0.86rem] leading-[1.65] text-dim">
-            An autonomous briefing. Every few hours a bot pulls the major tech feeds,
-            asks Claude which stories actually matter, and rewrites them short.
-            No press releases, no engagement bait.
+            An automated briefing. Every few hours a job pulls the major tech feeds and
+            ranks them with an open, deterministic heuristic — recency, source weight,
+            topic relevance, deduplication. No model decides what appears.
           </p>
         </div>
       </div>
@@ -73,7 +76,7 @@ const lastRun = latest
         </div>
         <div class="grid grid-cols-[86px_1fr] gap-4">
           <dt class="font-mono text-accent">engine</dt>
-          <dd class="font-mono text-[0.85rem] text-dim">claude · astro · docker</dd>
+          <dd class="font-mono text-[0.85rem] text-dim">python · astro · github actions</dd>
         </div>
       </dl>
 
@@ -92,7 +95,7 @@ const lastRun = latest
     <SectionHead
       idx="01"
       title="The Feed"
-      lead="Ranked by a heat score Claude assigns to each story — how much it actually changes things, not how loudly it was announced."
+      lead="Ranked by score, not by recency alone: exponential decay on age, a narrow per-source weight, and topic relevance read from the headline rather than the body."
     />
 
     {
@@ -117,9 +120,9 @@ const lastRun = latest
     <div class="grid gap-[1.1rem] sm:grid-cols-3">
       {
         [
-          { n: '01', t: 'Collect', d: 'A Python job pulls RSS from Hacker News, TechCrunch, Ars Technica, The Verge and more.' },
-          { n: '02', t: 'Curate', d: 'Claude reads the batch, drops the noise, scores what is left on genuine significance, and rewrites it.' },
-          { n: '03', t: 'Publish', d: 'Summaries land as Markdown, Astro rebuilds the static site, nginx serves it. All inside Docker.' },
+          { n: '01', t: 'Collect', d: 'A Python job pulls RSS from Hacker News, TechCrunch, Ars Technica, The Verge, IEEE Spectrum and more.' },
+          { n: '02', t: 'Rank', d: 'A deterministic heuristic scores each story, drops routine digests, collapses duplicates across sources, and caps any one feed.' },
+          { n: '03', t: 'Publish', d: 'Survivors land as Markdown and are pushed to GitHub. Actions builds the site and deploys it to Pages.' },
         ].map((s) => (
           <div class="panel panel-hover reveal p-6">
             <span class="font-mono text-[0.75rem] text-accent">{s.n}</span>

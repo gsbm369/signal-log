@@ -15,7 +15,7 @@ const date = pubDate.toLocaleDateString('en-GB', {
   year: 'numeric',
 });
 
-// Heat meter: 5 bars, filled proportionally to the score Claude assigned.
+// Heat meter: 5 bars, filled proportionally to the ranker's score for this run.
 const bars = Math.max(1, Math.round((heat / 100) * 5));
 const num = String(index + 1).padStart(2, '0');
 ---
