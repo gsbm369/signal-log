@@ -1,0 +1,51 @@
+# Dependabot keeps the SHA pins in .github/workflows/deploy.yml current.
+#
+# Pinning actions to a full commit SHA removes the "floating tag is an
+# unreviewed dependency" problem but replaces it with a slower one: a pin that
+# is never updated is an unpatched dependency holding `pages: write` and
+# `id-token: write`. Dependabot understands SHA pins — it bumps the SHA and
+# attaches the changelog, so each update is a reviewable diff rather than a
+# silent upstream change.
+#
+# That pairing is the point: the pin makes the dependency explicit, and this
+# file makes it maintained. Either alone is worse than neither.
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Asia/Jerusalem
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+    labels: [dependencies, github-actions]
+    groups:
+      # One PR for routine action bumps; majors stay separate so a breaking
+      # change to the deploy pipeline is never mixed into a batch.
+      actions-minor-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: "/site"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Asia/Jerusalem
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    labels: [dependencies, npm]
+    groups:
+      astro:
+        patterns: ["astro", "@astrojs/*"]
+      tailwind:
+        patterns: ["tailwindcss", "@tailwindcss/*"]
+      dev-minor-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
