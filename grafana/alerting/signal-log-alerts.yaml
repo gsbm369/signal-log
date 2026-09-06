@@ -6,10 +6,18 @@
 # Replace LOKI_DATASOURCE_UID if applying this file by hand; the Ansible task
 # looks the UID up automatically.
 #
-# What it watches: whether content actually reached production. `exit_code = 0`
-# alone is not enough — a cycle can build cleanly, find nothing new, and be a
-# perfectly healthy no-op. `reached_production` covers "published", "nothing to
-# publish" and "push deliberately skipped", and excludes every failure mode.
+# What it watches: ABSENCE, not failure.
+#
+# Everything else in this project catches loud failures — a build that breaks, a
+# push that is rejected, a workflow that times out. A curator that simply dies
+# produces none of those. It produces nothing at all, and an alert keyed on an
+# error state cannot see that. This rule counts SUCCESSES and fires when the
+# count reaches zero, so silence and failure are the same signal.
+#
+# `exit_code = 0` alone is not enough — a cycle can build cleanly, find nothing
+# new, and be a perfectly healthy no-op. deploy_status "ok" (deployed) and
+# "not_needed" (nothing new, feeds fine) both count; every failure mode and
+# deliberately-skipped runs do not.
 apiVersion: 1
 
 contactPoints:
@@ -62,9 +70,18 @@ groups:
               datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
               editorMode: code
               queryType: instant
+              # `or vector(0)` is load-bearing. Without it, total silence returns an
+              # EMPTY result and the rule depends on noDataState to notice. With it,
+              # silence evaluates to 0 and trips the threshold directly — verified
+              # against a job label carrying no records at all.
+              #
+              # Keyed on deploy_status rather than the derived reached_production
+              # boolean, so it reads correctly against records written before that
+              # field was tightened. "skipped" (SKIP_PUSH) is excluded: a run that
+              # chose not to publish is not evidence that publishing works.
               expr: >-
                 sum(count_over_time({job="signal-log"} | json
-                    | exit_code = 0 | reached_production = "true" [48h])) or vector(0)
+                    | exit_code = 0 | deploy_status =~ "ok|not_needed" [48h])) or vector(0)
 
           - refId: THRESHOLD
             datasourceUid: __expr__

@@ -110,6 +110,24 @@ failure most easily mistaken for success.
 Commits are conditional — `git diff --cached --quiet || commit`. An unconditional 6-hourly
 commit turns both the git history and the Actions log into noise inside a week.
 
+### Keeping the SHA pins current
+
+Pinning actions to a commit SHA removes one problem and creates a slower one. A floating
+tag is an unreviewed dependency; a pin that is never updated is an *unpatched* dependency,
+and this one holds `pages: write` and `id-token: write`.
+
+`.github/dependabot.yml` is what makes the pinning sustainable rather than a one-time
+gesture. Dependabot understands SHA pins: it bumps the SHA and attaches the changelog, so
+every update arrives as a reviewable diff instead of a silent upstream change. Minor and
+patch bumps are grouped into one PR; majors stay separate, so a breaking change to the
+deploy pipeline is never buried in a batch. It also watches `site/` for npm.
+
+The pin and the updater are a pair. Either alone is worse than neither: a pin without an
+updater rots, and an updater without a pin is just a floating tag with extra steps.
+
+Like the workflow, this file must be committed by a human — the deploy token deliberately
+lacks Workflows scope.
+
 ### Alerting
 
 `grafana/alerting/signal-log-alerts.yaml` — one rule: **no successful cycle reached
@@ -119,10 +137,30 @@ production in 48h → email**, via the Postfix relay Grafana is already pointed 
 ansible-playbook deploy.yml -e grafana_user=admin -e grafana_password=... --tags alert
 ```
 
-It watches `reached_production`, not `exit_code`. A cycle that builds cleanly and finds
-nothing new is a healthy no-op, and `reached_production` covers published / nothing-to-
-publish / deliberately-skipped while excluding every failure mode. `noDataState: Alerting`,
-because a curator that has stopped reporting is worse than one reporting failures.
+**It alerts on absence, not on failure.** Everything else here catches loud failures — a
+broken build, a rejected push, a workflow that times out. A curator that simply dies
+produces none of those; it produces nothing at all, and a rule keyed on an error state
+cannot see that. So the rule counts *successes* and fires when the count reaches zero.
+Silence and failure become the same signal.
+
+The `or vector(0)` in the expression is load-bearing. Without it, total silence returns an
+empty result and the rule depends on `noDataState` to notice. With it, silence evaluates to
+`0` and trips the threshold directly — verified against a job label carrying no records at
+all, and then against real silence with cron stopped:
+
+```
+cron stopped, 3m window   -> 0   threshold lt 1  ->  WOULD FIRE
+cron restored, one cycle  -> 1   threshold lt 1  ->  would not fire
+```
+
+`noDataState: Alerting` remains as a second line of defence for the case where Loki itself
+is unreachable.
+
+A cycle that builds cleanly and finds nothing new is a healthy no-op, so `deploy_status`
+`ok` and `not_needed` both count. `skipped` does **not**: a `SKIP_PUSH` run chose not to
+publish and is not evidence that publishing works. Counting it let local testing inflate
+the window — 9 records in a 48h window, of which only 4 were genuine. Such runs now also
+carry `trigger: test`, so they stay visible in Grafana without touching the alert.
 
 The rule routes straight to its own contact point via `notification_settings`, so the
 existing homelab notification policy tree is not touched.

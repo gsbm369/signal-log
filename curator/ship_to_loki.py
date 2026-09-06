@@ -126,9 +126,19 @@ def main() -> int:
         "publish_status": args.publish_status,
         "push_status": args.push_status,
         "deploy_status": args.deploy_status,
-        # The single field an alert should watch: did content reach production
-        # this cycle, or was there legitimately nothing to publish?
-        "reached_production": args.deploy_status in ("ok", "not_needed", "skipped"),
+        # The single field the alert watches: did this cycle actually leave the
+        # pipeline in a good state?
+        #
+        #   ok          content deployed
+        #   not_needed  nothing new to publish — feeds worked, site is current
+        #
+        # "skipped" (SKIP_PUSH) is deliberately NOT counted. A run that chose not
+        # to publish is not evidence that publishing works, and counting it let
+        # local testing inflate the alert window and mask real silence.
+        "reached_production": args.deploy_status in ("ok", "not_needed"),
+        # Provenance, so manual runs are visible in Grafana without affecting
+        # the alert. Set by the caller; cron leaves it unset.
+        "trigger": os.environ.get("CYCLE_TRIGGER", "cron"),
         "exit_code": args.exit_code,
         "duration_s": round(args.duration, 1),
         "curator_duration_s": m.get("duration_s", 0.0),

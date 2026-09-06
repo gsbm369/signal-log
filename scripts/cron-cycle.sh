@@ -43,6 +43,7 @@ ship() {
   local dur=$(( $(date +%s) - CYCLE_START ))
   STATE_DIR="$STATE_DIR" LOKI_URL="$LOKI_URL" LOKI_JOB="$LOKI_JOB" \
   LOKI_HOST_LABEL="$LOKI_HOST_LABEL" \
+  CYCLE_TRIGGER="${CYCLE_TRIGGER:-$([ "${SKIP_PUSH:-0}" = "1" ] && echo test || echo cron)}" \
   python3 "${ROOT}/curator/ship_to_loki.py" \
     --build-status   "$BUILD_STATUS" \
     --publish-status "$PUBLISH_STATUS" \
