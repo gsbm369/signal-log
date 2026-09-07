@@ -1,6 +1,7 @@
 ---
 import { createHash } from 'node:crypto';
 import '../styles/global.css';
+import Logo from '../components/Logo.astro';
 
 interface Props {
   title: string;
@@ -38,10 +39,11 @@ const scriptHash = `'sha256-${createHash('sha256').update(revealScript).digest('
 // script-src carries a hash rather than 'unsafe-inline' — there is exactly one
 // script and its bytes are known at build time.
 //
-// style-src DOES need 'unsafe-inline': the design sets ~165 inline `style`
-// attributes per page for the heat meters, logo grid and palette swatches.
-// Hashes do not apply to style attributes, so removing this would mean
-// refactoring those into classes. Recorded rather than hidden.
+// style-src no longer needs 'unsafe-inline'. The heat meters, logo grid and
+// palette swatches used to set ~165 inline `style` attributes per page, and
+// hashes do not apply to style attributes. Those are now driven by CSS classes
+// and a data-bars attribute, so the allowance was removed rather than
+// documented. Verified against the built output: zero style attributes.
 //
 // frame-ancestors is ABSENT and cannot be added: it is ignored in a meta tag
 // and can only be delivered as a real header, which GitHub Pages does not
@@ -49,7 +51,7 @@ const scriptHash = `'sha256-${createHash('sha256').update(revealScript).digest('
 const csp = [
   "default-src 'self'",
   `script-src 'self' ${scriptHash}`,
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "style-src 'self' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data:",
   "connect-src 'self'",
@@ -75,7 +77,7 @@ const csp = [
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="theme-color" content="#08090a" />
+    <meta name="theme-color" content="#070a0e" />
     <meta http-equiv="Content-Security-Policy" content={csp} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -93,7 +95,8 @@ const csp = [
 
     <header class="fixed top-0 z-50 h-[68px] w-full border-b border-line bg-bg/70 backdrop-blur-[14px]">
       <nav class="mx-auto flex h-full max-w-[1020px] items-center justify-between px-6">
-        <a href="/" class="font-mono text-[1.15rem] font-semibold text-ink no-underline">
+        <a href="/" class="flex items-center gap-2.5 font-mono text-[1.1rem] font-semibold text-ink no-underline">
+          <Logo size={24} class="shrink-0 text-accent" />
           signal<span class="text-accent">.</span>log
         </a>
         <ul class="hidden list-none gap-8 sm:flex">

@@ -17,7 +17,7 @@ const date = pubDate.toLocaleDateString('en-GB', {
   month: 'long',
   year: 'numeric',
 });
-const bars = Math.max(1, Math.round((heat / 100) * 5));
+const bars = Math.max(1, Math.min(5, Math.round((heat / 100) * 5)));
 ---
 
 <BaseLayout title={`${title} — signal.log`} description={description}>
@@ -36,15 +36,8 @@ const bars = Math.max(1, Math.round((heat / 100) * 5));
         <span class="text-faint">{date}</span>
         <span class="text-faint">&middot;</span>
         <span class="text-faint">{readMinutes} min read</span>
-        <span class="ml-auto flex items-center gap-[3px]" title={`Heat score ${heat}/100`}>
-          {
-            Array.from({ length: 5 }).map((_, i) => (
-              <span
-                class="block h-[10px] w-[3px] rounded-full"
-                style={`background:${i < bars ? 'var(--color-accent)' : 'var(--color-faint)'};opacity:${i < bars ? 1 : 0.45}`}
-              />
-            ))
-          }
+        <span class="heat ml-auto" data-bars={bars} title={`Heat score ${heat}/100`}>
+          <i /><i /><i /><i /><i />
         </span>
       </div>
 

@@ -1,0 +1,47 @@
+---
+/*
+  The GS-BM mark, redrawn as vector.
+
+  The supplied asset is a raster marketing banner — a photograph with the mark
+  composited over it. Cropping it would carry the photo's background and would
+  not recolour, scale or sit on a dark page. This is the same glyph rebuilt as
+  paths: a cloud holding server blocks.
+
+  It also folds in the 3x3 block grid the site already used as its mark, so the
+  two motifs become one thing rather than two competing ones.
+*/
+interface Props {
+  size?: number;
+  class?: string;
+}
+const { size = 28, class: className = '' } = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class={className}
+  aria-hidden="true"
+  focusable="false"
+>
+  <!-- Cloud silhouette, open on the right so the blocks read as contained
+       by it rather than stamped on top. -->
+  <path
+    d="M44 47H19.5C12.6 47 7 41.6 7 34.9c0-6.1 4.6-11.2 10.7-12.1C19.6 15.4 26.2 10 34 10c8.4 0 15.4 6.2 16.5 14.3"
+    stroke="currentColor"
+    stroke-width="4.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.9"
+  />
+
+  <!-- Server blocks: three columns, stepped, echoing a rack. -->
+  <rect x="34.5" y="30" width="7.5" height="7.5" rx="1.8" fill="currentColor" />
+  <rect x="44.5" y="30" width="7.5" height="7.5" rx="1.8" fill="currentColor" opacity="0.55" />
+  <rect x="44.5" y="40" width="7.5" height="7.5" rx="1.8" fill="currentColor" />
+  <rect x="54.5" y="40" width="7.5" height="7.5" rx="1.8" fill="currentColor" opacity="0.35" />
+  <rect x="34.5" y="40" width="7.5" height="7.5" rx="1.8" fill="currentColor" opacity="0.35" />
+</svg>

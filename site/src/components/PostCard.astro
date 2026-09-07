@@ -1,66 +1,123 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
+/*
+  One component, three densities. The ranker emits a score; the page should
+  spend space in proportion to it.
+
+    lead   the top story — full width, room to breathe
+    brief  ranks 2-4    — a three-up row, medium weight
+    wire   the rest     — one dense line each, scannable
+
+  Heat is rendered with a data attribute rather than inline styles so the
+  markup carries no `style` attributes at all (see global.css).
+*/
 interface Props {
   post: CollectionEntry<'posts'>;
   index: number;
+  variant?: 'lead' | 'brief' | 'wire';
 }
 
-const { post, index } = Astro.props;
+const { post, index, variant = 'brief' } = Astro.props;
 const { title, description, pubDate, source, tags, heat, readMinutes } = post.data;
 
-const date = pubDate.toLocaleDateString('en-GB', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-});
-
-// Heat meter: 5 bars, filled proportionally to the ranker's score for this run.
-const bars = Math.max(1, Math.round((heat / 100) * 5));
 const num = String(index + 1).padStart(2, '0');
+const bars = Math.max(1, Math.min(5, Math.round((heat / 100) * 5)));
+const href = `/posts/${post.id}/`;
+
+const dateFull = pubDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+const dateShort = pubDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+const iso = pubDate.toISOString();
 ---
 
-<article class="panel panel-hover reveal group relative overflow-hidden p-7 sm:p-8">
-  <a href={`/posts/${post.id}/`} class="absolute inset-0 z-10" aria-label={title}></a>
+{
+  variant === 'lead' && (
+    <article class="lead reveal group relative p-8 sm:p-10">
+      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
-  <div class="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[0.75rem]">
-    <span class="text-accent">{num}</span>
-    <span class="text-faint">{date}</span>
-    <span class="text-faint">&middot;</span>
-    <span class="text-dim">{source}</span>
-    <span class="text-faint">&middot;</span>
-    <span class="text-faint">{readMinutes} min</span>
-
-    <span class="ml-auto flex items-center gap-[3px]" title={`Heat score ${heat}/100`}>
-      {
-        Array.from({ length: 5 }).map((_, i) => (
-          <span
-            class="block h-[10px] w-[3px] rounded-full"
-            style={`background:${i < bars ? 'var(--color-accent)' : 'var(--color-faint)'};opacity:${i < bars ? 1 : 0.45}`}
-          />
-        ))
-      }
-    </span>
-  </div>
-
-  <h2 class="font-head text-[1.22rem] font-semibold leading-snug tracking-[-0.4px] text-ink transition-colors duration-300 group-hover:text-accent sm:text-[1.35rem]">
-    {title}
-  </h2>
-
-  <p class="mt-3 text-[0.94rem] leading-[1.7] text-dim">
-    {description}
-  </p>
-
-  <div class="mt-5 flex flex-wrap items-center gap-2">
-    {
-      tags.slice(0, 4).map((tag) => (
-        <span class="rounded-full border border-line px-[0.6rem] py-[0.2rem] font-mono text-[0.68rem] lowercase text-faint transition-colors duration-300 group-hover:border-accent/30 group-hover:text-dim">
-          {tag}
+      <div class="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[0.75rem]">
+        <span class="rounded-md bg-accent/15 px-2 py-[0.15rem] text-accent">top story</span>
+        <time datetime={iso} class="text-faint">{dateFull}</time>
+        <span class="text-faint">&middot;</span>
+        <span class="text-dim">{source}</span>
+        <span class="text-faint">&middot;</span>
+        <span class="text-faint">{readMinutes} min</span>
+        <span class="heat ml-auto" data-bars={bars} title={`Heat ${heat}/100`}>
+          <i /><i /><i /><i /><i />
         </span>
-      ))
-    }
-    <span class="ml-auto font-mono text-[0.75rem] text-faint transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent">
-      read &rarr;
-    </span>
-  </div>
-</article>
+      </div>
+
+      <h2 class="font-head text-[1.7rem] font-bold leading-[1.15] tracking-[-0.8px] text-ink transition-colors duration-300 group-hover:text-accent sm:text-[2.15rem]">
+        {title}
+      </h2>
+
+      <p class="mt-4 max-w-[62ch] text-[1rem] leading-[1.75] text-dim">{description}</p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-2">
+        {tags.slice(0, 4).map((tag) => (
+          <span class="rounded-full border border-line px-[0.65rem] py-[0.22rem] font-mono text-[0.7rem] lowercase text-faint transition-colors duration-300 group-hover:border-accent/30 group-hover:text-dim">
+            {tag}
+          </span>
+        ))}
+        <span class="ml-auto font-mono text-[0.78rem] text-faint transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent">
+          read &rarr;
+        </span>
+      </div>
+    </article>
+  )
+}
+
+{
+  variant === 'brief' && (
+    <article class="panel panel-hover reveal group relative flex flex-col overflow-hidden p-6">
+      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
+
+      <div class="mb-3 flex items-center gap-2 font-mono text-[0.72rem]">
+        <span class="text-accent">{num}</span>
+        <span class="truncate text-dim">{source}</span>
+        <span class="heat heat--sm ml-auto" data-bars={bars} title={`Heat ${heat}/100`}>
+          <i /><i /><i /><i /><i />
+        </span>
+      </div>
+
+      <h3 class="font-head text-[1.06rem] font-semibold leading-snug tracking-[-0.3px] text-ink transition-colors duration-300 group-hover:text-accent">
+        {title}
+      </h3>
+
+      <p class="mt-2.5 line-clamp-3 text-[0.88rem] leading-[1.65] text-dim">{description}</p>
+
+      <div class="mt-4 flex items-center gap-2 font-mono text-[0.7rem] text-faint">
+        <time datetime={iso}>{dateShort}</time>
+        <span>&middot;</span>
+        <span>{readMinutes} min</span>
+      </div>
+    </article>
+  )
+}
+
+{
+  variant === 'wire' && (
+    <article class="wire-row reveal group">
+      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
+
+      <span class="font-mono text-[0.75rem] text-faint">{num}</span>
+
+      <div class="min-w-0">
+        <h3 class="wire-title font-head text-[0.98rem] font-medium leading-snug tracking-[-0.2px] text-ink">
+          {title}
+        </h3>
+        <div class="wire-meta mt-1 flex flex-wrap items-center gap-x-2 font-mono text-[0.7rem] text-faint">
+          <span class="text-dim">{source}</span>
+          <span>&middot;</span>
+          <time datetime={iso}>{dateShort}</time>
+          <span>&middot;</span>
+          <span>{readMinutes} min</span>
+        </div>
+      </div>
+
+      <span class="heat heat--sm" data-bars={bars} title={`Heat ${heat}/100`}>
+        <i /><i /><i /><i /><i />
+      </span>
+    </article>
+  )
+}
