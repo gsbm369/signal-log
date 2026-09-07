@@ -80,7 +80,17 @@
   loop_control:
     label: "{{ item.uid }} ({{ item.type }})"
   register: gf_cp
-  changed_when: gf_cp.status in [200, 201, 202]
+  # A PUT always returns 200, so status alone reports `changed` on every run.
+  # Compare the desired settings against what Grafana already holds and report
+  # changed only when they actually differ, or when the integration is new.
+  changed_when: >-
+    {{ (gf_cps.json | selectattr('uid', 'equalto', item.uid) | list | length == 0)
+       or ((gf_cps.json | selectattr('uid', 'equalto', item.uid) | list | first).settings
+           | default({}) | combine(
+               item.settings | combine({'addresses': alert_email | default('nikita@gs-bm.com')})
+               if item.type == 'email' else item.settings)
+           != (gf_cps.json | selectattr('uid', 'equalto', item.uid) | list | first).settings
+              | default({})) }}
 
 # The rules cannot be created before their folder exists — Grafana returns
 # "invalid alert rule: folder does not exist" rather than creating it.
