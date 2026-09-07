@@ -6,6 +6,7 @@ source: "Hacker News Best"
 sourceUrl: "https://arxiv.org/abs/2609.03344"
 tags: ["tech"]
 heat: 72
+image: "https://static.arxiv.org/icons/twitter/arxiv-logo-twitter-square.png"
 readMinutes: 1
 ---
 

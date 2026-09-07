@@ -7,6 +7,7 @@ sourceUrl: "https://github.com/zedeus/nitter/commit/1428b4c2b4246f92a7e5b2673438
 tags: ["tech"]
 heat: 100
 score: 0.81136
+image: "https://opengraph.githubassets.com/92962a83efd8bc2e3e8432afc9522dcfe42750f8345dee563ecb199ee76f3aed/zedeus/nitter/commit/1428b4c2b4246f92a7e5b2673438e5fb39fcc4a3"
 readMinutes: 1
 ---
 

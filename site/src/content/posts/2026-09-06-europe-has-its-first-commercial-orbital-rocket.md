@@ -7,6 +7,7 @@ sourceUrl: "https://www.theverge.com/science/990906/isar-aerospace-europe-orbita
 tags: ["tech"]
 heat: 86
 score: 0.98739
+image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/c-Isar-Aerospace-Flight-2_2026-09-05-224332_ylbv.jpg?quality=90&strip=all&crop=0%2C10.76363770124%2C100%2C78.472724597521&w=1200"
 readMinutes: 1
 ---
 

@@ -6,6 +6,7 @@ source: "Hacker News"
 sourceUrl: "https://github.com/zedeus/nitter"
 tags: ["tech"]
 heat: 89
+image: "https://opengraph.githubassets.com/db9e74d8bcfbefbb2c235ad09923706b14b6e25c779439fc01e3ac906c88fc6d/zedeus/nitter"
 readMinutes: 1
 ---
 

@@ -7,6 +7,7 @@ sourceUrl: "https://techcrunch.com/2026/09/05/hikers-rescued-after-using-google-
 tags: ["gemini"]
 heat: 86
 score: 0.98477
+image: "https://techcrunch.com/wp-content/uploads/2017/11/gettyimages-677147499.jpg?resize=1200,600"
 readMinutes: 1
 ---
 

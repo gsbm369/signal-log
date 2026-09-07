@@ -7,6 +7,7 @@ sourceUrl: "https://www.theverge.com/ai-artificial-intelligence/990932/seattle-t
 tags: ["openai"]
 heat: 80
 score: 1.16432
+image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/gettyimages-2292926705.jpg?quality=90&strip=all&crop=0%2C10.654918655606%2C100%2C78.690162688789&w=1200"
 readMinutes: 1
 ---
 

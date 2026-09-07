@@ -7,6 +7,7 @@ sourceUrl: "https://techcrunch.com/2026/09/05/seattle-times-and-newsday-are-the-
 tags: ["openai"]
 heat: 90
 score: 1.0482
+image: "https://techcrunch.com/wp-content/uploads/2023/03/artifact-newspaper-icon.jpg?resize=1200,645"
 readMinutes: 1
 ---
 

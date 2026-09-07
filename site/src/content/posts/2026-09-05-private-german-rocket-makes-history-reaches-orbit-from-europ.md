@@ -6,6 +6,7 @@ source: "Hacker News"
 sourceUrl: "https://www.space.com/space-exploration/launches-spacecraft/isar-aerospace-second-launch-norway-andoya-spaceport-spectrum-rocket"
 tags: ["tech"]
 heat: 100
+image: "https://cdn.mos.cms.futurecdn.net/CQvDAjNriBWKJva9TUiy4Z-2560-80.jpg"
 readMinutes: 1
 ---
 

@@ -7,6 +7,7 @@ sourceUrl: "https://www.pbs.org/newshour/science/global-warming-will-exceed-1-5-
 tags: ["tech"]
 heat: 77
 score: 0.5209
+image: "https://d3i6fh83elv35t.cloudfront.net/static/2026/09/2026-09-03T192943Z_1189723666_RC2NBNAQY6VR_RTRMADP_3_CLIMATE-CHANGE-SWISS-GLACIERS-1024x683.jpg"
 readMinutes: 1
 ---
 

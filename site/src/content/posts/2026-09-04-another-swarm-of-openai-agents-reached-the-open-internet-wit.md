@@ -6,6 +6,7 @@ source: "TechCrunch"
 sourceUrl: "https://techcrunch.com/2026/09/04/another-swarm-of-openai-agents-reached-the-open-internet-without-the-frontier-labs-knowledge/"
 tags: ["openai"]
 heat: 83
+image: "https://techcrunch.com/wp-content/uploads/2026/09/Screenshot-2026-09-04-at-8.49.39-AM-e1788537064907.png?w=839"
 readMinutes: 1
 ---
 

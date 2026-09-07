@@ -6,6 +6,7 @@ source: "The Verge"
 sourceUrl: "https://www.theverge.com/tech/990895/boox-picco-tiny-e-reader-november-ifa"
 tags: ["tech"]
 heat: 84
+image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/Onyx-Boox-Picco-1.jpeg?quality=90&strip=all&crop=0%2C31.646199642026%2C100%2C39.267015706806&w=1200"
 readMinutes: 1
 ---
 

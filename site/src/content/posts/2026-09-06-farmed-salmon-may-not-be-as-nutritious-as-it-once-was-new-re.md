@@ -6,6 +6,7 @@ source: "Ars Technica"
 sourceUrl: "https://arstechnica.com/science/2026/09/farmed-salmon-may-not-be-as-nutritious-as-it-once-was-new-research-suggests/"
 tags: ["tech"]
 heat: 82
+image: "https://cdn.arstechnica.net/wp-content/uploads/2026/09/GettyImages-2198085330.jpg"
 readMinutes: 1
 ---
 

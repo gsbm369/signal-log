@@ -7,6 +7,7 @@ sourceUrl: "https://austinhenley.com/blog/python1024.html"
 tags: ["python"]
 heat: 72
 score: 0.98273
+image: "https://austinhenley.com/blog/images/python1024.png"
 readMinutes: 1
 ---
 

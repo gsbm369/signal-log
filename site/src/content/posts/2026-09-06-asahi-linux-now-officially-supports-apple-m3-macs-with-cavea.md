@@ -7,6 +7,7 @@ sourceUrl: "https://www.phoronix.com/news/Asahi-Linux-Official-M3"
 tags: ["linux"]
 heat: 100
 score: 1.25958
+image: "https://www.phoronix.net/image.php?id=2026&image=m3_macs"
 readMinutes: 1
 ---
 

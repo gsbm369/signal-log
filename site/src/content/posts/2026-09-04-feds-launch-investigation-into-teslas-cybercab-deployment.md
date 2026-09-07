@@ -6,6 +6,7 @@ source: "TechCrunch"
 sourceUrl: "https://techcrunch.com/2026/09/04/feds-launch-investigation-into-teslas-cybercab-deployment/"
 tags: ["tech"]
 heat: 95
+image: "https://techcrunch.com/wp-content/uploads/2026/09/tesla-cybercab-street-getty.jpg?resize=1200,800"
 readMinutes: 1
 ---
 

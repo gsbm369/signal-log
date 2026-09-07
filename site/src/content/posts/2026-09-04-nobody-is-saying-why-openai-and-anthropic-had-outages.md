@@ -6,6 +6,7 @@ source: "Hacker News Best"
 sourceUrl: "https://www.wired.com/story/nobody-is-saying-why-openai-and-anthropic-had-outages-today/"
 tags: ["anthropic", "openai"]
 heat: 96
+image: "https://media.wired.com/photos/6a99e1be00d080b32f7841cc/191:100/w_1280,c_limit/Security_A%20Wave%20of%20Outages%20Hits%20Leading%20AI%20Chatbots_v1.jpg"
 readMinutes: 1
 ---
 

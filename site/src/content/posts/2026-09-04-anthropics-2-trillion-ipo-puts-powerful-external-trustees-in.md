@@ -6,6 +6,7 @@ source: "Ars Technica"
 sourceUrl: "https://arstechnica.com/ai/2026/09/anthropics-2-trillion-ipo-puts-powerful-external-trustees-in-spotlight/"
 tags: ["claude", "anthropic"]
 heat: 89
+image: "https://cdn.arstechnica.net/wp-content/uploads/2026/08/GettyImages-2285051730-1152x648.jpg"
 readMinutes: 1
 ---
 

@@ -6,6 +6,7 @@ source: "TechCrunch"
 sourceUrl: "https://techcrunch.com/2026/09/05/openai-confirms-wiki-incident-says-its-working-on-a-framework-for-more-disclosure/"
 tags: ["openai"]
 heat: 83
+image: "https://techcrunch.com/wp-content/uploads/2026/07/OpenAI-logo-in-Seoul.jpg?w=1024"
 readMinutes: 1
 ---
 

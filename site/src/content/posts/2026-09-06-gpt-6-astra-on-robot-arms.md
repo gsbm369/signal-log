@@ -7,6 +7,7 @@ sourceUrl: "https://openai.robocurve.org/gpt-6-astra/"
 tags: ["gpt", "openai"]
 heat: 93
 score: 1.11154
+image: "https://openai.robocurve.org/gpt-6-astra/og.jpg"
 readMinutes: 1
 ---
 

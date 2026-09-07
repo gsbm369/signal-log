@@ -7,6 +7,7 @@ sourceUrl: "https://techcrunch.com/2026/09/06/authors-push-back-as-publishers-an
 tags: ["anthropic"]
 heat: 75
 score: 1.0479
+image: "https://techcrunch.com/wp-content/uploads/2024/12/49688202642_09fd5ccc38_k.jpg?resize=1200,800"
 readMinutes: 1
 ---
 

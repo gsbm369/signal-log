@@ -6,6 +6,7 @@ source: "The Verge"
 sourceUrl: "https://www.theverge.com/tech/990873/earth-garden-globe-field-recordings"
 tags: ["tech"]
 heat: 100
+image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/Screenshot-2026-09-05-at-5.23.38-PM.png?quality=90&strip=all&crop=0%2C1.5344138631358%2C100%2C96.931172273728&w=1200"
 readMinutes: 1
 ---
 

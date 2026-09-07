@@ -21,6 +21,11 @@ const posts = defineCollection({
     // would get both wrong. Defaults to tech so posts written before categories
     // existed stay valid.
     category: z.enum(['tech', 'markets', 'gaming', 'world']).default('tech'),
+    // Lead image for the story, taken from the feed entry (media:content,
+    // media:thumbnail or enclosure). Optional: TechCrunch ships no image, and
+    // any feed can omit one, so every layout must survive its absence.
+    image: z.string().url().optional(),
+    imageAlt: z.string().optional(),
   }),
 });
 

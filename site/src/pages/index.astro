@@ -23,8 +23,8 @@ const shelves = shelfNames
   .filter((s) => s.items.length > 0);
 
 const lead = tech[0];
-const major = tech.slice(1, 5);
-const minor = tech.slice(5);
+const cards = tech.slice(1, 5);
+const rest = tech.slice(5);
 
 const sources = [...new Set(posts.map((p) => p.data.source))];
 const lastRun = lead
@@ -69,22 +69,29 @@ const lastRun = lead
         </p>
       ) : (
         <>
-          <PostCard post={lead} index={0} variant="lead" />
-          {major.map((post, i) => (
-            <PostCard post={post} index={i + 1} variant="major" />
-          ))}
+          <PostCard post={lead} index={0} variant="hero" />
 
-          {minor.length > 0 && (
+          {cards.length > 0 && (
+            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {cards.map((post, i) => (
+                <PostCard post={post} index={i + 1} variant="card" />
+              ))}
+            </div>
+          )}
+
+          {rest.length > 0 && (
             <>
-              <div class="mt-12 flex items-baseline justify-between border-t border-rule pt-3">
-                <h2 class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dim">
+              <div class="mt-12 mb-2 flex items-baseline justify-between border-t border-rule pt-4">
+                <h2 class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-dim">
                   the rest of the chart
                 </h2>
-                <span class="font-mono text-[0.66rem] text-faint">{minor.length} entries</span>
+                <span class="font-mono text-[0.66rem] text-faint">{rest.length} entries</span>
               </div>
-              {minor.map((post, i) => (
-                <PostCard post={post} index={i + 5} variant="minor" />
-              ))}
+              <div class="grid gap-1 md:grid-cols-2 md:gap-x-4">
+                {rest.map((post, i) => (
+                  <PostCard post={post} index={i + 5} variant="row" />
+                ))}
+              </div>
             </>
           )}
         </>

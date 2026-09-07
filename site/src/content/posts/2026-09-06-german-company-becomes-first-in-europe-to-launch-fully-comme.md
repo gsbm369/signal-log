@@ -6,6 +6,7 @@ source: "Ars Technica"
 sourceUrl: "https://arstechnica.com/space/2026/09/german-company-becomes-first-in-europe-to-launch-fully-commercial-orbital-rocket/"
 tags: ["tech"]
 heat: 84
+image: "https://cdn.arstechnica.net/wp-content/uploads/2026/09/Spectrum_mission_Onwards_and_upwards_liftoff_pillars-1152x648.jpg"
 readMinutes: 1
 ---
 

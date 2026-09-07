@@ -30,6 +30,11 @@ document.querySelectorAll('.reveal').forEach((el) => io.observe(el));`;
 const scriptHash = `'sha256-${createHash('sha256').update(revealScript).digest('base64')}'`;
 
 // Content-Security-Policy, scoped to what this site actually loads:
+//   img-src         widened to https: — story thumbnails come from each
+//                   publisher's own CDN (Ars, Verge, Polygon, BBC, ...), and
+//                   the list is not knowable at build time. Narrower would
+//                   mean proxying every image through this origin, which is
+//                   the better long-term answer and is noted in the README.
 //   self            its own CSS, favicon and RSS
 //   fonts.googleapis.com   the Google Fonts stylesheet
 //   fonts.gstatic.com      the font files that stylesheet pulls
@@ -53,7 +58,7 @@ const csp = [
   `script-src 'self' ${scriptHash}`,
   "style-src 'self' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
-  "img-src 'self' data:",
+  "img-src 'self' data: https:",
   "connect-src 'self'",
   "object-src 'none'",
   "base-uri 'self'",
@@ -77,7 +82,7 @@ const csp = [
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="theme-color" content="#080b10" />
+    <meta name="theme-color" content="#0e1116" />
     <meta http-equiv="Content-Security-Policy" content={csp} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -85,7 +90,7 @@ const csp = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=JetBrains+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>

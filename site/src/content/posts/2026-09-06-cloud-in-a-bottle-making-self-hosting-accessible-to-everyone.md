@@ -6,6 +6,7 @@ source: "Hacker News"
 sourceUrl: "https://cloudinabottle.org/blog/launch-post"
 tags: ["tech"]
 heat: 70
+image: "https://cloudinabottle.org/static/img/social-card.png"
 readMinutes: 1
 ---
 

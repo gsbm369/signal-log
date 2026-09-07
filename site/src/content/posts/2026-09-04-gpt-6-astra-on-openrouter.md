@@ -6,6 +6,7 @@ source: "Hacker News"
 sourceUrl: "https://openrouter.ai/openai/gpt-6-astra"
 tags: ["openai", "gpt"]
 heat: 90
+image: "https://openrouter.ai/en-US/openai/gpt-6-astra/opengraph-image-vc0va0?94276af93c26d908"
 readMinutes: 1
 ---
 

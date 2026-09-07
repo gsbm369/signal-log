@@ -6,6 +6,7 @@ source: "Hacker News"
 sourceUrl: "https://collusion.wiki/"
 tags: ["openai"]
 heat: 100
+image: "https://collusion.wiki/img/social.png?v=5ce9724f"
 readMinutes: 1
 ---
 

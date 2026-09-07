@@ -7,6 +7,7 @@ sourceUrl: "https://arstechnica.com/features/2026/09/the-ai-data-center-boom-is-
 tags: ["data-center"]
 heat: 96
 score: 1.59511
+image: "https://cdn.arstechnica.net/wp-content/uploads/2026/08/LakeMariner-1152x648.png"
 readMinutes: 1
 ---
 

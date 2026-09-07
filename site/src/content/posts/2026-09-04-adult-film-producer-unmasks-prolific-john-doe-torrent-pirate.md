@@ -6,6 +6,7 @@ source: "Hacker News Best"
 sourceUrl: "https://torrentfreak.com/adult-film-producer-unmasks-prolific-john-doe-torrent-pirate-as-meta-executive/"
 tags: ["tech"]
 heat: 100
+image: "https://torrentfreak.com/images/fappening-naked.jpg"
 readMinutes: 1
 ---
 

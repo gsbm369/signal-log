@@ -7,6 +7,7 @@ sourceUrl: "https://www.technologyreview.com/2026/09/07/1143592/the-download-und
 tags: ["openai"]
 heat: 100
 score: 1.70547
+image: "https://wp.technologyreview.com/wp-content/uploads/2026/08/H2-Site-thumb.jpg?resize=1200,600"
 readMinutes: 1
 ---
 

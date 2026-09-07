@@ -7,6 +7,7 @@ sourceUrl: "https://www.abc.net.au/news/2026-09-04/why-the-netherlands-moved-its
 tags: ["tech"]
 heat: 74
 score: 0.4936
+image: "https://live-production.wcms.abc-cdn.net.au/8d210aff4e95385e1e96d3b8dfcc3f2f?impolicy=wcms_watermark_news&cropH=2204&cropW=3918&xPos=0&yPos=517&width=862&height=485&imformat=generic"
 readMinutes: 1
 ---
 

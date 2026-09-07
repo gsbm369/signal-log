@@ -2,79 +2,90 @@
 import type { CollectionEntry } from 'astro:content';
 
 /*
-  Chart entries. One column at every width — the layout does not fork for
-  mobile, it only changes scale, which is why it survives 360px.
+  Four densities off one component.
 
-    lead   the number one — the rank set enormous, the headline under it
-    major  ranks 2-5      — rank, headline, one line
-    minor  the tail       — rank, headline, meta
-    mini   shelves        — markets / gaming / world, headline only
+    hero   the number one — 16:9 image, big headline, standfirst
+    card   ranks 2-5      — 3:2 image, headline, meta
+    row    the tail       — 76px thumbnail, headline, heat
+    mini   shelves        — headline and source only
+
+  Every variant handles a missing image. TechCrunch ships none at all, so the
+  fallback is a normal state: the tile becomes the rank over the shelf colour,
+  which reads as a cover rather than as something that failed to load.
 */
 interface Props {
   post: CollectionEntry<'posts'>;
   index: number;
-  variant?: 'lead' | 'major' | 'minor' | 'mini';
+  variant?: 'hero' | 'card' | 'row' | 'mini';
 }
 
-const { post, index, variant = 'minor' } = Astro.props;
-const { title, description, pubDate, source, heat, readMinutes } = post.data;
+const { post, index, variant = 'card' } = Astro.props;
+const { title, description, pubDate, source, heat, readMinutes, image, imageAlt } = post.data;
+const category = post.data.category ?? 'tech';
 
 const num = String(index + 1).padStart(2, '0');
 const href = `/posts/${post.id}/`;
 const iso = pubDate.toISOString();
 const dateShort = pubDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
-// Bucketed to tens so the width comes from a CSS rule rather than an
-// inline style — the page ships zero style attributes and the CSP
-// keeps its tightened style-src.
+// Bucketed to tens so width comes from a CSS rule, keeping the page free of
+// style attributes and the CSP's style-src tight.
 const pct = Math.min(100, Math.max(10, Math.round(heat / 10) * 10));
+const hot = heat >= 90;
+const alt = imageAlt ?? '';
 ---
 
 {
-  variant === 'lead' && (
-    <article class="entry entry--lead reveal group">
+  variant === 'hero' && (
+    <article class="card reveal" data-cat={category}>
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
-      <span class="rank block">{num}</span>
-
-      <div class="meta">
-        <span class="src">{source}</span>
-        <span class="sep">/</span>
-        <time datetime={iso}>{dateShort}</time>
-        <span class="sep">/</span>
-        <span>{readMinutes} min</span>
+      <div class={`shot shot--wide${image ? '' : ' shot--empty'}`}>
+        <span class="rank-badge rank-badge--lead">{num}</span>
+        {image ? <img src={image} alt={alt} loading="eager" decoding="async" width="1280" height="720" /> : <span>{num}</span>}
       </div>
 
-      <h2 class="entry-title font-display text-[2rem] font-extrabold leading-[1.04] tracking-[-0.035em] text-ink sm:text-[3.1rem]">
-        {title}
-      </h2>
+      <div class="p-5 sm:p-7">
+        <div class="mb-3 flex flex-wrap items-center gap-2">
+          <span class="chip">{category}</span>
+          {hot && <span class="chip chip--hot">hot</span>}
+          <span class="meta ml-auto">
+            <span class="src">{source}</span>
+            <span class="sep">/</span>
+            <time datetime={iso}>{dateShort}</time>
+            <span class="sep">/</span>
+            <span>{readMinutes} min</span>
+          </span>
+        </div>
 
-      <p class="max-w-[58ch] text-[1.02rem] leading-[1.65] text-dim sm:text-[1.12rem]">
-        {description}
-      </p>
+        <h2 class="card-title font-display text-[1.55rem] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink sm:text-[2.15rem]">
+          {title}
+        </h2>
+
+        <p class="mt-3 max-w-[60ch] text-[0.97rem] leading-[1.65] text-dim">{description}</p>
+      </div>
     </article>
   )
 }
 
 {
-  variant === 'major' && (
-    <article class="entry entry--major reveal group">
+  variant === 'card' && (
+    <article class="card reveal flex flex-col" data-cat={category}>
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
-      <span class="rank pt-1">{num}</span>
+      <div class={`shot shot--card${image ? '' : ' shot--empty'}`}>
+        <span class="rank-badge">{num}</span>
+        {image ? <img src={image} alt={alt} loading="lazy" decoding="async" width="600" height="400" /> : <span>{num}</span>}
+      </div>
 
-      <div class="min-w-0">
-        <h3 class="entry-title font-display text-[1.18rem] font-bold leading-[1.18] tracking-[-0.02em] text-ink sm:text-[1.55rem]">
+      <div class="flex flex-1 flex-col p-4">
+        <h3 class="card-title font-display text-[1.02rem] font-bold leading-[1.22] tracking-[-0.02em] text-ink">
           {title}
         </h3>
-        <p class="mt-2 line-clamp-2 max-w-[62ch] text-[0.94rem] leading-[1.6] text-dim">
-          {description}
-        </p>
-        <div class="meta mt-2.5">
+        <p class="mt-2 line-clamp-2 text-[0.85rem] leading-[1.55] text-dim">{description}</p>
+        <div class="meta mt-3 pt-1">
           <span class="src">{source}</span>
           <span class="sep">/</span>
           <time datetime={iso}>{dateShort}</time>
-          <span class="sep">/</span>
-          <span>{readMinutes} min</span>
         </div>
       </div>
     </article>
@@ -82,41 +93,47 @@ const pct = Math.min(100, Math.max(10, Math.round(heat / 10) * 10));
 }
 
 {
-  variant === 'minor' && (
-    <article class="entry entry--minor reveal group">
+  variant === 'row' && (
+    <article class="row group" data-cat={category}>
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
-      <span class="rank pt-[0.15rem]">{num}</span>
+      <span class="row-rank">{num}</span>
 
-      <div class="min-w-0">
-        <h3 class="entry-title font-display text-[0.98rem] font-semibold leading-[1.3] tracking-[-0.015em] text-ink sm:text-[1.08rem]">
+      <div class={`shot shot--thumb${image ? '' : ' shot--empty'}`}>
+        {image ? <img src={image} alt={alt} loading="lazy" decoding="async" width="152" height="116" /> : <span>{num}</span>}
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h3 class="card-title font-display text-[0.94rem] font-semibold leading-[1.3] tracking-[-0.015em] text-ink">
           {title}
         </h3>
         <div class="meta mt-1.5">
           <span class="src">{source}</span>
           <span class="sep">/</span>
           <time datetime={iso}>{dateShort}</time>
+          {hot && <span class="chip chip--hot ml-1">hot</span>}
         </div>
+        <span class="heat-bar mt-2 max-w-[6rem]" title={`Heat ${heat}/100`}>
+          <span data-heat={pct} />
+        </span>
       </div>
-
-      <span class="heat-bar mt-2 hidden sm:block" title={`Heat ${heat}/100`}>
-        <span data-heat={pct} />
-      </span>
     </article>
   )
 }
 
 {
   variant === 'mini' && (
-    <article class="group relative border-t border-rule-soft py-3">
+    <article class="row group !px-2 !py-2.5" data-cat={category}>
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
-      <h3 class="entry-title font-display text-[0.9rem] font-semibold leading-[1.35] text-ink">
-        {title}
-      </h3>
-      <div class="meta mt-1.5">
-        <span class="src">{source}</span>
-        <span class="sep">/</span>
-        <time datetime={iso}>{dateShort}</time>
+      <div class="min-w-0 flex-1">
+        <h3 class="card-title font-display text-[0.87rem] font-semibold leading-[1.35] text-ink">
+          {title}
+        </h3>
+        <div class="meta mt-1">
+          <span class="src">{source}</span>
+          <span class="sep">/</span>
+          <time datetime={iso}>{dateShort}</time>
+        </div>
       </div>
     </article>
   )
