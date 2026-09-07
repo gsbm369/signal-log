@@ -2,122 +2,105 @@
 import type { CollectionEntry } from 'astro:content';
 
 /*
-  One component, three densities. The ranker emits a score; the page should
-  spend space in proportion to it.
+  Chart entries. One column at every width — the layout does not fork for
+  mobile, it only changes scale, which is why it survives 360px.
 
-    lead   the top story — full width, room to breathe
-    brief  ranks 2-4    — a three-up row, medium weight
-    wire   the rest     — one dense line each, scannable
-    mini   side shelves  — markets, gaming, world: title and source only
-
-  Heat is rendered with a data attribute rather than inline styles so the
-  markup carries no `style` attributes at all (see global.css).
+    lead   the number one — the rank set enormous, the headline under it
+    major  ranks 2-5      — rank, headline, one line
+    minor  the tail       — rank, headline, meta
+    mini   shelves        — markets / gaming / world, headline only
 */
 interface Props {
   post: CollectionEntry<'posts'>;
   index: number;
-  variant?: 'lead' | 'brief' | 'wire' | 'mini';
+  variant?: 'lead' | 'major' | 'minor' | 'mini';
 }
 
-const { post, index, variant = 'brief' } = Astro.props;
-const { title, description, pubDate, source, tags, heat, readMinutes } = post.data;
+const { post, index, variant = 'minor' } = Astro.props;
+const { title, description, pubDate, source, heat, readMinutes } = post.data;
 
 const num = String(index + 1).padStart(2, '0');
-const bars = Math.max(1, Math.min(5, Math.round((heat / 100) * 5)));
 const href = `/posts/${post.id}/`;
-
-const dateFull = pubDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-const dateShort = pubDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
 const iso = pubDate.toISOString();
+const dateShort = pubDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+// Bucketed to tens so the width comes from a CSS rule rather than an
+// inline style — the page ships zero style attributes and the CSP
+// keeps its tightened style-src.
+const pct = Math.min(100, Math.max(10, Math.round(heat / 10) * 10));
 ---
 
 {
   variant === 'lead' && (
-    <article class="lead reveal group relative p-8 sm:p-10">
+    <article class="entry entry--lead reveal group">
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
-      <div class="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[0.75rem]">
-        <span class="rounded-md bg-accent/15 px-2 py-[0.15rem] text-accent">top story</span>
-        <time datetime={iso} class="text-faint">{dateFull}</time>
-        <span class="text-faint">&middot;</span>
-        <span class="text-dim">{source}</span>
-        <span class="text-faint">&middot;</span>
-        <span class="text-faint">{readMinutes} min</span>
-        <span class="heat ml-auto" data-bars={bars} title={`Heat ${heat}/100`}>
-          <i /><i /><i /><i /><i />
-        </span>
+      <span class="rank block">{num}</span>
+
+      <div class="meta">
+        <span class="src">{source}</span>
+        <span class="sep">/</span>
+        <time datetime={iso}>{dateShort}</time>
+        <span class="sep">/</span>
+        <span>{readMinutes} min</span>
       </div>
 
-      <h2 class="font-head text-[1.7rem] font-bold leading-[1.15] tracking-[-0.8px] text-ink transition-colors duration-300 group-hover:text-accent sm:text-[2.15rem]">
+      <h2 class="entry-title font-display text-[2rem] font-extrabold leading-[1.04] tracking-[-0.035em] text-ink sm:text-[3.1rem]">
         {title}
       </h2>
 
-      <p class="mt-4 max-w-[62ch] text-[1rem] leading-[1.75] text-dim">{description}</p>
-
-      <div class="mt-6 flex flex-wrap items-center gap-2">
-        {tags.slice(0, 4).map((tag) => (
-          <span class="rounded-full border border-line px-[0.65rem] py-[0.22rem] font-mono text-[0.7rem] lowercase text-faint transition-colors duration-300 group-hover:border-accent/30 group-hover:text-dim">
-            {tag}
-          </span>
-        ))}
-        <span class="ml-auto font-mono text-[0.78rem] text-faint transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent">
-          read &rarr;
-        </span>
-      </div>
+      <p class="max-w-[58ch] text-[1.02rem] leading-[1.65] text-dim sm:text-[1.12rem]">
+        {description}
+      </p>
     </article>
   )
 }
 
 {
-  variant === 'brief' && (
-    <article class="panel panel-hover reveal group relative flex flex-col overflow-hidden p-6">
+  variant === 'major' && (
+    <article class="entry entry--major reveal group">
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
-      <div class="mb-3 flex items-center gap-2 font-mono text-[0.72rem]">
-        <span class="text-accent">{num}</span>
-        <span class="truncate text-dim">{source}</span>
-        <span class="heat heat--sm ml-auto" data-bars={bars} title={`Heat ${heat}/100`}>
-          <i /><i /><i /><i /><i />
-        </span>
-      </div>
-
-      <h3 class="font-head text-[1.06rem] font-semibold leading-snug tracking-[-0.3px] text-ink transition-colors duration-300 group-hover:text-accent">
-        {title}
-      </h3>
-
-      <p class="mt-2.5 line-clamp-3 text-[0.88rem] leading-[1.65] text-dim">{description}</p>
-
-      <div class="mt-4 flex items-center gap-2 font-mono text-[0.7rem] text-faint">
-        <time datetime={iso}>{dateShort}</time>
-        <span>&middot;</span>
-        <span>{readMinutes} min</span>
-      </div>
-    </article>
-  )
-}
-
-{
-  variant === 'wire' && (
-    <article class="wire-row reveal group">
-      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
-
-      <span class="font-mono text-[0.75rem] text-faint">{num}</span>
+      <span class="rank pt-1">{num}</span>
 
       <div class="min-w-0">
-        <h3 class="wire-title font-head text-[0.98rem] font-medium leading-snug tracking-[-0.2px] text-ink">
+        <h3 class="entry-title font-display text-[1.18rem] font-bold leading-[1.18] tracking-[-0.02em] text-ink sm:text-[1.55rem]">
           {title}
         </h3>
-        <div class="wire-meta mt-1 flex flex-wrap items-center gap-x-2 font-mono text-[0.7rem] text-faint">
-          <span class="text-dim">{source}</span>
-          <span>&middot;</span>
+        <p class="mt-2 line-clamp-2 max-w-[62ch] text-[0.94rem] leading-[1.6] text-dim">
+          {description}
+        </p>
+        <div class="meta mt-2.5">
+          <span class="src">{source}</span>
+          <span class="sep">/</span>
           <time datetime={iso}>{dateShort}</time>
-          <span>&middot;</span>
+          <span class="sep">/</span>
           <span>{readMinutes} min</span>
         </div>
       </div>
+    </article>
+  )
+}
 
-      <span class="heat heat--sm" data-bars={bars} title={`Heat ${heat}/100`}>
-        <i /><i /><i /><i /><i />
+{
+  variant === 'minor' && (
+    <article class="entry entry--minor reveal group">
+      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
+
+      <span class="rank pt-[0.15rem]">{num}</span>
+
+      <div class="min-w-0">
+        <h3 class="entry-title font-display text-[0.98rem] font-semibold leading-[1.3] tracking-[-0.015em] text-ink sm:text-[1.08rem]">
+          {title}
+        </h3>
+        <div class="meta mt-1.5">
+          <span class="src">{source}</span>
+          <span class="sep">/</span>
+          <time datetime={iso}>{dateShort}</time>
+        </div>
+      </div>
+
+      <span class="heat-bar mt-2 hidden sm:block" title={`Heat ${heat}/100`}>
+        <span data-heat={pct} />
       </span>
     </article>
   )
@@ -125,14 +108,14 @@ const iso = pubDate.toISOString();
 
 {
   variant === 'mini' && (
-    <article class="group relative">
+    <article class="group relative border-t border-rule-soft py-3">
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
-      <h3 class="wire-title text-[0.86rem] font-medium leading-[1.45] text-ink">
+      <h3 class="entry-title font-display text-[0.9rem] font-semibold leading-[1.35] text-ink">
         {title}
       </h3>
-      <div class="mt-1 flex items-center gap-2 font-mono text-[0.66rem] text-faint">
-        <span class="truncate text-dim">{source}</span>
-        <span>&middot;</span>
+      <div class="meta mt-1.5">
+        <span class="src">{source}</span>
+        <span class="sep">/</span>
         <time datetime={iso}>{dateShort}</time>
       </div>
     </article>

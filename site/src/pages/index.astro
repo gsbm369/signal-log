@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
-import SectionHead from '../components/SectionHead.astro';
 import Logo from '../components/Logo.astro';
 
 const posts = (await getCollection('posts')).sort(
@@ -23,12 +22,9 @@ const shelves = shelfNames
   }))
   .filter((s) => s.items.length > 0);
 
-/* Three tiers, because the ranker produces a ranking. A flat column of
-   identical cards says every story matters equally, which is the one thing
-   this site's output does not say. */
 const lead = tech[0];
-const briefs = tech.slice(1, 4);
-const wire = tech.slice(4);
+const major = tech.slice(1, 5);
+const minor = tech.slice(5);
 
 const sources = [...new Set(posts.map((p) => p.data.source))];
 const lastRun = lead
@@ -41,108 +37,81 @@ const lastRun = lead
   description="Tech feeds ranked by an open, deterministic heuristic: recency decay, source weighting, topic relevance, deduplication. No model decides what appears."
 >
   <!-- ── Masthead ─────────────────────────────────────────────── -->
-  <section class="reveal in">
-    <div class="flex flex-wrap items-end justify-between gap-6 border-b border-line pb-8">
-      <div class="flex items-center gap-4">
-        <Logo size={44} class="shrink-0 text-accent" />
-        <div>
-          <h1 class="font-head text-[2.1rem] font-bold leading-none tracking-[-1.2px] text-ink sm:text-[2.6rem]">
-            signal<span class="text-accent">.</span>log
-          </h1>
-          <p class="mt-2 font-mono text-[0.86rem] text-accent">tech news, minus the noise</p>
-        </div>
+  <header class="pb-5">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <Logo size={32} class="shrink-0 text-accent" />
+        <h1 class="font-display text-[1.9rem] font-extrabold leading-none tracking-[-0.045em] text-ink sm:text-[2.4rem]">
+          signal<span class="text-accent">.</span>log
+        </h1>
       </div>
-
-      <dl class="flex flex-wrap gap-x-8 gap-y-3 font-mono text-[0.76rem]">
-        <div>
-          <dt class="text-faint">stories</dt>
-          <dd class="mt-0.5 text-[1.05rem] text-ink">{posts.length}</dd>
-        </div>
-        <div>
-          <dt class="text-faint">sources</dt>
-          <dd class="mt-0.5 text-[1.05rem] text-ink">{sources.length}</dd>
-        </div>
-        <div>
-          <dt class="text-faint">updated</dt>
-          <dd class="mt-0.5 text-[0.86rem] text-dim">{lastRun}</dd>
-        </div>
-      </dl>
+      <span class="hidden font-mono text-[0.68rem] uppercase tracking-[0.16em] text-faint sm:block">
+        no model decides
+      </span>
     </div>
+  </header>
 
-    <p class="mt-6 max-w-[68ch] text-[0.95rem] leading-[1.75] text-dim">
-      An automated briefing. Every few hours a job pulls the major tech feeds and ranks
-      them with an open, deterministic heuristic — recency decay, a narrow per-source
-      weight, topic relevance read from the headline, and deduplication across sources.
-      <span class="text-ink">No model decides what appears.</span> Position on this page
-      follows the score: one lead, three runners-up, then the wire.
-    </p>
-  </section>
+  <div class="masthead-rule flex flex-wrap items-center gap-x-5 gap-y-1 py-2 font-mono text-[0.68rem] text-faint">
+    <span><span class="text-ink">{tech.length}</span> ranked</span>
+    <span class="opacity-40">/</span>
+    <span><span class="text-ink">{sources.length}</span> sources</span>
+    <span class="opacity-40">/</span>
+    <span>rebuilt {lastRun}</span>
+    <span class="ml-auto hidden text-accent sm:inline">recency · source weight · relevance</span>
+  </div>
 
-  <!-- ── The feed ─────────────────────────────────────────────── -->
-  <section id="feed" class="mt-14">
+  <!-- ── The chart ────────────────────────────────────────────── -->
+  <section id="feed" class="mt-9">
     {
       tech.length === 0 ? (
-        <div class="panel p-10 text-center">
-          <p class="font-mono text-[0.9rem] text-dim">no stories yet</p>
-          <p class="mt-2 font-mono text-[0.8rem] text-faint">
-            the curator runs on a timer — the first batch lands within a few hours
-          </p>
-        </div>
+        <p class="py-16 text-center font-mono text-[0.85rem] text-faint">
+          nothing ranked yet — the curator runs on a timer
+        </p>
       ) : (
         <>
           <PostCard post={lead} index={0} variant="lead" />
+          {major.map((post, i) => (
+            <PostCard post={post} index={i + 1} variant="major" />
+          ))}
 
-          {briefs.length > 0 && (
-            <div class="mt-5 grid gap-5 sm:grid-cols-3">
-              {briefs.map((post, i) => (
-                <PostCard post={post} index={i + 1} variant="brief" />
-              ))}
-            </div>
-          )}
-
-          {wire.length > 0 && (
-            <div class="mt-16">
-              <div class="mb-4 flex items-baseline justify-between border-b border-line pb-3">
-                <h2 class="font-mono text-[0.8rem] uppercase tracking-[0.14em] text-dim">
-                  the wire
+          {minor.length > 0 && (
+            <>
+              <div class="mt-12 flex items-baseline justify-between border-t border-rule pt-3">
+                <h2 class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dim">
+                  the rest of the chart
                 </h2>
-                <span class="font-mono text-[0.72rem] text-faint">
-                  {wire.length} more, by score
-                </span>
+                <span class="font-mono text-[0.66rem] text-faint">{minor.length} entries</span>
               </div>
-              <div class="flex flex-col">
-                {wire.map((post, i) => (
-                  <PostCard post={post} index={i + 4} variant="wire" />
-                ))}
-              </div>
-            </div>
+              {minor.map((post, i) => (
+                <PostCard post={post} index={i + 5} variant="minor" />
+              ))}
+            </>
           )}
         </>
       )
     }
   </section>
 
-
-  <!-- ── Shelves: the owner's other interests, kept deliberately small ── -->
+  <!-- ── Shelves ──────────────────────────────────────────────── -->
   {
     shelves.length > 0 && (
-      <section id="shelves" class="mt-16 border-t border-line pt-10">
-        <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
-          <h2 class="font-mono text-[0.8rem] uppercase tracking-[0.14em] text-dim">
+      <section id="shelves" class="mt-16 border-t border-rule pt-4">
+        <div class="mb-5 flex flex-wrap items-baseline justify-between gap-2">
+          <h2 class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dim">
             also tracked
           </h2>
-          <span class="font-mono text-[0.7rem] text-faint">
+          <span class="font-mono text-[0.64rem] text-faint">
             ranked the same way &middot; headlines only, not advice
           </span>
         </div>
 
-        <div class="grid gap-8 sm:grid-cols-3">
+        <div class="grid gap-x-8 gap-y-8 sm:grid-cols-3">
           {shelves.map((shelf) => (
             <div class="reveal">
-              <h3 class="mb-3 border-b border-line pb-2 font-mono text-[0.75rem] uppercase tracking-[0.1em] text-accent">
+              <h3 class="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-accent">
                 {shelf.label}
               </h3>
-              <div class="flex flex-col gap-4">
+              <div class="mt-1">
                 {shelf.items.map((post, i) => (
                   <PostCard post={post} index={i} variant="mini" />
                 ))}
@@ -154,20 +123,20 @@ const lastRun = lead
     )
   }
 
-  <!-- ── How it works ─────────────────────────────────────────── -->
-  <section id="about" class="mt-20 border-t border-line pt-16">
-    <SectionHead idx="01" title="How this works" />
-    <div class="grid gap-[1.1rem] sm:grid-cols-3">
+  <!-- ── Colophon ─────────────────────────────────────────────── -->
+  <section id="about" class="mt-16 border-t border-rule pt-8">
+    <h2 class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dim">How this works</h2>
+    <div class="mt-5 grid gap-8 sm:grid-cols-3">
       {
         [
-          { n: '01', t: 'Collect', d: 'A Python job pulls RSS from Hacker News, TechCrunch, Ars Technica, The Verge, IEEE Spectrum and more.' },
-          { n: '02', t: 'Rank', d: 'A deterministic heuristic scores each story, drops routine digests, collapses duplicates across sources, and caps any one feed.' },
-          { n: '03', t: 'Publish', d: 'Survivors land as Markdown and are pushed to GitHub. Actions builds the site and deploys it to Pages.' },
+          { n: '01', t: 'Collect', d: 'A Python job pulls RSS from a fixed list of feeds every few hours.' },
+          { n: '02', t: 'Rank', d: 'A deterministic heuristic scores each story, drops routine digests, collapses duplicates and caps any one feed.' },
+          { n: '03', t: 'Publish', d: 'Survivors become Markdown, pushed to GitHub. Actions builds and deploys to Pages.' },
         ].map((s) => (
-          <div class="panel panel-hover reveal p-6">
-            <span class="font-mono text-[0.75rem] text-accent">{s.n}</span>
-            <h3 class="mt-2 font-head text-[1.05rem] font-semibold text-ink">{s.t}</h3>
-            <p class="mt-2 text-[0.88rem] leading-[1.7] text-dim">{s.d}</p>
+          <div>
+            <span class="font-mono text-[0.7rem] text-accent">{s.n}</span>
+            <h3 class="mt-1.5 font-display text-[1rem] font-bold text-ink">{s.t}</h3>
+            <p class="mt-1.5 text-[0.92rem] leading-[1.6] text-dim">{s.d}</p>
           </div>
         ))
       }

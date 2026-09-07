@@ -77,7 +77,7 @@ const csp = [
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="theme-color" content="#070a0e" />
+    <meta name="theme-color" content="#080b10" />
     <meta http-equiv="Content-Security-Policy" content={csp} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -85,16 +85,14 @@ const csp = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=JetBrains+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
   </head>
   <body>
-    <div class="bg-glow" aria-hidden="true"></div>
-
-    <header class="fixed top-0 z-50 h-[68px] w-full border-b border-line bg-bg/70 backdrop-blur-[14px]">
-      <nav class="mx-auto flex h-full max-w-[1020px] items-center justify-between px-6">
+    <header class="fixed top-0 z-50 h-[56px] w-full border-b border-rule bg-bg">
+      <nav class="mx-auto flex h-full max-w-[760px] items-center justify-between px-5">
         <a href="/" class="flex items-center gap-2.5 font-mono text-[1.1rem] font-semibold text-ink no-underline">
           <Logo size={24} class="shrink-0 text-accent" />
           signal<span class="text-accent">.</span>log
@@ -104,7 +102,7 @@ const csp = [
           <li><a href="/#feed" class="navlink font-mono text-[0.85rem] text-dim no-underline">feed</a></li>
           <li><a href="/#about" class="navlink font-mono text-[0.85rem] text-dim no-underline">about</a></li>
         </ul>
-        <span class="flex items-center gap-2 rounded-lg border border-line px-3 py-[0.45rem] font-mono text-[0.75rem] text-dim">
+        <span class="flex items-center gap-2 rounded-lg border border-rule px-3 py-[0.45rem] font-mono text-[0.75rem] text-dim">
           <span class="relative flex h-[6px] w-[6px]">
             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70"></span>
             <span class="relative inline-flex h-[6px] w-[6px] rounded-full bg-accent"></span>
@@ -114,12 +112,12 @@ const csp = [
       </nav>
     </header>
 
-    <main class="mx-auto max-w-[900px] px-6 pt-[130px] pb-[70px]">
+    <main class="mx-auto max-w-[760px] px-5 pt-[96px] pb-16">
       <slot />
     </main>
 
-    <footer class="border-t border-line">
-      <div class="mx-auto flex max-w-[900px] flex-wrap items-center justify-between gap-3 px-6 py-8 font-mono text-[0.78rem] text-faint">
+    <footer class="border-t border-rule">
+      <div class="mx-auto flex max-w-[760px] flex-wrap items-center justify-between gap-3 px-5 py-7 font-mono text-[0.78rem] text-faint">
         <span>&copy; {year} signal.log</span>
         <span class="flex items-center gap-4">
           <a href="/rss.xml" class="text-faint no-underline transition-colors duration-300 hover:text-accent">rss</a>
