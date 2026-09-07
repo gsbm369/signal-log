@@ -9,12 +9,26 @@ const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
+/* Tech is the spine. Markets, gaming and world are shelves — a deliberate
+   minority of the page, because this is a technology site with the owner's
+   other interests alongside, not a general aggregator. */
+const shelfNames = ['markets', 'gaming', 'world'] as const;
+const tech = posts.filter((p) => (p.data.category ?? 'tech') === 'tech');
+
+const shelves = shelfNames
+  .map((key) => ({
+    key,
+    label: { markets: 'Markets', gaming: 'Gaming', world: 'World' }[key],
+    items: posts.filter((p) => p.data.category === key).slice(0, 4),
+  }))
+  .filter((s) => s.items.length > 0);
+
 /* Three tiers, because the ranker produces a ranking. A flat column of
    identical cards says every story matters equally, which is the one thing
    this site's output does not say. */
-const lead = posts[0];
-const briefs = posts.slice(1, 4);
-const wire = posts.slice(4);
+const lead = tech[0];
+const briefs = tech.slice(1, 4);
+const wire = tech.slice(4);
 
 const sources = [...new Set(posts.map((p) => p.data.source))];
 const lastRun = lead
@@ -67,7 +81,7 @@ const lastRun = lead
   <!-- ── The feed ─────────────────────────────────────────────── -->
   <section id="feed" class="mt-14">
     {
-      posts.length === 0 ? (
+      tech.length === 0 ? (
         <div class="panel p-10 text-center">
           <p class="font-mono text-[0.9rem] text-dim">no stories yet</p>
           <p class="mt-2 font-mono text-[0.8rem] text-faint">
@@ -107,6 +121,38 @@ const lastRun = lead
       )
     }
   </section>
+
+
+  <!-- ── Shelves: the owner's other interests, kept deliberately small ── -->
+  {
+    shelves.length > 0 && (
+      <section id="shelves" class="mt-16 border-t border-line pt-10">
+        <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+          <h2 class="font-mono text-[0.8rem] uppercase tracking-[0.14em] text-dim">
+            also tracked
+          </h2>
+          <span class="font-mono text-[0.7rem] text-faint">
+            ranked the same way &middot; headlines only, not advice
+          </span>
+        </div>
+
+        <div class="grid gap-8 sm:grid-cols-3">
+          {shelves.map((shelf) => (
+            <div class="reveal">
+              <h3 class="mb-3 border-b border-line pb-2 font-mono text-[0.75rem] uppercase tracking-[0.1em] text-accent">
+                {shelf.label}
+              </h3>
+              <div class="flex flex-col gap-4">
+                {shelf.items.map((post, i) => (
+                  <PostCard post={post} index={i} variant="mini" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   <!-- ── How it works ─────────────────────────────────────────── -->
   <section id="about" class="mt-20 border-t border-line pt-16">

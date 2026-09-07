@@ -15,6 +15,12 @@ const posts = defineCollection({
     // is the value that can be compared across runs (used by the weekly digest).
     score: z.number().default(0),
     readMinutes: z.number().default(2),
+    // Which shelf a story belongs to. Derived from the FEED it came from, never
+    // from keywords: a gaming site covering NVIDIA earnings is still gaming, and
+    // a markets site covering a game studio is still markets. Keyword guessing
+    // would get both wrong. Defaults to tech so posts written before categories
+    // existed stay valid.
+    category: z.enum(['tech', 'markets', 'gaming', 'world']).default('tech'),
   }),
 });
 

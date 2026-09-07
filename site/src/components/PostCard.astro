@@ -8,6 +8,7 @@ import type { CollectionEntry } from 'astro:content';
     lead   the top story — full width, room to breathe
     brief  ranks 2-4    — a three-up row, medium weight
     wire   the rest     — one dense line each, scannable
+    mini   side shelves  — markets, gaming, world: title and source only
 
   Heat is rendered with a data attribute rather than inline styles so the
   markup carries no `style` attributes at all (see global.css).
@@ -15,7 +16,7 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   post: CollectionEntry<'posts'>;
   index: number;
-  variant?: 'lead' | 'brief' | 'wire';
+  variant?: 'lead' | 'brief' | 'wire' | 'mini';
 }
 
 const { post, index, variant = 'brief' } = Astro.props;
@@ -118,6 +119,22 @@ const iso = pubDate.toISOString();
       <span class="heat heat--sm" data-bars={bars} title={`Heat ${heat}/100`}>
         <i /><i /><i /><i /><i />
       </span>
+    </article>
+  )
+}
+
+{
+  variant === 'mini' && (
+    <article class="group relative">
+      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
+      <h3 class="wire-title text-[0.86rem] font-medium leading-[1.45] text-ink">
+        {title}
+      </h3>
+      <div class="mt-1 flex items-center gap-2 font-mono text-[0.66rem] text-faint">
+        <span class="truncate text-dim">{source}</span>
+        <span>&middot;</span>
+        <time datetime={iso}>{dateShort}</time>
+      </div>
     </article>
   )
 }
