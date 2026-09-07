@@ -155,10 +155,29 @@ This is a known fragility, not a solved problem. The durable fix is a static pub
 moving the relay to the planned Oracle Cloud instance retires the entire class of failure.
 That is a concrete engineering reason for that phase, not just an exercise.
 
+### Scheduling: systemd timers, not cron
+
+The publish cycle and the digest run on **systemd user timers with
+`Persistent=true`**, not cron entries. This is not a style preference.
+
+This guest lives on a memory-constrained Hyper-V host and was **suspended for
+20.5 hours straight** — the journal shows zero entries between 16:53 and 13:31 the
+following day, then `Clock change detected` and anacron starting on resume. Vixie cron
+fires on wall-clock minutes: after a resume it simply waits for the next matching minute,
+and every window that elapsed while the VM was saved is gone. Four publish cycles were
+lost in silence.
+
+`Persistent=true` records the last run on disk and fires **immediately on resume** if a
+window was missed. Verified rather than assumed — backdating the stamp file and starting
+the timer moved the service's start time from `13:44:20` to `13:45:02`, with no change
+while the timer was stopped.
+
+Lingering is enabled (`loginctl enable-linger`) so the timers run without a login session.
+
 ### Alerting
 
-`grafana/alerting/signal-log-alerts.yaml` — **two tiers**, both emailing through the
-Postfix relay Grafana is already pointed at:
+`grafana/alerting/signal-log-alerts.yaml` — **two tiers over two independent delivery
+paths**:
 
 | Window | Severity | Meaning |
 |---|---|---|
@@ -168,6 +187,30 @@ Postfix relay Grafana is already pointed at:
 48h alone was too slow for a 6-hourly job: a curator dying just after a good cycle would
 go unnoticed for two days, which is the difference between noticing during a workday and
 noticing after a weekend.
+
+#### Two delivery paths, because one was dead
+
+| Path | Depends on | State |
+|---|---|---|
+| Email | Postfix → Brevo → an IP allowlist against a dynamic address | **Blocked upstream** |
+| Webhook → ntfy | Outbound HTTPS only | **Verified end to end** |
+
+Email was the single channel and it does not work. Every alert would have been generated
+correctly and **delivered to nobody** — which is precisely what happened during the
+20-hour outage: the 12h rule should have fired and the stall was found by looking manually.
+
+The webhook shares nothing with the mail path: no Postfix, no Brevo, no SMTP, no IP
+allowlist. Delivery was proven by creating a temporary canary rule with an always-true
+condition and watching a real Grafana payload arrive:
+
+```
+t=40s  rule=firing
+t=70s  ntfy: {"receiver":"signal-log-email","status":"firing",
+               "alerts":[{"alertname":"signal.log delivery canary" …
+```
+
+The canary was then deleted. **Until an alert has actually reached a human, delivery is
+untested** — the same standing rule this project has now learned six times.
 
 ```bash
 ansible-playbook deploy.yml -e grafana_user=admin -e grafana_password=... --tags alert

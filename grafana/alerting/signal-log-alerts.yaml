@@ -21,17 +21,42 @@
 apiVersion: 1
 
 contactPoints:
+  # ONE contact point, TWO independent delivery paths.
+  #
+  # Email alone was the single channel, and it was dead: Postfix relays through
+  # Brevo, which rejects this IP, so every alert would have been generated
+  # correctly and delivered to nobody. A monitoring system with one unverified
+  # delivery path is not monitoring.
+  #
+  # The webhook shares nothing with the mail path — no Postfix, no Brevo, no
+  # SMTP, no IP allowlist against a dynamic address. If one is broken the other
+  # still arrives.
   - orgId: 1
     name: signal-log-email
     receivers:
       - uid: signal-log-email
         type: email
         settings:
-          # Delivered via the Postfix relay already configured on the host
-          # (GF_SMTP_HOST=host.docker.internal:25).
+          # Via the Postfix relay already on the host. Currently BLOCKED
+          # upstream by Brevo's Authorized IPs list — see the README.
           addresses: nikita@gs-bm.com
           singleEmail: true
           subject: '[signal.log][{{ .CommonLabels.severity }}] {{ .CommonLabels.alertname }}'
+
+      - uid: signal-log-ntfy
+        type: webhook
+        settings:
+          # ntfy.sh — no account, no credential. The topic name is the only
+          # secret, which is why it is random rather than guessable.
+          url: https://ntfy.sh/signal-log-gjkmclsg0ag
+          httpMethod: POST
+          maxAlerts: 5
+          # Without these, ntfy shows the raw Grafana JSON payload on the phone,
+          # which is delivered but not readable at a glance.
+          title: '[{{ .CommonLabels.severity }}] {{ .CommonLabels.alertname }}'
+          message: |-
+            {{ range .Alerts }}{{ .Annotations.summary }}
+            {{ end }}status: {{ .Status }}
 
 groups:
   - orgId: 1

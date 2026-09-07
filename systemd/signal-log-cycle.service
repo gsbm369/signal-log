@@ -1,0 +1,16 @@
+[Unit]
+Description=signal.log publish cycle (curate, rank, build, push, verify deploy)
+Documentation=https://github.com/gsbm369/signal-log
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/ai-blog
+ExecStart=%h/ai-blog/scripts/cron-cycle.sh
+# A cycle that pushes and then waits for the Actions run can legitimately take
+# ~15 minutes; the deploy wait has its own 900s timeout inside the script.
+TimeoutStartSec=1800
+Environment=CYCLE_TRIGGER=timer
+StandardOutput=append:%h/ai-blog/logs/cycle.log
+StandardError=append:%h/ai-blog/logs/cycle.log

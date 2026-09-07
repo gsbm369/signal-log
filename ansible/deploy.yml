@@ -357,26 +357,62 @@
       tags: [cycle]
 
     # ----------------------------------------------------------------- cron
-    - name: Install the recurring publish cron job
-      ansible.builtin.cron:
-        name: "signal.log — curate feeds and rebuild the site"
-        user: "{{ ansible_user_id }}"
-        minute: "{{ cron_minute }}"
-        hour: "*/{{ cycle_hours }}"
-        job: "{{ blog_root }}/scripts/cron-cycle.sh >> {{ blog_root }}/logs/cycle.log 2>&1"
-        state: present
-      tags: [cron]
+    # SCHEDULING RUNS ON systemd TIMERS, NOT cron.
+    #
+    # This guest lives on a memory-constrained Hyper-V host and was suspended for
+    # 20+ hours straight, costing every publish window in that period. Vixie cron
+    # fires on wall-clock minutes: after a resume it waits for the next matching
+    # minute and the elapsed windows are gone, silently. A timer with
+    # Persistent=true records its last run and fires immediately on resume, so a
+    # suspended VM costs one delayed cycle instead of all of them.
+    - name: Enable lingering so user timers run without a login session
+      ansible.builtin.command: "loginctl enable-linger {{ ansible_user_id }}"
+      args:
+        creates: "/var/lib/systemd/linger/{{ ansible_user_id }}"
+      tags: [cron, timer]
 
-    - name: Install the weekly digest cron job
+    - name: Install the systemd user units
+      ansible.builtin.copy:
+        src: "{{ blog_root }}/systemd/{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.config/systemd/user/{{ item }}"
+        remote_src: true
+        mode: "0644"
+      loop:
+        - signal-log-cycle.service
+        - signal-log-cycle.timer
+        - signal-log-digest.service
+        - signal-log-digest.timer
+      register: units
+      tags: [cron, timer]
+
+    - name: Reload the user systemd manager
+      ansible.builtin.systemd_service:
+        scope: user
+        daemon_reload: true
+      when: units.changed
+      tags: [cron, timer]
+
+    - name: Enable and start the timers
+      ansible.builtin.systemd_service:
+        scope: user
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      loop:
+        - signal-log-cycle.timer
+        - signal-log-digest.timer
+      tags: [cron, timer]
+
+    # Superseded by the timers above. Removed rather than left to double-fire.
+    - name: Remove the superseded cron entries
       ansible.builtin.cron:
-        name: "signal.log — weekly digest email"
+        name: "{{ item }}"
         user: "{{ ansible_user_id }}"
-        minute: "{{ digest_minute }}"
-        hour: "{{ digest_hour }}"
-        weekday: "{{ digest_weekday }}"
-        job: "{{ blog_root }}/scripts/weekly-digest.sh >> {{ blog_root }}/logs/digest.log 2>&1"
-        state: "{{ 'present' if digest_enabled | bool else 'absent' }}"
-      tags: [cron, digest]
+        state: absent
+      loop:
+        - "signal.log — curate feeds and rebuild the site"
+        - "signal.log — weekly digest email"
+      tags: [cron, timer]
 
     - name: Install nightly log rotation for the cycle log
       ansible.builtin.cron:
@@ -507,7 +543,7 @@
             if site_url is search('localhost|127\\.0\\.0\\.1')
             else 'Feed URLs           : absolute, rooted at ' ~ site_url }}
           - "Posts published     : {{ posts.matched }}"
-          - "Curation schedule   : every {{ cycle_hours }}h at :{{ '%02d' | format(cron_minute | int) }}"
+          - "Curation schedule   : systemd timer, every {{ cycle_hours }}h at :{{ '%02d' | format(cron_minute | int) }} (Persistent=true — replays windows missed while suspended)"
           - "Summarizer          : {{ summarizer_backend }}{{ ' (' ~ curator_model ~ ', Batch API)' if summarizer_backend == 'anthropic' else (' (' ~ ollama_model ~ ')' if summarizer_backend == 'ollama' else ' — feed descriptions, no model, $0') }}"
           - "Selection           : deterministic ranker, no model in any mode"
           - "Volume caps         : <= {{ max_candidates }} candidates, {{ publish_count }} published, {{ per_source_cap }} per source"

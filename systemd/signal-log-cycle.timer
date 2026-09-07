@@ -1,0 +1,23 @@
+[Unit]
+Description=Run the signal.log publish cycle every 6 hours
+Documentation=https://github.com/gsbm369/signal-log
+
+[Timer]
+OnCalendar=*-*-* 00,06,12,18:17:00
+# THE REASON THIS IS A TIMER AND NOT A CRON ENTRY.
+#
+# This guest runs on a memory-constrained Hyper-V host and has been suspended
+# for 20+ hours at a stretch. Vixie cron fires on wall-clock minutes: after a
+# resume it simply waits for the next matching minute, and every window that
+# elapsed while the VM was saved is lost silently. That cost ~21 hours of
+# publishing, and nothing in the system could tell the difference between
+# "cron ran and failed" and "cron never ran" until the metrics were queried.
+#
+# Persistent=true records the last run on disk and fires IMMEDIATELY on resume
+# if a window was missed, so a suspended VM costs one delayed cycle instead of
+# every cycle it slept through.
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

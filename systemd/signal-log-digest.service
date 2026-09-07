@@ -1,0 +1,13 @@
+[Unit]
+Description=signal.log weekly digest email
+Documentation=https://github.com/gsbm369/signal-log
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/ai-blog
+ExecStart=%h/ai-blog/scripts/weekly-digest.sh
+TimeoutStartSec=600
+StandardOutput=append:%h/ai-blog/logs/digest.log
+StandardError=append:%h/ai-blog/logs/digest.log

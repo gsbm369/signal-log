@@ -1,0 +1,13 @@
+[Unit]
+Description=Send the signal.log weekly digest on Sundays
+Documentation=https://github.com/gsbm369/signal-log
+
+[Timer]
+OnCalendar=Sun *-*-* 08:30:00
+# Same reasoning as the cycle timer: a weekly job is the one most likely to be
+# lost entirely to a suspend window.
+Persistent=true
+AccuracySec=5min
+
+[Install]
+WantedBy=timers.target
