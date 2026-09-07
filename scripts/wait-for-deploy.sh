@@ -9,7 +9,9 @@
 # world-readable through `ps` for the lifetime of the command.
 #
 # Usage: wait-for-deploy.sh <commit-sha>
-# Exit:  0 success   1 workflow failed   2 timed out   10 cannot check
+# Exit:  0 success   1 workflow failed   2 timed out
+#        3 no run expected (commit touches no deploy-triggering path)
+#        10 cannot check
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -27,6 +29,20 @@ INTERVAL="${DEPLOY_POLL_INTERVAL:-20}"
 
 [ -n "$CRED_FILE" ] && [ -r "$CRED_FILE" ] || {
   log "no readable credential file — cannot verify the deploy"; exit 10; }
+
+# The workflow only triggers on paths: site/** and the workflow file itself.
+# A commit that touches neither produces no run, and waiting 900s for one that
+# was never going to exist reports a false publish failure. Distinguish "no run
+# needed" from "run never appeared" before polling.
+WATCHED_RE="${DEPLOY_WATCHED_PATHS:-^(site/|\.github/workflows/)}"
+if git -C "$ROOT" rev-parse --verify "${SHA}^" >/dev/null 2>&1; then
+  CHANGED="$(git -C "$ROOT" diff --name-only "${SHA}^" "$SHA" 2>/dev/null || true)"
+  if [ -n "$CHANGED" ] && ! printf '%s\n' "$CHANGED" | grep -qE "$WATCHED_RE"; then
+    log "commit ${SHA:0:8} touches no deploy-triggering path — no Actions run expected"
+    log "  changed: $(printf '%s' "$CHANGED" | tr '\n' ' ' | cut -c1-160)"
+    exit 3
+  fi
+fi
 
 log "waiting for the Actions run on ${SHA:0:8} (timeout ${TIMEOUT}s)"
 

@@ -664,6 +664,7 @@ error. Every one was found by making it fail on purpose.
 | **Grafana** — the stalled-curator alert | Detecting a dead curator | Leaned on `noDataState`, a dropdown. Without `or vector(0)` the query returns an *empty result* on silence, not `0` — the alert built to notice silence rested on a side setting |
 | **Mail** — `smtplib.send_message()` returning cleanly | Delivered | Postfix *accepting* it. The relay then deferred every message with `525 Unauthorized IP address` while the sender logged success |
 | **Netlify** *(portfolio side)* — a `[[redirects]]` rule blocking function sources | Blocking `feeds.mjs` from being served | Nothing. A rule with `status` but no `to` is invalid and Netlify drops it **silently** — the file was served as a static asset the whole time |
+| **Deploy verification** — `wait-for-deploy.sh` on any commit | Confirming the deploy landed | Assuming every push triggers a run. The workflow filters on `paths: site/**`, so a commit touching only `ansible/` waits the full 900s and reports a publish failure for a deploy that was never going to happen |
 
 The mail one is the worst, because this project had **already solved it**. `git push`
 succeeding is not deployed — that is precisely why `wait-for-deploy.sh` exists. The
@@ -686,7 +687,13 @@ matching negative test, and the ones that had none are exactly the ones that wer
 | Mail delivery | the queue inspected after a "successful" send |
 | CSP script hash | recomputed from the emitted bytes and compared |
 
-"It looks right" is how all five shipped.
+"It looks right" is how all of these shipped. The sixth was found while writing up the
+other five — and the verification of *its* fix repeated the second entry in this very
+table: `./wait-for-deploy.sh … | sed` reported `sed`'s exit code as the script's. Reading
+`0` where the script had returned `3` would have "confirmed" the opposite of what happened.
+Caught by re-running it with the output redirected instead of piped.
+
+The pattern does not stop being easy to make once you have named it.
 
 ## Problems hit while building this
 

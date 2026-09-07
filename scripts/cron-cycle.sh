@@ -124,6 +124,7 @@ case $? in
   0)  DEPLOY_STATUS="ok" ;;
   1)  DEPLOY_STATUS="failed";  EXIT_CODE=1 ;;
   2)  DEPLOY_STATUS="timeout"; EXIT_CODE=1 ;;
+  3)  DEPLOY_STATUS="not_needed" ;;   # commit triggers no workflow run
   *)  DEPLOY_STATUS="unverified" ;;
 esac
 exit "$EXIT_CODE"
