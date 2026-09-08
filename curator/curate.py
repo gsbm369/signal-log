@@ -158,6 +158,7 @@ def save_seen(seen: dict[str, str]) -> None:
 
 def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]:
     name, url = feed["name"], feed["url"]
+    category = str(feed.get("category", "tech"))
     # `fetch` is how many entries to pull; `weight` is the ranking multiplier.
     # These were the same field, so compressing weights to the 0.85-1.30 band
     # would have silently cut every feed's contribution to ~7 entries.
@@ -194,6 +195,7 @@ def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]
         img, alt = images.extract(entry, link, allow_network=False)
         out.append({
             "source": name,
+            "category": category,
             "title": title,
             "url": link,
             "published": published,
@@ -252,6 +254,7 @@ def write_post(summary: summarizers.Summary) -> Path:
         f"description: {yaml_str(summary.description)}",
         f"pubDate: {published.isoformat()}",
         f"source: {yaml_str(src['source'])}",
+        f"category: {src.get('category', 'tech')}",
         f"sourceUrl: {yaml_str(src['url'])}",
         f"tags: [{', '.join(yaml_str(t) for t in tags)}]",
         f"heat: {heat}",
@@ -364,20 +367,57 @@ def _run() -> int:
 
     # --- drop what we have already published ---
     seen = load_seen()
-    fresh = [a for a in articles if a["key"] not in seen][:max_candidates]
+    fresh = [a for a in articles if a["key"] not in seen]
     METRICS["articles_new"] = len(fresh)
-    log.info("%d new since the last run (cap %d)", len(fresh), max_candidates)
+    log.info("%d new since the last run", len(fresh))
     if not fresh:
         log.info("no new articles; nothing to do")
         METRICS["curator_status"] = "no_new"
         return 0
 
-    # --- rank (deterministic, no model) ---
+    # --- rank (deterministic, no model), PER CATEGORY ---
+    #
+    # Categories are ranked separately rather than pooled and sliced. As one
+    # pool, tech's volume crowds the shelves out entirely — a world story should
+    # compete with world stories for its four slots, not with Hacker News.
+    #
+    # The category is DECLARED ON THE FEED and never inferred from the text. A
+    # gaming site covering NVIDIA earnings is gaming; a markets site covering a
+    # game studio is markets. Keyword classification gets both wrong.
     weights = {f["name"]: float(f.get("weight", ranker.DEFAULT_SOURCE_WEIGHT)) for f in feeds}
-    ranked, rstats = ranker.rank(
-        fresh, weights, limit=want, per_source_cap=per_source_cap,
-        extra_noise=bool(settings.get("extra_noise_filter", True)),
-    )
+    caps = dict(settings.get("category_caps") or {})
+    extra_noise = bool(settings.get("extra_noise_filter", True))
+
+    by_cat: dict[str, list[dict[str, Any]]] = {}
+    for art in fresh:
+        by_cat.setdefault(art.get("category", "tech"), []).append(art)
+
+    # max_candidates is applied PER CATEGORY, after the split. Applied to the
+    # pooled list it truncates by recency across all feeds: with 182 articles
+    # collected, the newest 40 were world- and gaming-heavy and tech — the spine
+    # of the site — published nothing at all.
+    for cat in by_cat:
+        by_cat[cat].sort(key=lambda a: a["published"], reverse=True)
+        by_cat[cat] = by_cat[cat][:max_candidates]
+
+    ranked: list[dict[str, Any]] = []
+    rstats = {"in": 0, "noise": 0, "stub": 0, "dupe_url": 0, "dupe_title": 0, "capped": 0}
+    per_cat: dict[str, int] = {}
+
+    for cat in sorted(by_cat, key=lambda c: (c != "tech", c)):
+        limit = want if cat == "tech" else int(caps.get(cat, 4))
+        picked, st = ranker.rank(
+            by_cat[cat], weights, limit=limit,
+            per_source_cap=per_source_cap, extra_noise=extra_noise,
+        )
+        ranked.extend(picked)
+        per_cat[cat] = len(picked)
+        for k in rstats:
+            rstats[k] += st.get(k, 0)
+        log.info("category %-8s %3d candidate(s) -> %d published (cap %d)",
+                 cat, len(by_cat[cat]), len(picked), limit)
+
+    METRICS["per_category"] = per_cat
     METRICS["articles_ranked"] = rstats["in"]
     METRICS["dropped_noise"] = rstats["noise"] + rstats["stub"]
     METRICS["dropped_dupe"] = rstats["dupe_url"] + rstats["dupe_title"]
@@ -393,8 +433,9 @@ def _run() -> int:
         return 0
 
     for a in ranked:
-        log.info("  [%.4f  rel %.1f] %-22s %s",
-                 a["_score"], a["_relevance"], a["source"][:22], a["title"][:70])
+        log.info("  [%-7s %.4f rel %.1f] %-20s %s",
+                 a.get("category", "tech"), a["_score"], a["_relevance"],
+                 a["source"][:20], a["title"][:60])
 
     # --- resolve images for the selected stories only ---
     # Every candidate already carries an in-feed image if its feed shipped one.

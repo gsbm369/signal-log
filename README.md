@@ -155,6 +155,23 @@ This is a known fragility, not a solved problem. The durable fix is a static pub
 moving the relay to the planned Oracle Cloud instance retires the entire class of failure.
 That is a concrete engineering reason for that phase, not just an exercise.
 
+### Catch-up window
+
+`max_age_hours: 72`, raised from 36. The guest runs on a desktop the owner switches off, so
+multi-day gaps are the operating reality rather than a fault. At 36h a weekend outage
+dropped **every** story published while the machine was off, and reported nothing — the
+fetch succeeds and simply returns fewer items.
+
+Widening it does not flood the site with stale news. Recency decay is `2^(-age/36h)`, so a
+72h-old story scores `0.25` and loses to anything fresh; it can only surface when nothing
+fresher exists, which is exactly the recovery case it exists for.
+
+| age | recency factor | at 36h | at 72h |
+|---|---|---|---|
+| 24h | 0.630 | in | in |
+| 48h | 0.397 | **dropped** | in |
+| 72h | 0.250 | **dropped** | in |
+
 ### Scheduling: systemd timers, not cron
 
 The publish cycle and the digest run on **systemd user timers with
@@ -875,6 +892,76 @@ rotting is visible in Grafana rather than buried. Replaced with `hnrss.org/best`
 IEEE Spectrum.
 
 ---
+
+## Images
+
+Every post carries an optional `image` and `imageAlt`, extracted in this order —
+first hit wins:
+
+| Step | Source | Network? | Coverage measured on the live feeds |
+|---|---|---|---|
+| 1–2 | `media:content` / `media:thumbnail` | no | 20/68 (IEEE, Ars) |
+| 3 | `enclosure type="image/*"` | no | 0/68 |
+| 4 | first `<img src>` in the entry HTML | no | **+15/68 (The Verge 10/10, MIT 5/10)** |
+| 5 | `og:image` fetched from `sourceUrl` | yes | +22 of the remainder |
+| | **total** | | **50/56 (89%)** |
+
+Step 4 is an addition to the obvious order, and it was measured rather than assumed. The
+Verge and MIT ship their lead image inside the entry's `content` HTML, not as a media
+element — without this step both fall through to a network fetch for a picture the feed
+already handed over. It raises in-feed coverage from 29% to 51% at zero network cost.
+
+The `og:image` fetch runs **only for the stories actually selected**, not for all 40
+candidates. It costs about 1.2s per article; doing it at collect time would add minutes to
+every cycle for images that are mostly never used.
+
+Two guards, both verified against real failures rather than reasoned about:
+
+- **HTTPS only.** The CSP is `img-src 'self' data: https:`, so an `http` URL is blocked by
+  the browser with no error — a broken picture and a silent failure. Protocol-relative URLs
+  are upgraded; `http://` is rejected. Tracking pixels, spacers, avatars and share buttons
+  are filtered by pattern.
+- **Nothing here can fail a cycle.** Every path returns `(None, None)` rather than raising,
+  checked against a refused port, an unresolvable host, an empty string and a non-URL.
+
+**A post with no image is a normal outcome, not a gap.** TechCrunch ships none at any
+in-feed level; the layout is built for absence and no placeholder is substituted.
+
+> **Phase two, not built yet:** download, resize and serve images from this origin so
+> `img-src` can go back to `'self'`. Hotlinking means every publisher's CDN sees this
+> site's readers, and any of them can block or replace the image at will.
+
+## Categories
+
+Tech is the spine and keeps the hero, the cards and the tail. Markets, gaming and world are
+shelves of four, capped so they stay a touch of interest rather than a second feed.
+
+**Category is declared on the feed and never inferred from the text.** A gaming site
+covering NVIDIA earnings is gaming; a markets site covering a game studio is markets.
+Keyword classification gets both wrong, and guessing would contradict the only claim this
+site makes about itself.
+
+Categories are also **ranked separately, not pooled and sliced** — as one pool, tech's
+volume crowds the shelves out entirely. `max_candidates` is applied *per category after the
+split*: applied to the pooled list it truncates by recency across all feeds, and on the
+first run with 182 articles the newest 40 were world- and gaming-heavy, so tech published
+nothing at all.
+
+### Feeds rejected, with what was actually measured
+
+Two of the original rejection reasons did not survive re-testing on 2026-09-08:
+
+| Feed | Verdict |
+|---|---|
+| Ynetnews | **Rejected — but not for the stated reason.** Its dates parse fine, 5/5; feedparser strips CDATA before date parsing (there is a regression test for this). The real disqualifier is staleness: newest item 160h old. |
+| Jerusalem Post | **Evidence did not reproduce.** `rssfeedsfrontpage.aspx` returned 26 entries, 5/5 dates parsed, newest **0.4h** old — live and current, not abandoned since June 2025. A different JPost endpoint may well be dead. Left out because it was explicitly rejected, not because the feed is bad. |
+| Globes, Calcalist | zero items returned |
+| CNBC Business, GameSpot | newest items 60–74h old |
+| AP News | HTTP 403 |
+
+The CDATA case has a test regardless of whether any configured feed uses the pattern,
+because a feed that broke on it would contribute **zero items while reporting success** —
+valid feed, HTTP 200, no error, silent empty result.
 
 ## Ranking
 

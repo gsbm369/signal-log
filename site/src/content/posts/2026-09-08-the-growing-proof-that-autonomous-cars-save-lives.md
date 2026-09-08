@@ -3,10 +3,11 @@ title: "The Growing Proof That Autonomous Cars Save Lives"
 description: "Plenty of people remain spooked by autonomous vehicles, or AVs. Some experts and policymakers have cautioned that AVs won’t necessarily make roads safer."
 pubDate: 2026-09-08T12:59:04+00:00
 source: "IEEE Spectrum"
+category: tech
 sourceUrl: "https://spectrum.ieee.org/are-self-driving-cars-safe"
 tags: ["tech"]
-heat: 84
-score: 1.1188
+heat: 76
+score: 1.11674
 readMinutes: 1
 image: "https://spectrum.ieee.org/media-library/a-road-scene-shot-from-the-perspective-of-a-driver-shows-red-splotches-to-indicate-where-nearby-vehicles-were-detected-using-l.png?id=67724498&width=980"
 ---

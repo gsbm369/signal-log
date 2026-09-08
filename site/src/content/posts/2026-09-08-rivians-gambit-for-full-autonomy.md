@@ -3,10 +3,11 @@ title: "Rivian’s Gambit for Full Autonomy"
 description: "I’m sitting in a Rivian R1S SUV as it drives itself down the leafy streets of Palo Alto, Calif. , through areas crowded with touchstones of tech history."
 pubDate: 2026-09-08T13:00:04+00:00
 source: "IEEE Spectrum"
+category: tech
 sourceUrl: "https://spectrum.ieee.org/rivian-self-driving"
 tags: ["tech"]
-heat: 84
-score: 1.11916
+heat: 76
+score: 1.1171
 readMinutes: 1
 image: "https://spectrum.ieee.org/media-library/two-men-in-dark-blue-shirts-watch-suvs-being-put-together-on-an-assembly-line.jpg?id=67724197&width=980"
 ---

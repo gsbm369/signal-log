@@ -12,6 +12,7 @@ feeds:
 {% for f in blog_feeds %}
   - name: {{ f.name }}
     url: {{ f.url }}
+    category: {{ f.category | default('tech') }}
     weight: {{ f.weight | default(1.0) }}
     fetch: {{ f.fetch | default(15) }}
 {% endfor %}
@@ -25,6 +26,12 @@ settings:
   summarizer: {{ summarizer_backend }}
   # Max articles any single feed may contribute to one run.
   per_source_cap: {{ per_source_cap }}
+  # Per-category caps. Tech is uncapped here (publish_count governs it);
+  # the others are shelves, not a competing feed.
+  category_caps:
+{% for k, v in category_caps.items() %}
+    {{ k }}: {{ v }}
+{% endfor %}
   # Apply this project's extra noise patterns (listicles, deals, Ask HN) on top
   # of the ported list. The ported list alone is tuned for LWN/vendor feeds.
   extra_noise_filter: {{ extra_noise_filter | lower }}

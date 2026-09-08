@@ -6,9 +6,15 @@ import Logo from '../components/Logo.astro';
 interface Props {
   title: string;
   description?: string;
+  /** Per-page social image. Falls back to the site card. */
+  ogImage?: string;
 }
 
-const { title, description = 'Technology news ranked by a deterministic heuristic. No model, no noise.' } = Astro.props;
+const {
+  title,
+  description = 'Technology news ranked by a deterministic heuristic. No model, no noise.',
+  ogImage,
+} = Astro.props;
 const year = new Date().getFullYear();
 // Absolute, derived from `site` (which comes from public/CNAME).
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:8080').href;
@@ -53,6 +59,11 @@ const scriptHash = `'sha256-${createHash('sha256').update(revealScript).digest('
 // frame-ancestors is ABSENT and cannot be added: it is ignored in a meta tag
 // and can only be delivered as a real header, which GitHub Pages does not
 // allow. See the README — clickjacking protection is unavailable on this host.
+// Absolute, because every consumer of og:image — WhatsApp, Slack, iMessage,
+// Discord — requires a fully-qualified URL and silently shows nothing for a
+// relative one.
+const ogUrl = new URL(ogImage ?? '/og-card.png', Astro.site ?? 'http://localhost:8080').href;
+
 const csp = [
   "default-src 'self'",
   `script-src 'self' ${scriptHash}`,
@@ -79,7 +90,12 @@ const csp = [
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="signal.log" />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="signal.log — technology news, deterministically ranked" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="theme-color" content="#0e1116" />

@@ -11,32 +11,99 @@
 feeds:
   - name: IEEE Spectrum
     url: https://spectrum.ieee.org/feeds/feed.rss
+    category: tech
     weight: 1.2
     fetch: 15
   - name: MIT Technology Review
     url: https://www.technologyreview.com/feed/
+    category: tech
     weight: 1.15
     fetch: 15
   - name: Ars Technica
     url: https://feeds.arstechnica.com/arstechnica/index
+    category: tech
     weight: 1.1
     fetch: 18
   - name: The Verge
     url: https://www.theverge.com/rss/index.xml
+    category: tech
     weight: 1.0
     fetch: 15
   - name: TechCrunch
     url: https://techcrunch.com/feed/
+    category: tech
     weight: 0.95
     fetch: 18
   - name: Hacker News Best
     url: https://hnrss.org/best
+    category: tech
     weight: 0.95
     fetch: 20
   - name: Hacker News
     url: https://hnrss.org/frontpage?points=150
+    category: tech
     weight: 0.85
     fetch: 20
+  - name: MarketWatch
+    url: https://feeds.content.dowjones.io/public/rss/mw_topstories
+    category: markets
+    weight: 1.1
+    fetch: 12
+  - name: Yahoo Finance
+    url: https://finance.yahoo.com/news/rssindex
+    category: markets
+    weight: 1.0
+    fetch: 12
+  - name: Investing.com
+    url: https://www.investing.com/rss/news.rss
+    category: markets
+    weight: 0.95
+    fetch: 12
+  - name: Seeking Alpha
+    url: https://seekingalpha.com/market_currents.xml
+    category: markets
+    weight: 0.9
+    fetch: 12
+  - name: Polygon
+    url: https://www.polygon.com/rss/index.xml
+    category: gaming
+    weight: 1.1
+    fetch: 12
+  - name: Eurogamer
+    url: https://www.eurogamer.net/feed
+    category: gaming
+    weight: 1.05
+    fetch: 12
+  - name: Rock Paper Shotgun
+    url: https://www.rockpapershotgun.com/feed
+    category: gaming
+    weight: 1.0
+    fetch: 12
+  - name: PC Gamer
+    url: https://www.pcgamer.com/rss/
+    category: gaming
+    weight: 0.95
+    fetch: 12
+  - name: IGN
+    url: https://feeds.ign.com/ign/games-all
+    category: gaming
+    weight: 0.9
+    fetch: 12
+  - name: BBC World
+    url: https://feeds.bbci.co.uk/news/world/rss.xml
+    category: world
+    weight: 1.2
+    fetch: 12
+  - name: Guardian World
+    url: https://www.theguardian.com/world/rss
+    category: world
+    weight: 1.1
+    fetch: 12
+  - name: Times of Israel
+    url: https://www.timesofisrael.com/feed/
+    category: world
+    weight: 1.05
+    fetch: 12
 
 settings:
   # Summarizer backend: none | ollama | anthropic
@@ -47,6 +114,12 @@ settings:
   summarizer: none
   # Max articles any single feed may contribute to one run.
   per_source_cap: 3
+  # Per-category caps. Tech is uncapped here (publish_count governs it);
+  # the others are shelves, not a competing feed.
+  category_caps:
+    markets: 4
+    gaming: 4
+    world: 4
   # Apply this project's extra noise patterns (listicles, deals, Ask HN) on top
   # of the ported list. The ported list alone is tuned for LWN/vendor feeds.
   extra_noise_filter: true
