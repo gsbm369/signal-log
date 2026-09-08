@@ -6,8 +6,9 @@ source: "Hacker News Best"
 sourceUrl: "https://mistral.ai/news/mistral-makes-sovereign-open-weight-ai-to-frontier/"
 tags: ["mistral", "open-weight"]
 heat: 90
-score: 1.26353
+score: 1.25575
 readMinutes: 1
+image: "https://mistral.ai/cms-media/api/media/file/fundraise.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

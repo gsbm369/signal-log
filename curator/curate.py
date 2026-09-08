@@ -38,6 +38,7 @@ from typing import Any
 import feedparser
 import yaml
 
+import images
 import ranker
 import summarizers
 
@@ -187,6 +188,10 @@ def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]
         published = entry_datetime(entry)
         if now - published > max_age:
             continue
+        # In-feed image only here — no network. The og:image fallback is a
+        # network call per article, so it runs later for the handful of stories
+        # that are actually selected, not for every candidate fetched.
+        img, alt = images.extract(entry, link, allow_network=False)
         out.append({
             "source": name,
             "title": title,
@@ -195,6 +200,9 @@ def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]
             "summary": strip_html(
                 getattr(entry, "summary", "") or getattr(entry, "description", ""), 900
             ),
+            "image": img,
+            "imageAlt": alt,
+            "_entry": entry,
         })
     log.info("[%s] %d candidates", name, len(out))
     METRICS["feeds_ok"] += 1
@@ -238,7 +246,7 @@ def write_post(summary: summarizers.Summary) -> Path:
     slug = f"{published.strftime('%Y-%m-%d')}-{slugify(summary.title)}"
     path = CONTENT_DIR / f"{slug}.md"
 
-    front = "\n".join([
+    front_lines = [
         "---",
         f"title: {yaml_str(summary.title)}",
         f"description: {yaml_str(summary.description)}",
@@ -249,8 +257,15 @@ def write_post(summary: summarizers.Summary) -> Path:
         f"heat: {heat}",
         f"score: {summary.score}",
         f"readMinutes: {read_minutes}",
-        "---",
-    ])
+    ]
+    # Optional. Absent rather than empty when the story has no picture — the
+    # schema marks these optional and the layout is built for their absence.
+    if src.get("image"):
+        front_lines.append(f"image: {yaml_str(src['image'])}")
+        if src.get("imageAlt"):
+            front_lines.append(f"imageAlt: {yaml_str(src['imageAlt'])}")
+    front_lines.append("---")
+    front = "\n".join(front_lines)
 
     CONTENT_DIR.mkdir(parents=True, exist_ok=True)
     path.write_text(f"{front}\n\n{body}\n", encoding="utf-8")
@@ -380,6 +395,22 @@ def _run() -> int:
     for a in ranked:
         log.info("  [%.4f  rel %.1f] %-22s %s",
                  a["_score"], a["_relevance"], a["source"][:22], a["title"][:70])
+
+    # --- resolve images for the selected stories only ---
+    # Every candidate already carries an in-feed image if its feed shipped one.
+    # This fills the gaps with an og:image fetch, capped to the published set so
+    # a slow publisher costs seconds, not minutes. Failure is normal and silent:
+    # the layout is designed for a story with no picture.
+    need = [a for a in ranked if not a.get("image")]
+    if need:
+        log.info("resolving og:image for %d story(ies) without one", len(need))
+        for art in need:
+            img, alt = images.extract(art.get("_entry"), art.get("url", ""), allow_network=True)
+            if img:
+                art["image"], art["imageAlt"] = img, alt
+    METRICS["with_image"] = sum(1 for a in ranked if a.get("image"))
+    METRICS["without_image"] = len(ranked) - METRICS["with_image"]
+    log.info("images: %d/%d story(ies) have one", METRICS["with_image"], len(ranked))
 
     # --- summarise ---
     stories = backend.summarize(ranked)

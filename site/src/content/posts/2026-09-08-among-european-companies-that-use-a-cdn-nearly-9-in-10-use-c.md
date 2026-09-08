@@ -6,8 +6,9 @@ source: "Hacker News Best"
 sourceUrl: "https://ciphercue.com/blog/european-cdn-concentration-cloudflare-nine-in-ten"
 tags: ["cloudflare"]
 heat: 94
-score: 1.35446
+score: 1.34612
 readMinutes: 1
+image: "https://ciphercue.com/img/og-card.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
