@@ -1,14 +1,15 @@
 ---
-title: "GPT-6 Astra on robot arms"
+title: "OpenAI might have stolen another major proof"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-06T01:52:45+00:00
+pubDate: 2026-09-10T04:19:48+00:00
 source: "Hacker News Best"
-sourceUrl: "https://openai.robocurve.org/gpt-6-astra/"
-tags: ["gpt", "openai"]
-heat: 93
-score: 1.11154
-image: "https://openai.robocurve.org/gpt-6-astra/og.jpg"
+category: tech
+sourceUrl: "https://twitter.com/ValerioCapraro/status/2097791836269977996"
+tags: ["openai"]
+heat: 85
+score: 1.20089
 readMinutes: 1
+image: "https://pbs.twimg.com/media/HRzajb0boAAstCJ?format=webp&amp;name=large"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
