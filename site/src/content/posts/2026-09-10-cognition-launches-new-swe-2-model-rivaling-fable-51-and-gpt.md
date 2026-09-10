@@ -1,15 +1,16 @@
 ---
-title: "Mistral raises €3B"
+title: "Cognition launches new SWE-2 model, Rivaling Fable 5.1 and GPT-Astra"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-08T05:06:23+00:00
+pubDate: 2026-09-10T15:29:47+00:00
 source: "Hacker News Best"
-category: tech
-sourceUrl: "https://mistral.ai/news/mistral-makes-sovereign-open-weight-ai-to-frontier/"
-tags: ["mistral", "open-weight"]
-heat: 82
-score: 1.25344
+category: aggregators
+sourceUrl: "https://cognition.com/blog/swe-2"
+tags: ["gpt"]
+heat: 66
+score: 0.88868
 readMinutes: 1
-image: "https://mistral.ai/cms-media/api/media/file/fundraise.jpg"
+image: "https://cognition.com/images/swe-2/cover.jpg"
+imageAlt: "Introducing SWE-2: Pushing the Pareto Frontier"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
