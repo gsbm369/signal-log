@@ -173,6 +173,54 @@ EXPECTED_ORDER = [
 EXPECTED_STATS = {"noise": 2, "stub": 1, "dupe_url": 1, "dupe_title": 1, "capped": 1}
 
 
+# --------------------------------------------------------------------------- #
+# THE EVERGREEN FIXTURE — the half-life change, frozen.
+# --------------------------------------------------------------------------- #
+#
+# The fixture above is ranked on the DEFAULT curve and is therefore blind to the
+# per-category half-life: it froze identically before and after that change,
+# which would have let the whole newsletter pivot land unguarded.
+#
+# Ages here are the ones measured live on 2026-09-10, so this is the real
+# question and not a synthetic one: can an evergreen source ever appear?
+EVERGREEN_WEIGHTS = {
+    "Brendan Gregg": 1.00,
+    "jvns.ca": 1.00,
+    "Marc Brooker": 0.95,
+    "Hacker News Best": 0.70,
+}
+
+EVERGREEN_FIXTURE = [
+    item("Flame graphs for eBPF and the linux kernel", "Brendan Gregg", 216.2 * 24,
+         "profiling", url="https://ex.com/flamegraphs"),
+    item("How postgres indexes actually work on disk", "jvns.ca", 51.8 * 24,
+         "postgres internals", url="https://ex.com/pg-indexes"),
+    item("Consistency and durability in aws s3", "Marc Brooker", 43.8 * 24,
+         "distributed systems", url="https://ex.com/s3-consistency"),
+    item("Show HN: another kubernetes dashboard", "Hacker News Best", 2,
+         "k8s", url="https://ex.com/another-dashboard"),
+]
+
+# On the NEWS curve all three evergreen items score EXACTLY 0.0 — 2^(-43.8*24/36)
+# already underflows the 5-decimal score, and Gregg's 2^(-144) is ~4e-44. Their
+# order among themselves is therefore an arbitrary tie and is deliberately NOT
+# frozen; freezing a tie order would be a test that fails on an unrelated sort
+# change. What is frozen is the claim that matters: the aggregator is the only
+# survivor, and every evergreen item is annihilated rather than merely demoted.
+EXPECTED_NEWS_SURVIVOR = "Show HN: another kubernetes dashboard"
+
+# On the DEEP_DIVES curve (180d half-life) the same four reorder completely, and
+# THIS list differing from the one above is the proof the change took. Note
+# Gregg at rec=0.4349 — 216 days is now a little over one half-life, so a great
+# 2019 post competes on merit instead of being deleted by arithmetic.
+EXPECTED_DEEP_ORDER = [
+    "How postgres indexes actually work on disk",   # 1.35162  rec 0.8192  jvns.ca      w 1.00
+    "Consistency and durability in aws s3",         # 1.32421  rec 0.8448  Brooker      w 0.95
+    "Show HN: another kubernetes dashboard",        # 1.15463  rec 0.9997  HN Best      w 0.70
+    "Flame graphs for eBPF and the linux kernel",   # 1.15259  rec 0.4349  Gregg        w 1.00
+]
+
+
 def run():
     return ranker.rank(FIXTURE, SOURCE_WEIGHTS, per_source_cap=3, now=NOW)
 
@@ -216,6 +264,45 @@ def main() -> int:
         print(f'  {"PASS" if ok else "FAIL"}  {k}={stats.get(k)} (expected {v})')
         if not ok:
             failures.append(f"stats.{k}")
+
+    # ----------------------------------------------------------------- #
+    # The half-life guard.
+    # ----------------------------------------------------------------- #
+    print("\n-- evergreen fixture: the SAME items under two curves --")
+    news, _ = ranker.rank(EVERGREEN_FIXTURE, EVERGREEN_WEIGHTS,
+                          per_source_cap=3, now=NOW, half_life_hours=36.0)
+    deep, _ = ranker.rank(EVERGREEN_FIXTURE, EVERGREEN_WEIGHTS,
+                          per_source_cap=3, now=NOW, half_life_hours=4320.0)
+    for label, got_list in (("news   36h", news), ("deep 4320h", deep)):
+        for a in got_list:
+            print(f'        {label}  {a["_score"]:>8.5f}  rec={a["_recency"]:.4f}  '
+                  f'{a["source"][:16]:<16} {a["title"][:44]}')
+
+    ever = [
+        ("news curve annihilates every evergreen item (score == 0)",
+         all(a["_score"] == 0.0 for a in news if a["source"] != "Hacker News Best")),
+        ("news curve leaves the aggregator as the only survivor",
+         news[0]["title"] == EXPECTED_NEWS_SURVIVOR
+         and sum(1 for a in news if a["_score"] > 0) == 1),
+        ("deep_dives curve order matches the frozen expectation",
+         [a["title"] for a in deep] == EXPECTED_DEEP_ORDER),
+        # THE POINT OF THE WHOLE CHANGE.
+        ("the two curves produce DIFFERENT orders — the change actually took",
+         [a["title"] for a in news] != [a["title"] for a in deep]),
+        ("a 216-day-old post can outrank a 2-hour-old aggregator link",
+         [a["title"] for a in deep].index("Flame graphs for eBPF and the linux kernel")
+         < len(deep) and deep[-1]["_score"] > 0.0),
+        # Per-source override: same category curve, one source opting out.
+        ("a per-source half_life override beats the category curve",
+         ranker.score_article(
+             dict(EVERGREEN_FIXTURE[0], _half_life_hours=4320.0), 1.0, NOW, 36.0
+         )["_score"] > ranker.score_article(
+             dict(EVERGREEN_FIXTURE[0]), 1.0, NOW, 36.0)["_score"]),
+    ]
+    for name, ok in ever:
+        print(f'  {"PASS" if ok else "FAIL"}  {name}')
+        if not ok:
+            failures.append(name)
 
     print("\n-- invariants that must hold whatever the constants are --")
     inv = [

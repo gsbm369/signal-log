@@ -54,7 +54,37 @@ CONTENT_DIR = Path(os.environ.get("CONTENT_DIR", HERE.parent / "site/src/content
 STATE_DIR = Path(os.environ.get("STATE_DIR", HERE / "state"))
 SEEN_FILE = STATE_DIR / "seen.json"
 
+# Fallback retention for a category that declares none, and the expiry applied
+# to LEGACY seen.json entries (the old flat {key: date} shape carried no
+# category, so there is nothing to look a policy up by).
 SEEN_RETENTION_DAYS = 45
+
+# Clock skew allowance before an item counts as future-dated. Two hours is
+# generous for a publisher whose server clock drifts; it is nowhere near the
+# 4.8-to-55.8 days measured on Finextra's scheduled-webinar entries.
+FUTURE_DATE_GRACE = timedelta(hours=2)
+
+# Ingest-gate rejections, counted per source and per category per reason.
+# A gate nobody can see refusing is a gate nobody can trust: these are logged
+# at the end of collect() and shipped to Loki with the rest of the metrics.
+REJECTS: dict[str, dict[str, int]] = {
+    "too_old": {}, "no_date": {}, "future_date": {},
+}
+REJECTS_BY_CAT: dict[str, dict[str, int]] = {
+    "too_old": {}, "no_date": {}, "future_date": {},
+}
+# A handful of raw date strings per source, kept for the acceptance report.
+# Bounded: a broken feed must not turn the metric line into a log dump.
+REJECT_SAMPLES: dict[str, list[str]] = {}
+
+
+def _reject(reason: str, source: str, category: str, raw_date: str = "") -> None:
+    REJECTS[reason][source] = REJECTS[reason].get(source, 0) + 1
+    REJECTS_BY_CAT[reason][category] = REJECTS_BY_CAT[reason].get(category, 0) + 1
+    if raw_date:
+        bucket = REJECT_SAMPLES.setdefault(f"{reason}:{source}", [])
+        if len(bucket) < 3:
+            bucket.append(raw_date[:64])
 
 log = logging.getLogger("curator")
 
@@ -114,12 +144,51 @@ def strip_html(raw: str, limit: int = 600) -> str:
     return text[:limit]
 
 
-def entry_datetime(entry: Any) -> datetime:
+def entry_raw_date(entry: Any) -> str:
+    """The date string as the feed wrote it, for diagnosing a rejection."""
+    for field in ("published", "updated", "created"):
+        v = getattr(entry, field, None)
+        if v:
+            return str(v)
+    return ""
+
+
+def entry_datetime(entry: Any, now: datetime | None = None) -> tuple[datetime | None, str]:
+    """Parse an entry's date. Returns (datetime, "") or (None, reason).
+
+    DATE VALIDITY GUARD. This used to fall back to `now` for an entry with no
+    parseable date, which is the worst possible default: an undated item is
+    handed age 0 and therefore the maximum recency factor, so the items we know
+    least about outrank the ones we know most about. An item we cannot date is
+    now rejected outright.
+
+    The same reasoning rules out fetched_at as a fallback for a bad date —
+    fetched_at is approximately `now`, which is the identical bug wearing a
+    different name.
+
+    Future dates are rejected for the same reason from the other direction:
+    ranker.recency_factor clamps age at 0, so an item dated next month scores a
+    perfect 1.0 every run until the date arrives.
+
+    This is a DATE-VALIDITY guard, not a content filter. It currently also
+    removes Finextra's webinar promos, but only as a side effect of that
+    publisher dating them at air time. Do not lean on it to keep event listings
+    out of the newsletter — a publisher who dates the same promos in the past
+    would sail straight through. Content filtering belongs in ranker's noise
+    patterns.
+    """
+    now = now or datetime.now(timezone.utc)
     for field in ("published_parsed", "updated_parsed"):
         parsed = getattr(entry, field, None)
         if parsed:
-            return datetime(*parsed[:6], tzinfo=timezone.utc)
-    return datetime.now(timezone.utc)
+            try:
+                dt = datetime(*parsed[:6], tzinfo=timezone.utc)
+            except (TypeError, ValueError):
+                continue
+            if dt > now + FUTURE_DATE_GRACE:
+                return None, "future_date"
+            return dt, ""
+    return None, "no_date"
 
 
 def yaml_str(value: str) -> str:
@@ -131,24 +200,131 @@ def yaml_str(value: str) -> str:
 # --------------------------------------------------------------------------- #
 
 
-def load_seen() -> dict[str, str]:
+def load_seen() -> dict[str, dict[str, Any]]:
+    """Read seen.json, upgrading the legacy flat shape in memory.
+
+    v1 was {key: "iso-date"}. v2 is {key: {"date": ..., "category": ...}},
+    because retention is now a per-category decision and a bare date cannot be
+    looked up against a policy. Legacy entries keep a null category and are
+    pruned at SEEN_RETENTION_DAYS, exactly as they are today.
+    """
     if not SEEN_FILE.exists():
         return {}
     try:
         data = json.loads(SEEN_FILE.read_text())
-        return data if isinstance(data, dict) else {}
     except (json.JSONDecodeError, OSError) as exc:
         log.warning("could not read state file (%s) — starting fresh", exc)
         return {}
+    if not isinstance(data, dict):
+        return {}
+
+    out: dict[str, dict[str, Any]] = {}
+    legacy = 0
+    for key, val in data.items():
+        if isinstance(val, dict):
+            out[key] = {"date": str(val.get("date", "")), "category": val.get("category")}
+        else:
+            out[key] = {"date": str(val), "category": None}
+            legacy += 1
+    if legacy:
+        log.info("seen.json: %d legacy entry(ies) without a category", legacy)
+    return out
 
 
-def save_seen(seen: dict[str, str]) -> None:
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=SEEN_RETENTION_DAYS)).isoformat()
-    pruned = {k: v for k, v in seen.items() if v >= cutoff}
+def save_seen(seen: dict[str, dict[str, Any]], policies: dict[str, dict[str, Any]]) -> None:
+    """Prune per category, then write atomically.
+
+    `retention_days: null` means KEEP FOREVER, and it is the point of the
+    evergreen categories. 45 days is a memory bound for news — it stops us
+    re-publishing today's story next month. Applied to deep_dives it becomes an
+    editorial instruction to re-run Brendan Gregg's best post every six weeks,
+    which is precisely the repetition the seen-store exists to prevent.
+    """
+    now = datetime.now(timezone.utc)
+    kept: dict[str, dict[str, Any]] = {}
+    dropped_by_cat: dict[str, int] = {}
+    for key, rec in seen.items():
+        cat = rec.get("category")
+        if cat is None:
+            days: float | None = SEEN_RETENTION_DAYS
+        else:
+            days = policy_for(policies, str(cat)).get("retention_days", SEEN_RETENTION_DAYS)
+        if days is None:                       # forever
+            kept[key] = rec
+            continue
+        cutoff = (now - timedelta(days=float(days))).isoformat()
+        if rec.get("date", "") >= cutoff:
+            kept[key] = rec
+        else:
+            label = str(cat) if cat else "legacy"
+            dropped_by_cat[label] = dropped_by_cat.get(label, 0) + 1
+
+    if dropped_by_cat:
+        log.info("seen.json: expired %s", dict(sorted(dropped_by_cat.items())))
+    METRICS["seen_total"] = len(kept)
+    METRICS["seen_expired"] = dict(sorted(dropped_by_cat.items()))
+
     STATE_DIR.mkdir(parents=True, exist_ok=True)
     tmp = SEEN_FILE.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(pruned, indent=2))
+    tmp.write_text(json.dumps(kept, indent=2, sort_keys=True))
     tmp.replace(SEEN_FILE)
+
+
+# --------------------------------------------------------------------------- #
+# Scoring policy
+# --------------------------------------------------------------------------- #
+
+# Fallbacks for a category with no `scoring.categories` entry. Deliberately
+# news-shaped: an unconfigured category behaves the way the whole site did
+# before the pivot, rather than silently inheriting an evergreen curve.
+POLICY_DEFAULTS: dict[str, Any] = {
+    "half_life_hours": ranker.DEFAULT_HALF_LIFE_HOURS,
+    "ingest_days": 3.0,
+    "retention_days": SEEN_RETENTION_DAYS,
+    "cap": 6,
+    "fetch": 15,
+}
+
+
+def resolve_policies(config: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Per-category policy from the `scoring:` block in feeds.yml.
+
+    One config file, one template, one deploy path — the scoring block lives in
+    feeds.yml next to the feeds it governs rather than in a second file that
+    would need its own Jinja template and its own line in the playbook.
+    """
+    scoring = config.get("scoring") or {}
+    declared = scoring.get("categories") or {}
+    out: dict[str, dict[str, Any]] = {}
+    for cat, raw in declared.items():
+        pol = dict(POLICY_DEFAULTS)
+        pol.update({k: v for k, v in (raw or {}).items() if v is not None or k == "retention_days"})
+        # retention_days is the one key where an explicit null is MEANINGFUL:
+        # it means keep forever, not "unset, use the default".
+        if (raw or {}).get("retention_days", "missing") is None:
+            pol["retention_days"] = None
+        out[str(cat)] = pol
+    return out
+
+
+def policy_for(policies: dict[str, dict[str, Any]], category: str) -> dict[str, Any]:
+    return policies.get(category, POLICY_DEFAULTS)
+
+
+def feed_policy(feed: dict[str, Any], policies: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    """A source's effective policy: its category's, with per-source overrides.
+
+    Per-source `ingest_days` is not decoration, it is what makes per-source
+    `half_life_hours` usable at all. Stripe sits in fintech (ingest 3d) but its
+    newest post measured 21.8 days old — give it a deep-dives CURVE without also
+    giving it a deep-dives WINDOW and it is still discarded at fetch time,
+    before the curve is ever consulted.
+    """
+    pol = dict(policy_for(policies, str(feed.get("category", "uncategorised"))))
+    for key in ("half_life_hours", "ingest_days", "fetch"):
+        if feed.get(key) is not None:
+            pol[key] = feed[key]
+    return pol
 
 
 # --------------------------------------------------------------------------- #
@@ -156,13 +332,20 @@ def save_seen(seen: dict[str, str]) -> None:
 # --------------------------------------------------------------------------- #
 
 
-def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]:
+def fetch_feed(feed: dict[str, Any], policy: dict[str, Any]) -> list[dict[str, Any]]:
     name, url = feed["name"], feed["url"]
-    category = str(feed.get("category", "tech"))
+    category = str(feed.get("category", "uncategorised"))
     # `fetch` is how many entries to pull; `weight` is the ranking multiplier.
     # These were the same field, so compressing weights to the 0.85-1.30 band
     # would have silently cut every feed's contribution to ~7 entries.
-    take = max(4, int(feed.get("fetch", 15)))
+    #
+    # Depth is per SOURCE because the archives differ by two orders of
+    # magnitude (measured 2026-09-10): Marc Brooker exposes 163 items and Dan
+    # Luu 128, while Brendan Gregg, Netflix Tech and Stripe expose 10 each.
+    # entries[:take] makes item 17 unreachable no matter how deep the feed is.
+    take = max(4, int(policy.get("fetch", 15)))
+    max_age = timedelta(days=float(policy["ingest_days"]))
+    half_life = float(policy["half_life_hours"])
     try:
         parsed = feedparser.parse(
             url,
@@ -186,8 +369,17 @@ def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]
         title = strip_html(getattr(entry, "title", ""), 250)
         if not link or not title:
             continue
-        published = entry_datetime(entry)
+        published, reason = entry_datetime(entry, now)
+        if reason:
+            _reject(reason, name, category, entry_raw_date(entry))
+            continue
+        # INGEST WINDOW — "how far back do we bother parsing", nothing more.
+        # This is not a freshness policy: editorial freshness is the decay curve
+        # in the ranker, which can demote a stale item without deleting it. The
+        # window exists so a ten-year archive does not have to be parsed every
+        # four hours, and so an outage of a few days still catches up.
         if now - published > max_age:
+            _reject("too_old", name, category, entry_raw_date(entry))
             continue
         # In-feed image only here — no network. The og:image fallback is a
         # network call per article, so it runs later for the handful of stories
@@ -196,6 +388,7 @@ def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]
         out.append({
             "source": name,
             "category": category,
+            "_half_life_hours": half_life,
             "title": title,
             "url": link,
             "published": published,
@@ -211,10 +404,11 @@ def fetch_feed(feed: dict[str, Any], max_age: timedelta) -> list[dict[str, Any]]
     return out
 
 
-def collect(feeds: list[dict[str, Any]], max_age_hours: int) -> list[dict[str, Any]]:
-    max_age = timedelta(hours=max_age_hours)
+def collect(
+    feeds: list[dict[str, Any]], policies: dict[str, dict[str, Any]]
+) -> list[dict[str, Any]]:
     with ThreadPoolExecutor(max_workers=min(8, len(feeds))) as pool:
-        batches = pool.map(lambda f: fetch_feed(f, max_age), feeds)
+        batches = pool.map(lambda f: fetch_feed(f, feed_policy(f, policies)), feeds)
 
     articles: list[dict[str, Any]] = []
     seen_urls: set[str] = set()
@@ -228,6 +422,25 @@ def collect(feeds: list[dict[str, Any]], max_age_hours: int) -> list[dict[str, A
             articles.append(art)
 
     articles.sort(key=lambda a: a["published"], reverse=True)
+
+    # Report what the ingest gate REFUSED. A counter nobody prints is a counter
+    # nobody checks, and this gate is the one that silently emptied the
+    # evergreen sources for the whole life of the news version.
+    for reason in ("too_old", "no_date", "future_date"):
+        by_src = REJECTS[reason]
+        if not by_src:
+            continue
+        detail = ", ".join(f"{k}={v}" for k, v in sorted(by_src.items(), key=lambda kv: -kv[1]))
+        log.info("ingest gate rejected %3d for %-11s | %s", sum(by_src.values()), reason, detail)
+        for label, samples in sorted(REJECT_SAMPLES.items()):
+            if label.startswith(f"{reason}:"):
+                log.info("    %-28s e.g. %s", label.split(":", 1)[1], "; ".join(samples))
+
+    METRICS["rejected_by_reason"] = {k: sum(v.values()) for k, v in REJECTS.items()}
+    METRICS["rejected_by_source"] = {k: dict(sorted(v.items())) for k, v in REJECTS.items() if v}
+    METRICS["rejected_by_category"] = {
+        k: dict(sorted(v.items())) for k, v in REJECTS_BY_CAT.items() if v
+    }
     return articles
 
 
@@ -254,7 +467,7 @@ def write_post(summary: summarizers.Summary) -> Path:
         f"description: {yaml_str(summary.description)}",
         f"pubDate: {published.isoformat()}",
         f"source: {yaml_str(src['source'])}",
-        f"category: {src.get('category', 'tech')}",
+        f"category: {src.get('category', 'uncategorised')}",
         f"sourceUrl: {yaml_str(src['url'])}",
         f"tags: [{', '.join(yaml_str(t) for t in tags)}]",
         f"heat: {heat}",
@@ -322,8 +535,15 @@ def _run() -> int:
     want = args.count or int(settings.get("publish_count", 5))
     max_candidates = int(settings.get("max_candidates", 40))
     max_posts = int(settings.get("max_posts", 60))
-    max_age_hours = int(settings.get("max_age_hours", 36))
     per_source_cap = int(settings.get("per_source_cap", ranker.PER_SOURCE_CAP))
+    policies = resolve_policies(config)
+    if not policies:
+        log.warning("no scoring.categories in %s — every category falls back to "
+                    "the news-shaped defaults", FEEDS_FILE)
+    for cat, pol in sorted(policies.items()):
+        ret = "forever" if pol["retention_days"] is None else f"{pol['retention_days']}d"
+        log.info("policy %-14s half-life %7.0fh | ingest %6.0fd | retention %-8s | cap %d",
+                 cat, pol["half_life_hours"], pol["ingest_days"], ret, pol["cap"])
 
     backend_name = (
         args.backend
@@ -356,7 +576,7 @@ def _run() -> int:
     log.info("=== signal.log curator (backend=%s) ===", backend.name)
 
     # --- collect ---
-    articles = collect(feeds, max_age_hours)
+    articles = collect(feeds, policies)
     METRICS["articles_fetched"] = len(articles)
     log.info("collected %d unique articles", len(articles))
     if not articles:
@@ -390,25 +610,61 @@ def _run() -> int:
 
     by_cat: dict[str, list[dict[str, Any]]] = {}
     for art in fresh:
-        by_cat.setdefault(art.get("category", "tech"), []).append(art)
+        by_cat.setdefault(art.get("category", "uncategorised"), []).append(art)
 
     # max_candidates is applied PER CATEGORY, after the split. Applied to the
     # pooled list it truncates by recency across all feeds: with 182 articles
     # collected, the newest 40 were world- and gaming-heavy and tech — the spine
     # of the site — published nothing at all.
+    #
+    # The cut is by SCORE, not by publication date. Sorting by date here
+    # re-imposed recency after the split — the exact axis the per-category
+    # half-life exists to remove — and it did so where nothing logs it: an
+    # evergreen item could survive the ingest gate and the decay curve and still
+    # be discarded by a truncation that never looked at its score.
+    #
+    # Applied to every category rather than only the evergreen ones. Under a
+    # tight half-life the score ordering already IS the date ordering, so the
+    # special case would buy a branch and no behaviour.
+    now_dt = datetime.now(timezone.utc)
+    cut_report: dict[str, dict[str, Any]] = {}
     for cat in by_cat:
-        by_cat[cat].sort(key=lambda a: a["published"], reverse=True)
-        by_cat[cat] = by_cat[cat][:max_candidates]
+        pol = policy_for(policies, cat)
+        items = [
+            ranker.score_article(
+                a, float(weights.get(a.get("source", ""), ranker.DEFAULT_SOURCE_WEIGHT)),
+                now_dt, float(pol["half_life_hours"]),
+            )
+            for a in by_cat[cat]
+        ]
+        items.sort(key=lambda a: a["_score"], reverse=True)
+        by_date = sorted(by_cat[cat], key=lambda a: a["published"], reverse=True)
+        cut_report[cat] = {
+            "candidates": len(items),
+            "by_score": [a["source"] for a in items[:max_candidates]],
+            "by_date": [a["source"] for a in by_date[:max_candidates]],
+        }
+        by_cat[cat] = items[:max_candidates]
+    METRICS["candidate_cut"] = {
+        c: r["candidates"] for c, r in sorted(cut_report.items())
+    }
 
     ranked: list[dict[str, Any]] = []
     rstats = {"in": 0, "noise": 0, "stub": 0, "dupe_url": 0, "dupe_title": 0, "capped": 0}
     per_cat: dict[str, int] = {}
 
-    for cat in sorted(by_cat, key=lambda c: (c != "tech", c)):
-        limit = want if cat == "tech" else int(caps.get(cat, 4))
+    for cat in sorted(by_cat):
+        pol = policy_for(policies, cat)
+        # The old taxonomy had one spine category ("tech") that took
+        # publish_count and three small shelves that took a fixed 4. Seven peer
+        # categories have no spine, so the cap is a per-category policy value
+        # and `caps`/publish_count remain only as a fallback for a category the
+        # scoring block does not mention.
+        limit = int(caps.get(cat, pol.get("cap", want)))
         picked, st = ranker.rank(
             by_cat[cat], weights, limit=limit,
             per_source_cap=per_source_cap, extra_noise=extra_noise,
+            half_life_hours=float(pol["half_life_hours"]), now=now_dt,
         )
         ranked.extend(picked)
         per_cat[cat] = len(picked)
@@ -434,7 +690,7 @@ def _run() -> int:
 
     for a in ranked:
         log.info("  [%-7s %.4f rel %.1f] %-20s %s",
-                 a.get("category", "tech"), a["_score"], a["_relevance"],
+                 a.get("category", "uncategorised"), a["_score"], a["_relevance"],
                  a["source"][:20], a["title"][:60])
 
     # --- resolve images for the selected stories only ---
@@ -472,10 +728,13 @@ def _run() -> int:
     for path in written:
         log.info("wrote %s", path.name)
 
-    now = datetime.now(timezone.utc).isoformat()
+    stamped = datetime.now(timezone.utc).isoformat()
     for art in fresh:
-        seen.setdefault(art["key"], now)
-    save_seen(seen)
+        seen.setdefault(art["key"], {
+            "date": stamped,
+            "category": art.get("category"),
+        })
+    save_seen(seen, policies)
 
     removed = prune_posts(max_posts)
     if removed:

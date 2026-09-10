@@ -37,25 +37,59 @@
     max_candidates: 40          # articles sent to the model per run (cost driver)
     publish_count: 5            # articles summarised and published per run
     max_posts: 60               # posts kept on the site before pruning
-    # CATCH-UP WINDOW. Raised from 36h because this guest runs on a desktop the
-    # owner switches off, so multi-day gaps are the operating reality, not a
-    # fault. At 36h a weekend outage dropped every story published while the
-    # machine was off — and reported nothing, because the fetch succeeds and
-    # simply returns fewer items.
-    #
-    # Widening it does not flood the site with stale news: recency decay is
-    # 2^(-age/36h), so a 72h-old story scores 0.25 and loses to anything fresh.
-    # It can only surface when nothing fresher exists — which is exactly the
-    # recovery case this exists for.
-    max_age_hours: 72
     per_source_cap: 3           # one prolific feed cannot dominate a run
-    # Tech is the spine and keeps the hero, cards and tail. The other three are
-    # small shelves — a touch of the owner's interests, not a second feed
-    # competing with the first.
-    category_caps:
-      markets: 4
-      gaming: 4
-      world: 4
+
+    # ----------------------------------------------------------------------- #
+    # SCORING POLICY, PER CATEGORY
+    # ----------------------------------------------------------------------- #
+    #
+    # The old single `max_age_hours: 72` did two jobs at once and has been split.
+    #
+    #   ingest_days      is now an INGEST WINDOW ONLY — "how far back do we
+    #                    bother parsing". It is NOT a freshness policy. It still
+    #                    carries the catch-up property the 72h value existed for:
+    #                    this guest runs on a desktop the owner switches off, so
+    #                    multi-day gaps are the operating reality, not a fault,
+    #                    and at 36h a weekend outage silently dropped every story
+    #                    published while the machine was off.
+    #
+    #   half_life_hours  now carries ALL editorial freshness. This is the fix
+    #                    that matters: a single global 36h curve cannot express
+    #                    an engineering newsletter. Measured 2026-09-10, the
+    #                    newest item on each evergreen feed was jvns 51.8d,
+    #                    Brendan Gregg 216.2d, Marc Brooker 43.8d, Netflix 13.1d.
+    #                    At a 36h half-life a 216-day post scores 2^(-144) — not
+    #                    low, indistinguishable from zero. Those four sources
+    #                    could never have appeared, and the page would have
+    #                    looked like they were broken rather than out-ranked.
+    #
+    # Decay demotes; the window deletes. Anything you want the page to be able
+    # to reach on a slow day belongs inside the window with a slow curve, never
+    # outside it.
+    #
+    # aggregators 18h is the one number not taken from the brief. The
+    # hand-edited `max_age_hours: 36` was reaching for "nothing much past a day
+    # and a half"; as a HARD cutoff that deletes, as a curve it has to be
+    # tighter to bite. At 18h a 36h-old link scores 0.25 and a 72h-old one 0.06,
+    # which is the same editorial result without discarding the outage
+    # catch-up.
+    scoring_categories:
+      system_design: { half_life_hours: 168,  ingest_days: 730,  retention_days: 45,   cap: 6 }
+      company_eng:   { half_life_hours: 336,  ingest_days: 730,  retention_days: 365,  cap: 6 }
+      # 30d, not 3d. MEASURED on the first run with the new config: at a 3-day
+      # window the Kubernetes Blog contributed 2 of its 15 entries and 13 were
+      # rejected as too_old — it posts weekly, so a news-shaped window deletes
+      # almost all of it. The 72h half-life still demotes a fortnight-old item to
+      # 2^(-4.6); the window's job is only to let it be seen at all.
+      devops_linux:  { half_life_hours: 72,   ingest_days: 30,   retention_days: 45,   cap: 6 }
+      deep_dives:    { half_life_hours: 4320, ingest_days: 3650, retention_days: null, cap: 6 }
+      aggregators:   { half_life_hours: 18,   ingest_days: 3,    retention_days: 45,   cap: 6 }
+      # 30d for the same reason: TechCrunch Fintech returned 0 candidates at 3
+      # days — all 15 of its entries were older than the window, so the source
+      # was silently contributing nothing whatsoever.
+      fintech:       { half_life_hours: 72,   ingest_days: 30,   retention_days: 45,   cap: 6 }
+      # 14d: GameFromScratch surfaced 3 of 12 at a 3-day window.
+      gaming:        { half_life_hours: 72,   ingest_days: 14,   retention_days: 45,   cap: 6 }
     extra_noise_filter: true    # listicle/deals/AskHN patterns on top of the ported list
 
     # Summarizer backend: none | ollama | anthropic.
@@ -83,56 +117,119 @@
     # markets. Keyword classification gets both wrong, and guessing would
     # contradict the only claim this site makes about itself — that nothing
     # about what appears is decided by a model or a heuristic over the prose.
+    # ----------------------------------------------------------------------- #
+    # SOURCES
+    # ----------------------------------------------------------------------- #
+    #
+    # READ THE WEIGHTS — THEY ARE THE EDITORIAL POLICY, NOT A QUALITY RANKING.
+    # The spread inside a category is a statement about what this publication is:
+    #
+    #   Stripe 0.95, Plaid 0.90   how payment systems are actually built
+    #   Finextra 0.75             industry news about payments
+    #   Game Developer 0.95       engine internals, postmortems, graphics
+    #   Eurogamer 0.60            a game got a release date
+    #
+    # Both halves are wanted; a page of pure engine internals would be dry. But
+    # this is an engineering newsletter, so depth outranks announcements, and the
+    # weight is where that belief lives. Do NOT flatten these to equal values —
+    # the split IS the feature.
+    #
+    # The band is [0.60, 1.30] (ranker.SOURCE_WEIGHT_MIN/MAX), widened downwards
+    # from 0.85 for exactly this. At the old floor, 0.60 and 0.70 both clamped to
+    # 0.85 and the policy above was silently deleted.
+    #
+    # half_life_hours / ingest_days on a SOURCE override its category. Cadence
+    # and subject are independent: Marc Brooker writes system_design at a
+    # deep_dives rhythm. Overriding the curve without also widening the window
+    # does nothing — the item is dropped at fetch time before the curve is read.
     blog_feeds:
-      # ---- tech: the spine. Keeps the hero, the four cards and the tail. ----
-      - { name: IEEE Spectrum,         url: "https://spectrum.ieee.org/feeds/feed.rss",        category: tech,    weight: 1.20, fetch: 15 }
-      - { name: MIT Technology Review, url: "https://www.technologyreview.com/feed/",          category: tech,    weight: 1.15, fetch: 15 }
-      - { name: Ars Technica,          url: "https://feeds.arstechnica.com/arstechnica/index", category: tech,    weight: 1.10, fetch: 18 }
-      - { name: The Verge,             url: "https://www.theverge.com/rss/index.xml",          category: tech,    weight: 1.00, fetch: 15 }
-      - { name: TechCrunch,            url: "https://techcrunch.com/feed/",                    category: tech,    weight: 0.95, fetch: 18 }
-      - { name: Hacker News Best,      url: "https://hnrss.org/best",                          category: tech,    weight: 0.95, fetch: 20 }
-      - { name: Hacker News,           url: "https://hnrss.org/frontpage?points=150",          category: tech,    weight: 0.85, fetch: 20 }
+      # ---- system_design ----
+      - { name: ByteByteGo,         url: "https://blog.bytebytego.com/feed",              category: system_design, weight: 0.95, fetch: 15 }
+      - { name: InfoQ,              url: "https://feed.infoq.com/",                       category: system_design, weight: 0.85, fetch: 20 }
+      - { name: Pragmatic Engineer, url: "https://blog.pragmaticengineer.com/rss/",       category: system_design, weight: 0.90, fetch: 15 }
+      # Measured newest post 43.8 days old on 2026-09-10 — evergreen cadence in a
+      # news-cadence category. Stays in system_design because his SUBJECT is
+      # correct; moving him to deep_dives would also hand him that category's
+      # retention_days: null, which is a different decision.
+      - { name: Marc Brooker,       url: "https://brooker.co.za/blog/rss.xml",            category: system_design, weight: 0.95, fetch: 40, half_life_hours: 4320 }
 
-      # ---- markets ----
-      - { name: MarketWatch,           url: "https://feeds.content.dowjones.io/public/rss/mw_topstories", category: markets, weight: 1.10, fetch: 12 }
-      - { name: Yahoo Finance,         url: "https://finance.yahoo.com/news/rssindex",         category: markets, weight: 1.00, fetch: 12 }
-      - { name: Investing.com,         url: "https://www.investing.com/rss/news.rss",          category: markets, weight: 0.95, fetch: 12 }
-      - { name: Seeking Alpha,         url: "https://seekingalpha.com/market_currents.xml",    category: markets, weight: 0.90, fetch: 12 }
+      # ---- company_eng ----
+      - { name: Cloudflare,         url: "https://blog.cloudflare.com/rss/",              category: company_eng,   weight: 0.95, fetch: 15 }
+      - { name: Netflix Tech,       url: "https://netflixtechblog.com/feed",              category: company_eng,   weight: 0.90, fetch: 10 }
+      - { name: AWS Architecture,   url: "https://aws.amazon.com/blogs/architecture/feed/", category: company_eng, weight: 0.85, fetch: 15 }
+      - { name: Discord Eng,        url: "https://discord.com/blog/rss.xml",              category: company_eng,   weight: 0.80, fetch: 10 }
+      - { name: GitHub Eng,         url: "https://github.blog/engineering/feed/",         category: company_eng,   weight: 0.80, fetch: 15 }
+
+      # ---- devops_linux ----
+      - { name: Kubernetes Blog,    url: "https://kubernetes.io/feed.xml",                category: devops_linux,  weight: 0.90, fetch: 15 }
+      - { name: LWN.net,            url: "https://lwn.net/headlines/newrss",              category: devops_linux,  weight: 0.95, fetch: 20 }
+
+      # ---- deep_dives ----
+      # fetch is raised here because depth is the whole point and the archives
+      # differ wildly: Dan Luu exposes 128 items, jvns 20, Gregg 10.
+      - { name: jvns.ca,            url: "https://jvns.ca/atom.xml",                      category: deep_dives,    weight: 1.00, fetch: 20 }
+      - { name: Brendan Gregg,      url: "https://www.brendangregg.com/blog/rss.xml",     category: deep_dives,    weight: 1.00, fetch: 10 }
+      - { name: Dan Luu,            url: "https://danluu.com/atom.xml",                   category: deep_dives,    weight: 0.95, fetch: 40 }
+      - { name: The Changelog,      url: "https://changelog.com/feed",                    category: deep_dives,    weight: 0.75, fetch: 15 }
+
+      # ---- aggregators ----
+      - { name: Hacker News Best,   url: "https://hnrss.org/best",                        category: aggregators,   weight: 0.70, fetch: 25 }
+      - { name: Lobsters,           url: "https://lobste.rs/rss",                         category: aggregators,   weight: 0.75, fetch: 25 }
+
+      # ---- fintech ----
+      # Stripe and Plaid write engineering, not headlines, and measured 21.8d and
+      # slower. Inside fintech's 3-day window they would never be ingested, so
+      # they carry BOTH overrides. This pairing is the reason ingest_days is
+      # per-source and not only per-category.
+      - { name: Stripe Blog,        url: "https://stripe.com/blog/feed.rss",              category: fintech,       weight: 0.95, fetch: 10, half_life_hours: 720, ingest_days: 365 }
+      - { name: Plaid Blog,         url: "https://plaid.com/blog/rss.xml",                category: fintech,       weight: 0.90, fetch: 10, half_life_hours: 720, ingest_days: 365 }
+      # Dates its scheduled webinars at air time — 11 of 54 items measured up to
+      # 55.8 days in the FUTURE. Kept; the date-validity guard in
+      # curate.entry_datetime() rejects them. That guard is not a content filter.
+      - { name: Finextra,           url: "https://www.finextra.com/rss/headlines.aspx",   category: fintech,       weight: 0.75, fetch: 20 }
+      - { name: TechCrunch Fintech, url: "https://techcrunch.com/category/fintech/feed/", category: fintech,       weight: 0.70, fetch: 15 }
 
       # ---- gaming ----
-      - { name: Polygon,               url: "https://www.polygon.com/rss/index.xml",           category: gaming,  weight: 1.10, fetch: 12 }
-      - { name: Eurogamer,             url: "https://www.eurogamer.net/feed",                  category: gaming,  weight: 1.05, fetch: 12 }
-      - { name: Rock Paper Shotgun,    url: "https://www.rockpapershotgun.com/feed",           category: gaming,  weight: 1.00, fetch: 12 }
-      - { name: PC Gamer,              url: "https://www.pcgamer.com/rss/",                    category: gaming,  weight: 0.95, fetch: 12 }
-      - { name: IGN,                   url: "https://feeds.ign.com/ign/games-all",             category: gaming,  weight: 0.90, fetch: 12 }
+      # The engine/tooling sources get a slower curve and a wider window than the
+      # release-date sources sharing the category. A Game Developer graphics
+      # postmortem is worth surfacing a fortnight later; a Eurogamer headline is
+      # not.
+      - { name: Game Developer,     url: "https://www.gamedeveloper.com/rss.xml",         category: gaming,        weight: 0.95, fetch: 25, half_life_hours: 336, ingest_days: 30 }
+      - { name: Unity Blog,         url: "https://blog.unity.com/feed",                   category: gaming,        weight: 0.85, fetch: 15, half_life_hours: 336, ingest_days: 90 }
+      - { name: Godot Engine,       url: "https://godotengine.org/rss.xml",               category: gaming,        weight: 0.85, fetch: 15, half_life_hours: 336, ingest_days: 90 }
+      - { name: GameFromScratch,    url: "https://gamefromscratch.com/feed/",             category: gaming,        weight: 0.70, fetch: 12 }
+      - { name: Polygon,            url: "https://www.polygon.com/rss/index.xml",         category: gaming,        weight: 0.65, fetch: 12 }
+      - { name: Eurogamer,          url: "https://www.eurogamer.net/feed",                category: gaming,        weight: 0.60, fetch: 12 }
+      - { name: Rock Paper Shotgun, url: "https://www.rockpapershotgun.com/feed",         category: gaming,        weight: 0.60, fetch: 12 }
 
-      # ---- world ----
-      - { name: BBC World,             url: "https://feeds.bbci.co.uk/news/world/rss.xml",     category: world,   weight: 1.20, fetch: 12 }
-      - { name: Guardian World,        url: "https://www.theguardian.com/world/rss",           category: world,   weight: 1.10, fetch: 12 }
-      - { name: Times of Israel,       url: "https://www.timesofisrael.com/feed/",             category: world,   weight: 1.05, fetch: 12 }
-
-      # REJECTED — do not re-add without re-testing. Reasons are as MEASURED on
-      # 2026-09-08, and two differ from what was originally reported:
+      # REJECTED — do not re-add without re-testing. Reasons as MEASURED.
       #
-      #   Ynetnews          REJECTED, but not for the reason given. Its dates
-      #     StoryRss3082      parse fine — 5/5, no CDATA problem (feedparser
-      #                       strips CDATA before date parsing; there is a
-      #                       regression test for this in test_feeds.py). The
-      #                       real disqualifier is staleness: newest item 160h
-      #                       (6.7 days) old.
+      #   Measured 2026-09-10 for the newsletter pivot:
+      #     High Scalability   http://highscalability.com/blog/rss.xml -> HTTP 404.
+      #                        The https variant resolves but its newest item is
+      #                        854 days old. Effectively dead. Marc Brooker
+      #                        replaces it and is better on the same subject.
+      #     Martin Kleppmann   HTTP 404
+      #     Uber Engineering   HTTP 404
+      #     Monzo Engineering  HTTP 404
+      #     Coinbase Eng       HTTP 403 — blocks automated clients
+      #     Fintech Futures    HTTP 404
+      #     Wise Engineering   HTTP 200, newest item 568 days old. Abandoned.
       #
-      #   Jerusalem Post    EVIDENCE DID NOT REPRODUCE on
-      #     rssfeedsfrontpage.aspx  https://www.jpost.com/rss/rssfeedsfrontpage.aspx
-      #                       26 entries, dates 5/5 parsed, newest 0.4h old —
-      #                       live and current, not abandoned. A different JPost
-      #                       endpoint may well be dead. Left OUT because it was
-      #                       explicitly rejected, not because the feed is bad.
-      #                       Re-test before deciding.
-      #
-      #   Globes, Calcalist zero items returned
-      #   CNBC Business     newest items 60-74h old
-      #   GameSpot          newest items 60-74h old
-      #   AP News           HTTP 403
+      #   Measured 2026-09-08 for the previous news taxonomy. Kept because the
+      #   evidence is still the evidence, even though the categories are gone:
+      #     Ynetnews           dates parse fine (5/5, no CDATA problem — there is
+      #                        a regression test in test_feeds.py). The real
+      #                        disqualifier is staleness: newest item 6.7 days.
+      #     Jerusalem Post     EVIDENCE DID NOT REPRODUCE on
+      #                        rssfeedsfrontpage.aspx — 26 entries, 5/5 dates
+      #                        parsed, newest 0.4h. Live, not abandoned. Left out
+      #                        because it was explicitly rejected, not because the
+      #                        feed is bad. Re-test before deciding.
+      #     Globes, Calcalist  zero items returned
+      #     CNBC Business      newest items 60-74h old
+      #     GameSpot           newest items 60-74h old
+      #     AP News            HTTP 403
 
     # Publishing to GitHub Pages. The homelab pushes CONTENT; Actions builds.
     # The canonical hostname lives in site/public/CNAME and nowhere else.

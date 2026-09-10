@@ -10,7 +10,7 @@ feed uses the pattern today.
 from __future__ import annotations
 
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import feedparser
@@ -49,15 +49,33 @@ check("CDATA pubDate yields published_parsed", bool(wrapped.get("published_parse
 check("CDATA and plain dates agree",
       curate.entry_datetime(wrapped), curate.entry_datetime(plain))
 check("date is the real one, not a now() fallback",
-      curate.entry_datetime(wrapped), datetime(2026, 9, 8, 6, 15, tzinfo=timezone.utc))
+      curate.entry_datetime(wrapped), (datetime(2026, 9, 8, 6, 15, tzinfo=timezone.utc), ""))
 check("CDATA title is unwrapped", wrapped.title, "Wrapped")
 
-print("\n-- a missing/unparseable date falls back to now(), not to a crash --")
+print("\n-- an undated entry is REJECTED, never dated now() --")
+# It used to fall back to now(). That gave the items we know least about the
+# maximum recency factor, so an undated entry outranked a correctly dated one.
 d2 = feedparser.parse(feed(
     '<item><title>No date</title><link>https://example.com/c</link>'
     '<description>body</description></item>'))
-delta = abs((curate.entry_datetime(d2.entries[0]) - datetime.now(timezone.utc)).total_seconds())
-check("undated entry gets ~now", delta < 60, True)
+check("undated entry is rejected", curate.entry_datetime(d2.entries[0]), (None, "no_date"))
+
+print("\n-- a future-dated entry is REJECTED --")
+# recency_factor clamps age at 0, so a future date scores a perfect 1.0 every
+# run until the date arrives. Measured live on Finextra, which dates its webinar
+# listings at air time: 11 of 54 items, up to 55.8 days ahead.
+future = (datetime.now(timezone.utc) + timedelta(days=30)).strftime("%a, %d %b %Y %H:%M:%S GMT")
+d3 = feedparser.parse(feed(
+    f'<item><title>Webinar</title><link>https://example.com/d</link>'
+    f'<pubDate>{future}</pubDate><description>body</description></item>'))
+check("future-dated entry is rejected", curate.entry_datetime(d3.entries[0]), (None, "future_date"))
+
+print("\n-- clock skew inside the grace window is NOT a rejection --")
+skew = (datetime.now(timezone.utc) + timedelta(minutes=30)).strftime("%a, %d %b %Y %H:%M:%S GMT")
+d4 = feedparser.parse(feed(
+    f'<item><title>Skewed</title><link>https://example.com/e</link>'
+    f'<pubDate>{skew}</pubDate><description>body</description></item>'))
+check("30 minutes ahead still accepted", curate.entry_datetime(d4.entries[0])[1], "")
 
 print("\n-- category is read from feed config, never inferred --")
 import images  # noqa: E402

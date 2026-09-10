@@ -6,7 +6,7 @@ A port of the heuristic from netlify/functions/news/feeds.mjs — the logic, not
 the language. Every stage the original performs is here:
 
   1. noise filter        drop routine digest/roundup posts outright
-  2. recency decay       exponential, 36h half-life
+  2. recency decay       exponential, half-life per category / per source
   3. source weighting    per-feed multiplier from feeds.yml
   4. relevance boost     focus-stack keyword hits, title weighted over summary
   5. cross-source dedupe normalised title + canonical URL
@@ -30,7 +30,23 @@ from typing import Any, Iterable
 # Tunables — align these with feeds.mjs
 # --------------------------------------------------------------------------- #
 
-HALF_LIFE_HOURS = 36.0        # score halves every 36 hours
+# Recency decay is now PER CATEGORY, with an optional PER SOURCE override.
+# This constant is only the fallback for a category that declares no half-life.
+#
+# It is the single most load-bearing number in the newsletter pivot. Under one
+# global 36h curve an evergreen source cannot ever surface: a 216-day Brendan
+# Gregg post scores 2^(-144) — not "low", but indistinguishable from zero. News
+# decays; knowledge does not, and the curve has to say so per category.
+#
+# The override is per SOURCE and not only per category because cadence and
+# subject are independent. Marc Brooker writes system_design at a deep_dives
+# rhythm (measured 2026-09-10: newest post 43.8 days old). Moving him to
+# deep_dives to fix the curve would also move him to that category's retention
+# policy, which is a different decision smuggled inside a decay fix.
+DEFAULT_HALF_LIFE_HOURS = 36.0
+
+# Kept as an alias: existing callers and tests import HALF_LIFE_HOURS.
+HALF_LIFE_HOURS = DEFAULT_HALF_LIFE_HOURS
 
 # Relevance is a MULTIPLIER, not an addend, and starts at a neutral 1.0:
 #
@@ -50,7 +66,13 @@ MIN_TITLE_WORDS = 3           # anything shorter is a stub, not a story
 # Source weight breaks ties between comparably relevant stories. It must not be
 # able to lift an irrelevant one to the top, so the band is deliberately narrow
 # (+/-25%). A 2.0-vs-1.0 spread makes the source the ranking.
-SOURCE_WEIGHT_MIN = 0.85
+# The band was [0.85, 1.30] for a news chart, where two outlets covering the
+# same story differ little. This publication mixes Brendan Gregg with a Eurogamer
+# release-date headline, and that gap is genuinely large — at the old floor the
+# proposed 0.60 and 0.70 weights both clamp to 0.85 and the editorial policy is
+# silently deleted. Widened downwards only: the ceiling still stops a typo of
+# 3.0 from turning source into the whole ranking.
+SOURCE_WEIGHT_MIN = 0.60
 SOURCE_WEIGHT_MAX = 1.30
 DEFAULT_SOURCE_WEIGHT = 1.00
 
@@ -200,11 +222,24 @@ def is_noise(title: str, extra: bool = True) -> bool:
 # --------------------------------------------------------------------------- #
 
 
-def recency_factor(published: datetime, now: datetime | None = None) -> float:
-    """Exponential decay: 1.0 when fresh, 0.5 at HALF_LIFE_HOURS."""
+def recency_factor(
+    published: datetime,
+    now: datetime | None = None,
+    half_life_hours: float = DEFAULT_HALF_LIFE_HOURS,
+) -> float:
+    """Exponential decay: 1.0 when fresh, 0.5 at `half_life_hours`.
+
+    NOTE the max(0.0, ...): a future-dated item clamps to age 0 and so scores a
+    PERFECT recency factor, permanently. That is not a hypothetical — Finextra
+    publishes its webinar schedule into the headlines feed dated at air time,
+    and 11 of 54 items measured on 2026-09-10 were up to 55 days in the future.
+    Under this clamp they would pin the top of their category forever.
+    The clamp stays (a few seconds of clock skew should not be a cliff); the
+    real defence is the date-validity guard in curate.entry_datetime().
+    """
     now = now or datetime.now(timezone.utc)
     age_h = max(0.0, (now - published).total_seconds() / 3600.0)
-    return math.pow(2.0, -age_h / HALF_LIFE_HOURS)
+    return math.pow(2.0, -age_h / max(0.1, float(half_life_hours)))
 
 
 def classify(title: str, summary: str) -> tuple[float, list[str]]:
@@ -238,8 +273,16 @@ def classify(title: str, summary: str) -> tuple[float, list[str]]:
 relevance_hits = classify
 
 
-def score_article(art: dict[str, Any], source_weight: float, now: datetime) -> dict[str, Any]:
-    recency = recency_factor(art["published"], now)
+def score_article(
+    art: dict[str, Any],
+    source_weight: float,
+    now: datetime,
+    half_life_hours: float = DEFAULT_HALF_LIFE_HOURS,
+) -> dict[str, Any]:
+    # A source may override its category's curve. collect() stamps the resolved
+    # value on the article so the ranker never has to know about feed config.
+    half_life = float(art.get("_half_life_hours") or half_life_hours)
+    recency = recency_factor(art["published"], now, half_life)
     relevance, topics = classify(art["title"], art.get("summary", ""))
     weight = clamp_weight(source_weight)
     score = recency * weight * relevance
@@ -248,6 +291,7 @@ def score_article(art: dict[str, Any], source_weight: float, now: datetime) -> d
     art["_recency"] = round(recency, 4)
     art["_relevance"] = round(relevance, 3)
     art["_weight"] = round(weight, 3)
+    art["_half_life"] = round(half_life, 1)
     art["_matched"] = topics[:6]
     return art
 
@@ -270,6 +314,7 @@ def rank(
     per_source_cap: int = PER_SOURCE_CAP,
     now: datetime | None = None,
     extra_noise: bool = True,
+    half_life_hours: float = DEFAULT_HALF_LIFE_HOURS,
 ) -> tuple[list[dict[str, Any]], dict[str, int]]:
     """Rank and thin a candidate pool. Returns (ranked, stats)."""
     now = now or datetime.now(timezone.utc)
@@ -287,7 +332,8 @@ def rank(
             stats["stub"] += 1
             continue
         scored.append(score_article(
-            art, float(weights.get(art.get("source", ""), DEFAULT_SOURCE_WEIGHT)), now))
+            art, float(weights.get(art.get("source", ""), DEFAULT_SOURCE_WEIGHT)),
+            now, half_life_hours))
 
     # Highest score first, so the survivor of a duplicate pair is the best one.
     scored.sort(key=lambda a: a["_score"], reverse=True)
