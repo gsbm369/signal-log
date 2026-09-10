@@ -25,10 +25,14 @@ Two hard rules:
   * NOTHING HERE MAY FAIL A CYCLE. Every path returns (None, None) rather than
     raising. A post with no image is a normal, designed outcome; publishing
     without a picture beats not publishing.
+  * STEP 5 IS THE ONLY PLACE THIS MODULE MAKES AN OUTBOUND REQUEST TO AN
+    ADDRESS A FEED CHOSE. It is therefore an SSRF sink and is gated by
+    `_safe_target` below. See that function for what it refuses and why.
 """
 
 from __future__ import annotations
 
+import ipaddress
 import logging
 import re
 import socket
@@ -111,6 +115,83 @@ def _from_html(entry: Any) -> tuple[str | None, str | None]:
     return None, None
 
 
+# --------------------------------------------------------------------------- #
+# SSRF guard for the only network sink in this module
+# --------------------------------------------------------------------------- #
+
+# The article link comes from the feed, and the feed is not this project's to
+# trust. Before the guard existed, `urllib.request.urlopen(page_url)` accepted
+# whatever a publisher put in <link>. Measured, not assumed:
+#
+#   file:///tmp/x.html                 -> read and parsed, og:image returned
+#   http://192.168.100.25:8080/        -> reachable from the builder, HTTP 200
+#
+# So a hostile or compromised feed could read local files whose extension maps
+# to text/html, and could sweep the LAN from inside the container. The response
+# body never reaches an attacker, but the og:image URL it yields is published,
+# which turns a blind probe into a one-line exfiltration channel.
+
+ALLOWED_SCHEMES = frozenset({"http", "https"})
+MAX_REDIRECTS = 3
+
+
+def _is_public_ip(host: str) -> bool:
+    """True only if every address `host` resolves to is publicly routable.
+
+    Every address, not the first: a name resolving to one public and one
+    private address must be refused, or the check is a coin toss.
+    """
+    try:
+        infos = socket.getaddrinfo(host, None, proto=socket.IPPROTO_TCP)
+    except (socket.gaierror, UnicodeError, ValueError):
+        return False
+    if not infos:
+        return False
+    for info in infos:
+        try:
+            ip = ipaddress.ip_address(info[4][0])
+        except ValueError:
+            return False
+        if not ip.is_global or ip.is_multicast:
+            return False
+    return True
+
+
+def _safe_target(url: str) -> bool:
+    """Refuse anything that is not a plain http(s) request to a public host."""
+    try:
+        parts = urllib.parse.urlsplit(url)
+    except ValueError:
+        return False
+    if parts.scheme.lower() not in ALLOWED_SCHEMES:
+        return False            # file://, ftp://, data:, gopher://
+    if not parts.hostname:
+        return False
+    return _is_public_ip(parts.hostname)
+
+
+class _GuardedRedirects(urllib.request.HTTPRedirectHandler):
+    """Re-run the guard on every hop.
+
+    Checking only the first URL would be theatre: a public host is free to
+    answer 302 with a Location of http://169.254.169.254/, and urllib follows
+    it without asking anyone.
+    """
+
+    max_redirections = MAX_REDIRECTS
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not _safe_target(newurl):
+            raise urllib.error.HTTPError(
+                newurl, code, "redirect to a non-public address refused", headers, fp)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = urllib.request.build_opener(_GuardedRedirects)
+# No FTPHandler, no FileHandler, no UnknownHandler surprises: build_opener adds
+# the defaults, so the scheme check in _safe_target is what keeps them unused.
+
+
 def _from_og(page_url: str) -> tuple[str | None, str | None]:
     """Last resort: one short, capped GET of the article page.
 
@@ -119,12 +200,15 @@ def _from_og(page_url: str) -> tuple[str | None, str | None]:
     """
     if not page_url:
         return None, None
+    if not _safe_target(page_url):
+        log.debug("og:image target refused (scheme or non-public host): %s", page_url[:80])
+        return None, None
     try:
         req = urllib.request.Request(page_url, headers={
             "User-Agent": USER_AGENT,
             "Accept": "text/html,application/xhtml+xml",
         })
-        with urllib.request.urlopen(req, timeout=FETCH_TIMEOUT) as resp:
+        with _OPENER.open(req, timeout=FETCH_TIMEOUT) as resp:
             ctype = resp.headers.get("Content-Type", "")
             if "html" not in ctype.lower():
                 return None, None
