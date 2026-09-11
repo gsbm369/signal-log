@@ -706,6 +706,9 @@ matching negative test, and the ones that had none are exactly the ones that wer
 | Category contract | one category deleted from `site/src/categories.ts` — `test_categories.py` named the missing one; and a `deep_dives` post fed to the Astro schema, which refused it by name |
 | Date validity | an undated entry and a future-dated one, each rejected with its reason; and 30 minutes of clock skew NOT rejected |
 | Per-category half-life | the same four articles ranked under a 36h and a 4320h curve, and the two orders compared |
+| Content push scope | a local commit made on HEAD, then `push-content.sh` run — it named the commit and exited 11 instead of shipping it |
+| Seen-store scope | ten candidates ranked, two published; the eight unpublished asserted absent from `seen.json` |
+| Prune ordering | a 2024 article added five minutes ago kept, while a 2026 article added nine days ago was pruned |
 
 "It looks right" is how all of these shipped.
 
@@ -731,7 +734,29 @@ the news curve all three evergreen items score exactly `0.0`; a change that fail
 them is a change that did not take.
 
 Generalised: **when a test passes unchanged across a change that should have moved it, that
-is a finding about the test, not a reassurance about the change.** The sixth was found while writing up the
+is a finding about the test, not a reassurance about the change.**
+
+### The deploy path had no scope at all
+
+`push-content.sh` pushed `HEAD:main`. Read plainly, that wires the working tree to
+production on a six-hourly timer: **any commit sitting on HEAD ships, whether or not anyone
+decided to ship it.** The script is careful about a great many things — it refuses without a
+credential helper, it never puts the token in argv or the remote URL, it declines to make
+empty commits, it never pushes `dist/` — and then it pushed whatever happened to be there.
+
+It is not hypothetical. On 2026-09-10 an unreviewed commit reached `main` exactly this way,
+carried by a content push it had nothing to do with.
+
+`git push <sha>:main` does not fix it either, which is the part worth remembering: git
+pushes ancestors, so naming the content commit still carries everything underneath it. The
+only honest control is to refuse when HEAD holds unpushed commits the script did not create,
+name them in the log, and exit with a status of its own (`11`,
+`push_status=refused_local_commits`) so the alert says what to do. `PUSH_LOCAL_COMMITS=1`
+ships them deliberately.
+
+The pattern: **a script that is meticulous about credentials and content can still have no
+opinion about scope.** "What am I allowed to send?" is a separate question from "am I
+allowed to send it?", and this one had only ever answered the second. The sixth was found while writing up the
 other five — and the verification of *its* fix repeated the second entry in this very
 table: `./wait-for-deploy.sh … | sed` reported `sed`'s exit code as the script's. Reading
 `0` where the script had returned `3` would have "confirmed" the opposite of what happened.

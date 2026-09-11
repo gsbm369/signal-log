@@ -109,6 +109,11 @@ case $? in
   0)  PUSH_STATUS="ok" ;;
   10) PUSH_STATUS="nothing_to_push"; DEPLOY_STATUS="not_needed"
       log "nothing new to publish this cycle"; exit 0 ;;
+  # A refusal is a real failure — content did NOT reach production — but it is
+  # a distinct one, and it is the operator's to clear rather than a fault to
+  # retry. It gets its own status so the alert says what to do.
+  11) PUSH_STATUS="refused_local_commits"; DEPLOY_STATUS="not_reached"; EXIT_CODE=1
+      log "FATAL: push refused — unreviewed local commits on HEAD"; exit 1 ;;
   *)  PUSH_STATUS="failed"; DEPLOY_STATUS="not_reached"; EXIT_CODE=1
       log "FATAL: content did not reach production"; exit 1 ;;
 esac

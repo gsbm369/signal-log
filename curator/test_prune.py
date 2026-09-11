@@ -70,6 +70,43 @@ def main() -> int:
         check("filename order would have deleted the evergreen post first",
               by_filename[0], evergreen.name)
 
+    # The case the report asked for explicitly, with NO legacy post involved:
+    # both posts carry addedAt, and the one with the OLDER pubDate must survive
+    # because it was added here more recently.
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td)
+        curate.CONTENT_DIR = d
+        old_article_new_here = post(d, "2024-11-02", recent, "brendan-gregg-flame-graphs")
+        new_article_old_here = post(d, "2026-09-10", older, "todays-funding-round")
+
+        print("\n-- old pubDate + new addedAt beats new pubDate + old addedAt --")
+        check("pruned exactly one", curate.prune_posts(1), 1)
+        check("the 2024 article added 5 minutes ago SURVIVES",
+              old_article_new_here.exists(), True)
+        check("the 2026 article added 9 days ago is pruned",
+              new_article_old_here.exists(), False)
+
+    # Legacy ordering is DEFINED, not incidental: no addedAt sorts before every
+    # addedAt, and legacy posts sort among themselves by filename.
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td)
+        curate.CONTENT_DIR = d
+        l_old = post(d, "2026-09-01", None, "older-legacy")
+        l_new = post(d, "2026-09-09", None, "newer-legacy")
+        modern = post(d, "2020-01-01", recent, "ancient-article-added-today")
+
+        print("\n-- legacy ordering --")
+        keys = [curate._added_at(x) for x in (l_old, l_new, modern)]
+        check("a post without addedAt keys on '0' + filename", keys[0][0], "0")
+        check("a post with addedAt keys on 'A' + timestamp", keys[2][0], "A")
+        check("every legacy post sorts before every addedAt post",
+              max(keys[0], keys[1]) < keys[2], True)
+        check("legacy posts sort among themselves by filename",
+              keys[0] < keys[1], True)
+        check("pruning two takes both legacy posts, oldest filename first",
+              (curate.prune_posts(1), l_old.exists(), l_new.exists(), modern.exists()),
+              (2, False, False, True))
+
     print()
     if FAILURES:
         print(f"FAILED: {FAILURES}")

@@ -493,24 +493,68 @@ def write_post(summary: summarizers.Summary) -> Path:
 
 
 def _added_at(path: Path) -> str:
-    """When THIS SITE published the post, from frontmatter.
+    """Prune key: when THIS SITE published the post.
 
-    Falls back to the filename, which begins with the article's own pubDate.
-    That is the legacy behaviour and it is correct only for posts written
-    before addedAt existed, which are all from the news taxonomy and all dated
-    within days of being published here.
+    LEGACY ORDERING, stated explicitly because it covers most of the site today.
+    A post written before `addedAt` existed has no such field, and is keyed
+    "0" + filename. A post that has one is keyed "A" + the timestamp. So:
+
+      * every legacy post sorts BEFORE every addedAt post, and is pruned first;
+      * legacy posts sort among themselves by FILENAME, which begins with the
+        article's own pubDate — the old behaviour, unchanged.
+
+    That is a deliberate ordering, not a fallback that happens to work. Legacy
+    posts are all from the news taxonomy, all dated within days of when they
+    were published here, and all destined to age out; pruning them ahead of the
+    newsletter's content is exactly what should happen.
     """
     try:
         with path.open(encoding="utf-8") as fh:
-            for _ in range(20):
-                line = fh.readline()
-                if not line or line.startswith("---") and _:
-                    break
-                if line.startswith("addedAt:"):
-                    return "A" + line.split(":", 1)[1].strip()
+            first = fh.readline()
+            if first.startswith("---"):
+                for _ in range(30):
+                    line = fh.readline()
+                    if not line or line.startswith("---"):
+                        break
+                    if line.startswith("addedAt:"):
+                        return "A" + line.split(":", 1)[1].strip()
     except OSError:
         pass
     return "0" + path.name
+
+
+def record_published(
+    seen: dict[str, dict[str, Any]],
+    ranked: list[dict[str, Any]],
+    stories: list[Any],
+    now: datetime | None = None,
+) -> int:
+    """Record ONLY what was published. Returns how many entries were added.
+
+    This used to record every candidate the run considered, which is defensible
+    while retention is 45 days and a feed exposes only this week's output: the
+    entries expire long before the archive matters.
+
+    It is catastrophic the moment a category remembers forever. Measured: one
+    run took 85 deep_dives candidates, published the 6 the cap allowed, and
+    marked all 85 seen permanently — Brendan Gregg's ten posts, jvns's twenty
+    and Dan Luu's forty burned in a single cycle to publish six, unreachable
+    ever after.
+
+    It also contradicts the model the evergreen categories are built on: an item
+    surfaces once, is recorded, and the NEXT run reaches for the next-best
+    UNPUBLISHED item from that archive. A backlog can only be worked through if
+    we remember what we published, not what we looked at.
+    """
+    stamped = (now or datetime.now(timezone.utc)).isoformat()
+    published = {getattr(s, "source_article", {}).get("key") for s in stories}
+    published.discard(None)
+    added = 0
+    for art in ranked:
+        if art.get("key") in published and art["key"] not in seen:
+            seen[art["key"]] = {"date": stamped, "category": art.get("category")}
+            added += 1
+    return added
 
 
 def prune_posts(max_posts: int) -> int:
@@ -788,20 +832,29 @@ def _run() -> int:
     # NEXT-BEST UNPUBLISHED item from that archive. Working gradually through a
     # backlog of good writing requires remembering what we published, not what
     # we looked at.
-    stamped = datetime.now(timezone.utc).isoformat()
-    published_keys = {s.source_article.get("key") for s in stories}
-    for art in ranked:
-        if art.get("key") in published_keys:
-            seen.setdefault(art["key"], {
-                "date": stamped,
-                "category": art.get("category"),
-            })
-    METRICS["seen_added"] = len(published_keys)
+    METRICS["seen_added"] = record_published(seen, ranked, stories)
     save_seen(seen, policies)
 
     removed = prune_posts(max_posts)
     if removed:
         log.info("pruned %d old post(s)", removed)
+
+    # PUBLICATION AND SURVIVAL, MEASURED SEPARATELY AND REPORTED TOGETHER.
+    #
+    # The pruner bug hid here for a whole taxonomy: deep_dives published 6 of 6
+    # every cycle and survived 0, and neither number was wrong on its own. Only
+    # the PAIR says anything. A category that publishes at its cap and holds no
+    # posts is being deleted by something downstream of the ranker.
+    live: dict[str, int] = {}
+    for path in CONTENT_DIR.glob("*.md"):
+        m = re.search(r"^category:\s*(\S+)\s*$", path.read_text(encoding="utf-8")[:800], re.M)
+        live[m.group(1) if m else "unknown"] = live.get(m.group(1) if m else "unknown", 0) + 1
+    METRICS["per_category_live"] = dict(sorted(live.items()))
+    METRICS["posts_live"] = sum(live.values())
+    for cat in sorted(set(per_cat) | set(live)):
+        pub, alive = per_cat.get(cat, 0), live.get(cat, 0)
+        flag = "  <-- PUBLISHED BUT NOT SURVIVING" if pub and not alive else ""
+        log.info("survival %-14s published %2d | live %2d%s", cat, pub, alive, flag)
 
     METRICS["curator_status"] = "ok"
     log.info("done in %.1fs — %d new post(s)", time.monotonic() - started, len(written))

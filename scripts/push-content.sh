@@ -15,7 +15,8 @@
 # remote URL (which would leak it through `git remote -v` and any diagnostic
 # dump) and never passed as an argument (visible in `ps` to every process).
 #
-# Exit codes:  0 pushed   10 nothing to push   1 push failed
+# Exit codes:  0 pushed   10 nothing to push   11 refused: unpushed local
+#              commits on HEAD   1 push failed
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -38,6 +39,47 @@ if ! "$GIT_BIN" config --local --get credential.helper >/dev/null 2>&1; then
   log "       Set one so the token never enters .git/config or argv:"
   log "       git config --local credential.helper 'store --file=<path>'"
   exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# SHIP ONLY WHAT THIS SCRIPT COMMITTED.
+#
+# This pushed HEAD:main, which wires the working tree to production on a
+# six-hourly timer: ANY commit sitting on HEAD ships, whether or not anyone
+# decided to ship it. That is not theoretical — an unreviewed commit reached
+# main exactly this way on 2026-09-10, carried along by a content push it had
+# nothing to do with.
+#
+# `git push <sha>:main` does not fix it. Git pushes ancestors, so naming the
+# content commit still carries everything under it. The only honest control is
+# to REFUSE when HEAD holds unpushed commits this script did not create, and to
+# say which ones.
+#
+# Checked BEFORE committing, so a refusal leaves the content staged for the
+# next cycle instead of accumulating commits nobody can push.
+#
+# Override deliberately when you DO intend to ship local work with the content:
+#     PUSH_LOCAL_COMMITS=1 scripts/push-content.sh
+if ! "$GIT_BIN" fetch --quiet origin "$GH_BRANCH" 2>/dev/null; then
+  log "WARN: could not fetch origin/${GH_BRANCH} — the ahead-check may be stale"
+fi
+
+if "$GIT_BIN" rev-parse --verify --quiet "origin/${GH_BRANCH}" >/dev/null; then
+  EXTRA_N=$("$GIT_BIN" rev-list --count "origin/${GH_BRANCH}..HEAD" 2>/dev/null || echo 0)
+  if [ "${EXTRA_N:-0}" -gt 0 ]; then
+    if [ "${PUSH_LOCAL_COMMITS:-0}" = "1" ]; then
+      log "WARN: PUSH_LOCAL_COMMITS=1 — shipping ${EXTRA_N} local commit(s) with this content:"
+      "$GIT_BIN" log --oneline "origin/${GH_BRANCH}..HEAD" | while read -r l; do log "         $l"; done
+    else
+      log "REFUSING TO PUSH: ${EXTRA_N} local commit(s) on HEAD that this script did not create."
+      "$GIT_BIN" log --oneline "origin/${GH_BRANCH}..HEAD" | while read -r l; do log "         $l"; done
+      log "       A content push would ship them to production unreviewed."
+      log "       Push them yourself when they are ready, or re-run with"
+      log "       PUSH_LOCAL_COMMITS=1 to ship them deliberately."
+      log "       Content changes are left unstaged for the next cycle."
+      exit 11
+    fi
+  fi
 fi
 
 # No empty commits. An unconditional 6-hourly commit turns both the git history

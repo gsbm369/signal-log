@@ -251,4 +251,4 @@ settings:
   # Fallback publish count for a category the scoring block does not mention.
   publish_count: 5
   # Keep at most this many posts on the site; oldest are pruned.
-  max_posts: 60
+  max_posts: 200
