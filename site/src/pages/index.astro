@@ -65,8 +65,35 @@ const depthPool = byScore.filter((p) => DEPTH.includes(categoryOf(p)));
    cold start still renders something rather than an empty state. */
 const frontRunners = depthPool.length >= 5 ? depthPool : byScore;
 
-const lead = frontRunners[0];
-const cards = frontRunners.slice(1, 5);
+/* One slot per source in the fold.
+ *
+ * Measured: the hero and all four cards came back as five consecutive Marc
+ * Brooker posts. The ranker's per-source cap applies within a RUN, and these
+ * five arrived across different runs, so nothing downstream stopped one author
+ * monopolising the masthead. A newsletter whose front page is one blog is a
+ * blog.
+ *
+ * Falls back to allowing repeats only if there are not five distinct sources,
+ * so a thin day still fills the row. */
+const pickDistinct = (pool: typeof posts, n: number) => {
+  const seen = new Set<string>();
+  const out: typeof posts = [];
+  for (const post of pool) {
+    if (seen.has(post.data.source)) continue;
+    seen.add(post.data.source);
+    out.push(post);
+    if (out.length === n) break;
+  }
+  for (const post of pool) {
+    if (out.length === n) break;
+    if (!out.includes(post)) out.push(post);
+  }
+  return out;
+};
+
+const front = pickDistinct(frontRunners, 5);
+const lead = front[0];
+const cards = front.slice(1, 5);
 const featured = new Set([lead, ...cards].filter(Boolean).map((p) => p.id));
 
 /* Every category becomes a section — the table of contents the brief asked for.
@@ -86,9 +113,17 @@ const rest = byScore.filter((p) => !featured.has(p.id) && !shelved.has(p.id));
 const tech = posts;
 
 const sources = [...new Set(posts.map((p) => p.data.source))];
-const lastRun = lead
-  ? lead.data.pubDate.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
-  : '—';
+/* When the SITE last rebuilt, from the most recent addedAt — not from the lead
+ * post's pubDate. With the fold now drawn from the evergreen categories, the
+ * lead's pubDate is its AUTHOR's date, and the masthead read "rebuilt 12 Oct
+ * 2025" on a site that had rebuilt four minutes earlier. */
+const lastAdded = posts
+  .map((p) => p.data.addedAt ?? p.data.pubDate)
+  .reduce((a, b) => (b > a ? b : a), new Date(0));
+const lastRun =
+  lastAdded.valueOf() > 0
+    ? lastAdded.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
+    : '—';
 ---
 
 <BaseLayout
