@@ -8,23 +8,60 @@ const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
-/* Tech is the spine. Markets, gaming and world are shelves — a deliberate
-   minority of the page, because this is a technology site with the owner's
-   other interests alongside, not a general aggregator. */
-const shelfNames = ['markets', 'gaming', 'world'] as const;
-const tech = posts.filter((p) => (p.data.category ?? 'tech') === 'tech');
+/* Seven peer categories, no spine.
+ *
+ * The old layout had one category ("tech") that owned the hero and the cards,
+ * and three small shelves. That shape does not survive the newsletter pivot:
+ * there is no "tech" any more, and nothing replenished it, so the hero rendered
+ * "nothing ranked yet" while 196 of 200 posts sat unreachable below it.
+ *
+ * The obvious minimal fix — promote `aggregators` into the vacant spine — was
+ * rejected on measurement. aggregators holds 11 posts at the LOWEST trust
+ * weights in the config (0.70-0.75), deliberately, because a Hacker News
+ * headline is not what this publication leads on. Handing it the hero would
+ * have inverted the editorial policy the weights exist to express.
+ *
+ * So the lead is drawn by SCORE across every category. The ranker has already
+ * decided which item is best; the page just stops arguing with it. */
+const CATEGORY_LABELS = {
+  system_design: 'System Design',
+  company_eng: 'Company Engineering',
+  deep_dives: 'Deep Dives',
+  devops_linux: 'DevOps & Linux',
+  fintech: 'Fintech',
+  gaming: 'Gaming',
+  aggregators: 'Aggregators',
+} as const;
 
-const shelves = shelfNames
-  .map((key) => ({
-    key,
-    label: { markets: 'Markets', gaming: 'Gaming', world: 'World' }[key],
-    items: posts.filter((p) => p.data.category === key).slice(0, 4),
-  }))
-  .filter((s) => s.items.length > 0);
+type Category = keyof typeof CATEGORY_LABELS;
+const CATEGORY_ORDER = Object.keys(CATEGORY_LABELS) as Category[];
 
-const lead = tech[0];
-const cards = tech.slice(1, 5);
-const rest = tech.slice(5);
+const categoryOf = (p: (typeof posts)[number]) =>
+  (p.data.category ?? 'aggregators') as Category;
+
+/* Highest score first. `score` is the ranker's raw value, not the per-run
+   normalised `heat`, so it is comparable across categories and across runs. */
+const byScore = [...posts].sort((a, b) => (b.data.score ?? 0) - (a.data.score ?? 0));
+
+const lead = byScore[0];
+const cards = byScore.slice(1, 5);
+const featured = new Set([lead, ...cards].filter(Boolean).map((p) => p.id));
+
+/* Every category becomes a section — the table of contents the brief asked for.
+   Featured posts are held out so the hero does not reappear three inches lower. */
+const shelves = CATEGORY_ORDER.map((key) => ({
+  key,
+  label: CATEGORY_LABELS[key],
+  items: posts.filter((p) => categoryOf(p) === key && !featured.has(p.id)).slice(0, 6),
+})).filter((s) => s.items.length > 0);
+
+/* The tail: everything not in the hero row and not shown on a shelf. */
+const shelved = new Set(shelves.flatMap((s) => s.items.map((p) => p.id)));
+const rest = byScore.filter((p) => !featured.has(p.id) && !shelved.has(p.id));
+
+/* What the masthead counts. Every post is reachable from this page now, so the
+   number is the whole collection rather than one category's share of it. */
+const tech = posts;
 
 const sources = [...new Set(posts.map((p) => p.data.source))];
 const lastRun = lead
@@ -33,8 +70,8 @@ const lastRun = lead
 ---
 
 <BaseLayout
-  title="signal.log — technology news, deterministically ranked"
-  description="Tech feeds ranked by an open, deterministic heuristic: recency decay, source weighting, topic relevance, deduplication. No model decides what appears."
+  title="signal.log — an engineering newsletter, deterministically ranked"
+  description="System design, company engineering, deep dives, devops, fintech and gaming — ranked by an open heuristic: per-category recency decay, source trust, topic relevance, deduplication. No model decides what appears."
 >
   <!-- ── Masthead ─────────────────────────────────────────────── -->
   <header class="pb-5">
@@ -52,7 +89,7 @@ const lastRun = lead
   </header>
 
   <div class="masthead-rule flex flex-wrap items-center gap-x-5 gap-y-1 py-2 font-mono text-[0.68rem] text-faint">
-    <span><span class="text-ink">{tech.length}</span> ranked</span>
+    <span><span class="text-ink">{posts.length}</span> posts</span>
     <span class="opacity-40">/</span>
     <span><span class="text-ink">{sources.length}</span> sources</span>
     <span class="opacity-40">/</span>
@@ -79,21 +116,6 @@ const lastRun = lead
             </div>
           )}
 
-          {rest.length > 0 && (
-            <>
-              <div class="mt-12 mb-2 flex items-baseline justify-between border-t border-rule pt-4">
-                <h2 class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-dim">
-                  the rest of the chart
-                </h2>
-                <span class="font-mono text-[0.66rem] text-faint">{rest.length} entries</span>
-              </div>
-              <div class="grid gap-1 md:grid-cols-2 md:gap-x-4">
-                {rest.map((post, i) => (
-                  <PostCard post={post} index={i + 5} variant="row" />
-                ))}
-              </div>
-            </>
-          )}
         </>
       )
     }
@@ -105,17 +127,21 @@ const lastRun = lead
       <section id="shelves" class="mt-16 border-t border-rule pt-4">
         <div class="mb-5 flex flex-wrap items-baseline justify-between gap-2">
           <h2 class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dim">
-            also tracked
+            every section
           </h2>
           <span class="font-mono text-[0.64rem] text-faint">
-            ranked the same way &middot; headlines only, not advice
+            ranked the same way &middot; depth outranks announcements
           </span>
         </div>
 
-        <div class="grid gap-x-8 gap-y-8 sm:grid-cols-3">
+        <div class="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
           {shelves.map((shelf) => (
             <div class="reveal">
-              <h3 class="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-accent">
+              <h3
+                class="font-mono text-[0.68rem] uppercase tracking-[0.14em]"
+                style={`color: var(--cat)`}
+                data-cat={shelf.key}
+              >
                 {shelf.label}
               </h3>
               <div class="mt-1">
@@ -124,6 +150,30 @@ const lastRun = lead
                 ))}
               </div>
             </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ── The tail ─────────────────────────────────────────────── -->
+  {/* Moved BELOW the sections. It was inside the chart block, between the hero
+      row and the category sections, and with 158 entries it pushed every
+      section off the bottom of the page — the table of contents was there and
+      unreachable, which is the same failure the whole change was fixing, one
+      level down. */}
+  {
+    rest.length > 0 && (
+      <section id="tail" class="mt-16 border-t border-rule pt-4">
+        <div class="mb-2 flex items-baseline justify-between">
+          <h2 class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-dim">
+            the rest of the chart
+          </h2>
+          <span class="font-mono text-[0.66rem] text-faint">{rest.length} entries</span>
+        </div>
+        <div class="grid gap-1 md:grid-cols-2 md:gap-x-4">
+          {rest.map((post, i) => (
+            <PostCard post={post} index={i + 5} variant="row" />
           ))}
         </div>
       </section>

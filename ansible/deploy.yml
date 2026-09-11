@@ -36,16 +36,12 @@
     cron_minute: 17
     max_candidates: 40          # articles sent to the model per run (cost driver)
     publish_count: 5            # articles summarised and published per run
-    # TEMPORARILY RAISED from 60 while the home page still points at the old
-    # four categories. The pruner now sorts by addedAt, which makes the legacy
-    # posts the oldest-added items in the store and therefore first out — and
-    # they are the only posts the current index.astro can render. At 60, one
-    # 39-post cycle would take the last seven and leave the hero empty.
-    #
-    # 200 buys roughly four cycles (~24h) at the observed 39 posts per run.
-    # PUT THIS BACK TO 60 once index.astro reads the seven live categories;
-    # holding 200 posts is not a decision, it is a stay of execution.
-    max_posts: 200
+    # Back to 60. The 200 was a stay of execution with its removal condition
+    # written into the comment — "put this back once index.astro reads the seven
+    # live categories" — and index.astro now does. Every post is reachable from
+    # the home page, so holding four times as many buys nothing but disk on a
+    # volume that is 81% full.
+    max_posts: 60
     per_source_cap: 3           # one prolific feed cannot dominate a run
 
     # ----------------------------------------------------------------------- #

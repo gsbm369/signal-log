@@ -23,11 +23,18 @@
   --color-faint:     #5a6775;
   --color-rule:      rgba(255, 255, 255, 0.09);
 
-  /* GS-BM cyan stays the brand accent. The other three are shelf hues. */
-  --color-accent:  #2fbafe;
-  --color-markets: #34d399;
-  --color-gaming:  #a78bfa;
-  --color-world:   #fbbf24;
+  /* GS-BM cyan stays the brand accent. One hue per section — seven now, not
+     four, and the muted grey on aggregators is deliberate: it is the lowest
+     trust weight in the config and the page should not make a Hacker News
+     headline look like a Brendan Gregg piece. */
+  --color-accent:        #2fbafe;
+  --color-system-design: #2fbafe;
+  --color-company-eng:   #34d399;
+  --color-deep-dives:    #fbbf24;
+  --color-devops-linux:  #fb7185;
+  --color-fintech:       #a3e635;
+  --color-gaming:        #a78bfa;
+  --color-aggregators:   #94a3b8;
 
   --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-body:    "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -59,10 +66,20 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: #2f3a48; }
 
 /* Shelf hue, set once on the card and inherited by everything inside it. */
-[data-cat="tech"]    { --cat: #2fbafe; }
-[data-cat="markets"] { --cat: #34d399; }
-[data-cat="gaming"]  { --cat: #a78bfa; }
-[data-cat="world"]   { --cat: #fbbf24; }
+[data-cat="system_design"] { --cat: #2fbafe; }
+[data-cat="company_eng"]   { --cat: #34d399; }
+[data-cat="deep_dives"]    { --cat: #fbbf24; }
+[data-cat="devops_linux"]  { --cat: #fb7185; }
+[data-cat="fintech"]       { --cat: #a3e635; }
+[data-cat="gaming"]        { --cat: #a78bfa; }
+[data-cat="aggregators"]   { --cat: #94a3b8; }
+
+/* Legacy taxonomy. No feed writes these any more and the pruner has already
+   emptied them, but a post carrying one must still get a colour rather than
+   falling through to the accent and silently impersonating system_design. */
+[data-cat="tech"]    { --cat: #64748b; }
+[data-cat="markets"] { --cat: #64748b; }
+[data-cat="world"]   { --cat: #64748b; }
 
 /* ============================================================================
    CARDS

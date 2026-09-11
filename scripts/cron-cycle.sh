@@ -83,8 +83,17 @@ log "=== cycle starting (docker=${DOCKER_BIN}) ==="
 # build; either can stall on something outside this estate. Without a ceiling
 # here the only bound is systemd's TimeoutStartSec, and a unit sitting at its
 # ceiling looks identical to a unit doing work.
+# FORCE_PUBLISH and SKIP_CURATE are read INSIDE the container by run-cycle.sh,
+# and `docker compose run` does not forward arbitrary host environment. Setting
+# FORCE_PUBLISH=1 on the host therefore did nothing at all — a documented
+# override, printed by the guard's own error message, that could never work.
+# Found by lowering max_posts 200 -> 60 and being correctly refused, then being
+# refused again by the override.
 timeout --signal=TERM --kill-after=60 "${CYCLE_TIMEOUT:-1200}" \
-  "$DOCKER_BIN" compose --project-directory "$ROOT" run --rm builder
+  "$DOCKER_BIN" compose --project-directory "$ROOT" run --rm \
+    -e "FORCE_PUBLISH=${FORCE_PUBLISH:-0}" -e "SKIP_CURATE=${SKIP_CURATE:-0}" \
+    -e "CYCLE_TRIGGER=${CYCLE_TRIGGER:-cron}" \
+    builder
 BUILD_RC=$?
 
 if [ -s "${STATE_DIR}/build.json" ]; then
