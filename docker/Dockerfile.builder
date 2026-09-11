@@ -29,6 +29,10 @@ RUN cd /app/site && npm ci --include=dev
 COPY site /app/site
 COPY curator /app/curator
 COPY scripts/run-cycle.sh /app/run-cycle.sh
+# The alert definitions, so test_alert_inputs.py can read what the rules query.
+# Without them the check cannot run and warns on every cycle, which is worse
+# than not having it: a gate that always warns is a gate nobody reads.
+COPY grafana/alerting /app/grafana/alerting
 
 RUN chmod +x /app/run-cycle.sh \
  && mkdir -p /out /data/state /app/site/src/content/posts \

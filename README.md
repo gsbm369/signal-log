@@ -692,6 +692,34 @@ subsystem did not transfer to the next.
 
 > **A control is not in force until you have watched it refuse something.**
 
+And its twin, reached independently in three different subsystems before it was
+written down:
+
+> **A control that shares a failure domain with the thing it protects is not a control.**
+
+- The alert rules lived only in `grafana.db`, which had no volume. The alerting and the
+  thing it watches would have died in the same event. That — not the skipped Ansible task
+  — is why they are provisioned from a file now.
+- A second restic repository on the same disk as the data protects against accidental
+  deletion and nothing else. Two copies is the right answer only when the failure domains
+  differ; the local repo goes once R2's cold restore passes.
+- The ntfy path exists because the Postfix/Brevo relay shares a failure domain with the
+  host it is meant to report on.
+
+The third case is the one that measured itself. When the feed alerts were finally watched
+firing, Grafana's log said:
+
+```
+signal-log-email/email[0]: notify retry canceled due to unrecoverable error
+  after 1 attempts: failed to send email: 454 4.7.1 Relay access denied
+```
+
+The mail integration failed exactly as expected — and ntfy still delivered, because
+Grafana runs each integration in a contact point independently. The separation held. It
+was worth confirming rather than assuming, because the opposite design (one failing
+integration aborting the group) would have meant the dead mail path silently disabling the
+working one.
+
 Configuring it is not evidence. Reading it back is not evidence. Every guard here now has a
 matching negative test, and the ones that had none are exactly the ones that were broken:
 
@@ -844,6 +872,42 @@ too), no datasource placeholder survives, every query has its `or vector(0)`, an
 can actually read the result. Watched refusing on all of them.
 
 The general form: **the thing that configures a system must not be able to kill it.**
+
+The `0600` case also belongs to the channel-confusion family above: a file whose *contents*
+were perfectly valid, reported as `failure to parse file`. Permission denied arriving as a
+syntax error sends the diagnosis in exactly the wrong direction — the same shape as `dig`
+writing its connection error to stdout, where an emptiness test read it as data.
+
+Two more things learned by doing it: removing a provisioning **file** does not remove the
+rules it created — they stay in `grafana.db` as orphans, and deletion is explicit
+(`deleteRules:`). And contact points resolve across *every* file in the directory, so
+validating one file in isolation rejected a valid drill that referenced a sibling's
+receiver — correct by the checker's own rule, and wrong about Grafana.
+
+### `or vector(0)` is load-bearing in both directions
+
+It has now appeared twice, in opposite roles, in the same file family.
+
+Instance #3 needed it: without `or vector(0)` the stalled-curator rule returned an EMPTY
+result during total silence and depended on `noDataState` to notice, which is a different
+setting that can be changed independently of the expression.
+
+The feeds_zero rule was defeated by it: `ship_to_loki.py` builds its record from an
+explicit whitelist, the field never reached Loki, and the rule evaluated its fallback for
+ever — configured, visible in the UI, and structurally incapable of firing.
+
+The tension is not a mistake anyone will stop making:
+
+> **`or vector(0)` protects a rule against no-data AND hides an absent field, and you
+> cannot get the first property without the second.**
+
+One construct cannot distinguish "the value is genuinely zero" from "nothing ever wrote
+this field." So the check has to live outside the alert — `curator/test_alert_inputs.py`
+reads the rule definitions, extracts every field they unwrap, and asserts each appears in
+records Loki actually holds. It runs in `run-cycle.sh` before the build. Watched refusing
+against a rule pointed at a field nobody ships.
+
+**The alert cannot be the thing that proves its own inputs exist.**
 
 ### Redact by matching the value, never by matching the labels
 

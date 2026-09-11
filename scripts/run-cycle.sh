@@ -79,6 +79,22 @@ else
   log "WARN: curator and site disagree about categories — the build will fail below"
 fi
 
+# ------------------------------------------------ 1c. alert-input drift gate
+# `or vector(0)` protects a rule against no-data AND hides an absent field, and
+# you cannot have the first property without the second — one construct cannot
+# tell "genuinely zero" from "nothing ever wrote this". So the check lives here,
+# outside the alert: the alert cannot be the thing that proves its own inputs
+# exist.
+#
+# Non-fatal. A rule that cannot fire is a serious problem and a silent one, but
+# it is not a reason to stop publishing.
+python3 /app/curator/test_alert_inputs.py; ai_rc=$?
+case $ai_rc in
+  0) log "alert inputs: every queried field is present" ;;
+  2) log "alert inputs: not checked (rules file or Loki unreachable)" ;;
+  *) log "WARN: an alert rule queries a field that never reaches Loki — it can never fire" ;;
+esac
+
 # ----------------------------------------------------------------- 2. build
 log "step 2/3: building Astro site"
 cd /app/site || { log "FATAL: /app/site missing"; BUILD_STATUS="missing_source"; EXIT_CODE=1; exit 1; }
