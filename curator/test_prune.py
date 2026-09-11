@@ -13,6 +13,7 @@ No network, no model, no API key.
 """
 from __future__ import annotations
 
+import os
 import sys
 import tempfile
 from datetime import datetime, timedelta, timezone
@@ -43,6 +44,12 @@ def post(dirpath: Path, pub: str, added: str | None, slug: str) -> Path:
 
 def main() -> int:
     now = datetime.now(timezone.utc)
+
+    # The ordering tests below use two- and three-post fixtures, which the
+    # per-category floor would protect in their entirety. The floor is a
+    # separate property with its own test at the bottom; these are about which
+    # key the pruner sorts on.
+    os.environ["CATEGORY_FLOOR"] = "0"
     recent = (now - timedelta(minutes=5)).isoformat()
     older = (now - timedelta(days=9)).isoformat()
 
@@ -106,6 +113,28 @@ def main() -> int:
         check("pruning two takes both legacy posts, oldest filename first",
               (curate.prune_posts(1), l_old.exists(), l_new.exists(), modern.exists()),
               (2, False, False, True))
+
+    # The floor that keeps a section alive.
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td)
+        curate.CONTENT_DIR = d
+        # Nine recent posts in one category, two older ones in another — exactly
+        # the shape that emptied three sections on the live site.
+        loud = [post(d, "2026-09-%02d" % (i + 1), (now - timedelta(minutes=i)).isoformat(),
+                     "loud-%d" % i) for i in range(9)]
+        for f in loud:
+            f.write_text(f.read_text().replace("category: deep_dives", "category: gaming"))
+        quiet = [post(d, "2026-08-%02d" % (i + 1), (now - timedelta(days=20 + i)).isoformat(),
+                      "quiet-%d" % i) for i in range(2)]
+
+        os.environ["CATEGORY_FLOOR"] = "3"
+        print("\n-- a quiet category is not pruned out of existence --")
+        curate.prune_posts(6)
+        left = sorted(f.name for f in d.glob("*.md"))
+        cats = [("gaming" if "loud" in n else "deep_dives") for n in left]
+        check("the quiet category still has posts", "deep_dives" in cats, True)
+        check("both quiet posts survived despite being oldest-added",
+              all(f.exists() for f in quiet), True)
 
     print()
     if FAILURES:

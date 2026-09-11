@@ -9,9 +9,15 @@ import type { CollectionEntry } from 'astro:content';
     row    the tail       — 76px thumbnail, headline, heat
     mini   shelves        — headline and source only
 
-  Every variant handles a missing image. TechCrunch ships none at all, so the
-  fallback is a normal state: the tile becomes the rank over the shelf colour,
-  which reads as a cover rather than as something that failed to load.
+  Every variant handles a missing image, and for this publication that is the
+  COMMON case, not the edge: Marc Brooker, Dan Luu and jvns.ca ship no images at
+  all, and they are the sources the front page leads on. A fold of five evergreen
+  posts was five flat rectangles with a rank number in the middle.
+
+  A rank badge on a flat colour reads as an image that failed to load. The
+  fallback is now typographic — the headline set large on the category colour —
+  so the absence is a deliberate style rather than a defect. No image is fetched
+  or generated for text-only sources; there is nothing to fetch.
 */
 interface Props {
   post: CollectionEntry<'posts'>;
@@ -21,7 +27,7 @@ interface Props {
 
 const { post, index, variant = 'card' } = Astro.props;
 const { title, description, pubDate, source, heat, readMinutes, image, imageAlt } = post.data;
-const category = post.data.category ?? 'tech';
+const category = post.data.category ?? 'aggregators';
 
 const num = String(index + 1).padStart(2, '0');
 const href = `/posts/${post.id}/`;
@@ -41,7 +47,7 @@ const alt = imageAlt ?? '';
 
       <div class={`shot shot--wide${image ? '' : ' shot--empty'}`}>
         <span class="rank-badge rank-badge--lead">{num}</span>
-        {image ? <img src={image} alt={alt} loading="eager" decoding="async" width="1280" height="720" /> : <span>{num}</span>}
+        {image ? <img src={image} alt={alt} loading="eager" decoding="async" width="1280" height="720" /> : <span class="tile-type tile-type--hero">{title}</span>}
       </div>
 
       <div class="p-5 sm:p-7">
@@ -74,7 +80,7 @@ const alt = imageAlt ?? '';
 
       <div class={`shot shot--card${image ? '' : ' shot--empty'}`}>
         <span class="rank-badge">{num}</span>
-        {image ? <img src={image} alt={alt} loading="lazy" decoding="async" width="600" height="400" /> : <span>{num}</span>}
+        {image ? <img src={image} alt={alt} loading="lazy" decoding="async" width="600" height="400" /> : <span class="tile-type">{title}</span>}
       </div>
 
       <div class="flex flex-1 flex-col p-4">

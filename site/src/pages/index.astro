@@ -91,7 +91,23 @@ const pickDistinct = (pool: typeof posts, n: number) => {
   return out;
 };
 
-const front = pickDistinct(frontRunners, 5);
+/* Top up from OUTSIDE the depth categories before repeating a byline.
+ *
+ * Measured: the depth pool held 38 posts and only FOUR distinct sources —
+ * ByteByteGo, Dan Luu, Marc Brooker, Pragmatic Engineer — because company_eng
+ * and devops_linux had been pruned to zero and deep_dives down to one author.
+ * So the fifth slot fell through to the repeat fallback and Marc Brooker held
+ * positions 1 and 5. The cap was working exactly as written; the pool was
+ * starved.
+ *
+ * Brooker also occupied the top EIGHT of that pool by score: the per-source cap
+ * in the ranker applies within a run, he has accumulated a dozen posts across
+ * runs, and deep_dives' 4320h half-life keeps all of them competitive for
+ * months. Without this the front page is one blog.
+ *
+ * A fifth distinct byline from fintech or gaming is a better front page than
+ * the same name twice. Depth still gets first refusal on every slot. */
+const front = pickDistinct([...frontRunners, ...byScore], 5);
 const lead = front[0];
 const cards = front.slice(1, 5);
 const featured = new Set([lead, ...cards].filter(Boolean).map((p) => p.id));

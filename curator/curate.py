@@ -635,9 +635,42 @@ def prune_posts(max_posts: int) -> int:
     excess = len(posts) - max_posts
     if excess <= 0:
         return 0
-    for path in posts[:excess]:
+
+    # PER-CATEGORY FLOOR.
+    #
+    # A pure addedAt sort empties whole categories. Measured on the live site:
+    # 60 posts across what should be seven sections rendered as FOUR —
+    # company_eng, devops_linux and aggregators held zero, not because anything
+    # suppressed them but because nothing of theirs was among the 60 most
+    # recently added. At roughly a dozen posts kept per cycle, a category that
+    # under-publishes for four or five cycles disappears from the site entirely,
+    # and the page it disappears from is the one advertising seven sections.
+    #
+    # So each category keeps its newest few unconditionally, and only what is
+    # left competes on recency. The floor is small on purpose: it guarantees a
+    # section exists, it does not reserve a category a quota of the front page.
+    floor = max(0, int(os.environ.get("CATEGORY_FLOOR", "3")))
+    protected: set[Path] = set()
+    if floor:
+        by_cat: dict[str, list[Path]] = {}
+        for path in posts:
+            m = re.search(r"^category:\s*(\S+)\s*$",
+                          path.read_text(encoding="utf-8")[:1200], re.M)
+            by_cat.setdefault(m.group(1) if m else "uncategorised", []).append(path)
+        for cat, paths in by_cat.items():
+            # paths is already in addedAt order, oldest first — protect the tail.
+            protected.update(paths[-floor:])
+
+    droppable = [p for p in posts if p not in protected]
+    to_drop = droppable[:excess]
+    if len(to_drop) < excess:
+        # More protected than the cap allows. Keeping every section alive beats
+        # honouring max_posts exactly; say so rather than silently overshooting.
+        log.warning("prune: category floor holds %d post(s) over max_posts=%d",
+                    len(posts) - len(to_drop) - max_posts, max_posts)
+    for path in to_drop:
         path.unlink()
-    return excess
+    return len(to_drop)
 
 
 # --------------------------------------------------------------------------- #

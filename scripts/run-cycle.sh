@@ -95,6 +95,18 @@ case $ai_rc in
   *) log "WARN: an alert rule queries a field that never reaches Loki — it can never fire" ;;
 esac
 
+# ------------------------------------------------- 1d. addedAt stability gate
+# addedAt IS the feed's pubDate. If it were ever recomputed rather than written
+# once per post, every subscriber would receive all 60 items as new on every
+# cycle, six times a day — and the site would look perfect throughout. Only a
+# before/after across a cycle can detect it, which is why it lives here.
+python3 /app/curator/test_addedat_stability.py; aa_rc=$?
+case $aa_rc in
+  0) log "addedAt: stable across this cycle" ;;
+  2) log "addedAt: no comparison available yet (first run or full turnover)" ;;
+  *) log "WARN: a surviving post changed its addedAt — RSS pubDates moved, subscribers will re-receive items" ;;
+esac
+
 # ----------------------------------------------------------------- 2. build
 log "step 2/3: building Astro site"
 cd /app/site || { log "FATAL: /app/site missing"; BUILD_STATUS="missing_source"; EXIT_CODE=1; exit 1; }
