@@ -43,8 +43,30 @@ const categoryOf = (p: (typeof posts)[number]) =>
    normalised `heat`, so it is comparable across categories and across runs. */
 const byScore = [...posts].sort((a, b) => (b.data.score ?? 0) - (a.data.score ?? 0));
 
-const lead = byScore[0];
-const cards = byScore.slice(1, 5);
+/* THE FOLD BELONGS TO THE DEPTH CATEGORIES.
+ *
+ * Drawing the hero by raw score across ALL categories was measured doing the
+ * wrong thing: the hero and all four cards came back as Finextra payments
+ * announcements. It is not a scoring bug. fintech, gaming and aggregators are
+ * news-shaped and publish constantly, so at a 72h half-life their items are
+ * always the freshest thing in the set — and "freshest" wins a cross-category
+ * score comparison most of the time.
+ *
+ * That is the same volume problem the brief warned about, arriving at the one
+ * place it does most damage. The page prints "depth outranks announcements" a
+ * few inches lower; the fold has to mean it.
+ *
+ * The news categories are not demoted — they keep their own sections, at full
+ * size. They just do not get to be the masthead. */
+const DEPTH: Category[] = ['system_design', 'company_eng', 'deep_dives', 'devops_linux'];
+const depthPool = byScore.filter((p) => DEPTH.includes(categoryOf(p)));
+
+/* Fall back to the whole set only if the depth categories are empty, so a
+   cold start still renders something rather than an empty state. */
+const frontRunners = depthPool.length >= 5 ? depthPool : byScore;
+
+const lead = frontRunners[0];
+const cards = frontRunners.slice(1, 5);
 const featured = new Set([lead, ...cards].filter(Boolean).map((p) => p.id));
 
 /* Every category becomes a section — the table of contents the brief asked for.
