@@ -31,6 +31,8 @@ import socket
 import sys
 import time
 import unicodedata
+import urllib.error
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -54,6 +56,19 @@ FEEDS_FILE = Path(os.environ.get("FEEDS_FILE", HERE / "feeds.yml"))
 CONTENT_DIR = Path(os.environ.get("CONTENT_DIR", HERE.parent / "site/src/content/posts"))
 STATE_DIR = Path(os.environ.get("STATE_DIR", HERE / "state"))
 SEEN_FILE = STATE_DIR / "seen.json"
+DEFERRED_FILE = STATE_DIR / "deferred.json"
+
+# How long to wait before re-checking a deferred item, and how long to keep
+# trying. LWN's paywall lifts at about seven days — measured against its own
+# archive, Sept 10 edition 403 at 1.8 days, Sept 3 edition 200 at 8.8 — so
+# eight days is the first re-check with a day of margin. Thirty days is the
+# give-up point: an item still paywalled a month later is not on the usual
+# schedule and is not worth probing four times a day for ever.
+DEFER_RECHECK_DAYS = float(os.environ.get("DEFER_RECHECK_DAYS", "8"))
+DEFER_GIVE_UP_DAYS = float(os.environ.get("DEFER_GIVE_UP_DAYS", "30"))
+DEFER_PROBE_TIMEOUT = float(os.environ.get("DEFER_PROBE_TIMEOUT", "12"))
+# Bound the network cost: a cycle probes at most this many ripening items.
+DEFER_MAX_PROBES = int(os.environ.get("DEFER_MAX_PROBES", "8"))
 
 # Fallback retention for a category that declares none, and the expiry applied
 # to LEGACY seen.json entries (the old flat {key: date} shape carried no
@@ -101,6 +116,10 @@ REJECTS_BY_CAT: dict[str, dict[str, int]] = {
 # A handful of raw date strings per source, kept for the acceptance report.
 # Bounded: a broken feed must not turn the metric line into a log dump.
 REJECT_SAMPLES: dict[str, list[str]] = {}
+
+# Items seen this run that are not publishable YET. Collected during fetch and
+# merged into the deferred store by _run().
+DEFERRED_SEEN: list[dict[str, Any]] = []
 
 
 def _reject(reason: str, source: str, category: str, raw_date: str = "") -> None:
@@ -318,6 +337,99 @@ def save_seen(seen: dict[str, dict[str, Any]], policies: dict[str, dict[str, Any
 
 
 # --------------------------------------------------------------------------- #
+# Deferred items — published later, not discarded
+# --------------------------------------------------------------------------- #
+
+
+def load_deferred() -> dict[str, dict[str, Any]]:
+    if not DEFERRED_FILE.exists():
+        return {}
+    try:
+        data = json.loads(DEFERRED_FILE.read_text())
+        return data if isinstance(data, dict) else {}
+    except (json.JSONDecodeError, OSError) as exc:
+        log.warning("could not read deferred store (%s) — starting fresh", exc)
+        return {}
+
+
+def save_deferred(deferred: dict[str, dict[str, Any]]) -> None:
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    tmp = DEFERRED_FILE.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(deferred, indent=2, sort_keys=True))
+    tmp.replace(DEFERRED_FILE)
+
+
+def _is_free(url: str) -> bool | None:
+    """True if the article is readable, False if still paywalled, None unknown.
+
+    LWN answers 403 with a "Subscription required" page while an article is
+    subscriber-only, and 200 once it is not. Anything else — a timeout, a 5xx,
+    a redirect loop — is None, and None means leave it deferred rather than
+    guess in either direction.
+    """
+    req = urllib.request.Request(url, headers={
+        "User-Agent": "signal.log-curator/2.0 (+https://github.com/gsbm369)"})
+    try:
+        with urllib.request.urlopen(req, timeout=DEFER_PROBE_TIMEOUT) as resp:
+            return resp.status == 200
+    except urllib.error.HTTPError as exc:
+        return False if exc.code in (401, 402, 403) else None
+    except Exception:
+        return None
+
+
+def ripen_deferred(deferred: dict[str, dict[str, Any]],
+                   now: datetime | None = None) -> list[dict[str, Any]]:
+    """Promote deferred items whose paywall has lifted. Mutates `deferred`.
+
+    This is the half that makes deferring worth anything. A [$] item leaves
+    LWN's 15-item feed long before it becomes free, so waiting for it to come
+    back around on its own would wait for ever — the store is what remembers it
+    after the feed has forgotten.
+    """
+    now = now or datetime.now(timezone.utc)
+    ready: list[dict[str, Any]] = []
+    probes = 0
+    for key, rec in sorted(deferred.items(), key=lambda kv: kv[1].get("first_seen", "")):
+        try:
+            first = datetime.fromisoformat(rec["first_seen"])
+        except (KeyError, ValueError):
+            continue
+        age_days = (now - first).total_seconds() / 86400
+        if age_days < DEFER_RECHECK_DAYS:
+            continue
+        if age_days > DEFER_GIVE_UP_DAYS:
+            rec["status"] = "gave_up"
+            continue
+        if probes >= DEFER_MAX_PROBES:
+            break
+        probes += 1
+        free = _is_free(rec["url"])
+        rec["last_probe"] = now.isoformat()
+        rec["probes"] = int(rec.get("probes", 0)) + 1
+        if free is True:
+            rec["status"] = "ripe"
+            ready.append(rec)
+        elif free is False:
+            rec["status"] = "still_paywalled"
+        else:
+            rec["status"] = "probe_failed"
+
+    METRICS["deferred_total"] = len(deferred)
+    METRICS["deferred_probed"] = probes
+    METRICS["deferred_ripened"] = len(ready)
+    METRICS["deferred_gave_up"] = sum(
+        1 for r in deferred.values() if r.get("status") == "gave_up")
+    if probes:
+        log.info("deferred: %d held, %d probed, %d ripened, %d given up",
+                 len(deferred), probes, len(ready),
+                 METRICS["deferred_gave_up"])
+    for rec in ready:
+        deferred.pop(rec["key"], None)
+    return ready
+
+
+# --------------------------------------------------------------------------- #
 # Scoring policy
 # --------------------------------------------------------------------------- #
 
@@ -418,6 +530,21 @@ def fetch_feed(feed: dict[str, Any], policy: dict[str, Any]) -> list[dict[str, A
         title = strip_html(getattr(entry, "title", ""), 250)
         if not link or not title:
             continue
+        # DEFER, do not drop. This must happen before anything else looks at the
+        # item: ^\[\$\] is no longer in the noise list, so without this branch a
+        # subscriber-only teaser would sail straight through and be published.
+        if ranker.is_deferred(title):
+            DEFERRED_SEEN.append({
+                "key": url_key(link),
+                "url": link,
+                "title": ranker.strip_defer_marker(title),
+                "source": name,
+                "category": category,
+                "first_seen": now.isoformat(),
+                "status": "deferred",
+            })
+            continue
+
         published, reason = entry_datetime(entry, now)
         if reason:
             _reject(reason, name, category, entry_raw_date(entry))
@@ -752,6 +879,38 @@ def _run() -> int:
 
     # --- collect ---
     articles = collect(feeds, policies)
+
+    # --- deferred: remember the unripe, promote whatever has ripened ---
+    deferred = load_deferred()
+    added = 0
+    for rec in DEFERRED_SEEN:
+        # No need to test against the seen store: an item still carrying [$] has
+        # by definition never been published, because that is what deferring it
+        # means.
+        if rec["key"] not in deferred:
+            deferred[rec["key"]] = rec
+            added += 1
+    if added:
+        log.info("deferred: +%d new not-yet-published item(s)", added)
+
+    for rec in ripen_deferred(deferred):
+        # Re-enters the pipeline as an ordinary article. Its pubDate is the
+        # ORIGINAL publication date, which is what the category's ingest window
+        # is measured against — devops_linux ingests 30 days, so an item that
+        # ripens at day eight is comfortably inside it.
+        try:
+            published = datetime.fromisoformat(rec["first_seen"])
+        except (KeyError, ValueError):
+            continue
+        articles.append({
+            "source": rec["source"], "category": rec["category"],
+            "_half_life_hours": None,
+            "title": rec["title"], "url": rec["url"], "published": published,
+            "summary": "", "image": None, "imageAlt": None,
+            "_entry": None, "key": rec["key"],
+        })
+        log.info("deferred -> publishable: %s (%s)", rec["title"][:60], rec["source"])
+    save_deferred(deferred)
 
     # FLAT fields, because the alert has to be able to read them.
     #

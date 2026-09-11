@@ -1,0 +1,82 @@
+# GENERATED FROM grafana.db — "Infra Error Rate High", brought under file
+# provisioning on 2026-09-11.
+#
+# It was created through the UI on 2026-07-03 and existed in NO file: an orphan
+# that reconcile-alerts.sh found on its first run. It lived only in a database
+# that had no volume at all until that morning, so the rule watching the
+# infrastructure and the infrastructure it watches shared a failure domain —
+# the principle at the top of the README, in its last open instance.
+#
+# Copied AS-IS. It is still paused (isPaused: true), exactly as it was found;
+# bringing it under provisioning is not the same as turning it on, and that is
+# the owner's call. The only edit is the datasource uid, replaced with the
+# placeholder the provisioner substitutes, so the file survives a Grafana
+# rebuild that mints new uids. It resolves to the same datasource today.
+apiVersion: 1
+groups:
+- orgId: 1
+  name: 1m
+  folder: Homelab Alerts
+  interval: 1m
+  rules:
+  - uid: dfr0m8u9psq2oa
+    title: Infra Error Rate High
+    condition: C
+    for: 60s
+    noDataState: NoData
+    execErrState: Error
+    annotations:
+      description: "The combined error/fail/critical log rate across all monitored hosts (DC, FS, TS,\
+        \ Linux) \nhas exceeded the alert threshold of 15 events per 5-minute window.\n\nCurrent value:\
+        \ {{ $values.A }}\n\nThis may indicate: failed logon attempts, service failures, or other error\
+        \ conditions. \nCheck the Grafana \"Infrastructure Log Overview\" or \"AD Authentication Monitor\"\
+        \ dashboard \nto identify the source host and specific errors."
+      summary: Error/fail/critical log rate exceeded threshold ({{ $values.A }} events in 5m, threshold
+        15)
+    labels:
+      service: homelab
+    isPaused: true
+    data:
+    - refId: A
+      queryType: instant
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: LOKI_DATASOURCE_UID
+      model:
+        editorMode: code
+        expr: sum(count_over_time({computer=~".+"} |~ `(?i)(error|fail|critical)` [5m]))
+        instant: true
+        intervalMs: 1000
+        maxDataPoints: 43200
+        queryType: instant
+        refId: A
+    - refId: C
+      queryType: expression
+      relativeTimeRange:
+        from: 0
+        to: 0
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 15
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold

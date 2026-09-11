@@ -138,7 +138,9 @@ FOCUS_PATTERNS = _compile_focus(FOCUS_STACK)
 # high on recency and say nothing. Do not edit without editing the original.
 NOISE_PATTERNS_ORIGINAL: tuple[re.Pattern[str], ...] = (
     re.compile(r"^security updates for ", re.I),
-    re.compile(r"^\[\$\]"),                                       # LWN subscriber-only teasers
+    # NOTE: ^\[\$\] has MOVED OUT of this list — see DEFER_PATTERNS below.
+    # It is kept here as a comment rather than deleted so the ported list stays
+    # readable against the original it was copied from.
     re.compile(r"^(weekly edition|kernel prepatch|stable kernel)", re.I),
     re.compile(r"^friday five", re.I),
     re.compile(r"^(this week|week) in ", re.I),
@@ -167,6 +169,33 @@ NOISE_PATTERNS_EXTRA: tuple[re.Pattern[str], ...] = tuple(
 )
 
 NOISE_PATTERNS: tuple[re.Pattern[str], ...] = NOISE_PATTERNS_ORIGINAL + NOISE_PATTERNS_EXTRA
+
+# DEFER, NOT DROP.
+#
+# LWN marks subscriber-only articles with a leading [$]. They were in the noise
+# list, which cost 40% of the best Linux source on the site permanently — and
+# they are not noise, they are not RIPE. Verified against LWN's own archive
+# rather than taken on faith, same content type at different ages:
+#
+#   Weekly Edition Sept 10  (1.8 days old)  HTTP 403  Subscription required
+#   Weekly Edition Sept  3  (8.8 days old)  HTTP 200  free
+#   Aug 27, Aug 20, Aug 13, Aug 6, Jul 30, Jul 23     HTTP 200  free
+#
+# So the rule becomes: do not publish it, do not record it as seen, write it to
+# the deferred store, and re-check it after the paywall lifts. A permanent 40%
+# loss becomes a one-week delay.
+DEFER_PATTERNS: tuple[re.Pattern[str], ...] = (
+    re.compile(r"^\[\$\]"),
+)
+
+
+def is_deferred(title: str) -> bool:
+    """Not publishable YET. Distinct from noise, which is never publishable."""
+    return any(p.search(title or "") for p in DEFER_PATTERNS)
+
+
+def strip_defer_marker(title: str) -> str:
+    return re.sub(r"^\[\$\]\s*", "", title or "").strip()
 
 # Query/tracking params stripped when canonicalising a URL.
 TRACKING_PARAMS = re.compile(

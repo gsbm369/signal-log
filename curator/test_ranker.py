@@ -139,7 +139,7 @@ check("0.1 clamps to min", ranker.clamp_weight(0.1), ranker.SOURCE_WEIGHT_MIN)
 check("1.0 passes through", ranker.clamp_weight(1.0), 1.0)
 
 print("\n-- ported NOISE list, verbatim patterns --")
-for t in ["Security updates for Thursday", "[$] A subscriber-only article",
+for t in ["Security updates for Thursday",
           "Weekly Edition for September 5", "Kernel prepatch 6.19-rc4",
           "Stable kernel 6.18.2", "Friday Five: what shipped",
           "This week in Rust #601", "Week in review: containers"]:
@@ -147,6 +147,22 @@ for t in ["Security updates for Thursday", "[$] A subscriber-only article",
 check("ported list alone does not drop a listicle",
       ranker.is_noise("Top 10 laptops for 2026", extra=False), False)
 check("extra list does drop it", ranker.is_noise("Top 10 laptops for 2026", extra=True), True)
+
+print("\n-- [$] is DEFERRED, not noise --")
+# LWN marks subscriber-only articles with a leading [$]. They were in the noise
+# list, which cost 40% of the best Linux source permanently. Verified against
+# LWN's own archive rather than taken on faith: the Sept 10 Weekly Edition
+# answered 403 at 1.8 days old, the Sept 3 edition answered 200 at 8.8 days,
+# and every edition older than that was free. The item is not unpublishable,
+# it is not ripe.
+check("[$] is not treated as noise", ranker.is_noise("[$] Stabilizing Rust's never type"), False)
+check("[$] is recognised as deferred", ranker.is_deferred("[$] Stabilizing Rust's never type"), True)
+check("an ordinary headline is not deferred", ranker.is_deferred("Kubernetes v1.37 released"), False)
+check("the marker is stripped for publication",
+      ranker.strip_defer_marker("[$] Stabilizing Rust's never type"),
+      "Stabilizing Rust's never type")
+check("stripping leaves a normal title alone",
+      ranker.strip_defer_marker("Kubernetes v1.37 released"), "Kubernetes v1.37 released")
 
 print("\n-- dedupe registers keys even for rejected items --")
 pool2 = [
