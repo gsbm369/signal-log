@@ -64,6 +64,21 @@ else
   fi
 fi
 
+# --------------------------------------------------- 1b. category drift gate
+# Runs BEFORE the build, because the site schema is a closed enum: a category
+# the curator emits and the site has never heard of is a hard build failure,
+# and the Astro error names a generated post file rather than the config that
+# actually drifted. Failing here instead costs one second and says which list
+# is wrong.
+#
+# Non-fatal on purpose. A drift means the build is about to fail anyway, and
+# this warning is the thing that explains WHY when someone reads the log.
+if python3 /app/curator/test_categories.py; then
+  log "category lists agree"
+else
+  log "WARN: curator and site disagree about categories — the build will fail below"
+fi
+
 # ----------------------------------------------------------------- 2. build
 log "step 2/3: building Astro site"
 cd /app/site || { log "FATAL: /app/site missing"; BUILD_STATUS="missing_source"; EXIT_CODE=1; exit 1; }

@@ -124,7 +124,7 @@ feeds:
     url: https://www.finextra.com/rss/headlines.aspx
     category: fintech
     weight: 0.75
-    fetch: 20
+    fetch: 60
   - name: TechCrunch Fintech
     url: https://techcrunch.com/category/fintech/feed/
     category: fintech

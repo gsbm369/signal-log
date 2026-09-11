@@ -703,8 +703,35 @@ matching negative test, and the ones that had none are exactly the ones that wer
 | Stalled-curator alert | cron stopped — the expression went to `0`, then back to `1` on recovery |
 | Mail delivery | the queue inspected after a "successful" send |
 | CSP script hash | recomputed from the emitted bytes and compared |
+| Category contract | one category deleted from `site/src/categories.ts` — `test_categories.py` named the missing one; and a `deep_dives` post fed to the Astro schema, which refused it by name |
+| Date validity | an undated entry and a future-dated one, each rejected with its reason; and 30 minutes of clock skew NOT rejected |
+| Per-category half-life | the same four articles ranked under a 36h and a 4320h curve, and the two orders compared |
 
-"It looks right" is how all of these shipped. The sixth was found while writing up the
+"It looks right" is how all of these shipped.
+
+### The variant that passed instead of failing
+
+The rule above has a second edge, found during the newsletter pivot. The ranking work
+replaced a single global 36-hour half-life with a per-category curve and a per-source
+override — the largest behavioural change the ranker has ever had — and **the golden test
+passed, unchanged, first time.**
+
+It was not a false negative in the ordinary sense. The fixture was fine and the assertions
+were fine. The test called `rank()` without a half-life argument, so it exercised the
+default path and never entered the code under test at all. A guard written specifically to
+catch silent ranking drift sat one parameter away from the drift and reported success.
+
+That is worse than a control that has never refused anything, because this one had refused
+something before — the `RELEVANCE_SCALE` row two entries up in the table — so its green was
+credible. A passing test is evidence only about the path it actually took.
+
+The fix is the last row of the table: the same four articles are now ranked under both a
+news curve and a deep-dives curve, and the assertion is that the two orders *differ*. Under
+the news curve all three evergreen items score exactly `0.0`; a change that fails to reorder
+them is a change that did not take.
+
+Generalised: **when a test passes unchanged across a change that should have moved it, that
+is a finding about the test, not a reassurance about the change.** The sixth was found while writing up the
 other five — and the verification of *its* fix repeated the second entry in this very
 table: `./wait-for-deploy.sh … | sed` reported `sed`'s exit code as the script's. Reading
 `0` where the script had returned `3` would have "confirmed" the opposite of what happened.

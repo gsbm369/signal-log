@@ -186,7 +186,12 @@
       # Dates its scheduled webinars at air time — 11 of 54 items measured up to
       # 55.8 days in the FUTURE. Kept; the date-validity guard in
       # curate.entry_datetime() rejects them. That guard is not a content filter.
-      - { name: Finextra,           url: "https://www.finextra.com/rss/headlines.aspx",   category: fintech,       weight: 0.75, fetch: 20 }
+      # fetch 60, not 20. At 20 the future-date guard measured ZERO rejections
+      # here — the webinar entries sit past index 20 in feed order, so the guard
+      # was proven by unit test but never actually fired in production. 60
+      # reaches them. per_source_cap still limits what Finextra contributes to a
+      # published issue; this only changes what the gate gets to see.
+      - { name: Finextra,           url: "https://www.finextra.com/rss/headlines.aspx",   category: fintech,       weight: 0.75, fetch: 60 }
       - { name: TechCrunch Fintech, url: "https://techcrunch.com/category/fintech/feed/", category: fintech,       weight: 0.70, fetch: 15 }
 
       # ---- gaming ----
