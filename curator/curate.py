@@ -771,12 +771,32 @@ def _run() -> int:
     for path in written:
         log.info("wrote %s", path.name)
 
+    # SEEN MEANS PUBLISHED, not considered.
+    #
+    # This marked every `fresh` candidate, which is defensible when retention is
+    # 45 days and a feed only exposes what it published this week: the entries
+    # expire before the archive matters. It is catastrophic the moment a
+    # category holds retention_days: null and its sources expose an archive.
+    #
+    # Measured: one run took 85 deep_dives candidates, published the 6 the cap
+    # allowed, and marked all 85 seen forever. Brendan Gregg's ten posts, jvns's
+    # twenty and Dan Luu's forty were burned in a single cycle to publish six —
+    # and being permanent, they could never be reached again.
+    #
+    # It also contradicts the design the evergreen categories are built on: an
+    # item surfaces once, is recorded, and the next run reaches for the
+    # NEXT-BEST UNPUBLISHED item from that archive. Working gradually through a
+    # backlog of good writing requires remembering what we published, not what
+    # we looked at.
     stamped = datetime.now(timezone.utc).isoformat()
-    for art in fresh:
-        seen.setdefault(art["key"], {
-            "date": stamped,
-            "category": art.get("category"),
-        })
+    published_keys = {s.source_article.get("key") for s in stories}
+    for art in ranked:
+        if art.get("key") in published_keys:
+            seen.setdefault(art["key"], {
+                "date": stamped,
+                "category": art.get("category"),
+            })
+    METRICS["seen_added"] = len(published_keys)
     save_seen(seen, policies)
 
     removed = prune_posts(max_posts)
