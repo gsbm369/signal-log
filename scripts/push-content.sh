@@ -60,7 +60,10 @@ fi
 #
 # Override deliberately when you DO intend to ship local work with the content:
 #     PUSH_LOCAL_COMMITS=1 scripts/push-content.sh
-if ! "$GIT_BIN" fetch --quiet origin "$GH_BRANCH" 2>/dev/null; then
+# Bounded. git has no timeout of its own, and a TLS handshake to GitHub that
+# stalls blocks until systemd kills the whole unit half an hour later — during
+# which every monitor still reports the cycle as running.
+if ! timeout 120 "$GIT_BIN" fetch --quiet origin "$GH_BRANCH" 2>/dev/null; then
   log "WARN: could not fetch origin/${GH_BRANCH} — the ahead-check may be stale"
 fi
 
@@ -103,7 +106,7 @@ log "staged: +${ADDED} ~${MODIFIED} -${DELETED}"
 
 # Push by remote NAME. The helper supplies credentials; nothing secret is in
 # this command line, this script, or the repo config.
-if "$GIT_BIN" push --quiet origin "HEAD:${GH_BRANCH}"; then
+if timeout 300 "$GIT_BIN" push --quiet origin "HEAD:${GH_BRANCH}"; then
   log "pushed to origin/${GH_BRANCH} — GitHub Actions will build and deploy"
   exit 0
 fi

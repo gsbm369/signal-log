@@ -79,7 +79,12 @@ trap ship EXIT
 
 # ------------------------------------------------------------------ 1. build
 log "=== cycle starting (docker=${DOCKER_BIN}) ==="
-"$DOCKER_BIN" compose --project-directory "$ROOT" run --rm builder
+# Bounded at 20 minutes. The builder curates 28 feeds and then runs an Astro
+# build; either can stall on something outside this estate. Without a ceiling
+# here the only bound is systemd's TimeoutStartSec, and a unit sitting at its
+# ceiling looks identical to a unit doing work.
+timeout --signal=TERM --kill-after=60 "${CYCLE_TIMEOUT:-1200}" \
+  "$DOCKER_BIN" compose --project-directory "$ROOT" run --rm builder
 BUILD_RC=$?
 
 if [ -s "${STATE_DIR}/build.json" ]; then

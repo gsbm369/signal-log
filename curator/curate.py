@@ -27,6 +27,7 @@ import json
 import logging
 import os
 import re
+import socket
 import sys
 import time
 import unicodedata
@@ -57,6 +58,27 @@ SEEN_FILE = STATE_DIR / "seen.json"
 # Fallback retention for a category that declares none, and the expiry applied
 # to LEGACY seen.json entries (the old flat {key: date} shape carried no
 # category, so there is nothing to look a policy up by).
+# THE ONLY UNBOUNDED NETWORK CALL IN THIS FILE, until now.
+#
+# feedparser.parse() takes no timeout argument and inherits the socket default,
+# which is None — wait for ever. images.py, loki.py and summarizers.py all bound
+# their calls; this one did not, and it is the one that talks to 28 third-party
+# servers every cycle.
+#
+# A feed whose server completes the TCP handshake and then never sends a byte
+# hangs its worker permanently. pool.map() waits for every worker, so the
+# curator never returns, the builder container never exits, `docker compose run`
+# never returns, and the cycle sits there until systemd's TimeoutStartSec fires
+# 30 minutes later. Nothing alerts in the meantime, because from every monitor's
+# point of view the job is still running. A hang must become a failure, because
+# a failure is a thing that alerts.
+#
+# Set globally rather than per-call because feedparser offers no other hook. It
+# is a single-purpose script, and every other network user here already passes
+# an explicit timeout, so nothing else is affected by the default changing.
+FEED_SOCKET_TIMEOUT = float(os.environ.get("FEED_SOCKET_TIMEOUT", "20"))
+socket.setdefaulttimeout(FEED_SOCKET_TIMEOUT)
+
 SEEN_RETENTION_DAYS = 45
 
 # Clock skew allowance before an item counts as future-dated. Two hours is

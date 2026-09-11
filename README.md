@@ -736,6 +736,79 @@ them is a change that did not take.
 Generalised: **when a test passes unchanged across a change that should have moved it, that
 is a finding about the test, not a reassurance about the change.**
 
+### A liveness check is not a completeness check
+
+The DNS export queries public resolvers and writes a committed text file. It had a guard:
+refuse to overwrite if the zone returns no SOA, so a dead resolver could not blank the
+export. The guard worked. It was also the wrong guard.
+
+One three-second `dig` timeout dropped all four apex A records — the GitHub Pages
+addresses the site is actually served from — and the export overwrote the good committed
+file **and reported success**. The SOA guard did not notice, because the SOA was still
+there.
+
+The guard proved the resolver was ALIVE. It was asked to prove the export was COMPLETE.
+Those are different properties, and it only ever tested the first.
+
+> **A timeout looks exactly like a deleted record.**
+
+The replacement fails on the property that matters — the export shrank — and names what
+disappeared, because a zone legitimately shrinks when someone deletes a record and the
+two cases are indistinguishable from inside:
+
+```
+REFUSING to write: export shrank 21 -> 19 records.
+                   Missing from the new export:
+                     legacy1.gs-bm.com.  IN A 203.0.113.10
+                   A timeout looks exactly like a deleted record. If these were
+                   really removed, re-run with DNS_EXPORT_ALLOW_SHRINK=1.
+```
+
+Generalised: **ask what property the guard actually tests, not what it was written for.**
+"The source answered" and "the result is complete" are different claims, and the cheap one
+is the one you accidentally implement.
+
+### A hang must become a failure, because a failure is a thing that alerts
+
+restic retries backend write errors with exponential backoff and never gives up. A
+read-only repository mount made `restic snapshots` retry a lock write for ten minutes
+with no output and no exit.
+
+The shape generalises past restic. An operation that blocks indefinitely while systemd
+still considers the unit `active` is invisible to **every** alert rule in this estate,
+because all of them are built on a job either finishing or dying. The stalled-curator
+rule waits 48 hours; a unit hanging at its `TimeoutStartSec` ceiling looks exactly like
+a unit doing work.
+
+Audited the estate for the same shape. What was unbounded, and now is not:
+
+| Call | Was | Now |
+|---|---|---|
+| `feedparser.parse()` in `curate.py` | **no timeout at all** — the only unbounded network call in the curator, against 28 third-party servers every cycle. A feed that completes the handshake and sends nothing hangs its worker; `pool.map` waits for every worker; the container never exits. | `socket.setdefaulttimeout(20)`. Watched refusing against a server that accepts and never replies: `0 items after 5.0s, feeds_failed = 1`. |
+| `docker compose run builder` | unbounded; only systemd's 1800s capped it | `timeout 1200` |
+| `git fetch` / `git push` | unbounded — git has no timeout of its own | `timeout 120` / `timeout 300` |
+| Loki + ntfy `curl` in the backup | unbounded, and inside an EXIT trap — it could hang the job at the moment it tried to report | `--max-time 10` / `--max-time 15` |
+| every restic call | retries for ever | `timeout ${RESTIC_TIMEOUT:-1800}`, exit 124 |
+
+Already bounded, and the contrast is the point: `images.py` (`FETCH_TIMEOUT`), `loki.py`
+(`LOKI_TIMEOUT`), `summarizers.py`, and `wait-for-deploy.sh` (900s deadline, 20s per
+request). Four of five network users in the same codebase got this right. The fifth was
+the one nobody had reason to look at.
+
+### Redact by matching the value, never by matching the labels
+
+A break-glass record was printed through a mask that blanked the `Password :` line. The
+same secret appeared four lines lower in an `export RESTIC_PASSWORD=` line and went
+straight out.
+
+The mask was written against the lines the secret was expected to appear on, rather than
+against the secret. **A masker that knows the shape of the output breaks the first time
+the output changes shape.** Match the value wherever it occurs.
+
+The repository key was rotated with `restic key add` / `key remove` — no re-encryption,
+snapshots intact — and verified in both directions: the old password returns
+`Fatal: wrong password or no key found`, the new one opens all three snapshots.
+
 ### The deploy path had no scope at all
 
 `push-content.sh` pushed `HEAD:main`. Read plainly, that wires the working tree to
