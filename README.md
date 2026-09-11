@@ -795,6 +795,56 @@ Already bounded, and the contrast is the point: `images.py` (`FETCH_TIMEOUT`), `
 request). Four of five network users in the same codebase got this right. The fifth was
 the one nobody had reason to look at.
 
+### Correctness is not contagious within a codebase
+
+The timeout audit found `feedparser.parse()` unbounded while `images.py`, `loki.py`,
+`summarizers.py` and `wait-for-deploy.sh` all bounded their network calls correctly.
+
+> **Four of five network users in the same codebase got this right. The fifth was the one
+> nobody had reason to look at.**
+
+The presence of `FETCH_TIMEOUT`, `LOKI_TIMEOUT` and a 900-second deploy deadline is
+evidence about *those four call sites* and about nothing else. A codebase does not have a
+property; call sites do. The audit worked because it **enumerated** callers rather than
+sampling them — and the re-audit's own blind spot is worth naming too: `grep` cannot see
+that `feedparser.parse()` is bounded by a `setdefaulttimeout` elsewhere in the file, which
+is why the bound was moved into `parse_feed_bounded()` where the call site carries it.
+
+### An alert that cannot fire
+
+Two rules were added to make a lost or starved feed visible. Three separate things had to
+be true before either could ever have fired, and each looked finished on its own:
+
+1. `ship_to_loki.py` builds its record from an **explicit whitelist**. `feeds_zero` was in
+   `METRICS` and never reached Loki, so the rule queried a field that did not exist and
+   evaluated its `or vector(0)` fallback for ever — configured, visible in the UI, and
+   structurally incapable of firing.
+2. The bare `unwrap` returned **seven series** (these records carry a varying `level`
+   label), and a threshold with `reducer: last` against seven series is ambiguous about
+   which one it judged. `min()` collapses it to the question actually being asked.
+3. The rules were never loaded at all. The playbook pushes them through the Grafana API,
+   which needs an admin credential, so the task is `skipped` on every ordinary deploy —
+   the rules existed only in `grafana.db`, which had no volume until the same day. **The
+   alerting and the thing it watches would have died in the same event.**
+
+They are now provisioned from a file, rebuilt from disk on every start, with no credential.
+
+### Grafana provisioning is fail-closed, and that includes file permissions
+
+A provisioning file Grafana cannot parse does not get skipped — **Grafana refuses to
+start.** This took the monitoring down three times while wiring the rules above: once for
+a receiver name that did not exist, once for malformed YAML, and once for a file that was
+perfectly valid but `0600`, because `mktemp`'s mode survived the `mv` and uid 472 could
+not read it. To Grafana, "permission denied" is a parse failure.
+
+So the installer validates before it installs: YAML parses, every `receiver` matches a
+contact point **name** (not an integration uid — they are different, and the only contact
+point here is confusingly named `signal-log-email` while carrying the ntfy integration
+too), no datasource placeholder survives, every query has its `or vector(0)`, and uid 472
+can actually read the result. Watched refusing on all of them.
+
+The general form: **the thing that configures a system must not be able to kill it.**
+
 ### Redact by matching the value, never by matching the labels
 
 A break-glass record was printed through a mask that blanked the `Password :` line. The

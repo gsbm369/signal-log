@@ -170,3 +170,214 @@ groups:
                   operator: { type: and }
                   query: { params: [QUERY] }
                   reducer: { type: last, params: [] }
+
+      # ----------------------------------------------------------------------
+      # A feed can fail, or succeed and contribute nothing, and until these two
+      # rules existed both were invisible. The cycle still publishes 30-odd
+      # posts, still reports reached_production: true, and still passes every
+      # other rule here — the source just quietly stops being part of the
+      # newsletter for as long as it stays broken.
+      #
+      # Both route to ntfy, not email: the Postfix relay authorises a single IP
+      # against a dynamic residential address and has already failed silently
+      # once. An alert channel that can fail silently is not an alert channel.
+      # ----------------------------------------------------------------------
+      - uid: signal-log-feed-failed
+        title: signal.log lost a feed
+        condition: THRESHOLD
+        # Two cycles. One malformed response is a publisher having a bad
+        # minute — Finextra served invalid XML once and recovered — and paging
+        # on that trains you to ignore the channel.
+        for: 0m
+        noDataState: OK
+        execErrState: Alerting
+        annotations:
+          summary: >-
+            At least one feed failed to fetch or parse in every signal.log cycle
+            over the last 14 hours.
+          description: >-
+            feeds_failed > 0 sustained across consecutive cycles. A transient bad
+            response clears on its own; this does not. Check ~/ai-blog/logs/cycle.log
+            for the "[Source] fetch failed" or "unreadable feed" line naming the
+            source, then decide whether the feed moved, died, or started blocking
+            automated clients. The site keeps publishing without it, which is
+            exactly why nothing else will tell you.
+          runbook_url: https://github.com/gsbm369/signal-log#failure-behaviour
+        labels:
+          service: signal-log
+          severity: warning
+        notification_settings:
+          # The CONTACT POINT name, not an integration uid. There is exactly one
+          # contact point here — confusingly named signal-log-email — and it
+          # carries BOTH the email and the ntfy integrations, so this already
+          # reaches the phone. Naming a receiver that does not exist does not
+          # degrade to no-notification: Grafana refuses to start at all.
+          receiver: signal-log-email
+        data:
+          - refId: QUERY
+            relativeTimeRange: { from: 50400, to: 0 }   # 14h — two 6h cycles plus slack
+            datasourceUid: LOKI_DATASOURCE_UID
+            model:
+              refId: QUERY
+              datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
+              editorMode: code
+              queryType: instant
+              # min_over_time, not max: alert only when EVERY cycle in the window
+              # lost a feed. A single bad fetch is noise; a persistent one is not.
+              #
+              # The outer min() is not decoration. Loki returns one series per
+              # label set, and these records carry a varying `level` label, so
+              # the bare unwrap returned SEVEN series — ['1','0','0','0',...] —
+              # and a threshold with reducer:last against seven series is
+              # ambiguous about which one it judged. min() collapses them to the
+              # single question being asked: was there ANY cycle in the window
+              # with a clean fetch?
+              # `or vector(0)` keeps total silence from depending on noDataState —
+              # the stalled-cycle rules already cover the curator not reporting.
+              expr: >-
+                min(min_over_time({job="signal-log"} | json
+                    | unwrap feeds_failed [14h])) or vector(0)
+
+          - refId: THRESHOLD
+            datasourceUid: __expr__
+            model:
+              refId: THRESHOLD
+              type: threshold
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: QUERY
+              conditions:
+                - evaluator: { type: gt, params: [0] }
+                  operator: { type: and }
+                  query: { params: [QUERY] }
+                  reducer: { type: last, params: [] }
+
+      - uid: signal-log-feed-contributing-zero
+        title: signal.log has a feed contributing nothing
+        condition: THRESHOLD
+        for: 0m
+        noDataState: OK
+        execErrState: Alerting
+        annotations:
+          summary: >-
+            A feed returned ZERO candidates in every signal.log cycle over the
+            last 26 hours, while fetching successfully.
+          description: >-
+            feeds_zero counts sources that returned HTTP 200, parsed cleanly, and
+            still yielded nothing — every item older than that category's
+            ingest_days window, or an empty feed. TechCrunch Fintech did this for a
+            whole window and it was found by measuring, not by any alert.
+            The offending names are in feeds_zero_names on the metric line; grep
+            the cycle log for "contributing ZERO candidates".
+            NOTE this rule proves SOME feed was starved in every cycle, not that it
+            was the same one each time — the names in the log are what identify it.
+          runbook_url: https://github.com/gsbm369/signal-log#failure-behaviour
+        labels:
+          service: signal-log
+          severity: warning
+        notification_settings:
+          # The CONTACT POINT name, not an integration uid. There is exactly one
+          # contact point here — confusingly named signal-log-email — and it
+          # carries BOTH the email and the ntfy integrations, so this already
+          # reaches the phone. Naming a receiver that does not exist does not
+          # degrade to no-notification: Grafana refuses to start at all.
+          receiver: signal-log-email
+        data:
+          - refId: QUERY
+            # 26h = four 6-hourly cycles plus slack. Justified from the metric,
+            # not from publication cadence: this counts what a feed EXPOSES, not
+            # what it newly published. Measured 2026-09-11, Brendan Gregg returns
+            # 10 candidates on every single fetch despite going 216 days between
+            # posts, because deep_dives ingests 3650 days back. No configured
+            # source can legitimately sit at zero for four consecutive cycles;
+            # every ingest window is wider than its source's publication gap by
+            # design. Four cycles also rides out one transient outage.
+            relativeTimeRange: { from: 93600, to: 0 }
+            datasourceUid: LOKI_DATASOURCE_UID
+            model:
+              refId: QUERY
+              datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
+              editorMode: code
+              queryType: instant
+              expr: >-
+                min(min_over_time({job="signal-log"} | json
+                    | unwrap feeds_zero [26h])) or vector(0)
+
+          - refId: THRESHOLD
+            datasourceUid: __expr__
+            model:
+              refId: THRESHOLD
+              type: threshold
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: QUERY
+              conditions:
+                - evaluator: { type: gt, params: [0] }
+                  operator: { type: and }
+                  query: { params: [QUERY] }
+                  reducer: { type: last, params: [] }
+
+      # ----------------------------------------------------------------------
+      # DISK. Not a signal.log rule, but it belongs with them: a full disk takes
+      # the curator, the backup and Prometheus itself with it, and the backup is
+      # the one that fails quietly. Three things are growing into this volume —
+      # max_posts 200 (a stay of execution, not a decision), the local restic
+      # repository, and the R2 cache when it arrives.
+      #
+      # 3 GB, not a percentage. A percentage on a 25 GB disk means the warning
+      # and the emergency are 500 MB apart; 3 GB is enough headroom to actually
+      # act — prune snapshots, drop max_posts, clear the local repo.
+      # ----------------------------------------------------------------------
+      - uid: estate-disk-low
+        title: Homelab disk is running out
+        condition: THRESHOLD
+        for: 15m
+        # No data here means node-exporter or Prometheus is gone, which is worth
+        # knowing on its own.
+        noDataState: Alerting
+        execErrState: Alerting
+        annotations:
+          summary: >-
+            Less than 3 GB free on / — the curator, the backups and Prometheus all
+            share this volume.
+          description: >-
+            Growing into this disk: site posts (max_posts, currently raised to 200
+            as a temporary measure), the local restic repository at ~/backup/repo-local,
+            Loki chunks and the Prometheus TSDB. To reclaim quickly:
+            `restic forget --prune` in ~/backup, drop max_posts back to 60 once the
+            home page reads the live categories, and delete ~/backup/repo-local once
+            R2 is verified — it is a second copy on the SAME disk as the data, which
+            is not an independent copy of anything.
+          runbook_url: https://github.com/gsbm369/signal-log#failure-behaviour
+        labels:
+          service: homelab
+          severity: warning
+        notification_settings:
+          receiver: signal-log-email
+        data:
+          - refId: QUERY
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: PROM_DATASOURCE_UID
+            model:
+              refId: QUERY
+              datasource: { type: prometheus, uid: PROM_DATASOURCE_UID }
+              editorMode: code
+              instant: true
+              # `or vector(0)` for the same reason as every other rule here: if the
+              # series disappears entirely the query returns empty, and an empty
+              # result makes the rule depend on noDataState rather than on the
+              # threshold. 0 bytes free trips it directly.
+              expr: >-
+                min(node_filesystem_avail_bytes{mountpoint="/",fstype!="tmpfs"}) or vector(0)
+
+          - refId: THRESHOLD
+            datasourceUid: __expr__
+            model:
+              refId: THRESHOLD
+              type: threshold
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: QUERY
+              conditions:
+                - evaluator: { type: lt, params: [3221225472] }   # 3 GiB
+                  operator: { type: and }
+                  query: { params: [QUERY] }
+                  reducer: { type: last, params: [] }
+

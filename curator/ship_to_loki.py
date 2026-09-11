@@ -113,6 +113,18 @@ def main() -> int:
         "backend": m.get("backend", ""),
         "feeds_ok": m.get("feeds_ok", 0),
         "feeds_failed": m.get("feeds_failed", 0),
+        # THIS RECORD IS A WHITELIST. A field added to METRICS in curate.py does
+        # not reach Loki until it is named here, and a rule querying a field that
+        # never arrives evaluates its `or vector(0)` fallback for ever — an alert
+        # that is configured, visible in the UI, and structurally incapable of
+        # firing. Both of these were added with their rules; if you add another
+        # alert on a curator metric, add the field here in the same change.
+        #
+        # feeds_zero is NOT feeds_failed: a feed can return HTTP 200, parse
+        # cleanly, and still contribute nothing because every item it exposes is
+        # older than its category's ingest window.
+        "feeds_zero": m.get("feeds_zero", 0),
+        "feeds_zero_names": m.get("feeds_zero_names", ""),
         "model": m.get("model", ""),
         "input_tokens": m.get("input_tokens", 0),
         "output_tokens": m.get("output_tokens", 0),

@@ -73,11 +73,14 @@ SEEN_FILE = STATE_DIR / "seen.json"
 # point of view the job is still running. A hang must become a failure, because
 # a failure is a thing that alerts.
 #
-# Set globally rather than per-call because feedparser offers no other hook. It
-# is a single-purpose script, and every other network user here already passes
-# an explicit timeout, so nothing else is affected by the default changing.
+# The bound is the process-wide socket default, because feedparser offers no
+# other hook — but it is ASSERTED at the point of use rather than set once at
+# import. Binding by action at a distance is the exact property that made the
+# original hole invisible to an audit: anything that later resets the default,
+# or any library managing its own socket options, moves the binding without
+# touching the call site. See parse_feed_bounded() below, which is what the
+# fetch path actually calls.
 FEED_SOCKET_TIMEOUT = float(os.environ.get("FEED_SOCKET_TIMEOUT", "20"))
-socket.setdefaulttimeout(FEED_SOCKET_TIMEOUT)
 
 SEEN_RETENTION_DAYS = 45
 
@@ -164,6 +167,28 @@ def strip_html(raw: str, limit: int = 600) -> str:
     text = re.sub(r"&[a-z]+;|&#\d+;", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text[:limit]
+
+
+def parse_feed_bounded(url: str, *, agent: str, request_headers: dict[str, str],
+                       timeout: float = FEED_SOCKET_TIMEOUT) -> Any:
+    """feedparser.parse() with an enforced network timeout.
+
+    feedparser takes no timeout argument and inherits the process-wide socket
+    default, which is None — wait for ever. This is the only place in the
+    curator that reaches an arbitrary third-party server, so the bound is
+    checked here, immediately before the call, instead of being set once at
+    import and hoped for.
+
+    Anyone grepping this file for an unbounded network call finds this function
+    rather than a bare feedparser.parse() and a setdefaulttimeout two hundred
+    lines away.
+    """
+    effective = socket.getdefaulttimeout()
+    if effective is None or effective > timeout:
+        log.debug("socket default was %r, tightening to %.0fs for feed fetch",
+                  effective, timeout)
+        socket.setdefaulttimeout(timeout)
+    return feedparser.parse(url, agent=agent, request_headers=request_headers)
 
 
 def entry_raw_date(entry: Any) -> str:
@@ -369,7 +394,7 @@ def fetch_feed(feed: dict[str, Any], policy: dict[str, Any]) -> list[dict[str, A
     max_age = timedelta(days=float(policy["ingest_days"]))
     half_life = float(policy["half_life_hours"])
     try:
-        parsed = feedparser.parse(
+        parsed = parse_feed_bounded(
             url,
             agent="signal.log-curator/2.0 (+https://github.com/gsbm369)",
             request_headers={"Cache-Control": "no-cache"},
@@ -377,11 +402,13 @@ def fetch_feed(feed: dict[str, Any], policy: dict[str, Any]) -> list[dict[str, A
     except Exception as exc:
         log.warning("[%s] fetch failed: %s", name, exc)
         METRICS["feeds_failed"] += 1
+        METRICS.setdefault("per_source_candidates", {})[name] = 0
         return []
 
     if getattr(parsed, "bozo", 0) and not parsed.entries:
         log.warning("[%s] unreadable feed: %s", name, getattr(parsed, "bozo_exception", "?"))
         METRICS["feeds_failed"] += 1
+        METRICS.setdefault("per_source_candidates", {})[name] = 0
         return []
 
     now = datetime.now(timezone.utc)
@@ -423,6 +450,12 @@ def fetch_feed(feed: dict[str, Any], policy: dict[str, Any]) -> list[dict[str, A
         })
     log.info("[%s] %d candidates", name, len(out))
     METRICS["feeds_ok"] += 1
+    # A feed can succeed and contribute NOTHING — every item older than the
+    # ingest window, or the feed simply empty. That is indistinguishable from a
+    # healthy feed in feeds_ok, and it is exactly what TechCrunch Fintech did
+    # for a whole ingest window before anyone noticed. Recorded per source so a
+    # zero is a number someone can alert on rather than a line in a log.
+    METRICS.setdefault("per_source_candidates", {})[name] = len(out)
     return out
 
 
@@ -686,6 +719,25 @@ def _run() -> int:
 
     # --- collect ---
     articles = collect(feeds, policies)
+
+    # FLAT fields, because the alert has to be able to read them.
+    #
+    # per_source_candidates is a nested object, and Loki's json parser flattens
+    # nested keys into label names — which cannot contain spaces or dots, so
+    # "Hacker News Best" and "jvns.ca" are unqueryable. A count and a name list
+    # are what a rule can actually evaluate.
+    #
+    # feeds_zero counts sources that fetched successfully and contributed
+    # NOTHING. That is not the same as feeds_failed: a feed can return HTTP 200,
+    # parse cleanly, and still yield zero items because everything it exposes is
+    # older than its ingest window. TechCrunch Fintech did exactly that for a
+    # whole window and nothing said so.
+    psc = METRICS.get("per_source_candidates", {})
+    zero = sorted(n for n, c in psc.items() if c == 0)
+    METRICS["feeds_zero"] = len(zero)
+    METRICS["feeds_zero_names"] = ", ".join(zero)
+    if zero:
+        log.warning("feeds contributing ZERO candidates this cycle: %s", ", ".join(zero))
     METRICS["articles_fetched"] = len(articles)
     log.info("collected %d unique articles", len(articles))
     if not articles:
