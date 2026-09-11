@@ -466,6 +466,10 @@ def write_post(summary: summarizers.Summary) -> Path:
         f"title: {yaml_str(summary.title)}",
         f"description: {yaml_str(summary.description)}",
         f"pubDate: {published.isoformat()}",
+        # WHEN THIS SITE PUBLISHED IT, as distinct from when the author did.
+        # prune_posts needs the first and every layout needs the second, and
+        # conflating them deletes the newsletter's best content — see below.
+        f"addedAt: {datetime.now(timezone.utc).isoformat()}",
         f"source: {yaml_str(src['source'])}",
         f"category: {src.get('category', 'uncategorised')}",
         f"sourceUrl: {yaml_str(src['url'])}",
@@ -488,8 +492,47 @@ def write_post(summary: summarizers.Summary) -> Path:
     return path
 
 
+def _added_at(path: Path) -> str:
+    """When THIS SITE published the post, from frontmatter.
+
+    Falls back to the filename, which begins with the article's own pubDate.
+    That is the legacy behaviour and it is correct only for posts written
+    before addedAt existed, which are all from the news taxonomy and all dated
+    within days of being published here.
+    """
+    try:
+        with path.open(encoding="utf-8") as fh:
+            for _ in range(20):
+                line = fh.readline()
+                if not line or line.startswith("---") and _:
+                    break
+                if line.startswith("addedAt:"):
+                    return "A" + line.split(":", 1)[1].strip()
+    except OSError:
+        pass
+    return "0" + path.name
+
+
 def prune_posts(max_posts: int) -> int:
-    posts = sorted(CONTENT_DIR.glob("*.md"))
+    """Keep the most recently PUBLISHED HERE posts, not the most recently written.
+
+    This sorted by filename, and a filename begins with the article's own
+    pubDate. For a news site those are the same thing to within a day. For this
+    one they are not remotely the same: a Brendan Gregg post is dated 216 days
+    ago and a Marc Brooker post 44, so under a filename sort the evergreen
+    stories are ALWAYS the first deleted — the pruner ran straight over exactly
+    the content the newsletter exists to surface.
+
+    Measured: the 22:18 cycle published 6 deep_dives posts and the next run
+    pruned all 6, while every legacy news post dated that week survived. The
+    category had a 100% publish rate and a 0% survival rate, and nothing in the
+    metrics said so, because publishing and pruning are counted separately.
+
+    The "0"/"A" prefixes keep legacy filename keys sorting before every addedAt
+    key, so posts that predate the field are pruned first — which is what we
+    want while the news taxonomy ages out.
+    """
+    posts = sorted(CONTENT_DIR.glob("*.md"), key=_added_at)
     excess = len(posts) - max_posts
     if excess <= 0:
         return 0

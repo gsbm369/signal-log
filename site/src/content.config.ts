@@ -8,6 +8,11 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
+    // When THIS SITE published the story, as opposed to when its author did.
+    // Optional: posts written before the field existed do not have it. The
+    // curator prunes on this, because pubDate for an evergreen story can be
+    // years old and pruning on it deletes the best content first.
+    addedAt: z.coerce.date().optional(),
     source: z.string().default('unknown'),
     sourceUrl: z.string().url().optional(),
     tags: z.array(z.string()).default([]),
