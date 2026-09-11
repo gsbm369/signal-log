@@ -48,11 +48,27 @@ contactPoints:
         settings:
           # ntfy.sh — no account, no credential. The topic name is the only
           # secret, which is why it is random rather than guessable.
-          url: https://ntfy.sh/signal-log-gjkmclsg0ag
+          # ?tpl=yes puts ntfy in templating mode: X-Title and X-Message are read
+          # as Go templates over the POSTed JSON body.
+          #
+          # WHY: `title` and `message` below are Grafana webhook settings that
+          # populate fields in Grafana's own JSON BODY. ntfy renders the body as
+          # the message text, so what actually arrived on the phone was the raw
+          # JSON payload — title "None", body starting {"receiver":"signal-log-
+          # email","status":"firing",... — delivered and unreadable. Measured on
+          # the drill, not assumed.
+          #
+          # The two halves now meet: Grafana renders the alert into .title and
+          # .message, ntfy lifts those two fields back out. Neither side has to
+          # know the other's template language.
+          url: https://ntfy.sh/signal-log-gjkmclsg0ag?tpl=yes
           httpMethod: POST
           maxAlerts: 5
-          # Without these, ntfy shows the raw Grafana JSON payload on the phone,
-          # which is delivered but not readable at a glance.
+          headers:
+            X-Title: '{{.title}}'
+            X-Message: '{{.message}}'
+            X-Tags: 'rotating_light'
+            X-Priority: 'default'
           title: '[{{ .CommonLabels.severity }}] {{ .CommonLabels.alertname }}'
           message: |-
             {{ range .Alerts }}{{ .Annotations.summary }}
