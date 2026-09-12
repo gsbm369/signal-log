@@ -166,8 +166,34 @@
       - { name: GitHub Eng,         url: "https://github.blog/engineering/feed/",         category: company_eng,   weight: 0.80, fetch: 15 }
 
       # ---- devops_linux ----
-      - { name: Kubernetes Blog,    url: "https://kubernetes.io/feed.xml",                category: devops_linux,  weight: 0.90, fetch: 15 }
+      # Two sources could not sustain a section: the Kubernetes blog is weekly
+      # and LWN is ~40% subscriber-only. Measured over each feed's own span
+      # before adding anything — items per week, and how many survive the
+      # filters:
+      #
+      #   Phoronix   90.7/wk   REJECTED. Swamps the category on its own and is
+      #                        the lowest editorial value in the list.
+      #   CNCF       18.3/wk   in. The most on-topic source available, and
+      #                        per_source_cap contains it.
+      #   Docker      2.9/wk   in     HashiCorp  2.2/wk  in
+      #   Ubuntu      1.7/wk   in     Fedora     1.5/wk  in
+      #   Arch news   0.1/wk   rejected, too quiet to matter
+      #   Grafana Labs         rejected: ships no parseable dates, so the
+      #                        no_date guard would reject every item
+      #   Red Hat Developer    rejected: HTTP error on the feed
+      #
+      # WEIGHTS. LWN and the Kubernetes blog stay highest: they are editorial
+      # and upstream. CNCF sits between them and the vendors. Docker, HashiCorp,
+      # Ubuntu and Fedora are vendor blogs that mix real engineering with
+      # product announcements, so they sit below — the weight is where "depth
+      # outranks announcements" is actually expressed.
       - { name: LWN.net,            url: "https://lwn.net/headlines/newrss",              category: devops_linux,  weight: 0.95, fetch: 20 }
+      - { name: Kubernetes Blog,    url: "https://kubernetes.io/feed.xml",                category: devops_linux,  weight: 0.90, fetch: 15 }
+      - { name: CNCF,               url: "https://www.cncf.io/feed/",                     category: devops_linux,  weight: 0.85, fetch: 15 }
+      - { name: Docker,             url: "https://www.docker.com/blog/feed/",             category: devops_linux,  weight: 0.75, fetch: 10 }
+      - { name: HashiCorp,          url: "https://www.hashicorp.com/blog/feed.xml",       category: devops_linux,  weight: 0.75, fetch: 12 }
+      - { name: Ubuntu,             url: "https://ubuntu.com/blog/feed",                  category: devops_linux,  weight: 0.70, fetch: 10 }
+      - { name: Fedora Magazine,    url: "https://fedoramagazine.org/feed/",              category: devops_linux,  weight: 0.70, fetch: 10 }
 
       # ---- deep_dives ----
       # fetch is raised here because depth is the whole point and the archives
@@ -225,6 +251,18 @@
       #     Coinbase Eng       HTTP 403 — blocks automated clients
       #     Fintech Futures    HTTP 404
       #     Wise Engineering   HTTP 200, newest item 568 days old. Abandoned.
+      #
+      #   Measured 2026-09-11 while filling out devops_linux:
+      #     Phoronix           90.7 items/week. Not broken — too loud. It would
+      #                        out-volume every other source in the category
+      #                        combined, at the lowest editorial value of the
+      #                        candidates. Viable only at a low weight with a
+      #                        tight cap, which is a volume decision, not a
+      #                        gap-filling one.
+      #     Arch Linux news    0.1 items/week
+      #     Grafana Labs       HTTP 200, but NO parseable dates on any item, so
+      #                        the no_date guard rejects the whole feed.
+      #     Red Hat Developer  HTTPError on the feed URL
       #
       #   Measured 2026-09-08 for the previous news taxonomy. Kept because the
       #   evidence is still the evidence, even though the categories are gone:

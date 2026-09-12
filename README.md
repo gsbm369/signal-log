@@ -737,6 +737,8 @@ matching negative test, and the ones that had none are exactly the ones that wer
 | Content push scope | a local commit made on HEAD, then `push-content.sh` run — it named the commit and exited 11 instead of shipping it |
 | Seen-store scope | ten candidates ranked, two published; the eight unpublished asserted absent from `seen.json` |
 | Prune ordering | a 2024 article added five minutes ago kept, while a 2026 article added nine days ago was pruned |
+| addedAt stability | three GUIDs recorded from the live feed, re-asserted after a full cycle — 51 survivors, 0 pubDates moved; and a forged date refused |
+| Deferral | an aged LWN edition read as free and was promoted, a fresh one stayed deferred, one past thirty days was abandoned |
 
 "It looks right" is how all of these shipped.
 
@@ -908,6 +910,49 @@ records Loki actually holds. It runs in `run-cycle.sh` before the build. Watched
 against a rule pointed at a field nobody ships.
 
 **The alert cannot be the thing that proves its own inputs exist.**
+
+### An ambiguous probe is not a weak answer, it is the wrong experiment
+
+LWN marks subscriber-only articles `[$]`, and they sat in the noise list — a permanent 40%
+loss on the best Linux source here. The question was whether LWN frees them after about a
+week.
+
+The first probe compared recent `[$]` articles (HTTP 403) against some older article IDs
+(HTTP 200) and looked like confirmation. It was not: the older IDs turned out to be Debian
+and Fedora security alerts, which are never subscriber-only in the first place. The
+comparison had no control, and a result from an uncontrolled comparison is not weak
+evidence for the conclusion — it is no evidence, and arguing about how much to trust it is
+the wrong move.
+
+The controlled version compares the **same content series at different ages**:
+
+```
+Weekly Edition Sept 10   1.8 days old   HTTP 403  Subscription required
+Weekly Edition Sept  3   8.8 days old   HTTP 200  free
+Aug 27 / 20 / 13 / 6, Jul 30 / 23       HTTP 200  free
+```
+
+Same publication, same content type, same series, one variable. That turned a guess into a
+fact in one command.
+
+> **When a probe comes back ambiguous, the fix is a better experiment, not a more confident
+> reading of the one you have.**
+
+### Without the store, "defer" is "delete" with a nicer name
+
+The `[$]` fix sounds like a one-line change: stop dropping the item, let it come round again
+once it is free. It is not, and the reason is not visible from the outside:
+
+> **A `[$]` item leaves LWN's 15-item feed long before it ripens, so waiting for it to come
+> round again waits for ever.**
+
+By day eight, when the paywall lifts, the article is four pages back in LWN's history and
+has not been in the feed for days. Nothing would ever re-offer it. `state/deferred.json` is
+what remembers the item after the feed has forgotten it, and the re-probe is what notices
+the paywall lifting. Drop the store and the mechanism is indistinguishable from the drop it
+replaced — except that it now also looks like it works.
+
+The load-bearing part of a deferral is never the deferring. It is the thing that comes back.
 
 ### Redact by matching the value, never by matching the labels
 
