@@ -125,6 +125,31 @@ def main() -> int:
         # older than its category's ingest window.
         "feeds_zero": m.get("feeds_zero", 0),
         "feeds_zero_names": m.get("feeds_zero_names", ""),
+        # FLOW and STOCK, per category, shipped as flat keys.
+        #
+        # These were in METRICS and not here, so they existed only in
+        # metrics.json — which is overwritten every cycle. Any question of the
+        # form "how has the category balance moved over a week" was
+        # unanswerable, and would have stayed unanswerable while looking like it
+        # was being recorded. Caught by applying this file's own rule rather
+        # than by noticing.
+        #
+        # Flattened to published_<cat> / live_<cat> rather than nested, because
+        # Loki's json parser turns nested objects into label names and a label
+        # name cannot survive arbitrary punctuation. Category slugs are already
+        # lowercase-with-underscores, so they pass through intact.
+        **{f"published_{k}": v for k, v in (m.get("per_category") or {}).items()},
+        **{f"live_{k}": v for k, v in (m.get("per_category_live") or {}).items()},
+        # Seen-store size and inflow. The store only ever grows for the evergreen
+        # categories (retention_days: null), so its size is a number someone will
+        # eventually want a year of.
+        "seen_total": m.get("seen_total", 0),
+        "seen_added": m.get("seen_added", 0),
+        # Image coverage, which stopped being cosmetic when the fallback became
+        # typographic: this is now the fraction of the front page that is type
+        # rather than picture.
+        "with_image": m.get("with_image", 0),
+        "without_image": m.get("without_image", 0),
         "model": m.get("model", ""),
         "input_tokens": m.get("input_tokens", 0),
         "output_tokens": m.get("output_tokens", 0),

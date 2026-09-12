@@ -911,6 +911,46 @@ against a rule pointed at a field nobody ships.
 
 **The alert cannot be the thing that proves its own inputs exist.**
 
+### Assert the property, not the number you happened to see
+
+The cold-restore drill asserted exactly three alert rules. That was true the day it was
+written. The estate grew to six and the drill began **failing on a perfectly healthy
+restore** — and a drill that cries wolf is worse than no drill, because the next real
+failure arrives looking like the last four false ones.
+
+It is the same family as the golden test that passed unchanged across the biggest ranking
+change the project has had: both froze an *observation* where they meant to assert a
+*property*. The golden test froze the wrong path; the drill froze the wrong number. One
+failed open, one failed closed, and neither was testing what its name claimed.
+
+The expectation now comes from the restored database itself — the restored Grafana must
+serve exactly the rules the restored database contains. That number is free to change; the
+relationship is not.
+
+> **A constant in an assertion is a measurement of the day it was written. Assert the
+> relationship instead, and it stays true while the system grows.**
+
+### Flow is not stock, and the whitelist only ships what you name
+
+`per_category` counts what a cycle PUBLISHED. `per_category_live` counts what SURVIVES on
+the site. They are flow and stock, and the pruner bug lived precisely in the gap: deep_dives
+published six of six every cycle and held zero, and each number was healthy on its own.
+
+Both were in `METRICS` and neither reached Loki, because `ship_to_loki.py` builds its record
+from an explicit whitelist. So the balance existed only in `metrics.json`, which is
+overwritten every cycle — and a question of the form "how has the category mix moved over a
+week" was unanswerable, while looking exactly like it was being recorded.
+
+That is the second time the whitelist has cost something: `feeds_zero` was the first, where
+an alert queried a field that never arrived and evaluated its `or vector(0)` fallback for
+ever. Both were found by applying a rule rather than by noticing, so the rule is now a test —
+`test_metric_coverage.py` fails if a recorded metric is neither shipped nor named as
+deliberately local *with a reason*, because "we did not get round to it" and "this does not
+belong in Loki" look identical from the outside. It found four more on its first run.
+
+> **A metric nobody ships is a question nobody can answer later — and the gap is invisible
+> until someone asks.**
+
 ### An ambiguous probe is not a weak answer, it is the wrong experiment
 
 LWN marks subscriber-only articles `[$]`, and they sat in the noise list — a permanent 40%

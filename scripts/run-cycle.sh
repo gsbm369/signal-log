@@ -95,6 +95,19 @@ case $ai_rc in
   *) log "WARN: an alert rule queries a field that never reaches Loki — it can never fire" ;;
 esac
 
+# ------------------------------------------------ 1c2. metric coverage gate
+# ship_to_loki.py builds its record from an explicit whitelist, and a metric
+# that is recorded but not shipped exists only in metrics.json — which is
+# overwritten every cycle. That has cost twice: an alert that could never fire,
+# and a week of category-balance history that was never being kept. Loud at the
+# point of the edit beats discovered months later.
+python3 /app/curator/test_metric_coverage.py; mc_rc=$?
+case $mc_rc in
+  0) log "metric coverage: every recorded metric is shipped or declared local" ;;
+  2) log "metric coverage: not checked (no metrics.json yet)" ;;
+  *) log "WARN: a metric is recorded and shipped nowhere — see test_metric_coverage.py" ;;
+esac
+
 # ------------------------------------------------- 1d. addedAt stability gate
 # addedAt IS the feed's pubDate. If it were ever recomputed rather than written
 # once per post, every subscriber would receive all 60 items as new on every
