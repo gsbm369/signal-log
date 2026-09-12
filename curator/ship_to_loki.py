@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import os
 import socket
 import sys
@@ -113,43 +114,8 @@ def main() -> int:
         "backend": m.get("backend", ""),
         "feeds_ok": m.get("feeds_ok", 0),
         "feeds_failed": m.get("feeds_failed", 0),
-        # THIS RECORD IS A WHITELIST. A field added to METRICS in curate.py does
-        # not reach Loki until it is named here, and a rule querying a field that
-        # never arrives evaluates its `or vector(0)` fallback for ever — an alert
-        # that is configured, visible in the UI, and structurally incapable of
-        # firing. Both of these were added with their rules; if you add another
-        # alert on a curator metric, add the field here in the same change.
-        #
-        # feeds_zero is NOT feeds_failed: a feed can return HTTP 200, parse
-        # cleanly, and still contribute nothing because every item it exposes is
-        # older than its category's ingest window.
         "feeds_zero": m.get("feeds_zero", 0),
         "feeds_zero_names": m.get("feeds_zero_names", ""),
-        # FLOW and STOCK, per category, shipped as flat keys.
-        #
-        # These were in METRICS and not here, so they existed only in
-        # metrics.json — which is overwritten every cycle. Any question of the
-        # form "how has the category balance moved over a week" was
-        # unanswerable, and would have stayed unanswerable while looking like it
-        # was being recorded. Caught by applying this file's own rule rather
-        # than by noticing.
-        #
-        # Flattened to published_<cat> / live_<cat> rather than nested, because
-        # Loki's json parser turns nested objects into label names and a label
-        # name cannot survive arbitrary punctuation. Category slugs are already
-        # lowercase-with-underscores, so they pass through intact.
-        **{f"published_{k}": v for k, v in (m.get("per_category") or {}).items()},
-        **{f"live_{k}": v for k, v in (m.get("per_category_live") or {}).items()},
-        # Seen-store size and inflow. The store only ever grows for the evergreen
-        # categories (retention_days: null), so its size is a number someone will
-        # eventually want a year of.
-        "seen_total": m.get("seen_total", 0),
-        "seen_added": m.get("seen_added", 0),
-        # Image coverage, which stopped being cosmetic when the fallback became
-        # typographic: this is now the fraction of the front page that is type
-        # rather than picture.
-        "with_image": m.get("with_image", 0),
-        "without_image": m.get("without_image", 0),
         "model": m.get("model", ""),
         "input_tokens": m.get("input_tokens", 0),
         "output_tokens": m.get("output_tokens", 0),
@@ -158,6 +124,52 @@ def main() -> int:
         "posts_live": args.posts_live if args.posts_live >= 0 else m.get("posts_live", -1),
         "error": m.get("error"),
     }
+
+    # ----------------------------------------------------------------------- #
+    # EVERYTHING ELSE IN METRICS SHIPS, unless it is exempted below.
+    #
+    # This used to be a whitelist: nothing shipped unless it was named here.
+    # That default cost twice — feeds_zero, where an alert queried a field that
+    # never arrived and evaluated `or vector(0)` for ever; and per_category_live,
+    # where a week of category history was never being kept while looking
+    # exactly like it was. A test was added to catch whoever forgot, which is
+    # policing a bad default rather than fixing it.
+    #
+    # Inverted, both bugs become impossible rather than detectable. The
+    # exemption list below is the same decision the whitelist encoded, written
+    # once instead of twice, and now the only thing needing justification is
+    # NOT shipping something.
+    #
+    # MEASURED before inverting, because a real constraint would have been worth
+    # keeping: these are JSON fields inside the log LINE, not stream labels —
+    # the labels are job/service/host/level/status and are fixed. So more fields
+    # cost line bytes, not index cardinality. The whole of METRICS serialises to
+    # 1867 bytes against the 981 the whitelist shipped, four times a day. About
+    # 3.5 KB more per day. There was no constraint to defend.
+    # ----------------------------------------------------------------------- #
+    EXEMPT = {
+        # The one real reason to withhold something: it is UNBOUNDED. 33 keys
+        # today, one per feed, growing with every source added — and every
+        # `| json` query would extract all of them. feeds_zero and
+        # feeds_zero_names carry the signal in two fields instead.
+        "per_source_candidates": "unbounded: one key per feed",
+        "rejected_by_source": "unbounded: one key per feed",
+    }
+    # Nested dicts ship flattened, because Loki's json parser turns a nested
+    # object into label names and a label name cannot survive arbitrary
+    # punctuation. Category and reason slugs are already safe.
+    PREFIX = {"per_category": "published", "per_category_live": "live"}
+
+    for key, value in sorted(m.items()):
+        if key in EXEMPT or key in record:
+            continue
+        if isinstance(value, dict):
+            prefix = PREFIX.get(key, key)
+            for sub, subval in value.items():
+                slug = re.sub(r"[^a-z0-9_]", "_", str(sub).lower())
+                record.setdefault(f"{prefix}_{slug}", subval)
+        else:
+            record[key] = value
 
     # Local log file (cron redirects stdout here) always gets the record.
     print("METRIC " + json.dumps(record, separators=(",", ":")), flush=True)

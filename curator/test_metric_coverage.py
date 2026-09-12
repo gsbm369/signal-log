@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
-"""Every metric the curator records either ships to Loki or is deliberately not.
+"""Everything the curator records ships to Loki, unless it is exempted with a reason.
 
-ship_to_loki.py builds its record from an EXPLICIT WHITELIST. That is the right
-design — it keeps the log line stable and stops incidental state leaking into
-observability — but it has now cost twice:
+ship_to_loki.py used to build its record from a WHITELIST: nothing shipped
+unless named. That default cost twice —
 
-  feeds_zero          was in METRICS, not in the record, so the alert that
-                      queried it evaluated `or vector(0)` for ever. Configured,
-                      visible, and structurally incapable of firing.
-  per_category_live   was in METRICS, not in the record, so the category balance
-                      existed only in metrics.json, which is overwritten every
-                      cycle. Any question about how the balance moved over a
-                      week was unanswerable — and would have stayed unanswerable
-                      while looking like it was being recorded.
+  feeds_zero          recorded, not shipped, so the alert querying it evaluated
+                      `or vector(0)` for ever. Configured, visible in the UI,
+                      and structurally incapable of firing.
+  per_category_live   recorded, not shipped, so a week of category history was
+                      never kept, while looking exactly like it was.
 
-Both were found by applying a rule, not by noticing. This is that rule as a
-test: a new METRICS key must be shipped, or named here as intentionally local.
-Adding a key and forgetting the record is the easy mistake; this makes it loud
-at the point of the edit rather than months later.
+A test that catches whoever forgets is policing a bad default. The default is
+now inverted: everything ships unless EXEMPT names it, which makes both bugs
+impossible rather than detectable.
 
-No network, no model, no API key.
+So this no longer hunts for forgotten metrics. It enforces what is left worth
+enforcing: that every exemption carries a reason, that no exemption is stale,
+and — checked against the RECORD THE CURATOR ACTUALLY EMITTED, not against the
+source text — that nothing unexpected went missing.
+
+Exit 0 accounted for, 1 a gap, 2 nothing to compare.
 """
 from __future__ import annotations
 
+import ast
 import json
 import os
 import re
@@ -32,26 +33,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 SHIPPER = HERE / "ship_to_loki.py"
 STATE = Path(os.environ.get("STATE_DIR", HERE / "state")) / "metrics.json"
-
-# Keys that stay on the box on purpose. Each needs a reason, because "we did not
-# get round to it" and "this does not belong in Loki" look identical otherwise.
-LOCAL_ONLY = {
-    "error":                "shipped, but under its own key after status mapping",
-    "per_category":         "shipped flattened as published_<category>",
-    "per_category_live":    "shipped flattened as live_<category>",
-    "per_source_candidates": "one key per source would be unbounded label churn; "
-                             "feeds_zero and feeds_zero_names carry the signal",
-    "rejected_by_source":   "same — bounded summaries ship instead",
-    "rejected_by_category": "nested; rejected_by_reason carries the totals",
-    "rejected_by_reason":   "TODO: worth shipping, no alert queries it yet",
-    "seen_expired":         "nested per category; seen_total carries the size",
-    "candidate_cut":        "diagnostic, per run, not a time series",
-    "duration_s":           "shipped as curator_duration_s",
-    "deferred_total":       "TODO: worth shipping once the store has a steady state",
-    "deferred_probed":      "TODO: same",
-    "deferred_ripened":     "TODO: same",
-    "deferred_gave_up":     "TODO: same",
-}
+CYCLE_LOG = Path(os.environ.get("CYCLE_LOG", HERE.parent / "logs/cycle.log"))
 
 FAILURES: list[str] = []
 
@@ -62,42 +44,86 @@ def check(name, ok):
         FAILURES.append(name)
 
 
-def shipped_keys(src: str) -> set[str]:
-    """Literal keys in the record, plus the f-string prefixes it expands."""
-    body = src[src.index("record = {"):]
-    keys = set(re.findall(r'^\s*"([a-z_]+)":', body, re.M))
-    keys |= {m.group(1) for m in re.finditer(r'f"([a-z_]+)_\{k\}"', body)}
-    return keys
+def exemptions(src: str) -> dict[str, str]:
+    """The EXEMPT dict, read from the source rather than duplicated here.
+
+    Parsed with ast, not regex: the whole point of this test is that one list
+    exists, and re-typing it in the test would recreate the two-lists problem
+    it was written to remove.
+    """
+    tree = ast.parse(src)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign) and any(
+                getattr(t, "id", "") == "EXEMPT" for t in node.targets):
+            return {ast.literal_eval(k): ast.literal_eval(v)
+                    for k, v in zip(node.value.keys, node.value.values)}
+    return {}
+
+
+def emitted_record() -> dict | None:
+    """The last record the curator actually shipped."""
+    if not CYCLE_LOG.exists():
+        return None
+    for line in reversed(CYCLE_LOG.read_text(errors="ignore").splitlines()):
+        if "METRIC {" in line:
+            try:
+                return json.loads(line[line.index("METRIC ") + 7:])
+            except json.JSONDecodeError:
+                continue
+    return None
 
 
 def main() -> int:
+    src = SHIPPER.read_text()
+    exempt = exemptions(src)
+
+    print("\n-- exemptions --")
+    check("the exemption list was found in ship_to_loki.py", bool(exempt))
+    for key, reason in sorted(exempt.items()):
+        print(f"     {key:<24} {reason}")
+    check("every exemption carries a reason",
+          all(isinstance(r, str) and r.strip() for r in exempt.values()))
+
     if not STATE.exists():
-        print(f"  no metrics.json at {STATE} — run a cycle first")
-        return 2
+        print(f"\n  no metrics.json at {STATE} — cannot compare")
+        return 2 if not FAILURES else 1
+    recorded = json.loads(STATE.read_text())
 
-    recorded = set(json.loads(STATE.read_text()))
-    shipped = shipped_keys(SHIPPER.read_text())
+    check("no exemption names a metric that no longer exists",
+          all(k in recorded for k in exempt))
+    for k in exempt:
+        if k not in recorded:
+            print(f"    stale exemption: {k}")
 
-    missing = sorted(k for k in recorded if k not in shipped and k not in LOCAL_ONLY)
-    stale = sorted(k for k in LOCAL_ONLY if k not in recorded)
+    record = emitted_record()
+    if record is None:
+        print("\n  no METRIC line in the cycle log — cannot verify what shipped")
+        return 2 if not FAILURES else 1
 
-    print(f"\n-- METRICS keys vs the Loki whitelist --")
-    print(f"     recorded by the curator : {len(recorded)}")
-    print(f"     shipped to Loki         : {len(shipped & recorded)}")
-    print(f"     deliberately local      : {len(LOCAL_ONLY) - len(stale)}")
+    # A nested metric ships flattened, so its presence is proven by any key
+    # carrying its prefix rather than by its own name.
+    prefixes = {"per_category": "published_", "per_category_live": "live_"}
+    missing = []
+    for key, value in recorded.items():
+        if key in exempt:
+            continue
+        if isinstance(value, dict):
+            if not value:
+                continue                      # nothing to flatten
+            pre = prefixes.get(key, key + "_")
+            if not any(k.startswith(pre) for k in record):
+                missing.append(f"{key} (expected {pre}*)")
+        elif key not in record:
+            missing.append(key)
 
-    check("every recorded metric is shipped or declared local", not missing)
+    print(f"\n-- {len(recorded)} recorded, {len(record)} keys in the emitted line --")
+    check("everything recorded and not exempt reached the emitted record", not missing)
+    for k in missing:
+        print(f"    missing: {k}")
     if missing:
-        print("\n  These are recorded and go nowhere:")
-        for k in missing:
-            print(f"    {k}")
-        print("\n  Either add them to the record in ship_to_loki.py, or add them to")
-        print("  LOCAL_ONLY here WITH A REASON. A metric nobody ships is a question")
-        print("  nobody can answer later.")
-
-    check("LOCAL_ONLY has no entries for metrics that no longer exist", not stale)
-    if stale:
-        print(f"    stale exemptions: {stale}")
+        print("\n  Either it should ship — the default — or it belongs in EXEMPT in")
+        print("  ship_to_loki.py with a reason. 'We did not get round to it' and")
+        print("  'this does not belong in Loki' are indistinguishable otherwise.")
 
     print()
     if FAILURES:
