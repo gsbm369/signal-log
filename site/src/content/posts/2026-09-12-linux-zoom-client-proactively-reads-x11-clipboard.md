@@ -1,16 +1,15 @@
 ---
-title: "Pandas Should Go Extinct"
+title: "Linux Zoom Client Proactively Reads X11 Clipboard"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-12T04:23:08+00:00
-addedAt: 2026-09-12T04:50:30.833145+00:00
+pubDate: 2026-09-12T12:38:53+00:00
+addedAt: 2026-09-12T16:18:16.305094+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://eddie.codes/posts/pandas-should-go-extinct/"
-tags: ["tech"]
-heat: 100
-score: 0.73694
+sourceUrl: "https://hachyderm.io/@simontatham/117201594980991062"
+tags: ["linux"]
+heat: 97
+score: 1.07503
 readMinutes: 1
-image: "https://eddie.codes/og-image/pandas-should-go-extinct.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
