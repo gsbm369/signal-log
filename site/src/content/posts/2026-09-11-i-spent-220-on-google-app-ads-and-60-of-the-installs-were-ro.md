@@ -1,17 +1,17 @@
 ---
-title: "OpenAI Agents API"
+title: "I spent $220 on Google app ads and 60% of the installs were robots"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-10T19:43:22+00:00
-addedAt: 2026-09-11T21:25:45.639716+00:00
+pubDate: 2026-09-11T18:24:55+00:00
+addedAt: 2026-09-12T01:19:02.731022+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://developers.openai.com/api/docs/guides/agents-api/overview"
-tags: ["openai"]
-heat: 68
-score: 0.42922
+sourceUrl: "https://dayzlegame.com/blog/google-ads-bot-farm/"
+tags: ["tech"]
+heat: 83
+score: 0.53663
 readMinutes: 1
-image: "https://developers.openai.com/og/api/docs/guides/agents-api/overview.png"
-imageAlt: "Agents API | OpenAI API"
+image: "https://dayzlegame.com/og.png"
+imageAlt: "Dayzle — five calm puzzles, every day"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
