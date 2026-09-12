@@ -1,14 +1,14 @@
 ---
-title: "Fraud Without a Fraudster!"
+title: "The Model Risk Nobody Screens For: Intervals That Cannot Be Wrong"
 description: "Finextra linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-11T20:52:11+00:00
-addedAt: 2026-09-11T21:06:01.720872+00:00
+pubDate: 2026-09-11T10:04:15+00:00
+addedAt: 2026-09-12T01:04:44.451671+00:00
 source: "Finextra"
 category: fintech
-sourceUrl: "https://www.finextra.com/blogposting/32820/fraud-without-a-fraudster?utm_medium=rssfinextra&utm_source=finextrafeed"
+sourceUrl: "https://www.finextra.com/blogposting/32394/the-model-risk-nobody-screens-for-intervals-that-cannot-be-wrong?utm_medium=rssfinextra&utm_source=finextrafeed"
 tags: ["tech"]
-heat: 60
-score: 0.74835
+heat: 63
+score: 0.64911
 readMinutes: 1
 ---
 

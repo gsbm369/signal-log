@@ -1,14 +1,14 @@
 ---
-title: "A Severe Misalignment of AI in Mathematics"
+title: "Tutorial for Septabee, a free DAW in the making for over 20,000 hours"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-11T19:03:30+00:00
-addedAt: 2026-09-11T21:06:01.719090+00:00
+pubDate: 2026-09-11T23:06:30+00:00
+addedAt: 2026-09-12T01:04:44.451016+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://terrytao.wordpress.com/2026/09/11/a-severe-misalignment-of-ai-in-mathematics/"
+sourceUrl: "https://www.youtube.com/watch?v=lW8Z98pXuSE"
 tags: ["tech"]
-heat: 57
-score: 0.69334
+heat: 66
+score: 0.69524
 readMinutes: 1
 ---
 
