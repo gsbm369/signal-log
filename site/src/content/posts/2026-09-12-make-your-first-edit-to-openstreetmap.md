@@ -1,17 +1,15 @@
 ---
-title: "google.com/goto: Google's anti-scraping update"
+title: "Make your first edit to OpenStreetMap"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-12T03:14:20+00:00
-addedAt: 2026-09-12T10:18:44.813637+00:00
+pubDate: 2026-09-12T16:25:08+00:00
+addedAt: 2026-09-12T22:18:15.666031+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.autom.dev/blog/google-search-goto-links"
+sourceUrl: "https://high5apps.github.io/josm-plugin-website-wizard/"
 tags: ["tech"]
-heat: 56
-score: 0.53315
+heat: 65
+score: 0.55807
 readMinutes: 1
-image: "https://www.autom.dev/api/og?slug=google-search-goto-links&amp;locale=en"
-imageAlt: "google.com/goto: Google&#x27;s anti-scraping update"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

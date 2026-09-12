@@ -1,16 +1,15 @@
 ---
-title: "Rune is now open source"
+title: "Managing Complex Application State with Reactive Data Flows"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-12T08:35:23+00:00
-addedAt: 2026-09-12T10:18:44.813289+00:00
+pubDate: 2026-09-12T19:45:31+00:00
+addedAt: 2026-09-12T22:18:15.665885+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://rune.build/blog/rune-is-now-open-source"
+sourceUrl: "https://yogthos.net/posts/2026-09-12-reactive-dataflow.html"
 tags: ["tech"]
-heat: 67
-score: 0.70194
+heat: 73
+score: 0.67999
 readMinutes: 1
-image: "https://rune.build/images/og4.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
