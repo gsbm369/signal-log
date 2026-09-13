@@ -1,15 +1,17 @@
 ---
-title: "Useful Things Agents Can Do That Are Not Writing Code"
+title: "Session Context — what a web page knows about you"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-12T15:56:54+00:00
-addedAt: 2026-09-12T16:18:16.305334+00:00
+pubDate: 2026-09-13T13:36:10+00:00
+addedAt: 2026-09-13T16:25:52.318522+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://elijahpotter.dev/articles/useful_things_agents_can_do_that_are_not_writing_code"
+sourceUrl: "https://sessioncontext.org"
 tags: ["tech"]
-heat: 77
-score: 0.73983
+heat: 65
+score: 0.67267
 readMinutes: 1
+image: "https://sessioncontext.org/opengraph-image?7aa37e78e6b9c0f5"
+imageAlt: "Session Context — what a web page knows about you"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

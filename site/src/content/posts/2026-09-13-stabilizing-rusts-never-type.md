@@ -1,14 +1,14 @@
 ---
-title: "Logo Programming Language"
+title: "Stabilizing Rust's never type"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-12T16:04:06+00:00
-addedAt: 2026-09-12T16:18:16.305256+00:00
+pubDate: 2026-09-13T14:00:18+00:00
+addedAt: 2026-09-13T16:25:52.318286+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://el.media.mit.edu/logo-foundation/what_is_logo/logo_programming.html"
-tags: ["tech"]
-heat: 77
-score: 0.74326
+sourceUrl: "https://lwn.net/SubscriberLink/1091015/d9e48318ed242b41/"
+tags: ["rust"]
+heat: 89
+score: 1.12723
 readMinutes: 1
 ---
 
