@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.1",
+    "astro": "^7.3.2",
     "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
