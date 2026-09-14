@@ -88,3 +88,96 @@ loses it, keeping the source brings four career posts with it.
 
 No rule proposed for adoption yet — the sample is 30 items from four sources on
 one day, and option 1 should be measured over a week before it is trusted.
+
+---
+
+# Addendum — 2026-09-14: Brendan Gregg census, and the narrower-feed question
+
+## The census (n=10, the entire feed, not a sample)
+
+Gregg's feed exposes exactly 10 items, so the population is reachable. Classified
+by hand on the same criteria.
+
+| # | age | title | class |
+|---|---|---|---|
+| 1 | 220d | Why I joined OpenAI | non-technical |
+| 2 | 284d | Leaving Intel | non-technical |
+| 3 | 291d | On "AI Brendans" or "Virtual Brendans" | non-technical |
+| 4 | 297d | Intel is listening, don't waste your shot | non-technical |
+| 5 | 302d | Third Stage Engineering | non-technical |
+| 6 | 407d | When to Hire a Computer Performance Engineering Team | non-technical |
+| 7 | 481d | 3 Years of Extremely Remote Work | non-technical |
+| 8 | 502d | Doom GPU Flame Graphs | **technical** |
+| 9 | 686d | AI Flame Graphs | **technical** |
+| 10 | 785d | No More Blue Fridays | **technical** |
+
+**3 technical / 10 — 30%.** The n=5 sample estimated 20%; the census says 30%.
+The interval was wide and the point estimate was low, which is what an n=5 cell
+is for.
+
+## The ratio is not the finding. The ORDER is.
+
+Every technical post is among the three OLDEST in the feed — 502, 686 and 785
+days. Every one of the seven most recent, spanning 220 to 481 days, is
+non-technical. The newest item in the entire feed is 220 days old.
+
+This is not a source that mixes two modes at a stable ratio. It is a source that
+**changed mode**: the last technical post was May 2025, and everything since is
+career and industry commentary. A weight tuned to "30% technical" would be
+fitting a number that describes the archive and not the present, and the present
+rate is zero over roughly sixteen months.
+
+## Narrower feeds — measured, not assumed
+
+The right fix for a bimodal source is a narrower feed, so that was checked
+before any weight was proposed.
+
+**Brendan Gregg — none exists.**
+
+```
+200  https://www.brendangregg.com/blog/rss.xml     the only feed
+404  /rss.xml  /feed.xml  /blog/categories/performance/rss.xml  /blog/tags/performance.xml
+```
+
+The blog index carries no tag or category structure to derive one from. The
+option is closed for this source.
+
+**The Changelog — narrower feeds exist, and one is a direct hit.**
+
+```
+feed              items  newest  last 90d   cadence
+master /feed         50      0d         4   ~0.3/wk   mixes every show + news + events
+podcast            1014     10d         3   ~0.2/wk   long-form engineering interviews
+practicalai         373      4d        11   ~0.8/wk
+shipit              136    633d         0   DEAD  ("Shipped It!" is the wind-up episode)
+news                185    138d         0   DEAD
+gotime              347       —         —
+```
+
+We currently poll the **master feed**, which is why "Astral has been acquired by
+OpenAI" and "Changelog IRL @ PlanetScale" arrive under a heading called Deep
+Dives. `podcast` is the same publisher's long-form interview show and drops the
+news and event items entirely — the narrower feed the method asks for, at no
+cost in quality.
+
+Ship It would have been ideal for `devops_linux` and is dead: newest episode 633
+days old.
+
+**Dan Luu — none.** Only `atom.xml`; `feed.xml` is 404. At 45% he is the genuinely
+bimodal case with no structural remedy.
+
+**jvns.ca — has `/categories/`**, but at 82% technical there is nothing to fix.
+
+## Recommendations
+
+1. **The Changelog: switch `/feed` to `/podcast/feed`.** Free improvement, no
+   trade-off, removes the two items that prompted this whole measurement.
+2. **Brendan Gregg: drop, and re-check in six months.** No narrower feed exists,
+   weight cannot improve selection on a bimodal source — it demotes the good
+   posts equally — and the present technical rate is **zero over sixteen
+   months**. The three technical pieces are 502-785 days old and deep_dives
+   ingests 3650 days, so they have already had their chance to be published and
+   largely have been. What is lost is the next *No More Blue Fridays*, if it
+   comes; the re-check is what catches that.
+3. **Do not lower his weight as a compromise.** It reduces his presence without
+   improving his selection, and it would demote the one class of post we want.

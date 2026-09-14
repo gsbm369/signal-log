@@ -951,6 +951,43 @@ belong in Loki" look identical from the outside. It found four more on its first
 > **A metric nobody ships is a question nobody can answer later — and the gap is invisible
 > until someone asks.**
 
+### A non-emptiness check asked to do a diversity job
+
+The per-category prune floor was added because a pure `addedAt` sort emptied whole
+categories: 60 posts across what should have been seven sections rendered as four. The
+floor protects each category's newest three unconditionally, and it works — all seven
+sections have been populated since.
+
+Then look at *which* three it protects:
+
+```
+system_design    3 posts | floor holds: InfoQ, InfoQ, InfoQ
+deep_dives       3 posts | floor holds: Dan Luu, Dan Luu, Dan Luu
+fintech          6 posts | floor holds: Finextra, Finextra, Finextra
+devops_linux    26 posts | floor holds: HashiCorp, Ubuntu, Docker
+```
+
+Every protected slot in three of the four categories belongs to a single source. The floor
+guarantees a section exists and guarantees nothing about who is in it — so it is actively
+*preserving* within-category monoculture while reporting that the category is healthy.
+
+It is the same shape as **a liveness check is not a completeness check**, one level in: the
+guard tests non-emptiness and was asked to deliver diversity. Both are properties of the
+same data and only one of them is being measured.
+
+The visible consequence: Marc Brooker, the strongest system_design source in the config,
+went from nine posts to **zero** in a day. Nothing protects a *source* — the per-source cap
+limits how many one source may ADD per run, and the floor keeps a *category* alive. His nine
+arrived in one backfill, so they aged out as a single block with nothing staggering them,
+while system_design's three protected slots were held by newer InfoQ arrivals.
+
+A source-aware floor is the fix, and it is deliberately **not built yet**: five sources
+landed hours before this was written and `devops_linux` sits at 43% on an onboarding spike.
+A floor fitted to that would cement the spike into the rule.
+
+> **A guard that keeps something alive is not thereby keeping it healthy. Name the property
+> you want measured, not the failure you happened to see first.**
+
 ### An ambiguous probe is not a weak answer, it is the wrong experiment
 
 LWN marks subscriber-only articles `[$]`, and they sat in the noise list — a permanent 40%
