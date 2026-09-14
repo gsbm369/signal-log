@@ -1,16 +1,16 @@
 ---
-title: "The night 142 of my servers went up in the clouds Physically"
+title: "A Letter from a Machine Learning Engineer"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-13T05:48:19+00:00
-addedAt: 2026-09-13T07:29:29.692925+00:00
+pubDate: 2026-09-14T17:58:22+00:00
+addedAt: 2026-09-14T18:36:46.488530+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://exquisite.tube/w/nQbc54t4G7YGaqiryZ7mg1"
+sourceUrl: "https://nemin.hu/llm-letter/index.html"
 tags: ["tech"]
-heat: 90
-score: 0.70288
+heat: 62
+score: 0.73179
 readMinutes: 1
-image: "https://exquisite.tube/lazy-static/thumbnails/618f8937-e909-475d-bb21-379511fb1f1c.jpg"
+image: "https://nemin.hu/logo.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

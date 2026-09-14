@@ -1,14 +1,14 @@
 ---
-title: "Real-SWE: Benchmarking AI models on private, real-world, enterprise codebases"
+title: "XCancel suspended \"due to a new development in the ongoing legal proceedings\""
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-12T20:25:48+00:00
-addedAt: 2026-09-13T07:29:29.692741+00:00
+pubDate: 2026-09-14T12:05:52+00:00
+addedAt: 2026-09-14T18:36:46.488771+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://withspecific.com/benchmarks/real-swe"
-tags: ["benchmark"]
-heat: 93
-score: 0.75441
+sourceUrl: "https://xcancel.com/twitter"
+tags: ["tech"]
+heat: 52
+score: 0.54472
 readMinutes: 1
 ---
 
