@@ -1,14 +1,14 @@
 ---
-title: "From Git to Fossil (2025)"
+title: "Postgres development activity"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-13T07:51:19+00:00
-addedAt: 2026-09-13T10:18:14.043990+00:00
+pubDate: 2026-09-15T12:26:49+00:00
+addedAt: 2026-09-15T16:29:51.925231+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://lucio.albenga.es/web-en/posts/2025/from-git-to-fossil.html"
-tags: ["tech"]
-heat: 100
-score: 0.68253
+sourceUrl: "https://vondra.me/posts/postgres-development-activity/"
+tags: ["postgres"]
+heat: 80
+score: 1.05885
 readMinutes: 1
 ---
 

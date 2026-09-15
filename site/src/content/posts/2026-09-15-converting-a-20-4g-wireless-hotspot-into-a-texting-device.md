@@ -1,14 +1,14 @@
 ---
-title: "A Few Good Ideas in Programming Languages"
+title: "Converting a $20 4G wireless hotspot into a texting device"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-12T18:19:16+00:00
-addedAt: 2026-09-13T10:18:14.044254+00:00
+pubDate: 2026-09-15T13:43:30+00:00
+addedAt: 2026-09-15T16:29:51.925645+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://prydt.xyz/blog/a-few-good-ideas-in-pl/"
+sourceUrl: "https://bkovac.github.io/modem-thing/"
 tags: ["tech"]
-heat: 73
-score: 0.4053
+heat: 61
+score: 0.6741
 readMinutes: 1
 ---
 

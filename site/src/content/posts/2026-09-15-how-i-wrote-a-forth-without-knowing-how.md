@@ -1,17 +1,15 @@
 ---
-title: "Session Context — what a web page knows about you"
+title: "How I Wrote a Forth (Without Knowing How)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-13T13:36:10+00:00
-addedAt: 2026-09-13T16:25:52.318522+00:00
+pubDate: 2026-09-15T12:51:55+00:00
+addedAt: 2026-09-15T16:29:51.925750+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://sessioncontext.org"
+sourceUrl: "https://vtrlx.ca/w/2026-09-10-how-i-wrote-moonforth.html"
 tags: ["tech"]
-heat: 65
-score: 0.67267
+heat: 60
+score: 0.65215
 readMinutes: 1
-image: "https://sessioncontext.org/opengraph-image?7aa37e78e6b9c0f5"
-imageAlt: "Session Context — what a web page knows about you"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
