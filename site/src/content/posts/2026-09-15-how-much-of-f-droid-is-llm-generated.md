@@ -1,15 +1,16 @@
 ---
-title: "SplitFT: Fault Tolerance for Disaggregated Datacenters via Remote Memory Logging"
+title: "How much of F-Droid is LLM generated?"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-14T18:02:00+00:00
-addedAt: 2026-09-14T18:36:46.488368+00:00
+pubDate: 2026-09-15T17:09:13+00:00
+addedAt: 2026-09-16T00:35:31.226632+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://ramalagappan.github.io/pdfs/papers/splitft.pdf"
-tags: ["tech"]
-heat: 62
-score: 0.7335
+sourceUrl: "https://tintotint.eu/whacky-corner/f-droid_slop/"
+tags: ["llm"]
+heat: 74
+score: 0.92934
 readMinutes: 1
+image: "https://tintotint.eu/whacky-corner/f-droid_slop/header.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
