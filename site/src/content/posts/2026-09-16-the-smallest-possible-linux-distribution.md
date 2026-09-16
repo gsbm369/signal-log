@@ -1,14 +1,14 @@
 ---
-title: "How I Wrote a Forth (Without Knowing How)"
+title: "The smallest possible Linux distribution"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-15T12:51:55+00:00
-addedAt: 2026-09-15T16:29:51.925750+00:00
+pubDate: 2026-09-16T13:04:59+00:00
+addedAt: 2026-09-16T16:17:48.936544+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://vtrlx.ca/w/2026-09-10-how-i-wrote-moonforth.html"
-tags: ["tech"]
-heat: 60
-score: 0.65215
+sourceUrl: "https://distrowatch.com/weekly.php?issue=20260914#qa"
+tags: ["linux"]
+heat: 76
+score: 1.09351
 readMinutes: 1
 ---
 

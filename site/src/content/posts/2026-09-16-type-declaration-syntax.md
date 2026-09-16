@@ -1,14 +1,14 @@
 ---
-title: "Postgres development activity"
+title: "type declaration syntax"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-15T12:26:49+00:00
-addedAt: 2026-09-15T16:29:51.925231+00:00
+pubDate: 2026-09-16T16:05:40+00:00
+addedAt: 2026-09-16T16:17:48.936800+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://vondra.me/posts/postgres-development-activity/"
-tags: ["postgres"]
-heat: 80
-score: 1.05885
+sourceUrl: "https://citrons.xyz/journal/2026-09-09"
+tags: ["tech"]
+heat: 60
+score: 0.74422
 readMinutes: 1
 ---
 

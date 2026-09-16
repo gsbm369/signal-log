@@ -1,14 +1,14 @@
 ---
-title: "25 Years of Mass Surveillance Is Enough"
+title: "Building a Linux GPU Driver for the M4 Mac Mini in One Month"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-15T11:26:48+00:00
-addedAt: 2026-09-15T16:29:51.925918+00:00
+pubDate: 2026-09-15T19:30:03+00:00
+addedAt: 2026-09-16T16:17:48.936846+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.schneier.com/blog/archives/2026/09/25-years-of-mass-surveillance-is-enough.html"
-tags: ["tech"]
-heat: 56
-score: 0.57631
+sourceUrl: "https://codyho.dev/blog/gpu-driver/"
+tags: ["linux", "gpu"]
+heat: 57
+score: 0.67573
 readMinutes: 1
 ---
 

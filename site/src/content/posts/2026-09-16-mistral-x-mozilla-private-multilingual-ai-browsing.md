@@ -1,15 +1,16 @@
 ---
-title: "Linux from Scratch"
+title: "Mistral X Mozilla: Private, Multilingual AI Browsing"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-15T04:15:23+00:00
-addedAt: 2026-09-15T16:29:51.925504+00:00
+pubDate: 2026-09-16T08:08:57+00:00
+addedAt: 2026-09-16T16:17:48.936689+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.linuxfromscratch.org/"
-tags: ["linux"]
-heat: 64
-score: 0.72093
+sourceUrl: "https://mistral.ai/news/mistral-x-mozilla/"
+tags: ["mistral"]
+heat: 65
+score: 0.84401
 readMinutes: 1
+image: "https://mistral.ai/cms-media/api/media/file/Linkedin-Partnership-Firefox%20copie.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
