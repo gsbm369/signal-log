@@ -1,16 +1,17 @@
 ---
-title: "Introducing System One Models and Jev"
+title: "Training a 4B model to produce 81% faster query plans than Postgres"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-15T19:25:03+00:00
-addedAt: 2026-09-16T00:35:31.227014+00:00
+pubDate: 2026-09-16T18:50:00+00:00
+addedAt: 2026-09-17T07:48:26.662037+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://typesafe.ai/blog/introducing-system-one-models-and-jev"
-tags: ["tech"]
-heat: 55
-score: 0.57357
+sourceUrl: "https://rohanbansal.com/qorl"
+tags: ["postgres"]
+heat: 85
+score: 0.70085
 readMinutes: 1
-image: "https://framerusercontent.com/images/RtIGTDwO43jR4ZDilesXiR5znc.jpg"
+image: "https://rohanbansal.com/og/qorl-20260916.png"
+imageAlt: "Training a 4B model to produce 81% faster query plans than Postgres"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

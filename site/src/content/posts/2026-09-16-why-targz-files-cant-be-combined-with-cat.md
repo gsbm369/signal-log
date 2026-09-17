@@ -1,16 +1,15 @@
 ---
-title: "How much of F-Droid is LLM generated?"
+title: "Why .tar.gz files can't be combined with cat"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-15T17:09:13+00:00
-addedAt: 2026-09-16T00:35:31.226632+00:00
+pubDate: 2026-09-16T22:55:11+00:00
+addedAt: 2026-09-17T07:48:26.662354+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://tintotint.eu/whacky-corner/f-droid_slop/"
-tags: ["llm"]
-heat: 74
-score: 0.92934
+sourceUrl: "https://alexwlchan.net/2026/cat-confusion/"
+tags: ["tech"]
+heat: 72
+score: 0.53265
 readMinutes: 1
-image: "https://tintotint.eu/whacky-corner/f-droid_slop/header.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
