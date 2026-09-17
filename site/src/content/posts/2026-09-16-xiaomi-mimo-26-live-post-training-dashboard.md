@@ -1,14 +1,14 @@
 ---
-title: "Building a Linux GPU Driver for the M4 Mac Mini in One Month"
+title: "Xiaomi Mimo 2.6 live post-training dashboard"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-15T19:30:03+00:00
-addedAt: 2026-09-16T16:17:48.936846+00:00
+pubDate: 2026-09-16T20:09:18+00:00
+addedAt: 2026-09-17T10:17:47.916625+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://codyho.dev/blog/gpu-driver/"
-tags: ["linux", "gpu"]
-heat: 57
-score: 0.67573
+sourceUrl: "https://mimo.xiaomi.com/rl/"
+tags: ["tech"]
+heat: 41
+score: 0.40608
 readMinutes: 1
 ---
 

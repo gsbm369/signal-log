@@ -1,14 +1,14 @@
 ---
-title: "type declaration syntax"
+title: "XApp — Apps that work everywhere"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-16T16:05:40+00:00
-addedAt: 2026-09-16T16:17:48.936800+00:00
+pubDate: 2026-09-17T06:00:53+00:00
+addedAt: 2026-09-17T10:17:47.916373+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://citrons.xyz/journal/2026-09-09"
+sourceUrl: "https://xapp-project.org/"
 tags: ["tech"]
-heat: 60
-score: 0.74422
+heat: 54
+score: 0.63602
 readMinutes: 1
 ---
 

@@ -1,16 +1,15 @@
 ---
-title: "Mistral X Mozilla: Private, Multilingual AI Browsing"
+title: "Small programming tricks"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-16T08:08:57+00:00
-addedAt: 2026-09-16T16:17:48.936689+00:00
+pubDate: 2026-09-16T15:56:47+00:00
+addedAt: 2026-09-17T10:17:47.916667+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://mistral.ai/news/mistral-x-mozilla/"
-tags: ["mistral"]
-heat: 65
-score: 0.84401
+sourceUrl: "https://will-keleher.com/posts/small-programming-tricks-matter/"
+tags: ["tech"]
+heat: 37
+score: 0.34533
 readMinutes: 1
-image: "https://mistral.ai/cms-media/api/media/file/Linkedin-Partnership-Firefox%20copie.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
