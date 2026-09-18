@@ -1,16 +1,16 @@
 ---
-title: "A quartet of Linux local root vulns: DirtyAH6, PPPoEject, TUNderflow, and DiagSpill"
+title: "I don't like passkeys"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T07:57:04+00:00
-addedAt: 2026-09-18T12:11:21.707641+00:00
+pubDate: 2026-09-18T12:52:18+00:00
+addedAt: 2026-09-18T13:36:03.687512+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://seclists.org/oss-sec/2026/q3/822"
-tags: ["linux"]
-heat: 86
-score: 1.05124
+sourceUrl: "https://hawksley.dev/blog/i-dont-like-passkeys"
+tags: ["tech"]
+heat: 79
+score: 0.72926
 readMinutes: 1
-image: "https://seclists.org/images/oss-sec-img.png"
+image: "https://hawksley.dev/og/blog/i-dont-like-passkeys.jpg?v=7"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

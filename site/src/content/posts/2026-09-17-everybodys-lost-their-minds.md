@@ -1,15 +1,16 @@
 ---
-title: "Bend – A language that blocks AI mistakes via proof, on CPU and GPU"
+title: "Everybody's Lost Their Minds"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-17T20:36:13+00:00
-addedAt: 2026-09-18T01:29:46.474707+00:00
+pubDate: 2026-09-17T19:43:34+00:00
+addedAt: 2026-09-18T13:36:03.688072+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://bend-lang.com/"
-tags: ["gpu"]
-heat: 80
-score: 0.95674
+sourceUrl: "https://www.netmeister.org/blog/everybodys-lost-their-minds.html"
+tags: ["tech"]
+heat: 51
+score: 0.35171
 readMinutes: 1
+image: "https://www.netmeister.org/blog/images/tired.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

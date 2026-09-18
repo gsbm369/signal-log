@@ -1,14 +1,14 @@
 ---
-title: "Flet : Build cross-platform apps in Python"
+title: "Typst makes big strides"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T08:42:48+00:00
-addedAt: 2026-09-18T12:11:21.707436+00:00
+pubDate: 2026-09-18T13:14:17+00:00
+addedAt: 2026-09-18T13:36:03.687258+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://flet.dev/"
-tags: ["python"]
-heat: 87
-score: 1.08255
+sourceUrl: "https://lwn.net/Articles/1092993/"
+tags: ["tech"]
+heat: 79
+score: 0.73962
 readMinutes: 1
 ---
 
