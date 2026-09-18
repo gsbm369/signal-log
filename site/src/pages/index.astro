@@ -69,8 +69,11 @@ const categoryOf = (p: (typeof posts)[number]) =>
  *   tier   today if age <= 24h, week if age <= 7d, otherwise EXCLUDED
  *          (age = sample time - AUTHOR date)
  *   order  today before week; within a tier, the curator's score, best first
- *   fold   tier == today, by order, first 5. No fill from week, no per-source
- *          rule — those were in the earlier fold and the reference drops both.
+ *   fold   AT MOST ONE STORY PER SOURCE, 5 slots. Walk "today" by order and
+ *          skip any story whose source already holds a fold slot; if that
+ *          leaves the fold short, keep walking into "this week" under the same
+ *          rule. (Owner, 2026-09-18: the reference omitted the source rule, and
+ *          AWS Architecture took 3 of 5 slots on the live page.)
  *   section(cat), fixed order:
  *          pool = this category, not in the fold, not excluded; by order;
  *          at most 2 per source in a section (Petri: 1); first 6.
@@ -91,7 +94,17 @@ const eligible = posts.filter((p) => tierOf(p) !== 'stale').sort(byOrder);
 const todayCount = eligible.filter((p) => tierOf(p) === 'today').length;
 const weekCount = eligible.length - todayCount;
 
-const front = eligible.filter((p) => tierOf(p) === 'today').slice(0, 5);
+/* `eligible` is already today-before-week, score best first, so one pass over
+   it IS "today by score, then this week by score". */
+const FOLD_SLOTS = 5;
+const front: typeof posts = [];
+const foldSources = new Set<string>();
+for (const p of eligible) {
+  if (front.length === FOLD_SLOTS) break;
+  if (foldSources.has(p.data.source)) continue;
+  foldSources.add(p.data.source);
+  front.push(p);
+}
 const lead = front[0];
 const cards = front.slice(1, 5);
 const featured = new Set(front.map((p) => p.id));
@@ -112,7 +125,12 @@ const shelves = Object.entries(CATEGORY_LABELS).map(([key, label]) => {
     items.push(p);
   }
   const today = items.filter((p) => tierOf(p) === 'today').length;
-  return { key, label, items, today, week: items.length - today };
+  /* An empty section has two causes, and they must not share a sentence: the
+     category has nothing fresh, or everything fresh it has was promoted to the
+     fold. "No new posts this week." is false in the second case. */
+  const promoted = front.filter((p) => categoryOf(p) === key);
+  const promotedToday = promoted.some((p) => tierOf(p) === 'today');
+  return { key, label, items, today, week: items.length - today, promoted: promoted.length, promotedToday };
 });
 
 /* Masthead facts — computed from the data, never hard-coded. */
@@ -164,7 +182,7 @@ const tech = eligible;
     {
       front.length === 0 ? (
         <p class="py-16 text-center font-mono text-[0.85rem] text-faint">
-          No new posts today.
+          No new posts this week.
         </p>
       ) : (
         <>
@@ -214,8 +232,12 @@ const tech = eligible;
                 {shelf.today} today · {shelf.week} this week · {shelf.items.length} of 6
               </p>
               <div class="mt-1">
-                {shelf.items.length === 0 ? (
-                  <p class="section-empty">No new posts this week.</p>
+                {shelf.items.length === 0 && shelf.promoted > 0 ? (
+                  <p class="section-empty" data-empty="in-fold">
+                    <a href="#feed">{shelf.promotedToday ? "Today's" : "This week's"} {shelf.label} stories are in the headlines above.</a>
+                  </p>
+                ) : shelf.items.length === 0 ? (
+                  <p class="section-empty" data-empty="none">No new posts this week.</p>
                 ) : (
                   shelf.items.map((post, i) => (
                     <PostCard post={post} index={i} variant="mini" section={shelf.key} />

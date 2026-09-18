@@ -9,10 +9,13 @@ checked against itself is not.
   tier     today if age <= 24h, week if age <= 7d, otherwise excluded
            (age = sample time - AUTHOR date)
   order    today before week; within a tier, score best first; then id
-  fold     tier == today, by order, first 5
+  fold     5 slots, at most one story per source: today by order, skipping a
+           source already in the fold; if short, this week under the same rule
   section  fixed order; pool = category, not in fold, not excluded, by order;
            at most 2 per source in a section (Petri: 1); first 6
-           week cards labelled; empty -> "No new posts this week."
+           week cards labelled; empty with nothing fresh -> "No new posts this
+           week."; empty because its fresh stories are all in the fold -> "...
+           stories are in the headlines above." linking to #feed
 
 Exit 0 identical, 1 mismatch, 2 cannot check.
 """
@@ -55,7 +58,13 @@ def expected(posts, declared):
     rank = {"today": 0, "week": 1}
     elig = sorted((p for p in posts if p["tier"] != "stale"),
                   key=lambda p: (rank[p["tier"]], -p["score"], p["id"]))
-    fold = [p["id"] for p in elig if p["tier"] == "today"][:5]
+    fold, fold_src = [], set()
+    for p in elig:                      # elig is today-first, so this IS "today, then week"
+        if len(fold) == 5:
+            break
+        if p["src"] not in fold_src:
+            fold_src.add(p["src"])
+            fold.append(p["id"])
     secs = {}
     for cat in [c for c in ORDER if c in declared]:
         seen, items = {}, []
@@ -69,7 +78,8 @@ def expected(posts, declared):
             seen[p["src"]] = seen.get(p["src"], 0) + 1
             items.append(p["id"])
         secs[cat] = items
-    return fold, secs
+    promoted = {cat: [p for p in elig if p["id"] in fold and p["cat"] == cat] for cat in secs}
+    return fold, secs, promoted
 
 
 def rendered(html):
@@ -79,9 +89,8 @@ def rendered(html):
     secs = {k: ids(body, k) for k, body in
             re.findall(r'<section[^>]*data-section="([a-z_]+)"[^>]*>(.*?)</section>', html, re.S)}
     order = re.findall(r'<section[^>]*data-section="([a-z_]+)"', html)
-    empty = {k for k, body in re.findall(r'<section[^>]*data-section="([a-z_]+)"[^>]*>(.*?)</section>', html, re.S)
-             if "No new posts this week." in body}
-    return fold, secs, order, empty
+    bodies = dict(re.findall(r'<section[^>]*data-section="([a-z_]+)"[^>]*>(.*?)</section>', html, re.S))
+    return fold, secs, order, bodies
 
 
 def main() -> int:
@@ -92,8 +101,8 @@ def main() -> int:
     posts = load(now)
     html = INDEX.read_text(encoding="utf-8")
     declared = set(re.findall(r'<section[^>]*data-section="([a-z_]+)"', html))
-    ef, es = expected(posts, declared)
-    rf, rs, rorder, empty = rendered(html)
+    ef, es, promoted = expected(posts, declared)
+    rf, rs, rorder, bodies = rendered(html)
 
     bad = []
     if rf != ef:
@@ -104,8 +113,16 @@ def main() -> int:
     for cat in want_order:
         if rs.get(cat, []) != es[cat]:
             bad.append(f"[{cat}] differs\n      expected {es[cat]}\n      rendered {rs.get(cat)}")
-        if not es[cat] and cat not in empty:
-            bad.append(f"[{cat}] is empty but lacks 'No new posts this week.'")
+        body = bodies.get(cat, "")
+        says_none = "No new posts this week." in body
+        says_fold = "stories are in the headlines above." in body and 'href="#feed"' in body
+        if not es[cat] and promoted[cat] and (says_none or not says_fold):
+            bad.append(f"[{cat}] is empty because its {len(promoted[cat])} fresh stor(ies) are in the fold,"
+                       f" but does not say they are in the headlines above")
+        if not es[cat] and not promoted[cat] and not says_none:
+            bad.append(f"[{cat}] has nothing fresh but lacks 'No new posts this week.'")
+        if es[cat] and (says_none or says_fold):
+            bad.append(f"[{cat}] has stories but renders an empty-state line")
 
     print(f"\n-- built page vs the owner's reference selection, clock {now:%Y-%m-%d %H:%M}Z --")
     print(f"   fold      expected {len(ef)}  rendered {len(rf)}  {'MATCH' if rf == ef else 'DIFFERS'}")
