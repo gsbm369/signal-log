@@ -1,14 +1,14 @@
 ---
-title: "Bend 2 and the Vibe-Coding Trap"
+title: "The scourge of x86 emulation"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T12:03:55+00:00
-addedAt: 2026-09-18T19:09:05.114346+00:00
+pubDate: 2026-09-18T04:09:48+00:00
+addedAt: 2026-09-18T21:17:27.133786+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://blog.liampwll.com/posts/bend_vibe_coding/"
+sourceUrl: "https://fex-emu.com/Scourge-of-emulation/"
 tags: ["tech"]
-heat: 52
-score: 0.53289
+heat: 66
+score: 0.36197
 readMinutes: 1
 ---
 
