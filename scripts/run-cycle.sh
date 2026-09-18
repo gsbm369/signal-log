@@ -183,6 +183,23 @@ else
   log "WARN: freshness gate could not check (exit ${fr})"
 fi
 
+# SELECTION GATE — the built page must be EXACTLY the owner's reference
+# selection (fold, section order, per-source caps, quotas, labels). Verified by
+# an independent implementation written from the spec, not from index.astro.
+# Refuses on mismatch: the previous release stays live, and the stalled-cycle
+# alert fires within 12h if a mismatch persists. Downgrade to a warning here if
+# a verification bug should never be allowed to hold a publish.
+if python3 /app/curator/check_selection.py; then
+  log "selection: every slot matches the reference"
+else
+  sr=$?
+  if [ "$sr" -eq 1 ]; then
+    log "FATAL: selection gate refused — the built page is not the reference selection"
+    BUILD_STATUS="invalid_selection"; PUBLISH_STATUS="refused"; EXIT_CODE=1; exit 1
+  fi
+  log "WARN: selection gate could not check (exit ${sr})"
+fi
+
 # --------------------------------------------------------------- 4. publish
 log "publishing release ${STAMP}"
 mkdir -p "${NEW_RELEASE}"

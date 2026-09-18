@@ -37,7 +37,7 @@ print(f"\n-- deleted {removed} {cat} post(s); fold categories before: {sorted(fo
 bad = 0
 for k in sorted(sa):
     if k == cat:
-        print(f"   {k:<15} (the deleted category) -> {'empty-state line' if 'no new posts this week' in sb.get(k,'') else 'NOT empty-state'}")
+        print(f"   {k:<15} (the deleted category) -> {'empty-state line' if 'no new posts this week' in sb.get(k,'').lower() else 'NOT empty-state'}")
         continue
     same = sa[k] == sb.get(k)
     bad += not same
