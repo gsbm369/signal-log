@@ -40,7 +40,6 @@ feeds:
     category: system_design
     weight: 0.95
     fetch: 40
-    half_life_hours: 4320
   - name: Cloudflare
     url: https://blog.cloudflare.com/rss/
     category: company_eng
@@ -136,15 +135,11 @@ feeds:
     category: fintech
     weight: 0.95
     fetch: 10
-    half_life_hours: 720
-    ingest_days: 365
   - name: Plaid Blog
     url: https://plaid.com/blog/rss.xml
     category: fintech
     weight: 0.9
     fetch: 10
-    half_life_hours: 720
-    ingest_days: 365
   - name: Finextra
     url: https://www.finextra.com/rss/headlines.aspx
     category: fintech
@@ -160,22 +155,16 @@ feeds:
     category: gaming
     weight: 0.95
     fetch: 25
-    half_life_hours: 336
-    ingest_days: 30
   - name: Unity Blog
     url: https://blog.unity.com/feed
     category: gaming
     weight: 0.85
     fetch: 15
-    half_life_hours: 336
-    ingest_days: 90
   - name: Godot Engine
     url: https://godotengine.org/rss.xml
     category: gaming
     weight: 0.85
     fetch: 15
-    half_life_hours: 336
-    ingest_days: 90
   - name: GameFromScratch
     url: https://gamefromscratch.com/feed/
     category: gaming
@@ -223,22 +212,22 @@ scoring:
   categories:
     system_design:
       half_life_hours: 168
-      ingest_days: 730
+      ingest_days: 7
       retention_days: 45
       cap: 6
     company_eng:
       half_life_hours: 336
-      ingest_days: 730
+      ingest_days: 7
       retention_days: 365
       cap: 6
     devops_linux:
       half_life_hours: 72
-      ingest_days: 30
+      ingest_days: 7
       retention_days: 45
       cap: 6
     deep_dives:
-      half_life_hours: 4320
-      ingest_days: 3650
+      half_life_hours: 168
+      ingest_days: 7
       retention_days: null
       cap: 6
     aggregators:
@@ -248,12 +237,12 @@ scoring:
       cap: 6
     fintech:
       half_life_hours: 72
-      ingest_days: 30
+      ingest_days: 7
       retention_days: 45
       cap: 6
     gaming:
       half_life_hours: 72
-      ingest_days: 14
+      ingest_days: 7
       retention_days: 45
       cap: 6
 

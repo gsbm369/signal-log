@@ -93,6 +93,7 @@
       aggregators:   { half_life_hours: 18,  ingest_days: 3, retention_days: 45,   cap: 6 }
       fintech:       { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
       gaming:        { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
+    extra_noise_filter: true    # listicle/deals/AskHN patterns on top of the ported list
 
     # Summarizer backend: none | ollama | anthropic.
     # `none` is the default: no model, no API key, no spend. Selection is
