@@ -1,15 +1,17 @@
 ---
-title: "AI safety is mostly a sex cult"
+title: "How to Write with an LLM"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-17T08:36:37+00:00
-addedAt: 2026-09-18T13:52:54.381574+00:00
+pubDate: 2026-09-17T21:48:38+00:00
+addedAt: 2026-09-18T20:30:19.571656+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://skywriter.blue/@segyges.bsky.social/3mvom4b4dn22q"
-tags: ["tech"]
-heat: 50
-score: 0.22678
+sourceUrl: "https://sockpuppet.org/blog/2026/09/17/how-to-write-with-an-llm/"
+tags: ["llm"]
+heat: 77
+score: 0.48205
 readMinutes: 1
+image: "https://sockpuppet.org/blog/2026/09/17/how-to-write-with-an-llm/workshop_hu_1de7cdec7d0e03c9.jpg"
+imageAlt: "How To Write With An LLM"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

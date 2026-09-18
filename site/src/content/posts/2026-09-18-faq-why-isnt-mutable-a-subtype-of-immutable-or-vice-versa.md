@@ -1,14 +1,14 @@
 ---
-title: "Benchmarking Wild vs Mold"
+title: "FAQ: Why isn’t mutable a subtype of immutable, or vice versa?"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T15:25:08+00:00
-addedAt: 2026-09-18T19:09:05.113872+00:00
+pubDate: 2026-09-18T15:30:01+00:00
+addedAt: 2026-09-18T20:30:19.571525+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://davidlattimore.github.io/posts/2026/09/18/benchmarking-wild-vs-mold.html"
-tags: ["benchmark"]
-heat: 80
-score: 1.07193
+sourceUrl: "https://crumbles.blog/posts/2026-09-17-immutable-mutable.html"
+tags: ["tech"]
+heat: 89
+score: 0.6186
 readMinutes: 1
 ---
 

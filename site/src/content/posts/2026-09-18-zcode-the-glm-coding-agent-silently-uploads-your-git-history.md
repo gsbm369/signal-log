@@ -1,15 +1,16 @@
 ---
-title: "Cloudflare Quick Tunnels"
+title: "ZCode, the GLM coding agent, silently uploads your Git history"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T14:18:41+00:00
-addedAt: 2026-09-18T19:09:05.114057+00:00
+pubDate: 2026-09-18T10:35:28+00:00
+addedAt: 2026-09-18T20:30:19.571718+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://try.cloudflare.com/"
-tags: ["cloudflare"]
-heat: 75
-score: 0.9587
+sourceUrl: "https://tokenstead.ai/guides/zcode-silent-git-history-upload"
+tags: ["tech"]
+heat: 77
+score: 0.47791
 readMinutes: 1
+image: "https://tokenstead.ai/og/guides/zcode-silent-git-history-upload.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

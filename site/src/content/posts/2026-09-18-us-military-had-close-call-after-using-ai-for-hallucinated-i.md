@@ -1,14 +1,14 @@
 ---
-title: "Why I didn’t sign the Fields medallists’ letter"
+title: "US Military had close call after using AI for hallucinated intelligence report"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-17T08:51:51+00:00
-addedAt: 2026-09-18T13:52:54.381531+00:00
+pubDate: 2026-09-18T17:28:01+00:00
+addedAt: 2026-09-18T20:30:19.571438+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://gowers.wordpress.com/2026/09/17/why-i-didnt-sign-the-fields-medallists-letter/"
+sourceUrl: "https://www.cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship"
 tags: ["tech"]
-heat: 50
-score: 0.22901
+heat: 90
+score: 0.62279
 readMinutes: 1
 ---
 
