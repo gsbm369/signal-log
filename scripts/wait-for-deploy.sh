@@ -9,8 +9,13 @@
 # world-readable through `ps` for the lifetime of the command.
 #
 # Usage: wait-for-deploy.sh <commit-sha>
-# Exit:  0 success   1 workflow failed   2 timed out
+# Exit:  0 success   1 workflow failed
+#        2 timed out — a run EXISTS but did not conclude within the deadline
 #        3 no run expected (commit touches no deploy-triggering path)
+#        4 not a commit — the argument does not resolve; nothing is polled
+#        5 no workflow run exists for the commit after the grace period —
+#          the workflow never triggered. Not a failed deploy and not a
+#          timeout: nothing ran at all.
 #        10 cannot check
 set -uo pipefail
 
@@ -20,12 +25,23 @@ SHA="${1:-}"
 [ -n "$SHA" ] || { echo "usage: $0 <commit-sha>"; exit 10; }
 
 log() { printf '[%s] %s\n' "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" "$*"; }
+
+# The Actions API's head_sha filter matches the FULL hash only. A short hash
+# returns zero runs, and zero runs used to read as "pending" for 900s and then
+# as a failed deploy. Resolve the argument before anything else, and refuse
+# what does not resolve instead of polling for it.
+FULL_SHA="$(git -C "$ROOT" rev-parse --verify --quiet "${SHA}^{commit}")" || {
+  log "not a commit: ${SHA}"; exit 4; }
+SHA="$FULL_SHA"
 env_get() { grep -E "^$1=" .env 2>/dev/null | tail -1 | cut -d= -f2- | tr -d '"'"'"'\r'; }
 
 GH_REPO="$(env_get GITHUB_REPO)"; GH_REPO="${GH_REPO:-gsbm369/signal-log}"
 CRED_FILE="$(git config --local --get credential.helper 2>/dev/null | sed -n 's/.*--file=\([^ ]*\).*/\1/p')"
 TIMEOUT="${DEPLOY_TIMEOUT:-900}"
 INTERVAL="${DEPLOY_POLL_INTERVAL:-20}"
+# How long a pushed commit may have NO run at all before we conclude the
+# workflow never triggered. GitHub normally registers a run within seconds.
+GRACE="${DEPLOY_NO_RUN_GRACE:-120}"
 
 [ -n "$CRED_FILE" ] && [ -r "$CRED_FILE" ] || {
   log "no readable credential file — cannot verify the deploy"; exit 10; }
@@ -47,13 +63,14 @@ fi
 log "waiting for the Actions run on ${SHA:0:8} (timeout ${TIMEOUT}s)"
 
 GH_REPO="$GH_REPO" SHA="$SHA" CRED_FILE="$CRED_FILE" \
-TIMEOUT="$TIMEOUT" INTERVAL="$INTERVAL" python3 <<'PY'
+TIMEOUT="$TIMEOUT" INTERVAL="$INTERVAL" GRACE="$GRACE" python3 <<'PY'
 import json, os, re, sys, time, urllib.error, urllib.request
 
 repo     = os.environ["GH_REPO"]
 sha      = os.environ["SHA"]
 timeout  = float(os.environ["TIMEOUT"])
 interval = float(os.environ["INTERVAL"])
+grace    = float(os.environ["GRACE"])
 
 # Read the token from the credential store; never touches argv or the environment
 # of any child process.
@@ -104,7 +121,14 @@ while waited < timeout:
         sys.exit(10)
 
     if run is None:
-        status, conclusion, url = "pending", None, "-"
+        # Zero runs is not "pending". Pending is a run that exists and has
+        # not finished; this is the absence of a run, and after the grace
+        # period it is its own answer.
+        if waited >= grace:
+            stamp(f"no workflow run exists for {sha[:12]} after {int(waited)}s — "
+                  f"the workflow never triggered (paths filter, or a disabled workflow)")
+            sys.exit(5)
+        status, conclusion, url = "not yet registered", None, "-"
     else:
         status = run.get("status") or "unknown"
         conclusion = run.get("conclusion")
