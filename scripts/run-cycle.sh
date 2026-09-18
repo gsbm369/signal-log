@@ -18,6 +18,12 @@ STAMP="$(date -u '+%Y%m%dT%H%M%SZ')"
 NEW_RELEASE="${RELEASES}/${STAMP}"
 
 CYCLE_START=$(date +%s)
+# ONE clock for the whole cycle's freshness policy. The curator's ingest gate
+# and pruner, the Astro build and the publish gate all read this, so "seven
+# days old" means the same instant everywhere. Named _UTC deliberately:
+# CYCLE_START above is an epoch integer used for duration arithmetic, and
+# reusing the name would have handed the builder "1789…" to parse as a date.
+export CYCLE_START_UTC="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 BUILD_STATUS="not_run"
 PUBLISH_STATUS="not_run"
 EXIT_CODE=0
@@ -53,7 +59,11 @@ log "=== publish cycle starting (${STAMP}) ==="
 # backend is unusable, and that is reported rather than skipped silently.
 if [ "${SKIP_CURATE:-0}" = "1" ]; then
   log "step 1/3: SKIP_CURATE=1 — building from existing posts only"
-  printf '{"curator_status":"skipped_flag","backend":"","model":"","cost_usd":0}' > "${STATE_DIR}/metrics.json"
+  # No curation, but the freshness policy still applies: nothing older than
+  # seven days may be built into the page, whether or not new items arrived.
+  if ! python3 /app/curator/curate.py --prune-only; then
+    log "WARN: prune-only failed — the publish gate below will still refuse stale cards"
+  fi
 else
   log "step 1/3: curating feeds (backend=${SUMMARIZER_BACKEND:-none})"
   # A curator failure is survivable: we still rebuild and republish what we have.
@@ -153,12 +163,38 @@ OLD_POSTS=0
 [ -d "${CURRENT}" ] && OLD_POSTS=$(find -L "${CURRENT}/posts" -name index.html 2>/dev/null | wc -l)
 
 # Guard against catastrophic content loss (e.g. the posts mount vanished).
-if [ "$OLD_POSTS" -gt 0 ] && [ "$NEW_POSTS" -lt $(( (OLD_POSTS + 1) / 2 )) ] && [ "${FORCE_PUBLISH:-0}" != "1" ]; then
+#
+# Posts removed by the FRESHNESS POLICY this cycle are not loss, and must not
+# trip this guard. After a long host downtime most of the live release can be
+# over seven days old at once; counted as loss, the guard would refuse the
+# publish and keep the stale site live — and refuse again every cycle after,
+# because each compares against the same stale release. The page would never
+# recover on its own. A vanished mount still trips it: it prunes nothing.
+PRUNED_STALE=$(python3 -c "import json,sys
+try: print(int(json.load(open('${STATE_DIR}/metrics.json')).get('pruned_stale',0)))
+except Exception: print(0)" 2>/dev/null || echo 0)
+EXPLAINED=$(( NEW_POSTS + PRUNED_STALE ))
+if [ "$OLD_POSTS" -gt 0 ] && [ "$EXPLAINED" -lt $(( (OLD_POSTS + 1) / 2 )) ] && [ "${FORCE_PUBLISH:-0}" != "1" ]; then
   log "FATAL: new build has ${NEW_POSTS} posts vs ${OLD_POSTS} live — looks like data loss, refusing."
   log "       set FORCE_PUBLISH=1 to override if this shrink is intentional."
   BUILD_STATUS="invalid_post_drop"; PUBLISH_STATUS="refused"; EXIT_CODE=1; exit 1
 fi
-log "validated: index ${INDEX_BYTES}B, ${NEW_POSTS} post page(s) (was ${OLD_POSTS})"
+log "validated: index ${INDEX_BYTES}B, ${NEW_POSTS} post page(s) (was ${OLD_POSTS}, ${PRUNED_STALE} aged out)"
+
+# FRESHNESS GATE — the policy checked on the artifact about to ship. Parses the
+# built index and refuses if any card is over seven days old, if any week-old
+# card lacks its visible label, or if any post URL renders twice. The curator
+# prunes and the layout filters; this is the check that does not trust either.
+if python3 /app/curator/check_freshness.py; then
+  log "freshness: every rendered card is within the 7-day policy"
+else
+  fr=$?
+  if [ "$fr" -eq 1 ]; then
+    log "FATAL: freshness gate refused — a rendered card violates the 7-day policy"
+    BUILD_STATUS="invalid_stale_card"; PUBLISH_STATUS="refused"; EXIT_CODE=1; exit 1
+  fi
+  log "WARN: freshness gate could not check (exit ${fr})"
+fi
 
 # --------------------------------------------------------------- 4. publish
 log "publishing release ${STAMP}"

@@ -273,3 +273,25 @@ body {
   font-size: clamp(1.4rem, 4vw, 2.6rem);
   align-self: center;
 }
+
+/* "this week" — a card older than 24h but inside the 7-day window. Visible on
+   purpose: the owner's policy is freshness over everything, so a card that is
+   not from today says so rather than passing for one. Muted, not alarming —
+   it is a date qualifier, not a warning. The publish gate checks this label is
+   present on every week-old card. */
+.chip--week {
+  color: var(--color-dim);
+  border-color: color-mix(in oklab, var(--color-dim) 45%, transparent);
+  background: transparent;
+  margin-left: 0.35rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+}
+
+/* An empty section keeps its heading and anchor, and says why it is empty. */
+.section-empty {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-faint);
+  padding: 0.6rem 0.5rem;
+}

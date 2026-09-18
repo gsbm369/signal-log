@@ -58,6 +58,36 @@ STATE_DIR = Path(os.environ.get("STATE_DIR", HERE / "state"))
 SEEN_FILE = STATE_DIR / "seen.json"
 DEFERRED_FILE = STATE_DIR / "deferred.json"
 
+# FRESHNESS POLICY (owner, 2026-09-18) — evergreen retired.
+#
+#   age = cycle start (UTC) minus the AUTHOR's publication date. Not addedAt.
+#   today      age <= 24h
+#   this week  age <= 7d
+#   > 7d       not ingested, not stored, not rendered — in EVERY category.
+#
+# Enforced in code rather than trusted to config: feed_policy() caps every
+# ingest window here, and prune_by_age() runs unconditionally at the start of
+# every cycle, before any early return, whatever max_posts or the floor say.
+FRESHNESS_DAYS = float(os.environ.get("FRESHNESS_DAYS", "7"))
+CATEGORY_CEILING = int(os.environ.get("CATEGORY_CEILING", "10"))
+
+
+def cycle_start() -> datetime:
+    """The one clock every age in this cycle is measured against.
+
+    run-cycle.sh exports CYCLE_START_UTC before curating and building, so the
+    curator's ingest gate, the pruner, the Astro build and the publish gate all
+    agree on what "7 days old" means. Falls back to now for ad-hoc runs.
+    """
+    raw = os.environ.get("CYCLE_START_UTC", "")
+    if raw:
+        try:
+            dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+            return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+        except ValueError:
+            pass
+    return datetime.now(timezone.utc)
+
 # How long to wait before re-checking a deferred item, and how long to keep
 # trying. LWN's paywall lifts at about seven days — measured against its own
 # archive, Sept 10 edition 403 at 1.8 days, Sept 3 edition 200 at 8.8 — so
@@ -378,6 +408,26 @@ def _is_free(url: str) -> bool | None:
         return None
 
 
+def ripened_article(rec: dict[str, Any], now: datetime | None = None) -> dict[str, Any]:
+    """Turn a ripened deferred record into an ordinary candidate article.
+
+    EFFECTIVE publication date = the RIPENING date, not first_seen. A [$] item
+    becomes public at about day eight, which always falls past the 7-day cap —
+    dated by first_seen it would be born already expired and pruned in the very
+    cycle that published it. Readers could not read it before today, so for
+    this publication today is when it was published, and it then ages out seven
+    days after ripening like anything else.
+    """
+    return {
+        "source": rec["source"], "category": rec["category"],
+        "_half_life_hours": None,
+        "title": rec["title"], "url": rec["url"],
+        "published": now or cycle_start(),
+        "summary": "", "image": None, "imageAlt": None,
+        "_entry": None, "key": rec["key"],
+    }
+
+
 def ripen_deferred(deferred: dict[str, dict[str, Any]],
                    now: datetime | None = None) -> list[dict[str, Any]]:
     """Promote deferred items whose paywall has lifted. Mutates `deferred`.
@@ -483,6 +533,9 @@ def feed_policy(feed: dict[str, Any], policies: dict[str, dict[str, Any]]) -> di
     for key in ("half_life_hours", "ingest_days", "fetch"):
         if feed.get(key) is not None:
             pol[key] = feed[key]
+    # No configuration may widen ingest past the freshness policy — not a
+    # category default, not a per-source override. deep_dives was 3650 days.
+    pol["ingest_days"] = min(float(pol["ingest_days"]), FRESHNESS_DAYS)
     return pol
 
 
@@ -523,7 +576,7 @@ def fetch_feed(feed: dict[str, Any], policy: dict[str, Any]) -> list[dict[str, A
         METRICS.setdefault("per_source_candidates", {})[name] = 0
         return []
 
-    now = datetime.now(timezone.utc)
+    now = cycle_start()
     out: list[dict[str, Any]] = []
     for entry in parsed.entries[:take]:
         link = getattr(entry, "link", "")
@@ -739,6 +792,53 @@ def record_published(
     return added
 
 
+_PUBDATE = re.compile(r"^pubDate:\s*(\S+)\s*$", re.M)
+_CATEGORY = re.compile(r"^category:\s*(\S+)\s*$", re.M)
+
+
+def _author_date(path: Path) -> datetime | None:
+    m = _PUBDATE.search(path.read_text(encoding="utf-8")[:1200])
+    if not m:
+        return None
+    try:
+        dt = datetime.fromisoformat(m.group(1).strip('"').replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def prune_by_age(now: datetime | None = None) -> int:
+    """Delete every post whose AUTHOR date is older than FRESHNESS_DAYS.
+
+    AGE BEATS THE FLOOR. Measured live 2026-09-18: 58 of 60 posts were inside
+    seven days, and the two that were not survived because the per-category
+    floor protects each category's newest three regardless of age — a Dan Luu
+    post at 110 days held a Deep Dives slot because nothing newer existed in
+    that category. So this runs FIRST, every cycle, before the floor, the
+    ceiling or max_posts are consulted, and a category is allowed to go to zero.
+
+    A post whose date cannot be read is deleted too: the ingest gate already
+    refuses undated items, and "unknown age" cannot satisfy "at most a week".
+    """
+    now = now or cycle_start()
+    limit = timedelta(days=FRESHNESS_DAYS)
+    removed = 0
+    oldest_h = 0.0
+    for path in sorted(CONTENT_DIR.glob("*.md")):
+        dt = _author_date(path)
+        if dt is None or now - dt > limit:
+            log.info("prune-by-age: %s (%s)", path.name,
+                     "no readable pubDate" if dt is None
+                     else f"{(now - dt).total_seconds() / 86400:.1f}d old")
+            path.unlink()
+            removed += 1
+        else:
+            oldest_h = max(oldest_h, (now - dt).total_seconds() / 3600)
+    METRICS["pruned_stale"] = removed
+    METRICS["oldest_live_age_hours"] = round(oldest_h, 1)
+    return removed
+
+
 def prune_posts(max_posts: int) -> int:
     """Keep the most recently PUBLISHED HERE posts, not the most recently written.
 
@@ -759,9 +859,27 @@ def prune_posts(max_posts: int) -> int:
     want while the news taxonomy ages out.
     """
     posts = sorted(CONTENT_DIR.glob("*.md"), key=_added_at)
+
+    # PER-CATEGORY CEILING, inside the 7-day set: no category holds more than
+    # CATEGORY_CEILING posts, oldest-added go first. It runs before max_posts so
+    # one loud category cannot use the global cap to crowd out the others.
+    ceiled = 0
+    if CATEGORY_CEILING > 0:
+        by_cat_all: dict[str, list[Path]] = {}
+        for path in posts:
+            m = _CATEGORY.search(path.read_text(encoding="utf-8")[:1200])
+            by_cat_all.setdefault(m.group(1) if m else "uncategorised", []).append(path)
+        for cat, paths in by_cat_all.items():
+            for path in paths[:-CATEGORY_CEILING] if len(paths) > CATEGORY_CEILING else []:
+                path.unlink()
+                ceiled += 1
+        if ceiled:
+            posts = sorted(CONTENT_DIR.glob("*.md"), key=_added_at)
+    METRICS["pruned_ceiling"] = ceiled
+
     excess = len(posts) - max_posts
     if excess <= 0:
-        return 0
+        return ceiled
 
     # PER-CATEGORY FLOOR.
     #
@@ -797,7 +915,7 @@ def prune_posts(max_posts: int) -> int:
                     len(posts) - len(to_drop) - max_posts, max_posts)
     for path in to_drop:
         path.unlink()
-    return len(to_drop)
+    return len(to_drop) + ceiled
 
 
 # --------------------------------------------------------------------------- #
@@ -811,6 +929,8 @@ def _run() -> int:
     ap.add_argument("--count", type=int, help="override how many stories to publish")
     ap.add_argument("--backend", choices=sorted(summarizers.BACKENDS), help="override the summarizer backend")
     ap.add_argument("--verbose", "-v", action="store_true")
+    ap.add_argument("--prune-only", action="store_true",
+                    help="enforce the freshness policy on posts on disk, then exit")
     args = ap.parse_args()
 
     logging.basicConfig(
@@ -818,6 +938,19 @@ def _run() -> int:
         format="%(asctime)s  %(levelname)-7s %(message)s",
         datefmt="%H:%M:%S",
     )
+
+    # FIRST, and unconditionally: nothing older than the freshness limit may
+    # survive this cycle. This used to live only at the end of _run, AFTER the
+    # early returns — so a cycle with no new articles, a dead backend or a
+    # missing feeds file never pruned at all, and a stale post outlived any
+    # number of quiet cycles. The first cycle after a host downtime is exactly
+    # the one most likely to take an early return.
+    stale = prune_by_age()
+    if stale:
+        log.info("prune-by-age: removed %d post(s) older than %.0f days", stale, FRESHNESS_DAYS)
+    if args.prune_only:
+        METRICS["curator_status"] = "prune_only"
+        return 0
 
     if not FEEDS_FILE.exists():
         log.error("feeds file not found: %s", FEEDS_FILE)
@@ -894,21 +1027,7 @@ def _run() -> int:
         log.info("deferred: +%d new not-yet-published item(s)", added)
 
     for rec in ripen_deferred(deferred):
-        # Re-enters the pipeline as an ordinary article. Its pubDate is the
-        # ORIGINAL publication date, which is what the category's ingest window
-        # is measured against — devops_linux ingests 30 days, so an item that
-        # ripens at day eight is comfortably inside it.
-        try:
-            published = datetime.fromisoformat(rec["first_seen"])
-        except (KeyError, ValueError):
-            continue
-        articles.append({
-            "source": rec["source"], "category": rec["category"],
-            "_half_life_hours": None,
-            "title": rec["title"], "url": rec["url"], "published": published,
-            "summary": "", "image": None, "imageAlt": None,
-            "_entry": None, "key": rec["key"],
-        })
+        articles.append(ripened_article(rec))
         log.info("deferred -> publishable: %s (%s)", rec["title"][:60], rec["source"])
     save_deferred(deferred)
 

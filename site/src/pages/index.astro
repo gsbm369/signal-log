@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import Logo from '../components/Logo.astro';
+import { freshnessOf } from '../freshness';
 
 const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -39,50 +40,34 @@ const CATEGORY_ORDER = Object.keys(CATEGORY_LABELS) as Category[];
 const categoryOf = (p: (typeof posts)[number]) =>
   (p.data.category ?? 'aggregators') as Category;
 
-/* Highest score first. `score` is the ranker's raw value, not the per-run
-   normalised `heat`, so it is comparable across categories and across runs. */
-const byScore = [...posts].sort((a, b) => (b.data.score ?? 0) - (a.data.score ?? 0));
+/* ------------------------------------------------------------------------ *
+ * FRESHNESS POLICY (owner, 2026-09-18). Evergreen retired.
+ *
+ *   today      age <= 24h       this week  age <= 7d       older  never shown
+ *
+ * The curator already prunes anything past seven days, so `stale` should be
+ * empty here. It is filtered anyway: the page must not depend on the pruner
+ * having run, and the publish gate independently refuses to ship a card that
+ * is over the limit.
+ * ------------------------------------------------------------------------ */
+const byScore = (list: typeof posts) =>
+  [...list].sort((a, b) => (b.data.score ?? 0) - (a.data.score ?? 0));
 
-/* THE FOLD BELONGS TO THE DEPTH CATEGORIES.
- *
- * Drawing the hero by raw score across ALL categories was measured doing the
- * wrong thing: the hero and all four cards came back as Finextra payments
- * announcements. It is not a scoring bug. fintech, gaming and aggregators are
- * news-shaped and publish constantly, so at a 72h half-life their items are
- * always the freshest thing in the set — and "freshest" wins a cross-category
- * score comparison most of the time.
- *
- * That is the same volume problem the brief warned about, arriving at the one
- * place it does most damage. The page prints "depth outranks announcements" a
- * few inches lower; the fold has to mean it.
- *
- * The news categories are not demoted — they keep their own sections, at full
- * size. They just do not get to be the masthead. */
-const DEPTH: Category[] = ['system_design', 'company_eng', 'deep_dives', 'devops_linux'];
-const depthPool = byScore.filter((p) => DEPTH.includes(categoryOf(p)));
+const fresh = posts.filter((p) => freshnessOf(p.data.pubDate) !== 'stale');
+const today = byScore(fresh.filter((p) => freshnessOf(p.data.pubDate) === 'today'));
+const thisWeek = byScore(fresh.filter((p) => freshnessOf(p.data.pubDate) === 'week'));
 
-/* Fall back to the whole set only if the depth categories are empty, so a
-   cold start still renders something rather than an empty state. */
-const frontRunners = depthPool.length >= 5 ? depthPool : byScore;
-
-/* One slot per source in the fold.
- *
- * Measured: the hero and all four cards came back as five consecutive Marc
- * Brooker posts. The ranker's per-source cap applies within a RUN, and these
- * five arrived across different runs, so nothing downstream stopped one author
- * monopolising the masthead. A newsletter whose front page is one blog is a
- * blog.
- *
- * Falls back to allowing repeats only if there are not five distinct sources,
- * so a thin day still fills the row. */
+/* One slot per source in the fold — kept from the earlier fold work, applied as
+   a tiebreak inside "top 5 by score": a newsletter whose front page is one blog
+   is a blog. Repeats are allowed only if five distinct sources do not exist. */
 const pickDistinct = (pool: typeof posts, n: number) => {
   const seen = new Set<string>();
   const out: typeof posts = [];
   for (const post of pool) {
+    if (out.length === n) break;
     if (seen.has(post.data.source)) continue;
     seen.add(post.data.source);
     out.push(post);
-    if (out.length === n) break;
   }
   for (const post of pool) {
     if (out.length === n) break;
@@ -91,42 +76,35 @@ const pickDistinct = (pool: typeof posts, n: number) => {
   return out;
 };
 
-/* Top up from OUTSIDE the depth categories before repeating a byline.
- *
- * Measured: the depth pool held 38 posts and only FOUR distinct sources —
- * ByteByteGo, Dan Luu, Marc Brooker, Pragmatic Engineer — because company_eng
- * and devops_linux had been pruned to zero and deep_dives down to one author.
- * So the fifth slot fell through to the repeat fallback and Marc Brooker held
- * positions 1 and 5. The cap was working exactly as written; the pool was
- * starved.
- *
- * Brooker also occupied the top EIGHT of that pool by score: the per-source cap
- * in the ranker applies within a run, he has accumulated a dozen posts across
- * runs, and deep_dives' 4320h half-life keeps all of them competitive for
- * months. Without this the front page is one blog.
- *
- * A fifth distinct byline from fintech or gaming is a better front page than
- * the same name twice. Depth still gets first refusal on every slot. */
-const front = pickDistinct([...frontRunners, ...byScore], 5);
+/* FOLD: top five by score from TODAY, across every category. Only if fewer
+   than five exist does it reach into THIS WEEK. The earlier depth-only fold is
+   superseded — the owner's rule is freshness first, category second. */
+const front = pickDistinct([...today, ...thisWeek], 5);
 const lead = front[0];
 const cards = front.slice(1, 5);
-const featured = new Set([lead, ...cards].filter(Boolean).map((p) => p.id));
+const featured = new Set(front.map((p) => p.id));
 
-/* Every category becomes a section — the table of contents the brief asked for.
-   Featured posts are held out so the hero does not reappear three inches lower. */
-const shelves = CATEGORY_ORDER.map((key) => ({
-  key,
-  label: CATEGORY_LABELS[key],
-  items: posts.filter((p) => categoryOf(p) === key && !featured.has(p.id)).slice(0, 6),
-})).filter((s) => s.items.length > 0);
+/* SECTIONS: a fixed quota of six each.
+ *   1. fill from TODAY in this category, by score
+ *   2. top up from THIS WEEK in the SAME category, by score (labelled)
+ *   3. still short: render fewer. Zero: keep the heading, say so.
+ * Never borrow across categories — an empty slot stays empty. Fold posts are
+ * held out, so no post URL appears twice on the page. */
+const SECTION_QUOTA = 6;
+const shelves = CATEGORY_ORDER.map((key) => {
+  const mine = (list: typeof posts) =>
+    list.filter((p) => categoryOf(p) === key && !featured.has(p.id));
+  const items = [...mine(today), ...mine(thisWeek)].slice(0, SECTION_QUOTA);
+  return { key, label: CATEGORY_LABELS[key], items };
+});
 
-/* The tail: everything not in the hero row and not shown on a shelf. */
-const shelved = new Set(shelves.flatMap((s) => s.items.map((p) => p.id)));
-const rest = byScore.filter((p) => !featured.has(p.id) && !shelved.has(p.id));
+/* The tail: fresh posts not in the fold and not on a shelf — the overflow
+   beyond each section's six. Same seven-day limit, same labels. */
+const shown = new Set([...featured, ...shelves.flatMap((s) => s.items.map((p) => p.id))]);
+const rest = [...today, ...thisWeek].filter((p) => !shown.has(p.id));
 
-/* What the masthead counts. Every post is reachable from this page now, so the
-   number is the whole collection rather than one category's share of it. */
-const tech = posts;
+/* What the masthead counts: every post that may be shown, i.e. the fresh set. */
+const tech = fresh;
 
 const sources = [...new Set(posts.map((p) => p.data.source))];
 /* When the SITE last rebuilt, from the most recent addedAt — not from the lead
@@ -173,18 +151,18 @@ const lastRun =
   <!-- ── The chart ────────────────────────────────────────────── -->
   <section id="feed" class="mt-9">
     {
-      tech.length === 0 ? (
+      front.length === 0 ? (
         <p class="py-16 text-center font-mono text-[0.85rem] text-faint">
-          nothing ranked yet — the curator runs on a timer
+          no new posts this week
         </p>
       ) : (
         <>
-          <PostCard post={lead} index={0} variant="hero" />
+          <PostCard post={lead} index={0} variant="hero" section="fold" />
 
           {cards.length > 0 && (
             <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {cards.map((post, i) => (
-                <PostCard post={post} index={i + 1} variant="card" />
+                <PostCard post={post} index={i + 1} variant="card" section="fold" />
               ))}
             </div>
           )}
@@ -209,7 +187,11 @@ const lastRun =
 
         <div class="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
           {shelves.map((shelf) => (
-            <div class="reveal">
+            /* Every category renders, even empty, so section order and #anchors
+               stay stable from one issue to the next. data-section scopes the
+               isolation test: each section's HTML must not change when another
+               category loses all its posts. */
+            <section class="reveal" id={shelf.key} data-section={shelf.key}>
               <h3
                 class="font-mono text-[0.68rem] uppercase tracking-[0.14em]"
                 style={`color: var(--cat)`}
@@ -218,11 +200,15 @@ const lastRun =
                 {shelf.label}
               </h3>
               <div class="mt-1">
-                {shelf.items.map((post, i) => (
-                  <PostCard post={post} index={i} variant="mini" />
-                ))}
+                {shelf.items.length === 0 ? (
+                  <p class="section-empty">no new posts this week</p>
+                ) : (
+                  shelf.items.map((post, i) => (
+                    <PostCard post={post} index={i} variant="mini" section={shelf.key} />
+                  ))
+                )}
               </div>
-            </div>
+            </section>
           ))}
         </div>
       </section>
@@ -246,7 +232,7 @@ const lastRun =
         </div>
         <div class="grid gap-1 md:grid-cols-2 md:gap-x-4">
           {rest.map((post, i) => (
-            <PostCard post={post} index={i + 5} variant="row" />
+            <PostCard post={post} index={i + 5} variant="row" section="tail" />
           ))}
         </div>
       </section>

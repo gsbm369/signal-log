@@ -78,24 +78,21 @@
     # tighter to bite. At 18h a 36h-old link scores 0.25 and a 72h-old one 0.06,
     # which is the same editorial result without discarding the outage
     # catch-up.
+    # FRESHNESS POLICY (owner, 2026-09-18) — evergreen retired.
+    # Every category ingests seven days, deep_dives included (was 3650). The
+    # curator ALSO caps this in code, so no future edit here can widen it.
+    # The evergreen-era half-lives went with it: deep_dives 4320h and the
+    # per-source overrides (Brooker 4320h, Stripe/Plaid 720h, Game Developer,
+    # Unity, Godot 336h) existed to keep months-old writing competitive, which a
+    # 7-day cap makes meaningless.
     scoring_categories:
-      system_design: { half_life_hours: 168,  ingest_days: 730,  retention_days: 45,   cap: 6 }
-      company_eng:   { half_life_hours: 336,  ingest_days: 730,  retention_days: 365,  cap: 6 }
-      # 30d, not 3d. MEASURED on the first run with the new config: at a 3-day
-      # window the Kubernetes Blog contributed 2 of its 15 entries and 13 were
-      # rejected as too_old — it posts weekly, so a news-shaped window deletes
-      # almost all of it. The 72h half-life still demotes a fortnight-old item to
-      # 2^(-4.6); the window's job is only to let it be seen at all.
-      devops_linux:  { half_life_hours: 72,   ingest_days: 30,   retention_days: 45,   cap: 6 }
-      deep_dives:    { half_life_hours: 4320, ingest_days: 3650, retention_days: null, cap: 6 }
-      aggregators:   { half_life_hours: 18,   ingest_days: 3,    retention_days: 45,   cap: 6 }
-      # 30d for the same reason: TechCrunch Fintech returned 0 candidates at 3
-      # days — all 15 of its entries were older than the window, so the source
-      # was silently contributing nothing whatsoever.
-      fintech:       { half_life_hours: 72,   ingest_days: 30,   retention_days: 45,   cap: 6 }
-      # 14d: GameFromScratch surfaced 3 of 12 at a 3-day window.
-      gaming:        { half_life_hours: 72,   ingest_days: 14,   retention_days: 45,   cap: 6 }
-    extra_noise_filter: true    # listicle/deals/AskHN patterns on top of the ported list
+      system_design: { half_life_hours: 168, ingest_days: 7, retention_days: 45,   cap: 6 }
+      company_eng:   { half_life_hours: 336, ingest_days: 7, retention_days: 365,  cap: 6 }
+      devops_linux:  { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      deep_dives:    { half_life_hours: 168, ingest_days: 7, retention_days: null, cap: 6 }
+      aggregators:   { half_life_hours: 18,  ingest_days: 3, retention_days: 45,   cap: 6 }
+      fintech:       { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      gaming:        { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
 
     # Summarizer backend: none | ollama | anthropic.
     # `none` is the default: no model, no API key, no spend. Selection is
@@ -143,20 +140,19 @@
     # from 0.85 for exactly this. At the old floor, 0.60 and 0.70 both clamped to
     # 0.85 and the policy above was silently deleted.
     #
-    # half_life_hours / ingest_days on a SOURCE override its category. Cadence
-    # and subject are independent: Marc Brooker writes system_design at a
-    # deep_dives rhythm. Overriding the curve without also widening the window
-    # does nothing — the item is dropped at fetch time before the curve is read.
+    # Per-source half_life_hours / ingest_days overrides are still SUPPORTED by
+    # the curator but none are set: they existed to keep slow evergreen sources
+    # competitive, and under the 7-day freshness policy (2026-09-18) there is no
+    # archive to keep competitive. Any ingest_days set here is capped at 7 in
+    # code regardless.
     blog_feeds:
       # ---- system_design ----
       - { name: ByteByteGo,         url: "https://blog.bytebytego.com/feed",              category: system_design, weight: 0.95, fetch: 15 }
       - { name: InfoQ,              url: "https://feed.infoq.com/",                       category: system_design, weight: 0.85, fetch: 20 }
       - { name: Pragmatic Engineer, url: "https://blog.pragmaticengineer.com/rss/",       category: system_design, weight: 0.90, fetch: 15 }
-      # Measured newest post 43.8 days old on 2026-09-10 — evergreen cadence in a
-      # news-cadence category. Stays in system_design because his SUBJECT is
-      # correct; moving him to deep_dives would also hand him that category's
-      # retention_days: null, which is a different decision.
-      - { name: Marc Brooker,       url: "https://brooker.co.za/blog/rss.xml",            category: system_design, weight: 0.95, fetch: 40, half_life_hours: 4320 }
+      # Posts every few weeks. Under the 7-day policy he appears only in the
+      # week after he publishes, and contributes nothing in between — expected.
+      - { name: Marc Brooker,       url: "https://brooker.co.za/blog/rss.xml",            category: system_design, weight: 0.95, fetch: 40 }
 
       # ---- company_eng ----
       - { name: Cloudflare,         url: "https://blog.cloudflare.com/rss/",              category: company_eng,   weight: 0.95, fetch: 15 }
@@ -208,12 +204,11 @@
       - { name: Lobsters,           url: "https://lobste.rs/rss",                         category: aggregators,   weight: 0.75, fetch: 25 }
 
       # ---- fintech ----
-      # Stripe and Plaid write engineering, not headlines, and measured 21.8d and
-      # slower. Inside fintech's 3-day window they would never be ingested, so
-      # they carry BOTH overrides. This pairing is the reason ingest_days is
-      # per-source and not only per-category.
-      - { name: Stripe Blog,        url: "https://stripe.com/blog/feed.rss",              category: fintech,       weight: 0.95, fetch: 10, half_life_hours: 720, ingest_days: 365 }
-      - { name: Plaid Blog,         url: "https://plaid.com/blog/rss.xml",                category: fintech,       weight: 0.90, fetch: 10, half_life_hours: 720, ingest_days: 365 }
+      # Stripe and Plaid post roughly monthly. Under the 7-day policy they
+      # contribute only in the week after a post, and nothing otherwise — the
+      # policy working, not a fault. Do not widen their windows to compensate.
+      - { name: Stripe Blog,        url: "https://stripe.com/blog/feed.rss",              category: fintech,       weight: 0.95, fetch: 10 }
+      - { name: Plaid Blog,         url: "https://plaid.com/blog/rss.xml",                category: fintech,       weight: 0.90, fetch: 10 }
       # Dates its scheduled webinars at air time — 11 of 54 items measured up to
       # 55.8 days in the FUTURE. Kept; the date-validity guard in
       # curate.entry_datetime() rejects them. That guard is not a content filter.
@@ -226,13 +221,12 @@
       - { name: TechCrunch Fintech, url: "https://techcrunch.com/category/fintech/feed/", category: fintech,       weight: 0.70, fetch: 15 }
 
       # ---- gaming ----
-      # The engine/tooling sources get a slower curve and a wider window than the
-      # release-date sources sharing the category. A Game Developer graphics
-      # postmortem is worth surfacing a fortnight later; a Eurogamer headline is
-      # not.
-      - { name: Game Developer,     url: "https://www.gamedeveloper.com/rss.xml",         category: gaming,        weight: 0.95, fetch: 25, half_life_hours: 336, ingest_days: 30 }
-      - { name: Unity Blog,         url: "https://blog.unity.com/feed",                   category: gaming,        weight: 0.85, fetch: 15, half_life_hours: 336, ingest_days: 90 }
-      - { name: Godot Engine,       url: "https://godotengine.org/rss.xml",               category: gaming,        weight: 0.85, fetch: 15, half_life_hours: 336, ingest_days: 90 }
+      # Engine/tooling sources (Game Developer, Unity, Godot) previously had a
+      # slower curve than the release-date sites; retired with the 7-day policy.
+      # Their editorial preference now lives only in trust weight.
+      - { name: Game Developer,     url: "https://www.gamedeveloper.com/rss.xml",         category: gaming,        weight: 0.95, fetch: 25 }
+      - { name: Unity Blog,         url: "https://blog.unity.com/feed",                   category: gaming,        weight: 0.85, fetch: 15 }
+      - { name: Godot Engine,       url: "https://godotengine.org/rss.xml",               category: gaming,        weight: 0.85, fetch: 15 }
       - { name: GameFromScratch,    url: "https://gamefromscratch.com/feed/",             category: gaming,        weight: 0.70, fetch: 12 }
       - { name: Polygon,            url: "https://www.polygon.com/rss/index.xml",         category: gaming,        weight: 0.65, fetch: 12 }
       - { name: Eurogamer,          url: "https://www.eurogamer.net/feed",                category: gaming,        weight: 0.60, fetch: 12 }

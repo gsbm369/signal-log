@@ -1,4 +1,5 @@
 ---
+import { freshnessOf } from '../freshness';
 import type { CollectionEntry } from 'astro:content';
 
 /*
@@ -23,9 +24,13 @@ interface Props {
   post: CollectionEntry<'posts'>;
   index: number;
   variant?: 'hero' | 'card' | 'row' | 'mini';
+  /* Which part of the page rendered this card — "fold", a category slug, or
+     "tail". Carried into the HTML so the publish gate can report the oldest
+     rendered age per section without re-deriving the layout. */
+  section?: string;
 }
 
-const { post, index, variant = 'card' } = Astro.props;
+const { post, index, variant = 'card', section = 'unassigned' } = Astro.props;
 const { title, description, pubDate, source, heat, readMinutes, image, imageAlt } = post.data;
 const category = post.data.category ?? 'aggregators';
 
@@ -38,11 +43,18 @@ const dateShort = pubDate.toLocaleDateString('en-GB', { day: '2-digit', month: '
 const pct = Math.min(100, Math.max(10, Math.round(heat / 10) * 10));
 const hot = heat >= 90;
 const alt = imageAlt ?? '';
+
+/* Every card declares its author date and its freshness bucket in the markup.
+   The publish gate parses exactly these attributes: a card over seven days old
+   fails the publish, and a "week" card without the visible label below fails
+   it too. A card that renders without data-published cannot hide from the
+   gate — the gate treats a missing attribute as a failure, not a pass. */
+const freshness = freshnessOf(pubDate);
 ---
 
 {
   variant === 'hero' && (
-    <article class="card reveal" data-cat={category}>
+    <article class="card reveal" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
       <div class={`shot shot--wide${image ? '' : ' shot--empty'}`}>
@@ -58,6 +70,7 @@ const alt = imageAlt ?? '';
             <span class="src">{source}</span>
             <span class="sep">/</span>
             <time datetime={iso}>{dateShort}</time>
+            {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
             <span class="sep">/</span>
             <span>{readMinutes} min</span>
           </span>
@@ -75,7 +88,7 @@ const alt = imageAlt ?? '';
 
 {
   variant === 'card' && (
-    <article class="card reveal flex flex-col" data-cat={category}>
+    <article class="card reveal flex flex-col" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
       <div class={`shot shot--card${image ? '' : ' shot--empty'}`}>
@@ -92,6 +105,7 @@ const alt = imageAlt ?? '';
           <span class="src">{source}</span>
           <span class="sep">/</span>
           <time datetime={iso}>{dateShort}</time>
+            {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
         </div>
       </div>
     </article>
@@ -100,7 +114,7 @@ const alt = imageAlt ?? '';
 
 {
   variant === 'row' && (
-    <article class="row group" data-cat={category}>
+    <article class="row group" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
 
       <span class="row-rank">{num}</span>
@@ -117,6 +131,7 @@ const alt = imageAlt ?? '';
           <span class="src">{source}</span>
           <span class="sep">/</span>
           <time datetime={iso}>{dateShort}</time>
+            {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
           {hot && <span class="chip chip--hot ml-1">hot</span>}
         </div>
         <span class="heat-bar mt-2 max-w-[6rem]" title={`Heat ${heat}/100`}>
@@ -129,7 +144,7 @@ const alt = imageAlt ?? '';
 
 {
   variant === 'mini' && (
-    <article class="row group !px-2 !py-2.5" data-cat={category}>
+    <article class="row group !px-2 !py-2.5" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
       <a href={href} class="absolute inset-0 z-10" aria-label={title} />
       <div class="min-w-0 flex-1">
         <h3 class="card-title font-display text-[0.87rem] font-semibold leading-[1.35] text-ink">
@@ -139,6 +154,7 @@ const alt = imageAlt ?? '';
           <span class="src">{source}</span>
           <span class="sep">/</span>
           <time datetime={iso}>{dateShort}</time>
+            {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
         </div>
       </div>
     </article>
