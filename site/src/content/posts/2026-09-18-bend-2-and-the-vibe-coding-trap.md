@@ -1,16 +1,15 @@
 ---
-title: "The American Religion of Self-Storage Facilities"
+title: "Bend 2 and the Vibe-Coding Trap"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-17T13:12:28+00:00
-addedAt: 2026-09-18T13:40:10.698212+00:00
+pubDate: 2026-09-18T12:03:55+00:00
+addedAt: 2026-09-18T19:09:05.114346+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.newyorker.com/magazine/2026/09/21/the-american-religion-of-self-storage-facilities"
+sourceUrl: "https://blog.liampwll.com/posts/bend_vibe_coding/"
 tags: ["tech"]
-heat: 54
-score: 0.27291
+heat: 52
+score: 0.53289
 readMinutes: 1
-image: "https://media.newyorker.com/photos/6aa161756eb1482789ace667/16:9/w_1280,c_limit/r50012.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

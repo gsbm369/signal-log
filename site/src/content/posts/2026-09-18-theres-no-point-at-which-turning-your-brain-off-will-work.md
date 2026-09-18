@@ -1,16 +1,15 @@
 ---
-title: "Labeled matches: why is this not in every regex engine?"
+title: "There's no point at which turning your brain off will work"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-17T16:44:39+00:00
-addedAt: 2026-09-18T13:52:54.381360+00:00
+pubDate: 2026-09-18T17:15:40+00:00
+addedAt: 2026-09-18T19:09:05.114138+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://iev.ee/blog/categorize-everything-all-at-once/"
+sourceUrl: "https://danluu.com/brain-off/"
 tags: ["tech"]
-heat: 63
-score: 0.33235
+heat: 62
+score: 0.69742
 readMinutes: 1
-image: "https://iev.ee/og-image.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
