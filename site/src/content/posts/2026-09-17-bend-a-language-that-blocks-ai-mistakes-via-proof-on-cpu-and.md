@@ -1,17 +1,15 @@
 ---
-title: "Training a 4B model to produce 81% faster query plans than Postgres"
+title: "Bend – A language that blocks AI mistakes via proof, on CPU and GPU"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-16T18:50:00+00:00
-addedAt: 2026-09-17T07:48:26.662037+00:00
+pubDate: 2026-09-17T20:36:13+00:00
+addedAt: 2026-09-18T01:29:46.474707+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://rohanbansal.com/qorl"
-tags: ["postgres"]
-heat: 85
-score: 0.70085
+sourceUrl: "https://bend-lang.com/"
+tags: ["gpu"]
+heat: 80
+score: 0.95674
 readMinutes: 1
-image: "https://rohanbansal.com/og/qorl-20260916.png"
-imageAlt: "Training a 4B model to produce 81% faster query plans than Postgres"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -1,14 +1,14 @@
 ---
-title: "Why .tar.gz files can't be combined with cat"
+title: "We Must Create the Shit Machine"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-16T22:55:11+00:00
-addedAt: 2026-09-17T07:48:26.662354+00:00
+pubDate: 2026-09-18T00:00:28+00:00
+addedAt: 2026-09-18T01:29:46.474944+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://alexwlchan.net/2026/cat-confusion/"
+sourceUrl: "https://www.mcsweeneys.net/articles/we-must-create-the-shit-machine"
 tags: ["tech"]
-heat: 72
-score: 0.53265
+heat: 67
+score: 0.70828
 readMinutes: 1
 ---
 
