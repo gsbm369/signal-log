@@ -1,16 +1,16 @@
 ---
-title: "Bonsai 2 27B: Near-Lossless Compression in a 9x Smaller Footprint"
+title: "The American Religion of Self-Storage Facilities"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-17T21:13:31+00:00
-addedAt: 2026-09-18T12:11:21.708058+00:00
+pubDate: 2026-09-17T13:12:28+00:00
+addedAt: 2026-09-18T13:40:10.698212+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://prismml.com/news/bonsai-2-27b"
+sourceUrl: "https://www.newyorker.com/magazine/2026/09/21/the-american-religion-of-self-storage-facilities"
 tags: ["tech"]
-heat: 47
-score: 0.39344
+heat: 54
+score: 0.27291
 readMinutes: 1
-image: "https://cdn.prod.website-files.com/699604cc2b9dd89bdbda0608/6a6d0e0bc0d5f9a97a5164c0_69cc089669ab0df26e921aac_prism-og-img%2520(2).png"
+image: "https://media.newyorker.com/photos/6aa161756eb1482789ace667/16:9/w_1280,c_limit/r50012.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
