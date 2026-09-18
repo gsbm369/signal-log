@@ -1,16 +1,15 @@
 ---
-title: "Everybody's Lost Their Minds"
+title: "Why I didn’t sign the Fields medallists’ letter"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-17T19:43:34+00:00
-addedAt: 2026-09-18T13:36:03.688072+00:00
+pubDate: 2026-09-17T08:51:51+00:00
+addedAt: 2026-09-18T13:52:54.381531+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.netmeister.org/blog/everybodys-lost-their-minds.html"
+sourceUrl: "https://gowers.wordpress.com/2026/09/17/why-i-didnt-sign-the-fields-medallists-letter/"
 tags: ["tech"]
-heat: 51
-score: 0.35171
+heat: 50
+score: 0.22901
 readMinutes: 1
-image: "https://www.netmeister.org/blog/images/tired.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
