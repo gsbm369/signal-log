@@ -173,6 +173,13 @@ def main() -> int:
 
     # Local log file (cron redirects stdout here) always gets the record.
     print("METRIC " + json.dumps(record, separators=(",", ":")), flush=True)
+    # The exact record that shipped, kept as a file. test_metric_coverage.py
+    # compares METRICS against it; reading it back out of cycle.log only works
+    # when systemd happens to be the one routing stdout into that file.
+    try:
+        (STATE_DIR / "last_record.json").write_text(json.dumps(record, indent=1))
+    except OSError:
+        pass
     print("loki push: " + push(record, level=level, status=cycle_status,
                                 extra_labels={"backend": str(m.get("backend") or "none")}),
           flush=True)

@@ -61,7 +61,19 @@ def exemptions(src: str) -> dict[str, str]:
 
 
 def emitted_record() -> dict | None:
-    """The last record the curator actually shipped."""
+    """The last record the curator actually shipped.
+
+    Read from state/last_record.json, which ship_to_loki.py writes as it emits.
+    This used to be scraped from cycle.log — which is on the HOST, so the check
+    could never see it from inside the builder container where it was wired in.
+    It skipped eleven cycles in a row and was never once in force.
+    """
+    rec = STATE.parent / "last_record.json"
+    if rec.exists():
+        try:
+            return json.loads(rec.read_text())
+        except json.JSONDecodeError:
+            pass
     if not CYCLE_LOG.exists():
         return None
     for line in reversed(CYCLE_LOG.read_text(errors="ignore").splitlines()):

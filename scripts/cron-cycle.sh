@@ -51,6 +51,21 @@ ship() {
     --deploy-status  "$DEPLOY_STATUS" \
     --exit-code      "$EXIT_CODE" \
     --duration       "$dur" || log "WARN: metric shipping failed"
+
+  # METRIC COVERAGE — here, on the host, AFTER the record exists. It used to run
+  # inside the builder container during the cycle, where this cycle's record
+  # had not been written yet and the previous one was on the other side of the
+  # mount. It skipped every cycle for a week, and the wrapper logged a reason it
+  # had invented ("no metrics.json yet") instead of the one the check printed.
+  # So: run it where the artifact is, and log the check's OWN last line.
+  cov_out=$(STATE_DIR="$STATE_DIR" python3 "${ROOT}/curator/test_metric_coverage.py" 2>&1); cov_rc=$?
+  cov_why=$(printf '%s\n' "$cov_out" | grep -v '^\s*$' | tail -1 | sed 's/^ *//')
+  case $cov_rc in
+    0) log "metric coverage: ${cov_why}" ;;
+    2) log "metric coverage: NOT CHECKED — ${cov_why}" ;;
+    *) log "WARN: metric coverage FAILED — ${cov_why}"
+       printf '%s\n' "$cov_out" | grep -E 'FAIL|missing' | head -5 | while read -r l; do log "      $l"; done ;;
+  esac
   log "=== cycle finished: build=$BUILD_STATUS publish=$PUBLISH_STATUS push=$PUSH_STATUS deploy=$DEPLOY_STATUS exit=$EXIT_CODE in ${dur}s ==="
 }
 
