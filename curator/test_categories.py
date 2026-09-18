@@ -84,6 +84,23 @@ def main() -> int:
     # it in both lists would exempt it from every check above.
     check("no category is both live and legacy", sorted(site & legacy), [])
 
+    # The global cap must never be the thing that evicts. The per-category
+    # ceiling decides what each category keeps; if max_posts is smaller than
+    # ceiling x categories, the global cap prunes oldest-added across the
+    # whole site and a QUIET category loses posts to make room for BUSY ones.
+    # Measured 2026-09-18: 9 categories x 10 against max_posts 60 cut
+    # devops_linux from 6 to 4 while four categories sat at their ceiling.
+    # Asserted as a relationship, so adding a tenth category fails here, not
+    # in production.
+    cur = (HERE / "curate.py").read_text()
+    cm = re.search(r'CATEGORY_CEILING\s*=\s*int\(os\.environ\.get\("CATEGORY_CEILING",\s*"(\d+)"\)\)', cur)
+    ceiling = int(__import__("os").environ.get("CATEGORY_CEILING", cm.group(1) if cm else "0"))
+    max_posts = int(((cfg.get("settings") or {}).get("max_posts")) or 0)
+    print(f"     max_posts {max_posts} vs ceiling {ceiling} x {len(declared)} categories = {ceiling * len(declared)}")
+    check("CATEGORY_CEILING is readable from curate.py", ceiling > 0, True)
+    check("max_posts >= ceiling x categories (the global cap never evicts)",
+          max_posts >= ceiling * len(declared), True)
+
     print()
     if FAILURES:
         print(f"FAILED: {FAILURES}")

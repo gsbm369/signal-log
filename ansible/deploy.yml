@@ -36,12 +36,13 @@
     cron_minute: 17
     max_candidates: 40          # articles sent to the model per run (cost driver)
     publish_count: 5            # articles summarised and published per run
-    # Back to 60. The 200 was a stay of execution with its removal condition
-    # written into the comment — "put this back once index.astro reads the seven
-    # live categories" — and index.astro now does. Every post is reachable from
-    # the home page, so holding four times as many buys nothing but disk on a
-    # volume that is 81% full.
-    max_posts: 60
+    # 90 = CATEGORY_CEILING (10) x 9 categories. The per-category ceiling
+    # decides what each category keeps; the global cap must never evict. At 60
+    # it did: the first cycle with microsoft and languages cut devops_linux
+    # from 6 to 4, a quiet category losing posts to make room for busy ones.
+    # test_categories.py asserts max_posts >= ceiling x categories, so a tenth
+    # category fails the test instead of starting the evictions again.
+    max_posts: 90
     per_source_cap: 3           # one prolific feed cannot dominate a run
 
     # ----------------------------------------------------------------------- #
