@@ -73,6 +73,8 @@ body {
 [data-cat="fintech"]       { --cat: #a3e635; }
 [data-cat="gaming"]        { --cat: #a78bfa; }
 [data-cat="aggregators"]   { --cat: #94a3b8; }
+[data-cat="microsoft"]     { --cat: #38bdf8; }
+[data-cat="languages"]     { --cat: #f97316; }
 
 /* Legacy taxonomy. No feed writes these any more and the pruner has already
    emptied them, but a post carrying one must still get a colour rather than

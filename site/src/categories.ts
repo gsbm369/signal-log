@@ -21,6 +21,8 @@ export const CATEGORIES = [
   'aggregators',
   'fintech',
   'gaming',
+  'microsoft',
+  'languages',
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];

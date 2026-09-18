@@ -185,6 +185,76 @@ feeds:
     category: gaming
     weight: 0.6
     fetch: 12
+  - name: Old New Thing
+    url: https://devblogs.microsoft.com/oldnewthing/feed
+    category: microsoft
+    weight: 1.0
+    fetch: 10
+  - name: .NET Blog
+    url: https://devblogs.microsoft.com/dotnet/feed/
+    category: microsoft
+    weight: 0.95
+    fetch: 10
+  - name: VS Code Blog
+    url: https://code.visualstudio.com/feed.xml
+    category: microsoft
+    weight: 0.85
+    fetch: 10
+  - name: Visual Studio Blog
+    url: https://devblogs.microsoft.com/visualstudio/feed/
+    category: microsoft
+    weight: 0.8
+    fetch: 10
+  - name: MS Security Blog
+    url: https://www.microsoft.com/en-us/security/blog/feed/
+    category: microsoft
+    weight: 0.8
+    fetch: 10
+  - name: Azure Blog
+    url: https://azure.microsoft.com/en-us/blog/feed/
+    category: microsoft
+    weight: 0.7
+    fetch: 10
+  - name: Go Blog
+    url: https://go.dev/blog/feed.atom
+    category: languages
+    weight: 1.0
+    fetch: 10
+  - name: Rust Blog
+    url: https://blog.rust-lang.org/feed.xml
+    category: languages
+    weight: 1.0
+    fetch: 10
+  - name: Python Insider
+    url: https://blog.python.org/feeds/posts/default
+    category: languages
+    weight: 0.95
+    fetch: 15
+  - name: Inside Rust
+    url: https://blog.rust-lang.org/inside-rust/feed.xml
+    category: languages
+    weight: 0.9
+    fetch: 10
+  - name: Inside Java
+    url: https://inside.java/feed.xml
+    category: languages
+    weight: 0.9
+    fetch: 10
+  - name: C++ Team Blog
+    url: https://devblogs.microsoft.com/cppblog/feed/
+    category: languages
+    weight: 0.9
+    fetch: 10
+  - name: Kotlin Blog
+    url: https://blog.jetbrains.com/kotlin/feed/
+    category: languages
+    weight: 0.85
+    fetch: 12
+  - name: Node.js Blog
+    url: https://nodejs.org/en/feed/blog.xml
+    category: languages
+    weight: 0.8
+    fetch: 15
 
 # --------------------------------------------------------------------------- #
 # Scoring policy, per category.
@@ -242,6 +312,16 @@ scoring:
       cap: 6
     gaming:
       half_life_hours: 72
+      ingest_days: 7
+      retention_days: 45
+      cap: 6
+    microsoft:
+      half_life_hours: 72
+      ingest_days: 7
+      retention_days: 45
+      cap: 6
+    languages:
+      half_life_hours: 168
       ingest_days: 7
       retention_days: 45
       cap: 6

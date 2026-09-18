@@ -93,6 +93,11 @@
       aggregators:   { half_life_hours: 18,  ingest_days: 3, retention_days: 45,   cap: 6 }
       fintech:       { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
       gaming:        { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      # Added 2026-09-18, after the 10-per-category live ceiling (2082cba) had
+      # been watched pruning (15, 18, 27). microsoft is vendor news at a news
+      # curve; languages is upstream and slower, so it gets the week curve.
+      microsoft:     { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      languages:     { half_life_hours: 168, ingest_days: 7, retention_days: 45,   cap: 6 }
     extra_noise_filter: true    # listicle/deals/AskHN patterns on top of the ported list
 
     # Summarizer backend: none | ollama | anthropic.
@@ -233,6 +238,43 @@
       - { name: Eurogamer,          url: "https://www.eurogamer.net/feed",                category: gaming,        weight: 0.60, fetch: 12 }
       - { name: Rock Paper Shotgun, url: "https://www.rockpapershotgun.com/feed",         category: gaming,        weight: 0.60, fetch: 12 }
 
+      # ---- microsoft ----
+      # Measured 2026-09-18 from this box, before adding: HTTP, dated entries,
+      # newest item, items in the last 7 days, items/week over the feed's span.
+      #   Old New Thing       200  newest 1.2d  7d: 4  4.9/wk   in
+      #   .NET Blog           200  newest 1.9d  7d: 3  2.9/wk   in
+      #   MS Security Blog    200  newest 1.1d  7d: 2  4.2/wk   in
+      #   Visual Studio Blog  200  newest 2.2d  7d: 2  2.5/wk   in
+      #   VS Code Blog        200  newest 2.1d  7d: 2  0.6/wk   in
+      #   Azure Blog          200  newest 7.9d  7d: 0  3.9/wk   in, at the floor of the set
+      # Weights: Raymond Chen's engineering history leads, .NET next; product
+      # and security announcements below; Azure marketing lowest.
+      - { name: Old New Thing,      url: "https://devblogs.microsoft.com/oldnewthing/feed", category: microsoft,   weight: 1.00, fetch: 10 }
+      - { name: .NET Blog,          url: "https://devblogs.microsoft.com/dotnet/feed/",   category: microsoft,     weight: 0.95, fetch: 10 }
+      - { name: VS Code Blog,       url: "https://code.visualstudio.com/feed.xml",        category: microsoft,     weight: 0.85, fetch: 10 }
+      - { name: Visual Studio Blog, url: "https://devblogs.microsoft.com/visualstudio/feed/", category: microsoft,  weight: 0.80, fetch: 10 }
+      - { name: MS Security Blog,   url: "https://www.microsoft.com/en-us/security/blog/feed/", category: microsoft, weight: 0.80, fetch: 10 }
+      - { name: Azure Blog,         url: "https://azure.microsoft.com/en-us/blog/feed/",  category: microsoft,     weight: 0.70, fetch: 10 }
+
+      # ---- languages ----
+      #   Inside Java         200  newest 1.8d  7d: 6  3.1/wk   in
+      #   C++ Team Blog       200  newest 1.9d  7d: 4  1.2/wk   in
+      #   Rust Blog           200  newest 1.8d  7d: 1  1.1/wk   in
+      #   Node.js Blog        200  newest 2.0d  7d: 1  1.3/wk   in (1055-item archive; fetch caps it)
+      #   Go Blog             200  newest 2.8d  7d: 1  0.3/wk   in
+      #   Inside Rust         200  newest 10.8d 7d: 0  1.8/wk   in
+      #   Kotlin Blog         200  newest 11.3d 7d: 0  1.6/wk   in
+      #   Python Insider      200  newest 17.8d 7d: 0  0.7/wk   in
+      # Upstream language teams lead; vendor and release-note feeds below.
+      - { name: Go Blog,            url: "https://go.dev/blog/feed.atom",                 category: languages,     weight: 1.00, fetch: 10 }
+      - { name: Rust Blog,          url: "https://blog.rust-lang.org/feed.xml",           category: languages,     weight: 1.00, fetch: 10 }
+      - { name: Python Insider,     url: "https://blog.python.org/feeds/posts/default",   category: languages,     weight: 0.95, fetch: 15 }
+      - { name: Inside Rust,        url: "https://blog.rust-lang.org/inside-rust/feed.xml", category: languages,   weight: 0.90, fetch: 10 }
+      - { name: Inside Java,        url: "https://inside.java/feed.xml",                  category: languages,     weight: 0.90, fetch: 10 }
+      - { name: C++ Team Blog,      url: "https://devblogs.microsoft.com/cppblog/feed/",  category: languages,     weight: 0.90, fetch: 10 }
+      - { name: Kotlin Blog,        url: "https://blog.jetbrains.com/kotlin/feed/",       category: languages,     weight: 0.85, fetch: 12 }
+      - { name: Node.js Blog,       url: "https://nodejs.org/en/feed/blog.xml",           category: languages,     weight: 0.80, fetch: 15 }
+
       # REJECTED — do not re-add without re-testing. Reasons as MEASURED.
       #
       #   Measured 2026-09-10 for the newsletter pivot:
@@ -246,6 +288,16 @@
       #     Coinbase Eng       HTTP 403 — blocks automated clients
       #     Fintech Futures    HTTP 404
       #     Wise Engineering   HTTP 200, newest item 568 days old. Abandoned.
+      #
+      #   Measured 2026-09-18 for microsoft and languages:
+      #     Azure SDK Blog     newest 14.0d, 1.1/wk
+      #     MS DevOps Blog     newest 7.9d, 1.3/wk — overlaps devops_linux
+      #     MS Research Blog   newest 18.1d, 1.0/wk
+      #     Windows Cmd Line   0.4/wk     Windows Developer  0.4/wk
+      #     TypeScript Blog    newest 72.1d     Python at MS   newest 127.8d
+      #     V8 Blog            newest 410.8d    Deno Blog      newest 85.4d
+      #     Zig News           newest 94.8d
+      #     Swift.org          HTTP 200, zero entries parsed from atom.xml
       #
       #   Measured 2026-09-11 while filling out devops_linux:
       #     Phoronix           90.7 items/week. Not broken — too loud. It would
