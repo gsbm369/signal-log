@@ -1,16 +1,15 @@
 ---
-title: "Reversing Factorio's RNG"
+title: "Flet : Build cross-platform apps in Python"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-16T21:06:25+00:00
-addedAt: 2026-09-17T10:17:47.916513+00:00
+pubDate: 2026-09-18T08:42:48+00:00
+addedAt: 2026-09-18T12:11:21.707436+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://gegell.github.io/posts/factorio-rng/"
-tags: ["tech"]
-heat: 44
-score: 0.45133
+sourceUrl: "https://flet.dev/"
+tags: ["python"]
+heat: 87
+score: 1.08255
 readMinutes: 1
-image: "https://gegell.github.io/_app/immutable/assets/factorio-breaking-rng-thumbnail.BkTOyfMu.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
