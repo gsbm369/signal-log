@@ -30,6 +30,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 INDEX = Path(os.environ.get("BUILT_INDEX", "/app/site/dist/index.html"))
+# The per-category pages ("+N more") render cards too, and the policy is about
+# what a reader can see, not about which page it is on. Every one is checked.
+CATEGORY_PAGES = INDEX.parent / "category"
 STATE = Path(os.environ.get("STATE_DIR", "/data/state")) / "metrics.json"
 FRESH_DAYS = float(os.environ.get("FRESHNESS_DAYS", "7"))
 
@@ -45,6 +48,24 @@ def cycle_start() -> datetime:
         dt = None
     dt = dt or datetime.now(timezone.utc)
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def judge(a: dict, inner: str, where: str, now: datetime) -> tuple[float | None, str | None]:
+    """(age in hours, violation) for one rendered card."""
+    href = (re.search(r'href="(/posts/[^"]+)"', inner) or [None, "?"])[1]
+    pub = a.get("data-published")
+    if not pub:
+        return None, f"[{where}] card without data-published: {href}"
+    try:
+        dt = datetime.fromisoformat(pub.replace("Z", "+00:00"))
+    except ValueError:
+        return None, f"[{where}] unparseable data-published={pub!r}: {href}"
+    age_h = (now - dt).total_seconds() / 3600
+    if age_h > FRESH_DAYS * 24:
+        return age_h, f"[{where}] {age_h / 24:.1f} days old, over the {FRESH_DAYS:.0f}-day limit: {href}"
+    if age_h > 24 and 'data-label="this-week"' not in inner:
+        return age_h, f"[{where}] {age_h / 24:.1f}d old with NO 'this week' label: {href}"
+    return age_h, None
 
 
 def main() -> int:
@@ -63,34 +84,38 @@ def main() -> int:
         a = dict(ATTR.findall(attrs_raw))
         section = a.get("data-section", "?")
         href = (re.search(r'href="(/posts/[^"]+)"', inner) or [None, "?"])[1]
-        pub = a.get("data-published")
-        if not pub:
-            violations.append(f"[{section}] card without data-published: {href}")
+        age_h, bad = judge(a, inner, section, now)
+        if bad:
+            violations.append(bad)
+        if age_h is None:
             continue
-        try:
-            dt = datetime.fromisoformat(pub.replace("Z", "+00:00"))
-        except ValueError:
-            violations.append(f"[{section}] unparseable data-published={pub!r}: {href}")
-            continue
-        age_h = (now - dt).total_seconds() / 3600
         row = per.setdefault(section, {"cards": 0, "today": 0, "week": 0,
                                        "older": 0, "oldest_h": 0.0})
         row["cards"] += 1
         row["oldest_h"] = max(row["oldest_h"], age_h)
         if age_h > FRESH_DAYS * 24:
             row["older"] += 1
-            violations.append(f"[{section}] {age_h / 24:.1f} days old, over the "
-                              f"{FRESH_DAYS:.0f}-day limit: {href}")
         elif age_h > 24:
             row["week"] += 1
-            if 'data-label="this-week"' not in inner:
-                violations.append(f"[{section}] {age_h / 24:.1f}d old with NO "
-                                  f"'this week' label: {href}")
         else:
             row["today"] += 1
         if href in urls:
             violations.append(f"[{section}] {href} already rendered in [{urls[href]}]")
         urls.setdefault(href, section)
+
+    page_cards = 0
+    for page in sorted(CATEGORY_PAGES.glob("*/index.html")) if CATEGORY_PAGES.is_dir() else []:
+        where = f"/category/{page.parent.name}/"
+        seen: set[str] = set()
+        for attrs_raw, inner in ARTICLE.findall(page.read_text(encoding="utf-8", errors="replace")):
+            page_cards += 1
+            _, bad = judge(dict(ATTR.findall(attrs_raw)), inner, where, now)
+            if bad:
+                violations.append(bad)
+            href = (re.search(r'href="(/posts/[^"]+)"', inner) or [None, "?"])[1]
+            if href in seen:
+                violations.append(f"[{where}] {href} rendered twice on the page")
+            seen.add(href)
 
     print(f"\n-- rendered cards vs the {FRESH_DAYS:.0f}-day policy, clock {now:%Y-%m-%d %H:%M}Z --")
     print(f"   {'section':<15}{'cards':>6}{'today':>7}{'week':>6}{'>7d':>5}{'oldest':>9}")
@@ -122,7 +147,8 @@ def main() -> int:
         # measured, when a planted 8-day post was violation #21 of 21.
         kinds = {"over the limit": sum("over the" in v for v in violations),
                  "week card without label": sum("NO 'this week' label" in v for v in violations),
-                 "URL rendered twice": sum("already rendered" in v for v in violations),
+                 "URL rendered twice": sum("already rendered" in v or "rendered twice" in v
+                                           for v in violations),
                  "card without data-published": sum("without data-published" in v or "unparseable" in v
                                                     for v in violations)}
         print(f"\n  REFUSING TO PUBLISH — {len(violations)} violation(s):")
@@ -136,6 +162,8 @@ def main() -> int:
         if len(ordered) > 20:
             print(f"    … and {len(ordered) - 20} more")
         return 1
+    if page_cards:
+        print(f"  + {page_cards} card(s) on {len(list(CATEGORY_PAGES.glob('*/index.html')))} category page(s)")
     print(f"\n  {len(cards)} card(s), all within {FRESH_DAYS:.0f} days, every week-old card labelled, no URL twice.")
     return 0
 

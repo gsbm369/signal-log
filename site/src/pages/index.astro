@@ -3,8 +3,8 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import Logo from '../components/Logo.astro';
-import { freshnessOf, ageHours, cycleStart } from '../freshness';
-import { CATEGORIES } from '../categories';
+import { freshnessOf, ageHours, cycleStart, byOrder } from '../freshness';
+import { CATEGORY_LABELS } from '../categories';
 
 const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -25,28 +25,8 @@ const posts = (await getCollection('posts')).sort(
  *
  * So the lead is drawn by SCORE across every category. The ranker has already
  * decided which item is best; the page just stops arguing with it. */
-/* FIXED SECTION ORDER — from the owner's reviewed preview, 2026-09-18.
-   microsoft and languages hold their places here, but a section renders only
-   for a category the site actually declares (site/src/categories.ts). Until
-   their feeds exist they are skipped rather than shown permanently empty at
-   the top of the page; adding them to categories.ts and deploy.yml is all it
-   takes for them to appear in these positions. */
-const SECTION_ORDER = [
-  ['microsoft', 'Microsoft'],
-  ['system_design', 'System Design'],
-  ['devops_linux', 'DevOps & Linux'],
-  ['languages', 'Languages'],
-  ['company_eng', 'Company Engineering'],
-  ['deep_dives', 'Deep Dives'],
-  ['fintech', 'Fintech'],
-  ['aggregators', 'Aggregators'],
-  ['gaming', 'Gaming'],
-] as const;
-
-const CATEGORY_LABELS = Object.fromEntries(
-  SECTION_ORDER.filter(([k]) => (CATEGORIES as readonly string[]).includes(k)),
-) as Record<string, string>;
-
+/* Section order and labels live in site/src/categories.ts (SECTION_ORDER),
+   shared with the per-category pages. */
 type Category = string;
 const CATEGORY_ORDER = Object.keys(CATEGORY_LABELS) as Category[];
 
@@ -79,15 +59,7 @@ const categoryOf = (p: (typeof posts)[number]) =>
  *          at most 2 per source in a section (Petri: 1); first 6.
  *          Never filled from another category.
  * ------------------------------------------------------------------------ */
-const TIER_RANK = { today: 0, week: 1, stale: 2 } as const;
 const tierOf = (p: (typeof posts)[number]) => freshnessOf(p.data.pubDate);
-const byOrder = (a: (typeof posts)[number], b: (typeof posts)[number]) =>
-  TIER_RANK[tierOf(a)] - TIER_RANK[tierOf(b)] ||
-  (b.data.score ?? 0) - (a.data.score ?? 0) ||
-  /* Deterministic tie-break by id, in CODEPOINT order — not localeCompare,
-     which can ignore punctuation and would disagree with the independent
-     check_selection.py that verifies this page. */
-  (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 
 const excluded = posts.filter((p) => tierOf(p) === 'stale');
 const eligible = posts.filter((p) => tierOf(p) !== 'stale').sort(byOrder);
@@ -130,7 +102,12 @@ const shelves = Object.entries(CATEGORY_LABELS).map(([key, label]) => {
      fold. "No new posts this week." is false in the second case. */
   const promoted = front.filter((p) => categoryOf(p) === key);
   const promotedToday = promoted.some((p) => tierOf(p) === 'today');
-  return { key, label, items, today, week: items.length - today, promoted: promoted.length, promotedToday };
+  /* "+N more": fresh stories in this category that appear nowhere on this
+     page — past the 6-slot quota or over the per-source cap. The category
+     page lists them all. */
+  const fresh = eligible.filter((p) => categoryOf(p) === key).length;
+  const more = fresh - items.length - promoted.length;
+  return { key, label, items, today, week: items.length - today, promoted: promoted.length, promotedToday, more };
 });
 
 /* Masthead facts — computed from the data, never hard-coded. */
@@ -244,6 +221,11 @@ const tech = eligible;
                   ))
                 )}
               </div>
+              {shelf.more > 0 && (
+                <a href={`/category/${shelf.key}/`} class="section-more font-mono text-[0.64rem] text-accent" data-more={shelf.more}>
+                  +{shelf.more} more
+                </a>
+              )}
             </section>
           ))}
         </div>

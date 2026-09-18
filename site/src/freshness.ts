@@ -28,3 +28,13 @@ export const freshnessOf = (d: Date): Freshness => {
   if (h <= FRESH_DAYS * 24) return 'week';
   return 'stale';
 };
+
+/* The one ordering every page uses: today before this week; within a tier the
+   curator's score, best first; then id in CODEPOINT order — not localeCompare,
+   which can ignore punctuation and would disagree with check_selection.py. */
+type Ranked = { id: string; data: { pubDate: Date; score?: number } };
+const TIER_RANK: Record<Freshness, number> = { today: 0, week: 1, stale: 2 };
+export const byOrder = (a: Ranked, b: Ranked): number =>
+  TIER_RANK[freshnessOf(a.data.pubDate)] - TIER_RANK[freshnessOf(b.data.pubDate)] ||
+  (b.data.score ?? 0) - (a.data.score ?? 0) ||
+  (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);

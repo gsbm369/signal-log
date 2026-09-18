@@ -25,6 +25,24 @@ export const CATEGORIES = [
 
 export type Category = (typeof CATEGORIES)[number];
 
+/* FIXED SECTION ORDER and display labels — from the owner's reviewed preview,
+   2026-09-18. A section renders only for a category declared in CATEGORIES. */
+export const SECTION_ORDER = [
+  ['microsoft', 'Microsoft'],
+  ['system_design', 'System Design'],
+  ['devops_linux', 'DevOps & Linux'],
+  ['languages', 'Languages'],
+  ['company_eng', 'Company Engineering'],
+  ['deep_dives', 'Deep Dives'],
+  ['fintech', 'Fintech'],
+  ['aggregators', 'Aggregators'],
+  ['gaming', 'Gaming'],
+] as const;
+
+export const CATEGORY_LABELS = Object.fromEntries(
+  SECTION_ORDER.filter(([k]) => (CATEGORIES as readonly string[]).includes(k)),
+) as Record<string, string>;
+
 /* Categories the curator no longer emits, still present on posts already on
  * disk. The schema must accept them or the site cannot build at all: widening
  * the enum to the seven above and nothing else rejected all 55 surviving posts

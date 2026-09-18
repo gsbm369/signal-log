@@ -29,10 +29,13 @@ def card(slug, age_days, section="gaming", label=None, published=True):
             + "</article>")
 
 
-def run(html: str) -> tuple[int, str]:
+def run(html: str, pages: dict[str, str] | None = None) -> tuple[int, str]:
     with tempfile.TemporaryDirectory() as td:
         idx = Path(td) / "index.html"
         idx.write_text(f"<html><body>{html}</body></html>")
+        for cat, body in (pages or {}).items():
+            (Path(td) / "category" / cat).mkdir(parents=True)
+            (Path(td) / "category" / cat / "index.html").write_text(f"<html><body>{body}</body></html>")
         env = dict(os.environ, BUILT_INDEX=str(idx), STATE_DIR=td,
                    CYCLE_START_UTC=NOW.isoformat())
         r = subprocess.run([sys.executable, str(HERE / "check_freshness.py")],
@@ -59,6 +62,15 @@ def main() -> int:
     check("the same post URL rendered twice is refused",
           run(clean + card("a", 0.2, "system_design"))[0], 1)
     check("a today card needs no label", run(card("fresh", 0.5, label=False))[0], 0)
+    # The "+N more" pages are part of what a reader sees.
+    check("a clean category page passes",
+          run(clean, {"gaming": card("g1", 0.3, "page") + card("g2", 5, "page")})[0], 0)
+    check("a PLANTED 8-DAY card on a category page is refused",
+          run(clean, {"gaming": card("g1", 0.3, "page") + card("old", 8, "page")})[0], 1)
+    check("an unlabelled week card on a category page is refused",
+          run(clean, {"gaming": card("g2", 3, "page", label=False)})[0], 1)
+    rc, out = run(clean, {"fintech": card("old", 8, "page")})
+    check("the refusal names the category page", 0 if "/category/fintech/" in out else 1, 0)
     rc, out = run(clean + card("stale", 8))
     check("the refusal names the offending card", 0 if "stale" in out and "8.0 days" in out else 1, 0)
 

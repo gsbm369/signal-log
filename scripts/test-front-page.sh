@@ -94,9 +94,34 @@ check("no section says 'No new posts this week.' while its stories are in the fo
 gam = secs.get("gaming", "")
 check("gaming (week story promoted by fill) does not claim it is today's",
       "Today's" not in unescape(gam) and "No new posts this week." not in gam and "headlines above" in gam, text(gam)[:160])
+# "+N more": the count is fresh stories in the category shown nowhere on the
+# page. company_eng: a1 in the fold, a2 a3 in the section, a4 over the 2-per-
+# source cap -> "+1 more". system_design: s1 fold, s2 section -> no link.
+ce = secs.get("company_eng", "")
+m = re.search(r'<a[^>]*href="/category/company_eng/"[^>]*>(.*?)</a>', ce, re.S)
+check("company_eng shows '+1 more' linking to /category/company_eng/",
+      bool(m) and text(m.group(1)) == "+1 more", text(ce)[:200])
+check("system_design (nothing hidden) shows no '+N more'", "/category/" not in secs.get("system_design", ""))
+
+import os
+page = os.path.join(os.path.dirname(sys.argv[1]), "category", "company_eng", "index.html")
+ph = open(page, encoding="utf-8").read() if os.path.exists(page) else ""
+listed = re.findall(r'<article\b[^>]*>.*?href="/posts/([^"/]+)/?"', ph, re.S)
+check("/category/company_eng/ lists all four AWS stories, in order", listed == ["a1", "a2", "a3", "a4"], f"listed {listed}")
+fp = os.path.join(os.path.dirname(sys.argv[1]), "category", "fintech", "index.html")
+fh = open(fp, encoding="utf-8").read() if os.path.exists(fp) else ""
+check("/category/fintech/ does not render the 9-day story", bool(fh) and "/posts/f1/" not in fh
+      and "No new posts this week." in fh)
 sys.exit(1 if fails else 0)
 PY
 RC=$?
+
+BUILT_INDEX="$WORK/dist/index.html" STATE_DIR="$WORK" CYCLE_START_UTC="$CLOCK" \
+  python3 "$ROOT/curator/check_freshness.py" > "$WORK/fresh.out"
+FR=$?
+grep -E 'card\(s\)|REFUSING' "$WORK/fresh.out"
+echo "  check_freshness.py exit $FR on the fixture (index + category pages)"
+[ "$FR" -eq 0 ] || RC=1
 
 echo
 CONTENT_DIR="$WORK/posts" BUILT_INDEX="$WORK/dist/index.html" CYCLE_START_UTC="$CLOCK" \
