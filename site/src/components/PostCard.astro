@@ -1,160 +1,168 @@
 ---
 import { freshnessOf } from '../freshness';
+import { labelOf } from '../categories';
 import type { CollectionEntry } from 'astro:content';
 
 /*
-  Four densities off one component.
+  Five densities off one component.
 
-    hero   the number one — 16:9 image, big headline, standfirst
-    card   ranks 2-5      — 3:2 image, headline, meta
-    row    the tail       — 76px thumbnail, headline, heat
-    mini   shelves        — headline and source only
+    hero     the lead story — 16:9 image, big headline, serif standfirst
+    card     ranks 2-5      — 16:10 image, headline, standfirst, byline
+    feature  a chapter's opener — the first story in each section
+    item     a chapter's list   — headline, standfirst, thumbnail at the side
+    row      the tail           — rank, thumbnail, headline, meta
 
   Every variant handles a missing image, and for this publication that is the
   COMMON case, not the edge: Marc Brooker, Dan Luu and jvns.ca ship no images at
-  all, and they are the sources the front page leads on. A fold of five evergreen
-  posts was five flat rectangles with a rank number in the middle.
+  all. The fallback is typographic — the source's name set large on the
+  category colour — so the absence is a deliberate style rather than a defect.
 
-  A rank badge on a flat colour reads as an image that failed to load. The
-  fallback is now typographic — the headline set large on the category colour —
-  so the absence is a deliberate style rather than a defect. No image is fetched
-  or generated for text-only sources; there is nothing to fetch.
+  Every variant carries data-published / data-freshness / data-section and, for
+  week-old stories, the visible data-label="this-week" chip. The publish gate
+  parses exactly these; see curator/check_freshness.py.
 */
 interface Props {
   post: CollectionEntry<'posts'>;
   index: number;
-  variant?: 'hero' | 'card' | 'row' | 'mini';
+  variant?: 'hero' | 'card' | 'feature' | 'item' | 'row' | 'mini';
   /* Which part of the page rendered this card — "fold", a category slug, or
      "tail". Carried into the HTML so the publish gate can report the oldest
      rendered age per section without re-deriving the layout. */
   section?: string;
 }
 
-const { post, index, variant = 'card', section = 'unassigned' } = Astro.props;
+const { post, index, variant: requested = 'card', section = 'unassigned' } = Astro.props;
+// `mini` was the old name for a chapter list entry.
+const variant = requested === 'mini' ? 'item' : requested;
 const { title, description, pubDate, source, heat, readMinutes, image, imageAlt } = post.data;
 const category = post.data.category ?? 'aggregators';
+const label = labelOf(category);
 
 const num = String(index + 1).padStart(2, '0');
 const href = `/posts/${post.id}/`;
 const iso = pubDate.toISOString();
 const dateShort = pubDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
-// Bucketed to tens so width comes from a CSS rule, keeping the page free of
-// style attributes and the CSP's style-src tight.
-const pct = Math.min(100, Math.max(10, Math.round(heat / 10) * 10));
 const hot = heat >= 90;
 const alt = imageAlt ?? '';
+const initial = (source.trim()[0] ?? '·').toUpperCase();
 
-/* Every card declares its author date and its freshness bucket in the markup.
-   The publish gate parses exactly these attributes: a card over seven days old
-   fails the publish, and a "week" card without the visible label below fails
-   it too. A card that renders without data-published cannot hide from the
-   gate — the gate treats a missing attribute as a failure, not a pass. */
+/* The publish gate parses these attributes: a card over seven days old fails
+   the publish, and a "week" card without the visible label fails it too. */
 const freshness = freshnessOf(pubDate);
 ---
 
 {
   variant === 'hero' && (
-    <article class="card reveal" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
-      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
+    <article class="card lead reveal" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
+      <a href={href} class="hit" aria-label={title} />
 
       <div class={`shot shot--wide${image ? '' : ' shot--empty'}`}>
-        <span class="rank-badge rank-badge--lead">{num}</span>
-        {image ? <img src={image} alt={alt} loading="eager" decoding="async" width="1280" height="720" /> : <span class="tile-type tile-type--hero">{title}</span>}
+        <span class="rank-badge"><span class="dot" />Top story</span>
+        {image ? <img src={image} alt={alt} loading="eager" decoding="async" fetchpriority="high" width="1280" height="720" /> : <span class="tile-type tile-type--hero">{source}</span>}
       </div>
 
-      <div class="p-5 sm:p-7">
-        <div class="mb-3 flex flex-wrap items-center gap-2">
-          <span class="chip">{category}</span>
+      <div class="p-6 sm:p-8">
+        <div class="mb-4 flex flex-wrap items-center gap-2">
+          <span class="kicker">{label}</span>
           {hot && <span class="chip chip--hot">hot</span>}
-          <span class="meta ml-auto">
-            <span class="src">{source}</span>
-            <span class="sep">/</span>
-            <time datetime={iso}>{dateShort}</time>
-            {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
-            <span class="sep">/</span>
-            <span>{readMinutes} min</span>
-          </span>
+          {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
         </div>
 
-        <h2 class="card-title font-display text-[1.55rem] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink sm:text-[2.15rem]">
-          {title}
-        </h2>
+        <h2 class="card-title lead-title">{title}</h2>
 
-        <p class="mt-3 max-w-[60ch] text-[0.97rem] leading-[1.65] text-dim">{description}</p>
+        <p class="standfirst mt-4 max-w-[62ch]">{description}</p>
+
+        <div class="meta mt-6">
+          <span class="avatar">{initial}</span>
+          <span class="src">{source}</span>
+          <span class="sep">·</span>
+          <time datetime={iso}>{dateShort}</time>
+          <span class="sep">·</span>
+          <span>{readMinutes} min read</span>
+        </div>
       </div>
     </article>
   )
 }
 
 {
-  variant === 'card' && (
+  (variant === 'card' || variant === 'feature') && (
     <article class="card reveal flex flex-col" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
-      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
+      <a href={href} class="hit" aria-label={title} />
 
-      <div class={`shot shot--card${image ? '' : ' shot--empty'}`}>
-        <span class="rank-badge">{num}</span>
-        {image ? <img src={image} alt={alt} loading="lazy" decoding="async" width="600" height="400" /> : <span class="tile-type">{title}</span>}
+      <div class={`shot ${variant === 'feature' ? 'shot--wide' : 'shot--card'}${image ? '' : ' shot--empty'}`}>
+        {image ? <img src={image} alt={alt} loading="lazy" decoding="async" width="800" height="500" /> : <span class="tile-type">{source}</span>}
       </div>
 
-      <div class="flex flex-1 flex-col p-4">
-        <h3 class="card-title font-display text-[1.02rem] font-bold leading-[1.22] tracking-[-0.02em] text-ink">
+      <div class={`flex flex-1 flex-col ${variant === 'feature' ? 'p-6' : 'p-5'}`}>
+        <div class="mb-2.5 flex flex-wrap items-center gap-2">
+          {variant === 'card' && <span class="rank text-[1.05rem]">{num}</span>}
+          <span class="kicker">{label}</span>
+          {hot && <span class="chip chip--hot">hot</span>}
+        </div>
+        <h3 class={`card-title font-display font-bold leading-[1.15] tracking-[-0.025em] text-ink ${variant === 'feature' ? 'text-[1.45rem] sm:text-[1.6rem]' : 'text-[1.12rem]'}`}>
           {title}
         </h3>
-        <p class="mt-2 line-clamp-2 text-[0.85rem] leading-[1.55] text-dim">{description}</p>
-        <div class="meta mt-3 pt-1">
+        <p class={`mt-2.5 font-serif leading-[1.5] text-dim ${variant === 'feature' ? 'line-clamp-3 text-[1.05rem]' : 'line-clamp-2 text-[0.98rem]'}`}>{description}</p>
+        <div class="meta mt-auto pt-4">
           <span class="src">{source}</span>
-          <span class="sep">/</span>
+          <span class="sep">·</span>
           <time datetime={iso}>{dateShort}</time>
-            {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
+          {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
         </div>
       </div>
+    </article>
+  )
+}
+
+{
+  variant === 'item' && (
+    <article class="item" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
+      <a href={href} class="hit" aria-label={title} />
+      <div class="min-w-0 flex-1">
+        <h4 class="card-title font-display text-[1.02rem] font-bold leading-[1.25] tracking-[-0.02em] text-ink">
+          {title}
+        </h4>
+        <p class="mt-1.5 line-clamp-2 font-serif text-[0.95rem] leading-[1.45] text-dim">{description}</p>
+        <div class="meta mt-2">
+          <span class="src">{source}</span>
+          <span class="sep">·</span>
+          <time datetime={iso}>{dateShort}</time>
+          {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
+          {hot && <span class="chip chip--hot">hot</span>}
+        </div>
+      </div>
+      {image && (
+        <div class="shot shot--thumb">
+          <img src={image} alt={alt} loading="lazy" decoding="async" width="224" height="160" />
+        </div>
+      )}
     </article>
   )
 }
 
 {
   variant === 'row' && (
-    <article class="row group" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
-      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
+    <article class="row" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
+      <a href={href} class="hit" aria-label={title} />
 
       <span class="row-rank">{num}</span>
 
       <div class={`shot shot--thumb${image ? '' : ' shot--empty'}`}>
-        {image ? <img src={image} alt={alt} loading="lazy" decoding="async" width="152" height="116" /> : <span>{num}</span>}
+        {image ? <img src={image} alt={alt} loading="lazy" decoding="async" width="224" height="160" /> : <span>{initial}</span>}
       </div>
 
       <div class="min-w-0 flex-1">
-        <h3 class="card-title font-display text-[0.94rem] font-semibold leading-[1.3] tracking-[-0.015em] text-ink">
+        <span class="kicker text-[0.6rem]">{label}</span>
+        <h3 class="card-title mt-1 font-display text-[0.98rem] font-bold leading-[1.28] tracking-[-0.015em] text-ink">
           {title}
         </h3>
         <div class="meta mt-1.5">
           <span class="src">{source}</span>
-          <span class="sep">/</span>
+          <span class="sep">·</span>
           <time datetime={iso}>{dateShort}</time>
-            {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
-          {hot && <span class="chip chip--hot ml-1">hot</span>}
-        </div>
-        <span class="heat-bar mt-2 max-w-[6rem]" title={`Heat ${heat}/100`}>
-          <span data-heat={pct} />
-        </span>
-      </div>
-    </article>
-  )
-}
-
-{
-  variant === 'mini' && (
-    <article class="row group !px-2 !py-2.5" data-cat={category} data-published={iso} data-freshness={freshness} data-section={section}>
-      <a href={href} class="absolute inset-0 z-10" aria-label={title} />
-      <div class="min-w-0 flex-1">
-        <h3 class="card-title font-display text-[0.87rem] font-semibold leading-[1.35] text-ink">
-          {title}
-        </h3>
-        <div class="meta mt-1">
-          <span class="src">{source}</span>
-          <span class="sep">/</span>
-          <time datetime={iso}>{dateShort}</time>
-            {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
+          {freshness === 'week' && <span class="chip chip--week" data-label="this-week">this week</span>}
+          {hot && <span class="chip chip--hot">hot</span>}
         </div>
       </div>
     </article>

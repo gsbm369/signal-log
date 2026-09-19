@@ -4,7 +4,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { freshnessOf, byOrder } from '../../freshness';
-import { CATEGORY_LABELS } from '../../categories';
+import { CATEGORY_LABELS, CATEGORY_BLURBS } from '../../categories';
 
 /* Every fresh story in one category, in the front page's order. This is where
    a section's "+N more" link lands. Same 7-day policy as the front page — the
@@ -21,15 +21,18 @@ const today = items.filter((p) => freshnessOf(p.data.pubDate) === 'today').lengt
 ---
 
 <BaseLayout title={`${label} — signal.log`} description={`Every ${label} story from the last seven days, ranked.`}>
-  <a href="/" class="inline-flex items-center gap-2 font-mono text-[0.8rem] text-faint no-underline transition-colors duration-300 hover:text-accent">
-    &larr; index
-  </a>
-  <section class="mt-7" data-category-page={cat}>
-    <h1 class="font-mono text-[0.9rem] uppercase tracking-[0.14em]" data-cat={cat}>{label}</h1>
-    <p class="section-count font-mono text-[0.64rem] text-faint">
+  <section class="wrap pt-10 sm:pt-14" data-category-page={cat} data-cat={cat}>
+    <nav class="flex items-center gap-2 font-mono text-[0.74rem] text-faint" aria-label="Breadcrumb">
+      <a href="/" class="text-faint no-underline transition-colors hover:text-ink">signal.log</a>
+      <span aria-hidden="true">/</span>
+      <span class="kicker">{label}</span>
+    </nav>
+    <h1 class="chapter-title mt-6 text-[clamp(2rem,5vw,3rem)]" data-cat={cat}><span class="dot" />{label}</h1>
+    {CATEGORY_BLURBS[cat] && <p class="chapter-blurb mt-2">{CATEGORY_BLURBS[cat]}</p>}
+    <p class="section-count mt-4 font-mono text-[0.7rem] text-faint">
       {today} today · {items.length - today} this week · {items.length} stories
     </p>
-    <div class="mt-3">
+    <div class="mt-8 grid gap-1 md:grid-cols-2 md:gap-x-6">
       {items.length === 0 ? (
         <p class="section-empty">No new posts this week.</p>
       ) : (

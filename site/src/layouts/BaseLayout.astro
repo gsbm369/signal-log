@@ -2,18 +2,23 @@
 import { createHash } from 'node:crypto';
 import '../styles/global.css';
 import Logo from '../components/Logo.astro';
+import { CATEGORY_LABELS } from '../categories';
 
 interface Props {
   title: string;
   description?: string;
   /** Per-page social image. Falls back to the site card. */
   ogImage?: string;
+  /** Category hue for chrome that should take the page's colour (the article
+   *  reading-progress bar). */
+  cat?: string;
 }
 
 const {
   title,
   description = 'Technology news ranked by a deterministic heuristic. No model, no noise.',
   ogImage,
+  cat,
 } = Astro.props;
 const year = new Date().getFullYear();
 // Absolute, derived from `site` (which comes from public/CNAME).
@@ -106,44 +111,73 @@ const csp = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400;1,6..72,500&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
   </head>
-  <body>
-    <header class="fixed top-0 z-50 h-[56px] w-full border-b border-rule bg-bg">
-      <nav class="mx-auto flex h-full max-w-[760px] items-center justify-between px-5">
-        <a href="/" class="flex items-center gap-2.5 font-mono text-[1.1rem] font-semibold text-ink no-underline">
-          <Logo size={24} class="shrink-0 text-accent" />
-          signal<span class="text-accent">.</span>log
+  <body data-cat={cat}>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] btn btn--primary">Skip to content</a>
+
+    <header class="topbar">
+      <nav class="wrap flex h-full items-center justify-between gap-6" aria-label="Primary">
+        <a href="/" class="wordmark" aria-label="signal.log — home">
+          <Logo size={26} class="shrink-0 text-accent" />
+          <span>signal<span class="text-accent">.</span>log</span>
         </a>
-        <ul class="hidden list-none gap-8 sm:flex">
-          <li><a href="/" class="navlink font-mono text-[0.85rem] text-dim no-underline">index</a></li>
-          <li><a href="/#feed" class="navlink font-mono text-[0.85rem] text-dim no-underline">feed</a></li>
-          <li><a href="/#about" class="navlink font-mono text-[0.85rem] text-dim no-underline">about</a></li>
+        <ul class="hidden list-none items-center gap-7 md:flex">
+          <li><a href="/#feed" class="navlink">Latest</a></li>
+          <li><a href="/#shelves" class="navlink">Sections</a></li>
+          <li><a href="/#about" class="navlink">How it works</a></li>
         </ul>
-        <span class="flex items-center gap-2 rounded-lg border border-rule px-3 py-[0.45rem] font-mono text-[0.75rem] text-dim">
-          <span class="relative flex h-[6px] w-[6px]">
-            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70"></span>
-            <span class="relative inline-flex h-[6px] w-[6px] rounded-full bg-accent"></span>
-          </span>
-          auto-curated
-        </span>
+        <a href="/#subscribe" class="btn btn--primary">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.18 15.64a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36ZM4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44Zm0 5.66A9.9 9.9 0 0 1 13.9 20h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"/></svg>
+          Subscribe
+        </a>
       </nav>
     </header>
 
-    <main class="mx-auto max-w-[760px] px-5 pt-[96px] pb-16">
+    <main id="main" class="pt-[60px] pb-20">
       <slot />
     </main>
 
-    <footer class="border-t border-rule">
-      <div class="mx-auto flex max-w-[760px] flex-wrap items-center justify-between gap-3 px-5 py-7 font-mono text-[0.78rem] text-faint">
-        <span>&copy; {year} signal.log</span>
-        <span class="flex items-center gap-4">
-          <a href="/rss.xml" class="text-faint no-underline transition-colors duration-300 hover:text-accent">rss</a>
+    <footer class="site-footer">
+      <div class="wrap grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
+        <div>
+          <a href="/" class="wordmark text-[1.5rem]">
+            <Logo size={30} class="shrink-0 text-accent" />
+            <span>signal<span class="text-accent">.</span>log</span>
+          </a>
+          <p class="mt-4 max-w-[36ch] font-serif text-[1.08rem] italic leading-[1.5] text-dim">
+            An engineering briefing, rebuilt every few hours. Ranked in the open &mdash; no model decides what appears.
+          </p>
+          <a href="/rss.xml" class="btn btn--ghost mt-6">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.18 15.64a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36ZM4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44Zm0 5.66A9.9 9.9 0 0 1 13.9 20h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"/></svg>
+            RSS feed
+          </a>
+        </div>
+        <div>
+          <h2 class="foot-h">Sections</h2>
+          <ul class="mt-4 grid list-none gap-2.5">
+            {Object.entries(CATEGORY_LABELS).map(([c, label]) => (
+              <li data-cat={c}><a href={`/#${c}`} class="foot-link"><span class="dot" />{label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-h">The issue</h2>
+          <ul class="mt-4 grid list-none gap-2.5">
+            <li><a href="/#feed" class="foot-link">Top stories</a></li>
+            <li><a href="/#about" class="foot-link">How it works</a></li>
+            <li><a href="/rss.xml" class="foot-link">Subscribe via RSS</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-rule">
+        <div class="wrap flex flex-wrap items-center justify-between gap-3 py-6 font-mono text-[0.72rem] text-faint">
+          <span>&copy; {year} signal.log</span>
           <span>astro &middot; deterministic ranking &middot; built in ci</span>
-        </span>
+        </div>
       </div>
     </footer>
 

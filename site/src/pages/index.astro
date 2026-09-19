@@ -2,9 +2,8 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
-import Logo from '../components/Logo.astro';
 import { freshnessOf, ageHours, cycleStart, byOrder } from '../freshness';
-import { CATEGORY_LABELS } from '../categories';
+import { CATEGORY_LABELS, CATEGORY_BLURBS } from '../categories';
 
 const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -116,138 +115,188 @@ const sampled = cycleStart.toISOString().replace('T', ' ').slice(0, 16) + ' UTC'
 const tech = eligible;
 
 
+
+/* Presentation-only additions for the issue layout. */
+const dateline = cycleStart.toLocaleDateString('en-GB', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+});
+const blurbOf = (k: string) => CATEGORY_BLURBS[k] ?? '';
+const feedUrl = new URL('/rss.xml', Astro.site ?? 'http://localhost:8080').href;
+const rssIcon = 'M6.18 15.64a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36ZM4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44Zm0 5.66A9.9 9.9 0 0 1 13.9 20h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z';
+const pad = (n: number) => String(n).padStart(2, '0');
+
 ---
 
 <BaseLayout
   title="signal.log — an engineering newsletter, deterministically ranked"
-  description="System design, company engineering, deep dives, devops, fintech and gaming — ranked by an open heuristic: per-category recency decay, source trust, topic relevance, deduplication. No model decides what appears."
+  description="Microsoft, system design, devops, languages, company engineering, deep dives, fintech and gaming — ranked by an open heuristic: per-category recency decay, source trust, topic relevance, deduplication. No model decides what appears."
 >
   <!-- ── Masthead ─────────────────────────────────────────────── -->
-  <header class="pb-5">
-    <div class="flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <Logo size={32} class="shrink-0 text-accent" />
-        <h1 class="font-display text-[1.9rem] font-extrabold leading-none tracking-[-0.045em] text-ink sm:text-[2.4rem]">
-          signal<span class="text-accent">.</span>log
-        </h1>
-      </div>
-      <span class="hidden font-mono text-[0.68rem] uppercase tracking-[0.16em] text-faint sm:block">
-        no model decides
-      </span>
+  <header class="wrap pt-12 text-center sm:pt-16">
+    <p class="overline">{dateline} &middot; The engineering briefing</p>
+    <h1 class="masthead-title mt-5">signal<span class="text-accent">.</span>log</h1>
+    <p class="masthead-tag mx-auto mt-5 max-w-[34ch]">
+      The best of engineering writing this week &mdash; ranked in the open, never by a model.
+    </p>
+    <div class="double-rule mt-9"></div>
+    <div class="stat-row">
+      <span>sampled <b>{sampled}</b></span>
+      <span><b>{eligible.length}</b> stories</span>
+      <span><b>{todayCount}</b> today</span>
+      <span><b>{weekCount}</b> this week</span>
+      <span>oldest <b>{oldestAge}</b></span>
+      <span data-older-than-7d={excluded.length}><b>{excluded.length}</b> older than 7 days</span>
     </div>
   </header>
 
-  <div class="masthead-rule flex flex-wrap items-center gap-x-5 gap-y-1 py-2 font-mono text-[0.68rem] text-faint">
-    <span>sampled <span class="text-ink">{sampled}</span></span>
-    <span class="opacity-40">/</span>
-    <span><span class="text-ink">{eligible.length}</span> stories</span>
-    <span class="opacity-40">/</span>
-    <span><span class="text-ink">{todayCount}</span> today</span>
-    <span class="opacity-40">/</span>
-    <span><span class="text-ink">{weekCount}</span> this week</span>
-    <span class="opacity-40">/</span>
-    <span>oldest <span class="text-ink">{oldestAge}</span></span>
-    <span class="opacity-40">/</span>
-    <span data-older-than-7d={excluded.length}><span class="text-ink">{excluded.length}</span> older than 7 days</span>
-    <span class="ml-auto hidden text-accent sm:inline">recency · source weight · relevance</span>
-  </div>
+  <!-- ── Section strip ────────────────────────────────────────── -->
+  <nav class="strip" aria-label="Sections">
+    <div class="wrap">
+      <div class="strip-scroll">
+        {shelves.map((shelf) => (
+          <a href={`#${shelf.key}`} class="strip-link" data-cat={shelf.key}>
+            <span class="dot" />{shelf.label}<span class="n">{shelf.items.length + shelf.promoted + shelf.more}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </nav>
 
-  <!-- ── The chart ────────────────────────────────────────────── -->
-  <section id="feed" class="mt-9">
+  <!-- ── The front page ───────────────────────────────────────── -->
+  <section id="feed" class="wrap mt-10">
     {
       front.length === 0 ? (
-        <p class="py-16 text-center font-mono text-[0.85rem] text-faint">
-          No new posts this week.
-        </p>
+        <p class="section-empty py-16 text-center">No new posts this week.</p>
       ) : (
         <>
-          <PostCard post={lead} index={0} variant="hero" section="fold" />
+          <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+            <PostCard post={lead} index={0} variant="hero" section="fold" />
+
+            <aside class="toc reveal hidden flex-col p-6 lg:flex" aria-labelledby="toc-h">
+              <h2 id="toc-h" class="eyebrow">In this issue</h2>
+              <nav class="mt-3 flex-1">
+                {shelves.map((shelf, i) => (
+                  <a href={`#${shelf.key}`} class="toc-link" data-cat={shelf.key}>
+                    <span class="num">{pad(i + 1)}</span>
+                    <span class="name">{shelf.label}</span>
+                    <span class="count">{shelf.items.length + shelf.promoted + shelf.more}</span>
+                  </a>
+                ))}
+              </nav>
+              <a href="#subscribe" class="btn btn--ghost mt-5 w-full justify-center">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={rssIcon} /></svg>
+                Get every issue
+              </a>
+            </aside>
+          </div>
 
           {cards.length > 0 && (
-            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {cards.map((post, i) => (
-                <PostCard post={post} index={i + 1} variant="card" section="fold" />
-              ))}
-            </div>
+            <>
+              <h2 class="eyebrow mt-14 mb-6">Also leading</h2>
+              <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {cards.map((post, i) => (
+                  <PostCard post={post} index={i + 1} variant="card" section="fold" />
+                ))}
+              </div>
+            </>
           )}
-
         </>
       )
     }
   </section>
 
-  <!-- ── Shelves ──────────────────────────────────────────────── -->
-  {
-    shelves.length > 0 && (
-      <section id="shelves" class="mt-16 border-t border-rule pt-4">
-        <div class="mb-5 flex flex-wrap items-baseline justify-between gap-2">
-          <h2 class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dim">
-            every section
-          </h2>
-          <span class="font-mono text-[0.64rem] text-faint">
-            ranked the same way &middot; depth outranks announcements
-          </span>
-        </div>
-
-        <div class="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-          {shelves.map((shelf) => (
-            /* Every category renders, even empty, so section order and #anchors
-               stay stable from one issue to the next. data-section scopes the
-               isolation test: each section's HTML must not change when another
-               category loses all its posts. */
-            <section class="reveal" id={shelf.key} data-section={shelf.key}>
-              <h3
-                class="font-mono text-[0.68rem] uppercase tracking-[0.14em]"
-                style={`color: var(--cat)`}
-                data-cat={shelf.key}
-              >
-                {shelf.label}
-              </h3>
-              <p class="section-count font-mono text-[0.6rem] text-faint" data-count>
-                {shelf.today} today · {shelf.week} this week · {shelf.items.length} of 6
-              </p>
-              <div class="mt-1">
-                {shelf.items.length === 0 && shelf.promoted > 0 ? (
-                  <p class="section-empty" data-empty="in-fold">
-                    <a href="#feed">{shelf.promotedToday ? "Today's" : "This week's"} {shelf.label} stories are in the headlines above.</a>
-                  </p>
-                ) : shelf.items.length === 0 ? (
-                  <p class="section-empty" data-empty="none">No new posts this week.</p>
-                ) : (
-                  shelf.items.map((post, i) => (
-                    <PostCard post={post} index={i} variant="mini" section={shelf.key} />
-                  ))
-                )}
+  <!-- ── Chapters ─────────────────────────────────────────────── -->
+  <div id="shelves" class="wrap mt-20 grid gap-16">
+    {shelves.map((shelf, i) => (
+      /* Every category renders, even empty, so section order and #anchors stay
+         stable from one issue to the next. data-section scopes the isolation
+         test and check_selection.py: nothing in here may depend on another
+         shelf, no <section> may nest inside it, and the "+N more" link and
+         the empty-state line must stay INSIDE it. */
+      <section class="chapter reveal" id={shelf.key} data-section={shelf.key} data-cat={shelf.key}>
+        <header class="chapter-head">
+          <span class="chapter-num" aria-hidden="true">{pad(i + 1)}</span>
+          <h3 class="chapter-title"><span class="dot" />{shelf.label}</h3>
+          <p class="chapter-blurb">{blurbOf(shelf.key)}</p>
+        </header>
+        <p class="section-count mb-5 font-mono text-[0.7rem] text-faint" data-count>
+          {shelf.today} today · {shelf.week} this week · {shelf.items.length} of 6
+        </p>
+        {shelf.items.length === 0 && shelf.promoted > 0 ? (
+          <p class="section-empty" data-empty="in-fold">
+            <a href="#feed">{shelf.promotedToday ? "Today's" : "This week's"} {shelf.label} stories are in the headlines above.</a>
+          </p>
+        ) : shelf.items.length === 0 ? (
+          <p class="section-empty" data-empty="none">No new posts this week.</p>
+        ) : (
+          <div class={`chapter-grid${shelf.items.length === 1 ? ' chapter-grid--solo' : ''}`}>
+            <PostCard post={shelf.items[0]} index={0} variant="feature" section={shelf.key} />
+            {shelf.items.length > 1 && (
+              <div>
+                {shelf.items.slice(1).map((post, j) => (
+                  <PostCard post={post} index={j + 1} variant="item" section={shelf.key} />
+                ))}
               </div>
-              {shelf.more > 0 && (
-                <a href={`/category/${shelf.key}/`} class="section-more font-mono text-[0.64rem] text-accent" data-more={shelf.more}>
-                  +{shelf.more} more
-                </a>
-              )}
-            </section>
-          ))}
-        </div>
+            )}
+          </div>
+        )}
+        {shelf.more > 0 && (
+          <a href={`/category/${shelf.key}/`} class="section-more btn btn--ghost mt-6" data-more={shelf.more}>
+            +{shelf.more} more
+          </a>
+        )}
       </section>
-    )
-  }
+    ))}
+  </div>
+
+  <!-- ── Subscribe ────────────────────────────────────────────── -->
+  <section id="subscribe" class="wrap mt-24">
+    <div class="subscribe reveal grid items-center gap-8 p-8 sm:p-12 lg:grid-cols-[1.2fr_1fr]">
+      <div class="relative">
+        <p class="overline text-accent">Subscribe</p>
+        <h2 class="mt-3 font-display text-[2rem] font-extrabold leading-[1.02] tracking-[-0.04em] text-ink sm:text-[2.6rem]">
+          Never miss an issue.
+        </h2>
+        <p class="standfirst mt-4 max-w-[46ch]">
+          Pull signal.log into any feed reader. No account, no email address, no tracking &mdash; just the ranked stories, as they land.
+        </p>
+      </div>
+      <div class="relative flex flex-col gap-3">
+        <a href="/rss.xml" class="btn btn--primary btn--lg justify-center">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={rssIcon} /></svg>
+          Subscribe via RSS
+        </a>
+        <p class="feed-url">{feedUrl}</p>
+      </div>
+    </div>
+  </section>
 
   <!-- ── Colophon ─────────────────────────────────────────────── -->
-  <section id="about" class="mt-16 border-t border-rule pt-8">
-    <h2 class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dim">How this works</h2>
-    <div class="mt-5 grid gap-8 sm:grid-cols-3">
-      {
-        [
-          { n: '01', t: 'Collect', d: 'A Python job pulls RSS from a fixed list of feeds every few hours.' },
-          { n: '02', t: 'Rank', d: 'A deterministic heuristic scores each story, drops routine digests, collapses duplicates and caps any one feed.' },
-          { n: '03', t: 'Publish', d: 'Survivors become Markdown, pushed to GitHub. Actions builds and deploys to Pages.' },
-        ].map((s) => (
-          <div>
-            <span class="font-mono text-[0.7rem] text-accent">{s.n}</span>
-            <h3 class="mt-1.5 font-display text-[1rem] font-bold text-ink">{s.t}</h3>
-            <p class="mt-1.5 text-[0.92rem] leading-[1.6] text-dim">{s.d}</p>
-          </div>
-        ))
-      }
+  <section id="about" class="wrap mt-24">
+    <div class="double-rule"></div>
+    <div class="grid gap-10 pt-10 lg:grid-cols-[1fr_2fr]">
+      <div>
+        <p class="overline">Colophon</p>
+        <h2 class="mt-2 font-display text-[1.7rem] font-extrabold tracking-[-0.035em] text-ink">How this works</h2>
+        <p class="mt-3 max-w-[34ch] font-serif text-[1.05rem] italic leading-[1.5] text-dim">
+          Every story on this page was chosen by a rule you can read, not a model you have to trust.
+        </p>
+      </div>
+      <div class="grid gap-8 sm:grid-cols-3">
+        {
+          [
+            { n: '01', t: 'Collect', d: 'A Python job pulls RSS from a fixed list of feeds every few hours.' },
+            { n: '02', t: 'Rank', d: 'A deterministic heuristic scores each story, drops routine digests, collapses duplicates and caps any one feed.' },
+            { n: '03', t: 'Publish', d: 'Survivors become Markdown, pushed to GitHub. CI builds the issue and deploys it.' },
+          ].map((s) => (
+            <div>
+              <span class="step-n">{s.n}</span>
+              <h3 class="mt-3 font-display text-[1.1rem] font-bold text-ink">{s.t}</h3>
+              <p class="mt-2 text-[0.94rem] leading-[1.6] text-dim">{s.d}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 </BaseLayout>
