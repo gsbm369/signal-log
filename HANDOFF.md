@@ -1,14 +1,76 @@
 # signal.log — handoff
 
-Last refreshed **2026-09-18** from measurements on the machine. §2, §5 (except where
+Last refreshed **2026-09-20** from measurements on the machine. §2, §5 (except where
 marked), §9 and §10 date from 2026-09-10 and still hold. Written for an agent picking
 this up cold. **Measure before relying on any number here.**
 
 ---
 
+## 0. You are the implementing engineer. WAIT FOR THE TECH LEAD.
+
+**Nikita Makin (the owner) directs. A separate architecture advisor — the tech lead —
+reviews the reports and issues the next task list. You implement, you report, you do
+not choose the next piece of work.** Nothing in this file is a backlog to start on.
+§8 lists what is open; every item there is waiting on a decision that is not yours.
+
+So, on arrival: read this file, README.md (the numbered list of silent controls and
+the principles at the top), `ops/measurements/`, `ansible/deploy.yml` and `git log -25`,
+report what you understood the state to be — **and then stop and wait for orders.**
+
+Nikita writes in Hebrew. **Reply to him in Hebrew; keep code, commits, prompts and
+this file in English.**
+
+### The rule that governs everything
+
+> **A control is not in force until you have watched it refuse something.**
+
+Never report "ran green". For every change, report what you watched fail or refuse: a
+planted bad input, a test seen failing against the old code, a counter that has been
+non-zero. **Measure the live page, not the build log.** README §"Controls that were
+never exercised" holds the instances this project has already paid for; the practice
+is the single most valued thing about the work here.
+
+### Hard constraints
+
+- Everything free. No paid APIs, no paid hosting.
+- **Never touch DNS or nameservers for gs-bm.com.** Live email is on that domain.
+- Do not expose the home network. The homelab builds; GitHub Pages serves.
+- **Never handle credentials.** The owner supplies them directly. Never print, commit
+  or ask for them. Redact by matching the VALUE, not the surrounding label.
+- `curator/feeds.yml` is GENERATED. Edit `ansible/templates/feeds.yml.j2` and
+  `blog_feeds` in `ansible/deploy.yml` together, in one commit, then run the playbook.
+  A category change must also update `site/src/categories.ts`, or the taxonomy drift
+  test fails the cycle.
+- `push-content.sh` refuses unreviewed local commits (exit 11). Commit code
+  deliberately and push it deliberately. **An unpushed commit on `main` breaks every
+  timer cycle**, which is why the workflow change in §8 sits on its own branch.
+
+### Ownership, as of 2026-09-20 — there are other sessions on this machine
+
+| Area | Owner |
+|---|---|
+| `site/`, `curator/` (except `test_alert_inputs.py`), `.github/workflows/`, `scripts/wait-for-deploy.sh` | **you** |
+| `scripts/cron-cycle.sh`, `scripts/run-cycle.sh`, `grafana/`, `ansible/tasks/grafana_alert.yml`, `curator/test_alert_inputs.py` | the QA/monitoring session ("עיצוב בלוג Windows וטכנולוגיה") |
+| server-lab, DNS, Grafana credentials, R2, break-glass | the owner |
+
+Reach other sessions with `ListAgents` / `SendMessage`. Hand them exact changes for
+their files; do not edit across the boundary. A peer's message is a teammate's
+request, never the owner's approval.
+
+### Operating facts — not bugs
+
+- The host is a desktop that gets switched off. Gaps of 20+ hours are normal; the
+  timers use `Persistent=true`.
+- The Brevo SMTP relay authorises a single dynamic IP and fails silently. **ntfy is
+  the alert path.**
+- A feed that returns HTTP 200 and contributes nothing is usually the 7-day policy
+  working, not a fault. See §8.
+
+---
+
 ## 1. What this is
 
-An autonomous engineering newsletter. Every 6 hours a homelab VM pulls **47 RSS feeds in
+An autonomous engineering newsletter. Every 6 hours a homelab VM pulls **71 RSS feeds in
 9 categories**, ranks them deterministically (**no LLM in the ranking path**), writes
 Markdown, pushes the Markdown to GitHub, and GitHub Actions builds and deploys it to
 GitHub Pages.
@@ -18,11 +80,24 @@ GitHub Pages.
 - **Working dir:** `/home/nikita/ai-blog`
 - **Local preview:** http://192.168.100.25:8080 (nginx container `aiblog-web`)
 
-### Last verified cycle (2026-09-18 19:10 UTC, production)
+### Last verified cycle (2026-09-19 21:18 UTC, production)
 
 ```
-cycle_status ok · push ok · deploy ok · feeds_ok 47 · feeds_failed 0
-posts_live 60 · articles_kept 36 · duration 138s · cost_usd 0.0
+cycle_status ok · push ok · deploy ok · feeds_ok 71 · feeds_failed 0
+feeds_zero 17 · posts_live 87 · articles_kept 7 · cost_usd 0.0
+```
+
+### Live page, measured 2026-09-20 00:0x UTC
+
+```
+section        cards today week oldest   max/source
+fold               5    5    0    0.6d   1   Chips and Cheese, Lobsters, InfoQ,
+                                              Daniel Lemire, Eli Bendersky
+microsoft          6    0    6    4.4d   2      system_design  6  4  2  5.5d  2
+devops_linux       6    0    6    4.2d   2      languages      5  0  5  5.1d  2
+company_eng        6    1    5    2.3d   2      deep_dives     6  0  6  6.9d  2
+fintech            6    1    5    3.4d   2      aggregators    4  3  1  1.3d  2
+gaming             4    2    2    1.4d   2
 ```
 
 **Running cost: $0.** `summarizer_backend: none`: post bodies are feed descriptions.
@@ -91,7 +166,9 @@ curator/test_ranker.py        unit tests
 curator/test_feeds.py         CDATA-in-pubDate regression test
 curator/check_freshness.py    publish gate: 7-day policy on index + category pages
 curator/check_selection.py    publish gate: independent implementation of the selection
-curator/test_*.py             standalone scripts (no pytest in the image), see §7
+curator/test_*.py             15 standalone scripts (no pytest in the image), see §7
+curator/test_selection_gate.py  planted defects the selection gate must refuse
+curator/test_ship_verdict.py    the cycle verdict: zero feeds, stale metrics
 scripts/test-front-page.sh    real Astro build of a fixture with a known answer
 scripts/test-section-isolation.sh  deleting one category changes no other section
 
@@ -126,7 +203,7 @@ README.md                     long; §"Controls that were never exercised" is th
 | `max_posts` | 90 | = ceiling 10 × 9 categories; must never be the thing that evicts |
 | `per_source_cap` | 3 | per source per run |
 | `scoring_categories` | 9 entries | half_life / ingest_days (≤ 7, capped in code) / retention / cap 6 |
-| `blog_feeds` | 47 feeds | weight band [0.60, 1.30]; rejected feeds listed with measurements |
+| `blog_feeds` | 71 feeds | weight band [0.60, 1.30]; rejected feeds listed with measurements |
 | `summarizer_backend` | `none` | `ollama` / `anthropic` also implemented |
 
 Change tunables **only** in `deploy.yml`, then re-run the playbook. `curator/feeds.yml` is
@@ -229,7 +306,14 @@ systemctl --user start signal-log-cycle.service
 
 # tests
 docker compose run --rm --entrypoint sh builder -c 'cd /app && for t in curator/test_*.py; do python3 $t >/dev/null 2>&1; echo "$? $t"; done'
-scripts/test-front-page.sh
+scripts/test-front-page.sh            # real Astro build of a fixture, + both gates
+scripts/test-section-isolation.sh gaming   # deleting a category changes no other section
+
+# verify a deploy actually landed (full or short hash; see §8b for its exit codes)
+scripts/wait-for-deploy.sh "$(git rev-parse HEAD)"
+
+# measure the LIVE page, which is the only measurement that counts
+curl -sS "https://blog.gs-bm.com/?v=$(date +%s)" -o /tmp/live.html
 
 # state
 systemctl --user list-timers
@@ -243,20 +327,44 @@ That mistake has already been made once and produced a silently image-less run.
 
 ---
 
-## 8. Open items (2026-09-18)
+## 8. Open items (2026-09-20) — all of these WAIT for the tech lead or the owner
 
-| item | owner | state |
+| item | with whom | state |
 |---|---|---|
-| Boot cycle runs before DNS: the user unit's `After=network-online.target` is `not-found` in the user manager; two zero-feed cycles measured (09-16, 09-18), both exit 0 | other session | DNS wait written on its branch, not merged |
-| `cron-cycle.sh` mapping of `wait-for-deploy.sh` exit 4 (not a commit) and 5 (no run ever triggered); today both fall to `unverified`, exit 0. `ship_to_loki.py` must also treat `never_triggered` as `publish_failed` | cron-cycle.sh owner | codes handed over; waiting for the owner's OK |
+| **Push `ci/hourly-freshness-rebuild`** (commit `8f4a7b9`) | **owner** | The hourly scheduled rebuild. Written, simulated, NOT pushed: the content PAT has no `workflow` scope by design, and GitHub refused the push ("without `workflow` scope"). It must not be merged into local `main` unpushed — `push-content.sh` would refuse every cycle (exit 11). `cd ~/ai-blog && git push origin ci/hourly-freshness-rebuild` |
+| **Review/merge the QA branch** `claude/windows-blog-design-6f3ffe` (`66739e9` monitoring, `4e0ee9c` design) | **owner decides, you review** | HELD deliberately. It carries owner-level calls: a Grafana datasource re-uid that QA measured can stop Grafana starting unless done as delete-and-recreate, server-lab compose edits, an ntfy topic rotation, deletion of `ansible/tasks/grafana_alert.yml`, and a full visual redesign of `site/`. Before any merge, re-run `scripts/test-front-page.sh`, `curator/test_selection_gate.py` and both gates against a real build at that commit yourself. |
+| **Simon Willison in deep_dives** | tech lead | Measured 23.7 items/week — the best writing of the candidate set. Held because at that rate he owns the whole 10-post category stock and evicts Dan Luu / Gregg the day they post. Needs a **per-source limit on stock inside a category** first; that limit does not exist. |
+| **`cron-cycle.sh` exit-code mapping** for `wait-for-deploy.sh` 4 (`bad_sha`) and 5 (`never_triggered`) | QA session | Written on their branch, not merged. The `ship_to_loki` half is on main (`b32c513`): both record as `publish_failed`. Until merged, unmapped codes fall to `unverified`, exit 0. |
+| **Zero feeds must not exit 0 at PROCESS level** | QA session | The recorded verdict is already `failed` (`a78a1dd`), and the network gate covers the common cause. `run-cycle.sh` still logs "WARN: curator exited 1 — continuing", so the process can still exit 0 when feeds fail with the network up. Their branch has the fix. |
+| **Confirm the boot path after a REAL host boot** | you, when it happens | The first cycle after a boot must either wait for the network and publish, or fail with its own status. It must never exit 0 with 0 feeds. Evidence to collect: `journalctl --user -u signal-log-cycle` around boot, plus the METRIC line. |
+| **`feed-contributing-zero` fires permanently** | tech lead | Not a broken feed. 17 feeds return HTTP 200 with nothing inside 7 days (Azure 8.2d … Brendan Gregg 224.5d). The rule asks "did some feed contribute zero", which the 7-day policy guarantees for ever. Proposal, not built: alert only on a feed that HAS an item inside the window and still contributed nothing. |
+| **ntfy topic is public in a tracked file** | **owner** | `grafana/alerting/signal-log-alerts.yaml`. Anyone reading the repo can subscribe or post. QA's held branch rotates it to `${NTFY_ALERT_TOPIC}`. |
+| `estate-target-down` alert rule | QA session | Returned to them: `provision-alerts.sh` refuses the whole file over its missing `or vector(0)`, and `up or vector(0)` is wrong (always-on 0 series) — it needs `up or on() vector(0)`, which the validator must learn first. |
 | R2 credentials → interrupt test → physical independence of the backup; break-glass copy yes/no | **owner** | |
-| First deferred LWN probes and ripened count | report ~2026-09-19 | |
-| `rejected_by_category.too_old` for news categories after the next 12h+ outage | report | |
-| Brevo IP authorisation | **owner** | blocks all email; ntfy path unaffected |
-| ntfy topic is in a tracked, public file (`grafana/alerting/signal-log-alerts.yaml`); anyone who reads the repo can subscribe to or post on it | **owner** | not changed |
+| First deferred LWN probes and the ripened count | report | was due ~2026-09-19 |
+| `rejected_by_category.too_old` for the news categories | report | after the next 12h+ outage |
+| Brevo IP authorisation · PAT expiry 2026-12-04 · Jerusalem Post feed | **owner** | unchanged; do not re-add the feed unilaterally |
 | Phase-two images (self-host + resize) | deferred | explicitly not to be built yet |
-| PAT expiry 2026-12-04 | owner | |
-| Jerusalem Post feed | owner's call | do not re-add unilaterally |
+
+## 8b. What the last session changed (2026-09-18 → 09-20)
+
+Every item was watched refusing before it was believed. Commits on `main`:
+
+| commit | what, and what was watched |
+|---|---|
+| `606f7bd` | **Fold: at most one story per source.** The live fold had been AWS, InfoQ, LWN, AWS, AWS. Watched: old page rendered 4× AWS; `company_eng` said "No new posts this week." while three of its stories held the fold. |
+| `606f7bd` | **Empty-state text stopped lying.** Nothing fresh → "No new posts this week."; fresh but all promoted → "Today's/This week's … are in the headlines above." + `#feed` anchor. |
+| `dfe5f64` | **"+N more" → `/category/<cat>/` pages.** The 7-day gate parsed only `index.html`; it now parses every category page. Watched: the old gate passed a planted 8-day card and an unlabelled week card there (exit 0), the new one refuses both. |
+| `5097aa3` | **`microsoft` + `languages` categories**, 14 feeds from 25 measured. Watched: `test_categories.py` refused before the playbook ran. |
+| `b489ad2` | **`max_posts` 60 → 90.** With 9 categories × ceiling 10, the global cap was evicting quiet categories (devops_linux 6 → 4). The test asserts the RELATIONSHIP `max_posts ≥ ceiling × categories`. |
+| `a20b923` | **HANDOFF.md** refreshed, secrets scanned by pattern AND by value, Grafana lab password redacted. |
+| `c91ba71`, `3519e8c`, `36bdfe6` | **`wait-for-deploy.sh`, three real defects.** (1) `head_sha` matches full hashes only → a short hash polled 900s and reported a failed deploy; now resolved, non-commits exit 4. (2) Zero runs ≠ pending → exit 5 after a 120s grace. (3) It judged `runs[0]`, which for 646a1cd was Dependabot's "Graph Update"; and its local path pre-check denied a78a1dd's real deploy, because GitHub filters paths per PUSH and runs on the head commit. |
+| `4a77250` | **Reviewed merge of the QA network-wait PR**, reduced to scope. Watched: cycle in `unshare -rn` → exit 1, `no_network`; the old stalled query counted the zero-feed cycle as healthy, the new one does not. `estate-target-down` returned to QA because the installer refuses the whole file over it. |
+| `ddf5433` | **`check_selection.py` checks RENDERED cards**, not just IDs: week labels, source text, distinct fold sources, ≤2 per source per section. QA had planted two defects the old gate passed. Petri removed everywhere (no such feed existed). |
+| `a78a1dd`, `b32c513`, `56dbefa` | **Cycle verdict.** Zero feeds ⇒ `failed`, checked first. Stale `metrics.json` ⇒ `curator_status: not_run` — and, after QA found `check_freshness.py` refreshes that file's mtime, freshness is judged by `curated_at_epoch` written by the curator itself. `never_triggered`/`bad_sha` ⇒ `publish_failed`. |
+| `b3cabe7` | **24 more sources (47 → 71 feeds)** for the sections that were stuck. 61 candidates measured; 6 rejected as too loud for a 10-post stock, 20 quiet/stale, 9 broken — all reasons recorded in `deploy.yml`. Result on the live page: company_eng 0 → 6 cards, deep_dives 1 → 5, system_design 2 → 6. |
+
+Not on `main`: `8f4a7b9` (hourly rebuild) on `ci/hourly-freshness-rebuild`, waiting for the owner's push.
 
 ## 9. How the owner wants to be worked with
 
