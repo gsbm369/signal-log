@@ -67,6 +67,9 @@ def main() -> int:
     check("a cycle that never reached the curator does not ship the last cycle's status",
           r.get("curator_status"), "not_run")
     check("  ... nor its feed count", r.get("feeds_ok"), 0)
+    for st in ("never_triggered", "bad_sha"):
+        check(f"deploy_status {st} (content pushed, no build ran) is publish_failed",
+              ship(healthy, deploy=st, exit_code=1).get("cycle_status"), "publish_failed")
     check("a metrics.json written during this cycle is used",
           ship(healthy, age_s=30, duration=90).get("curator_status"), "ok")
 

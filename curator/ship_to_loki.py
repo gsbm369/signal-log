@@ -87,7 +87,11 @@ def main() -> int:
     if zero_feeds:
         level, cycle_status = "error", "failed"
         m["error"] = m.get("error") or "zero feeds reached"
-    elif args.push_status == "failed" or args.deploy_status in ("failed", "timeout", "not_reached"):
+    # never_triggered / bad_sha: wait-for-deploy.sh exit 5 / 4. Content was
+    # pushed and no Pages build ran for it (or the check was handed a bad
+    # hash) — built here, never reached production.
+    elif args.push_status == "failed" or args.deploy_status in (
+            "failed", "timeout", "not_reached", "never_triggered", "bad_sha"):
         level, cycle_status = "error", "publish_failed"
     elif args.exit_code != 0:
         level, cycle_status = "error", "failed"
