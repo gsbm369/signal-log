@@ -92,6 +92,30 @@ if ! "$FLOCK_BIN" -n 9; then
 fi
 trap ship EXIT
 
+# ------------------------------------------------------------ 0. network gate
+# The unit says After=network-online.target, but it is a USER unit, and the
+# user manager has no such target — the ordering is silently a no-op. With
+# Persistent=true the timer's catch-up fires the moment the user manager starts,
+# which after a reboot is before the network is up. Measured 2026-09-18: fired
+# one second after boot, 33/33 feeds unreachable, git fetch failed, and the
+# cycle still ended exit 0 as a "healthy no-op".
+#
+# So the script waits for the network itself: DNS plus a real HTTPS round trip
+# to the host every cycle depends on. If it never comes, that is a failed cycle
+# with its own status, not an empty one.
+net_ready() { curl -s -o /dev/null -m 5 --head https://github.com; }
+NET_WAIT="${NETWORK_WAIT_S:-300}"; waited=0
+until net_ready; do
+  if [ "$waited" -ge "$NET_WAIT" ]; then
+    log "FATAL: no network after ${NET_WAIT}s (github.com unreachable) — not curating from nothing"
+    BUILD_STATUS="no_network"; EXIT_CODE=1
+    exit 1
+  fi
+  [ "$waited" -eq 0 ] && log "network not ready — waiting up to ${NET_WAIT}s"
+  sleep 5; waited=$((waited + 5))
+done
+[ "$waited" -gt 0 ] && log "network ready after ${waited}s"
+
 # ------------------------------------------------------------------ 1. build
 log "=== cycle starting (docker=${DOCKER_BIN}) ==="
 # Bounded at 20 minutes. The builder curates 28 feeds and then runs an Astro

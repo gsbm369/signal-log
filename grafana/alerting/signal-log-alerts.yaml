@@ -18,6 +18,14 @@
 # new, and be a perfectly healthy no-op. deploy_status "ok" (deployed) and
 # "not_needed" (nothing new, feeds fine) both count; every failure mode and
 # deliberately-skipped runs do not.
+#
+# "not_needed" only means "feeds fine" if the curator actually reached them.
+# A cycle that fetched from ZERO feeds (curator_status "no_articles": every feed
+# empty or unreachable) also ends exit 0 / not_needed, and was counted as a
+# success. Seen on 2026-09-18: the timer's catch-up fired one second after a
+# reboot, before the network was up, 33/33 feeds failed, and the cycle passed
+# as healthy. A host whose network never came back would have looked fine to
+# both stalled rules indefinitely. Those cycles are now excluded.
 apiVersion: 1
 
 contactPoints:
@@ -114,7 +122,8 @@ groups:
               # silently depends on noDataState.
               expr: >-
                 sum(count_over_time({job="signal-log"} | json
-                    | exit_code = 0 | deploy_status =~ "ok|not_needed" [12h])) or vector(0)
+                    | exit_code = 0 | deploy_status =~ "ok|not_needed"
+                    | curator_status != "no_articles" [12h])) or vector(0)
 
           - refId: THRESHOLD
             datasourceUid: __expr__
@@ -172,7 +181,8 @@ groups:
               # chose not to publish is not evidence that publishing works.
               expr: >-
                 sum(count_over_time({job="signal-log"} | json
-                    | exit_code = 0 | deploy_status =~ "ok|not_needed" [48h])) or vector(0)
+                    | exit_code = 0 | deploy_status =~ "ok|not_needed"
+                    | curator_status != "no_articles" [48h])) or vector(0)
 
           - refId: THRESHOLD
             datasourceUid: __expr__
@@ -396,4 +406,3 @@ groups:
                   operator: { type: and }
                   query: { params: [QUERY] }
                   reducer: { type: last, params: [] }
-
