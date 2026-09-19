@@ -1,15 +1,16 @@
 ---
-title: "San Francisco Onion Futures Company"
+title: "If math is more than proof, we need to better celebrate the rest of it"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-19T04:23:30+00:00
-addedAt: 2026-09-19T16:58:10.136111+00:00
+pubDate: 2026-09-19T06:28:02+00:00
+addedAt: 2026-09-19T21:17:29.277596+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://onionfutures.com/"
+sourceUrl: "https://terrytao.wordpress.com/2026/09/18/if-math-is-more-than-proof-we-need-to-better-celebrate-the-rest-of-it/"
 tags: ["tech"]
-heat: 47
-score: 0.43131
+heat: 44
+score: 0.39554
 readMinutes: 1
+image: "https://terrytao.wordpress.com/wp-content/uploads/2026/09/image-1.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

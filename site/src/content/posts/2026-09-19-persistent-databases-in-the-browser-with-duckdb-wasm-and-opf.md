@@ -1,15 +1,16 @@
 ---
-title: "The paradox at the heart of AI and science | Terence Tao"
+title: "Persistent Databases in the Browser with DuckDB-Wasm and OPFS"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-19T16:53:14+00:00
-addedAt: 2026-09-19T16:58:10.135731+00:00
+pubDate: 2026-09-19T18:46:39+00:00
+addedAt: 2026-09-19T21:17:29.277208+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=svl_1upFpQo"
-tags: ["tech"]
-heat: 66
-score: 0.7477
+sourceUrl: "https://duckdb.org/2026/09/18/opfs-wasm"
+tags: ["duckdb", "wasm"]
+heat: 97
+score: 1.46374
 readMinutes: 1
+image: "https://duckdb.org/images/blog/thumbs/webassembly.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
