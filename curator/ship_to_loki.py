@@ -41,9 +41,19 @@ def _read(name: str) -> dict:
         return {}
 
 
-def load_metrics() -> dict:
+def load_metrics(cycle_seconds: float = 0.0) -> dict:
     """Merge the container's curation metrics with its build outcome. The
-    container writes both; the host adds push/deploy status on top."""
+    container writes both; the host adds push/deploy status on top.
+
+    metrics.json is overwritten by the curator, not created per cycle, so a
+    cycle that never reached the curator (no network, lock, container failure)
+    would ship the PREVIOUS cycle's counts under this cycle's status — watched:
+    a no_network cycle recorded curator_status "ok". A file older than this
+    cycle is not this cycle's evidence."""
+    path = STATE_DIR / "metrics.json"
+    if cycle_seconds > 0 and path.exists() and path.stat().st_mtime < time.time() - cycle_seconds - 5:
+        return {"curator_status": "not_run", "feeds_ok": 0,
+                "error": "curator did not run this cycle (metrics.json is from an earlier one)"}
     m = _read("metrics.json")
     if not m:
         m = {"curator_status": "unknown", "error": "metrics.json missing or unreadable"}
@@ -63,13 +73,21 @@ def main() -> int:
     ap.add_argument("--posts-live", type=int, default=-1)
     args = ap.parse_args()
 
-    m = load_metrics()
+    m = load_metrics(args.duration)
     curator_status = m.get("curator_status", "unknown")
 
     # publish_failed is its own terminal state, distinct from a build failure.
     # It means the site built fine HERE and never reached production — the one
     # outcome most easily mistaken for success.
-    if args.push_status == "failed" or args.deploy_status in ("failed", "timeout", "not_reached"):
+    # HARD RULE (owner, 2026-09-19): a cycle that reached ZERO feeds failed,
+    # whatever else happened. It rebuilt and republished the posts it already
+    # had, pushed nothing new, and on 2026-09-18 ended exit 0 as a "healthy
+    # no-op". Checked first, so no later branch can call it ok or degraded.
+    zero_feeds = int(m.get("feeds_ok", 0) or 0) == 0
+    if zero_feeds:
+        level, cycle_status = "error", "failed"
+        m["error"] = m.get("error") or "zero feeds reached"
+    elif args.push_status == "failed" or args.deploy_status in ("failed", "timeout", "not_reached"):
         level, cycle_status = "error", "publish_failed"
     elif args.exit_code != 0:
         level, cycle_status = "error", "failed"
