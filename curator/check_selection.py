@@ -12,10 +12,17 @@ checked against itself is not.
   fold     5 slots, at most one story per source: today by order, skipping a
            source already in the fold; if short, this week under the same rule
   section  fixed order; pool = category, not in fold, not excluded, by order;
-           at most 2 per source in a section (Petri: 1); first 6
+           at most 2 per source in a section; first 6
            week cards labelled; empty with nothing fresh -> "No new posts this
            week."; empty because its fresh stories are all in the fold -> "...
            stories are in the headlines above." linking to #feed
+
+Beyond the IDs, the RENDERED cards are checked as a reader sees them — the
+IDs can be right while the page is wrong:
+  - every card whose post is "this week" carries the visible this-week label
+  - every card's rendered source text is the post's source
+  - the fold renders as many distinct sources as it has cards
+  - no section renders more than 2 cards from one source
 
 Exit 0 identical, 1 mismatch, 2 cannot check.
 """
@@ -24,6 +31,8 @@ from __future__ import annotations
 import os
 import re
 import sys
+from collections import Counter
+from html import unescape
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -31,7 +40,7 @@ POSTS = Path(os.environ.get("CONTENT_DIR", "/app/site/src/content/posts"))
 INDEX = Path(os.environ.get("BUILT_INDEX", "/app/site/dist/index.html"))
 ORDER = ["microsoft", "system_design", "devops_linux", "languages", "company_eng",
          "deep_dives", "fintech", "aggregators", "gaming"]
-PER_SOURCE = {"Petri": 1}
+PER_SOURCE = 2
 FM = lambda k: re.compile(rf'^{k}:\s*"?(.*?)"?\s*$', re.M)
 
 
@@ -49,7 +58,7 @@ def load(now):
         pub = datetime.fromisoformat(g("pubDate").replace("Z", "+00:00"))
         age_h = (now - pub).total_seconds() / 3600
         tier = "today" if age_h <= 24 else "week" if age_h <= 7 * 24 else "stale"
-        out.append({"id": f.stem, "cat": g("category", "aggregators"), "src": g("source"),
+        out.append({"id": f.stem, "cat": g("category", "aggregators"), "src": unescape(g("source")),
                     "score": float(g("score", "0") or 0), "tier": tier})
     return out
 
@@ -73,7 +82,7 @@ def expected(posts, declared):
                 break
             if p["cat"] != cat or p["id"] in fold:
                 continue
-            if seen.get(p["src"], 0) >= PER_SOURCE.get(p["src"], 2):
+            if seen.get(p["src"], 0) >= PER_SOURCE:
                 continue
             seen[p["src"]] = seen.get(p["src"], 0) + 1
             items.append(p["id"])
@@ -91,6 +100,46 @@ def rendered(html):
     order = re.findall(r'<section[^>]*data-section="([a-z_]+)"', html)
     bodies = dict(re.findall(r'<section[^>]*data-section="([a-z_]+)"[^>]*>(.*?)</section>', html, re.S))
     return fold, secs, order, bodies
+
+
+def rendered_cards(html):
+    """Every card as rendered: section, post id, visible source text, label."""
+    out = []
+    for attrs, body in re.findall(r"<article\b([^>]*)>(.*?)</article>", html, re.S):
+        sec = re.search(r'data-section="([^"]*)"', attrs)
+        pid = re.search(r'href="/posts/([^"/]+)/?"', body)
+        src = re.search(r'class="src"[^>]*>(.*?)<', body, re.S)
+        out.append({"section": sec.group(1) if sec else "?", "id": pid.group(1) if pid else "?",
+                    "src": unescape(src.group(1)).strip() if src else None,
+                    "labelled": 'data-label="this-week"' in body})
+    return out
+
+
+def rendered_properties(cards, posts):
+    """Properties of the page as a reader sees it, independent of the IDs."""
+    by_id = {p["id"]: p for p in posts}
+    bad = []
+    for c in cards:
+        p = by_id.get(c["id"])
+        if p is None:
+            bad.append(f"[{c['section']}] card {c['id']} has no post behind it")
+            continue
+        if p["tier"] == "week" and not c["labelled"]:
+            bad.append(f"[{c['section']}] {c['id']} is a 'this week' card with NO visible label")
+        if c["src"] is None:
+            bad.append(f"[{c['section']}] {c['id']} renders no source")
+        elif c["src"] != p["src"]:
+            bad.append(f"[{c['section']}] {c['id']} renders source {c['src']!r}, post says {p['src']!r}")
+    fold = [c for c in cards if c["section"] == "fold"]
+    fold_srcs = [c["src"] for c in fold]
+    if len(set(fold_srcs)) != len(fold_srcs):
+        dup = sorted(k for k, n in Counter(fold_srcs).items() if n > 1)
+        bad.append(f"[fold] {len(fold_srcs)} cards but {len(set(fold_srcs))} distinct rendered sources: {dup} repeat")
+    for sec in sorted({c["section"] for c in cards} - {"fold"}):
+        for src, n in Counter(c["src"] for c in cards if c["section"] == sec).items():
+            if n > PER_SOURCE:
+                bad.append(f"[{sec}] renders {n} cards from {src!r}, limit {PER_SOURCE}")
+    return bad
 
 
 def main() -> int:
@@ -124,11 +173,17 @@ def main() -> int:
         if es[cat] and (says_none or says_fold):
             bad.append(f"[{cat}] has stories but renders an empty-state line")
 
+    cards = rendered_cards(html)
+    props = rendered_properties(cards, posts)
+    bad += props
+
     print(f"\n-- built page vs the owner's reference selection, clock {now:%Y-%m-%d %H:%M}Z --")
     print(f"   fold      expected {len(ef)}  rendered {len(rf)}  {'MATCH' if rf == ef else 'DIFFERS'}")
     for cat in want_order:
         print(f"   {cat:<15} expected {len(es[cat])}  rendered {len(rs.get(cat, []))}  "
               f"{'MATCH' if rs.get(cat, []) == es[cat] else 'DIFFERS'}")
+    print(f"   rendered  {len(cards)} cards: labels, source text, fold distinct sources, "
+          f"<= {PER_SOURCE}/source per section  {'OK' if not props else 'VIOLATED'}")
     missing = [c for c in ORDER if c not in declared]
     if missing:
         print(f"   (not declared on this site, so no section: {', '.join(missing)})")

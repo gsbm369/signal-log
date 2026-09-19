@@ -36,7 +36,7 @@ posts_live 60 · articles_kept 36 · duration 138s · cost_usd 0.0
   under the same rule.
 - **Sections**, fixed order: microsoft, system_design, devops_linux, languages,
   company_eng, deep_dives, fintech, aggregators, gaming. At most 2 per source
-  (Petri 1), then the 6-slot quota; never filled from another category.
+  then the 6-slot quota; never filled from another category.
 - **Empty section:** "No new posts this week." only if nothing is fresh; if its fresh
   stories are all in the fold, "Today's/This week's <label> stories are in the
   headlines above." linking to `#feed`.
