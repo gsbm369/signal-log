@@ -11,7 +11,8 @@
 # Usage: wait-for-deploy.sh <commit-sha>
 # Exit:  0 success   1 workflow failed
 #        2 timed out — a run EXISTS but did not conclude within the deadline
-#        3 no run expected (commit touches no deploy-triggering path)
+#        3 no run appeared within the grace period, and none was expected
+#          (the commit touches no deploy-triggering path)
 #        4 not a commit — the argument does not resolve; nothing is polled
 #        5 no workflow run exists for the commit after the grace period —
 #          the workflow never triggered. Not a failed deploy and not a
@@ -47,23 +48,26 @@ GRACE="${DEPLOY_NO_RUN_GRACE:-120}"
   log "no readable credential file — cannot verify the deploy"; exit 10; }
 
 # The workflow only triggers on paths: site/** and the workflow file itself.
-# A commit that touches neither produces no run, and waiting 900s for one that
-# was never going to exist reports a false publish failure. Distinguish "no run
-# needed" from "run never appeared" before polling.
+# This local check can only NAME the outcome when no run appears; it must not
+# pre-empt asking GitHub. GitHub applies the path filter to the whole PUSH and
+# runs on its head commit, so a curator-only head (a78a1dd) pushed together
+# with a site/ commit HAS a run — and an early exit 3 here reported "no run
+# expected" for a deploy that ran. So: always look for the run; if none appears
+# within the grace period, this says whether that was expected (3) or not (5).
 WATCHED_RE="${DEPLOY_WATCHED_PATHS:-^(site/|\.github/workflows/)}"
+EXPECTED=1; CHANGED=""
 if git -C "$ROOT" rev-parse --verify "${SHA}^" >/dev/null 2>&1; then
   CHANGED="$(git -C "$ROOT" diff --name-only "${SHA}^" "$SHA" 2>/dev/null || true)"
   if [ -n "$CHANGED" ] && ! printf '%s\n' "$CHANGED" | grep -qE "$WATCHED_RE"; then
-    log "commit ${SHA:0:8} touches no deploy-triggering path — no Actions run expected"
-    log "  changed: $(printf '%s' "$CHANGED" | tr '\n' ' ' | cut -c1-160)"
-    exit 3
+    EXPECTED=0
   fi
 fi
 
 log "waiting for the Actions run on ${SHA:0:8} (timeout ${TIMEOUT}s)"
 
 GH_REPO="$GH_REPO" SHA="$SHA" CRED_FILE="$CRED_FILE" \
-TIMEOUT="$TIMEOUT" INTERVAL="$INTERVAL" GRACE="$GRACE" python3 <<'PY'
+TIMEOUT="$TIMEOUT" INTERVAL="$INTERVAL" GRACE="$GRACE" EXPECTED="$EXPECTED" \
+CHANGED="$(printf '%s' "$CHANGED" | tr '\n' ' ' | cut -c1-160)" python3 <<'PY'
 import json, os, re, sys, time, urllib.error, urllib.request
 
 repo     = os.environ["GH_REPO"]
@@ -71,6 +75,7 @@ sha      = os.environ["SHA"]
 timeout  = float(os.environ["TIMEOUT"])
 interval = float(os.environ["INTERVAL"])
 grace    = float(os.environ["GRACE"])
+expected = os.environ.get("EXPECTED", "1") == "1"
 WORKFLOW = ".github/workflows/deploy.yml"
 
 # Read the token from the credential store; never touches argv or the environment
@@ -131,6 +136,10 @@ while waited < timeout:
         # not finished; this is the absence of a run, and after the grace
         # period it is its own answer.
         if waited >= grace:
+            if not expected:
+                stamp(f"no run for {sha[:12]} after {int(waited)}s, and none expected: the commit "
+                      f"touches no deploy-triggering path ({os.environ.get('CHANGED', '')})")
+                sys.exit(3)
             stamp(f"no workflow run exists for {sha[:12]} after {int(waited)}s — "
                   f"the workflow never triggered (paths filter, or a disabled workflow)")
             sys.exit(5)
