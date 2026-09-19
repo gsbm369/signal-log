@@ -65,3 +65,24 @@ export const ACCEPTED_CATEGORIES = [...CATEGORIES, ...LEGACY_CATEGORIES] as cons
 /* Fallback for a post written before categories existed, and for any post whose
  * category the schema default had to supply. */
 export const DEFAULT_CATEGORY: Category = 'aggregators';
+
+/* The one-line standfirst under each section's name on the home page.
+ * Presentation only: labels come from SECTION_ORDER above. */
+export const CATEGORY_BLURBS: Record<string, string> = {
+  microsoft:     'Windows, Azure, .NET and the rest of the Microsoft stack.',
+  system_design: 'How large systems are shaped, scaled and kept alive.',
+  devops_linux:  'Kernels, clusters, containers and the pipelines between.',
+  languages:     'Compilers, runtimes and the languages built on them.',
+  company_eng:   'Engineering teams writing up what they actually built.',
+  deep_dives:    'Long reads that go all the way down to the metal.',
+  fintech:       'How money moves, and the systems that move it.',
+  aggregators:   'What the Hacker News and Lobsters crowd is reading.',
+  gaming:        'Engines, graphics and the business of play.',
+};
+
+const LEGACY_LABELS: Record<string, string> = { tech: 'Tech', markets: 'Markets', world: 'World' };
+
+export const labelOf = (c: string | undefined): string => {
+  const k = c ?? DEFAULT_CATEGORY;
+  return CATEGORY_LABELS[k] ?? LEGACY_LABELS[k] ?? k;
+};
