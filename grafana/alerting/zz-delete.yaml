@@ -1,0 +1,8 @@
+# Rules removed on purpose. Removing a provisioning FILE does not remove the
+# rules it created, so deletion is declared here. These two were fire drills.
+apiVersion: 1
+deleteRules:
+  - orgId: 1
+    uid: DRILL-signal-log-feed-failed
+  - orgId: 1
+    uid: DRILL-signal-log-feed-contributing-zero

@@ -90,7 +90,9 @@ def main() -> int:
     # whatever else happened. It rebuilt and republished the posts it already
     # had, pushed nothing new, and on 2026-09-18 ended exit 0 as a "healthy
     # no-op". Checked first, so no later branch can call it ok or degraded.
-    zero_feeds = int(m.get("feeds_ok", 0) or 0) == 0
+    # build_status "zero_feeds" is cron-cycle.sh's own verdict, reached from a
+    # metrics.json it proved was written THIS cycle; trust it over the file.
+    zero_feeds = int(m.get("feeds_ok", 0) or 0) == 0 or args.build_status == "zero_feeds"
     if zero_feeds:
         level, cycle_status = "error", "failed"
         m["error"] = m.get("error") or "zero feeds reached"
@@ -98,7 +100,11 @@ def main() -> int:
     # pushed and no Pages build ran for it (or the check was handed a bad
     # hash) — built here, never reached production.
     elif args.push_status == "failed" or args.deploy_status in (
-            "failed", "timeout", "not_reached", "never_triggered", "bad_sha"):
+            "failed", "timeout", "not_reached", "never_triggered", "bad_sha") \
+            or args.deploy_status.startswith("unknown_exit_"):
+        # unknown_exit_<n>: wait-for-deploy.sh returned a code cron-cycle.sh
+        # does not map. Not evidence the deploy worked: it did not verifiably
+        # reach production.
         level, cycle_status = "error", "publish_failed"
     elif args.exit_code != 0:
         level, cycle_status = "error", "failed"

@@ -797,16 +797,10 @@
         - npm_password is defined
       tags: [proxy]
 
-    # ------------------------------------------------- alerting (opt-in)
-    # `apply` is required: tasks inside a dynamic include do NOT inherit the
-    # include's tags, so `--tags alert` would include the file and run nothing.
-    - name: Provision the Grafana alert
-      ansible.builtin.include_tasks:
-        file: tasks/grafana_alert.yml
-        apply:
-          tags: [alert]
-      when: (grafana_user is defined and grafana_password is defined) or grafana_token is defined
-      tags: [alert]
+    # ------------------------------------------------------------ alerting
+    # Not provisioned from here. The API push that lived in tasks/grafana_alert.yml
+    # was deleted: alerting has ONE path, grafana/install.sh, which copies the
+    # rule and datasource files into Grafana's file provisioning.
 
     # ---------------------------------------------------------------- verify
     - name: Wait for the site to answer

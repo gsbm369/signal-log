@@ -77,7 +77,8 @@ built HTML to `gh-pages`.
 
 ```
 ansible/deploy.yml            single source of truth — all tunables live in `vars:`
-ansible/tasks/                grafana_alert.yml, npm_proxy_host.yml
+ansible/tasks/                npm_proxy_host.yml
+grafana/install.sh            the ONE alerting path: validates, installs file provisioning
 ansible/templates/feeds.yml.j2  → renders curator/feeds.yml (GENERATED, tracked)
 
 curator/curate.py             fetch → dedupe → per-category rank → write front matter

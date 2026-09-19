@@ -41,6 +41,8 @@ services:
     environment:
       TZ: ${TZ:-UTC}
       LOKI_URL: ${LOKI_URL:-}
+      # test_alert_inputs.py checks every Prometheus selector a rule queries.
+      PROM_URL: ${PROM_URL:-http://prometheus:9090}
       LOKI_JOB: ${LOKI_JOB:-signal-log}
       LOKI_HOST_LABEL: ${LOKI_HOST_LABEL:-}
       CURATOR_MODEL: ${CURATOR_MODEL:-claude-opus-5}

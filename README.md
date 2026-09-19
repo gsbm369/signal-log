@@ -230,8 +230,14 @@ The canary was then deleted. **Until an alert has actually reached a human, deli
 untested** — the same standing rule this project has now learned six times.
 
 ```bash
-ansible-playbook deploy.yml -e grafana_user=admin -e grafana_password=... --tags alert
+grafana/install.sh --check   # validate only
+grafana/install.sh           # install into Grafana's file provisioning
+docker restart grafana       # Grafana loads provisioning at start
 ```
+
+That is the only path. Rule files name datasources by pinned uid (`loki`,
+`prometheus`, declared in `grafana/provisioning/datasources/`), and the ntfy topic is
+read from Grafana's environment (`NTFY_ALERT_TOPIC`, kept in `.env`), never committed.
 
 **It alerts on absence, not on failure.** Everything else here catches loud failures — a
 broken build, a rejected push, a workflow that times out. A curator that simply dies

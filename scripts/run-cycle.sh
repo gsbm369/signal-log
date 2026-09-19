@@ -100,9 +100,9 @@ fi
 # it is not a reason to stop publishing.
 python3 /app/curator/test_alert_inputs.py; ai_rc=$?
 case $ai_rc in
-  0) log "alert inputs: every queried field is present" ;;
-  2) log "alert inputs: not checked (rules file or Loki unreachable)" ;;
-  *) log "WARN: an alert rule queries a field that never reaches Loki — it can never fire" ;;
+  0) log "alert inputs: every queried field, label and series is present" ;;
+  2) log "alert inputs: not fully checked (rules missing, or Loki/Prometheus unreachable)" ;;
+  *) log "WARN: an alert rule queries an input that never arrives (Loki field or Prometheus series) — it can never fire" ;;
 esac
 
 # ------------------------------------------------- 1d. addedAt stability gate
