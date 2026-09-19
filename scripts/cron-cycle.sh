@@ -143,6 +143,28 @@ print(d.get("build_status","unknown"), d.get("publish_status","unknown"))
 ' "${STATE_DIR}/build.json")"
 fi
 
+# HARD RULE (owner, 2026-09-19): a cycle that reached ZERO feeds failed —
+# never exit 0. The record already says so (ship_to_loki.py); this makes the
+# PROCESS say so too. run-cycle.sh deliberately continues past a curator
+# failure to rebuild what it has, so the builder can exit 0 here while having
+# fetched nothing at all.
+#
+# metrics.json is overwritten, not per-cycle: a copy older than this cycle is
+# the PREVIOUS cycle's counts, and trusting it is how a no-network cycle once
+# reported the last run's feeds as its own. Stale or missing counts as zero.
+METRICS="${STATE_DIR}/metrics.json"
+FEEDS_OK=0
+if [ -s "$METRICS" ] && [ "$(stat -c %Y "$METRICS")" -ge "$CYCLE_START" ]; then
+  FEEDS_OK=$(python3 -c 'import json,sys; print(int(json.load(open(sys.argv[1])).get("feeds_ok", 0) or 0))' "$METRICS" 2>/dev/null || echo 0)
+else
+  log "metrics.json was not written this cycle — treating as zero feeds"
+fi
+if [ "$FEEDS_OK" = "0" ]; then
+  log "FATAL: zero feeds reached this cycle — failed, whatever the build did"
+  BUILD_STATUS="zero_feeds"; PUSH_STATUS="not_attempted"; DEPLOY_STATUS="not_reached"; EXIT_CODE=1
+  exit 1
+fi
+
 if [ "$BUILD_RC" -ne 0 ] || [ "$PUBLISH_STATUS" != "ok" ]; then
   log "FATAL: build/publish failed (rc=${BUILD_RC}) — not pushing anything"
   PUSH_STATUS="not_attempted"; DEPLOY_STATUS="not_reached"; EXIT_CODE=1
@@ -178,11 +200,26 @@ if [ -z "$SHA" ]; then
 fi
 
 "${ROOT}/scripts/wait-for-deploy.sh" "$SHA"
-case $? in
+WAIT_RC=$?
+case $WAIT_RC in
   0)  DEPLOY_STATUS="ok" ;;
   1)  DEPLOY_STATUS="failed";  EXIT_CODE=1 ;;
-  2)  DEPLOY_STATUS="timeout"; EXIT_CODE=1 ;;
-  3)  DEPLOY_STATUS="not_needed" ;;   # commit triggers no workflow run
-  *)  DEPLOY_STATUS="unverified" ;;
+  2)  DEPLOY_STATUS="timeout"; EXIT_CODE=1 ;;   # a run exists, did not conclude
+  3)  DEPLOY_STATUS="not_needed" ;;             # commit touches nothing deployable
+  # Not a commit. Reaching here means HEAD did not resolve after a successful
+  # push — a bug in this script, not in the deploy.
+  4)  PUSH_STATUS="bad_sha"; DEPLOY_STATUS="bad_sha"; EXIT_CODE=1
+      log "FATAL: wait-for-deploy says ${SHA:-<empty>} is not a commit" ;;
+  # Content WAS pushed (step 2 succeeded) but no Pages build ever started, so
+  # nothing reached production and the live site is stale.
+  5)  DEPLOY_STATUS="never_triggered"; EXIT_CODE=1
+      log "FATAL: content pushed but no workflow run was triggered for ${SHA}" ;;
+  10) DEPLOY_STATUS="unverified" ;;             # no credential / API unreachable
+  # ANY OTHER CODE IS A FAILURE. This used to be `*) unverified` with exit 0,
+  # which is why each new wait-for-deploy code (4 and 5) passed silently until
+  # someone remembered to map it. An exit code this script does not understand
+  # is not evidence the deploy worked.
+  *)  DEPLOY_STATUS="unknown_exit_${WAIT_RC}"; EXIT_CODE=1
+      log "FATAL: wait-for-deploy.sh exited ${WAIT_RC}, which this script does not know — treating as a failed deploy" ;;
 esac
 exit "$EXIT_CODE"

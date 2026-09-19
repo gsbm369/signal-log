@@ -17,9 +17,23 @@ visible in the UI, structurally incapable of firing.
 So the check cannot live in the alert. The alert cannot be the thing that
 proves its own inputs exist.
 
-This reads the alert definitions, extracts every field they unwrap, and asserts
-each one appears in records Loki actually holds. Run by run-cycle.sh; also
-runnable by hand.
+This reads EVERY rule file in grafana/alerting/ and checks both backends:
+
+  Loki        every field a rule unwraps OR filters on (`| exit_code = 0`,
+              `| deploy_status =~ "..."`, numeric or quoted) must appear in
+              records Loki actually holds for that stream; every stream label
+              a non-signal-log selector names must exist in Loki.
+  Prometheus  every selector a rule queries (`up`,
+              `node_filesystem_avail_bytes{mountpoint="/",...}`) must return
+              at least one live series. A misspelt metric or a label value
+              that never matches is an empty result, and `or vector(0)` turns
+              an empty result into a healthy-looking number.
+
+Until 2026-09-19 it read one file, matched only quoted filter values (so
+`exit_code = 0`, which both stalled rules depend on, was never checked) and
+skipped Prometheus rules entirely.
+
+Run by run-cycle.sh; also runnable by hand.
 
 Exit 0 all present, 1 a queried field is missing, 2 could not check.
 """
@@ -37,9 +51,9 @@ from pathlib import Path
 import yaml
 
 HERE = Path(__file__).resolve().parent
-RULES = Path(os.environ.get(
-    "ALERT_RULES_FILE", HERE.parent / "grafana/alerting/signal-log-alerts.yaml"))
+RULES_DIR = Path(os.environ.get("ALERT_RULES_DIR", HERE.parent / "grafana/alerting"))
 LOKI = os.environ.get("LOKI_URL", "http://127.0.0.1:3100").rstrip("/")
+PROM = os.environ.get("PROM_URL", "http://127.0.0.1:9090").rstrip("/")
 JOB = os.environ.get("LOKI_JOB", "signal-log")
 LOOKBACK_H = int(os.environ.get("ALERT_INPUT_LOOKBACK_H", "72"))
 
@@ -52,22 +66,98 @@ def check(name, ok):
         FAILURES.append(name)
 
 
-def queried_fields(doc: dict) -> dict[str, set[str]]:
-    """field -> {rule uids that unwrap it}, for Loki-backed rules only."""
+FILTER = re.compile(r"\|\s*([A-Za-z_][A-Za-z0-9_]*)\s*(?:=~|!~|!=|==|>=|<=|=|>|<)")
+UNWRAP = re.compile(r"\|\s*unwrap\s+([A-Za-z_][A-Za-z0-9_]*)")
+STREAM = re.compile(r"\{([^}]*)\}")
+LABEL = re.compile(r"([A-Za-z_][A-Za-z0-9_]*)\s*(?:=~|!~|!=|=)")
+PROMQL_WORDS = {"sum", "min", "max", "avg", "count", "or", "and", "unless", "by",
+                "without", "on", "ignoring", "vector", "rate", "irate", "increase",
+                "offset", "bool", "group_left", "group_right", "abs", "time",
+                "count_over_time", "min_over_time", "max_over_time", "avg_over_time",
+                "sum_over_time", "last_over_time", "absent", "topk", "bottomk",
+                "histogram_quantile", "label_replace", "clamp_min", "clamp_max"}
+
+
+def rules(docs):
+    for doc in docs:
+        for group in doc.get("groups") or []:
+            for rule in group.get("rules") or []:
+                yield rule
+
+
+def backend(q) -> str:
+    """Which datasource a query runs on. Uids are pinned constants."""
+    uid = q.get("datasourceUid", "")
+    typ = ((q.get("model") or {}).get("datasource") or {}).get("type", "")
+    return typ or uid
+
+
+def queried_fields(docs) -> dict[str, set[str]]:
+    """Loki json field -> {rule uids}: everything unwrapped or filtered on in a
+    {job="<JOB>"} query."""
     out: dict[str, set[str]] = {}
-    for group in doc.get("groups") or []:
-        for rule in group.get("rules") or []:
-            for q in rule.get("data") or []:
-                expr = (q.get("model") or {}).get("expr", "") or ""
-                if f'job="{JOB}"' not in expr:
-                    continue          # prometheus rules have no Loki fields
-                for field in re.findall(r"\|\s*unwrap\s+([A-Za-z_][A-Za-z0-9_]*)", expr):
+    for rule in rules(docs):
+        for q in rule.get("data") or []:
+            expr = (q.get("model") or {}).get("expr", "") or ""
+            if backend(q) != "loki" or f'job="{JOB}"' not in expr:
+                continue
+            pipeline = STREAM.sub("", expr)      # drop the {…} selector itself
+            for field in UNWRAP.findall(pipeline) + FILTER.findall(pipeline):
+                if field not in ("json", "logfmt", "line_format", "label_format", "unwrap"):
                     out.setdefault(field, set()).add(rule.get("uid", "?"))
-                # `| field = "x"` style label filters are inputs too.
-                for field in re.findall(r"\|\s*([A-Za-z_][A-Za-z0-9_]*)\s*(?:=~?|!=)\s*[\"']", expr):
-                    if field not in ("json", "line_format", "label_format"):
-                        out.setdefault(field, set()).add(rule.get("uid", "?"))
     return out
+
+
+def stream_labels(docs) -> dict[str, set[str]]:
+    """Loki stream label -> {rule uids}, for selectors other than the job."""
+    out: dict[str, set[str]] = {}
+    for rule in rules(docs):
+        for q in rule.get("data") or []:
+            expr = (q.get("model") or {}).get("expr", "") or ""
+            if backend(q) != "loki":
+                continue
+            for sel in STREAM.findall(expr):
+                for lab in LABEL.findall(sel):
+                    if lab != "job":
+                        out.setdefault(lab, set()).add(rule.get("uid", "?"))
+    return out
+
+
+def prom_selectors(docs) -> dict[str, set[str]]:
+    """PromQL instant selector (metric plus its {matchers}) -> {rule uids}."""
+    out: dict[str, set[str]] = {}
+    for rule in rules(docs):
+        for q in rule.get("data") or []:
+            expr = (q.get("model") or {}).get("expr", "") or ""
+            if backend(q) != "prometheus":
+                continue
+            bare = re.sub(r'"[^"]*"', '""', expr)
+            for m in re.finditer(r"([A-Za-z_:][A-Za-z0-9_:]*)\s*(\{[^}]*\})?", bare):
+                name = m.group(1)
+                prev = bare[:m.start()].rstrip()
+                if name in PROMQL_WORDS or re.match(r"\s*\(", bare[m.end():]) or prev.endswith(("by", "without")):
+                    continue
+                if prev.endswith("(") and re.search(r"\b(by|without|on|ignoring)\s*\($", prev):
+                    continue
+                if re.fullmatch(r"\d.*", name):
+                    continue
+                # Recover the ORIGINAL matchers (with their quoted values).
+                orig = re.search(re.escape(name) + r"\s*(\{[^}]*\})?", expr[m.start():])
+                sel = name + ((orig.group(1) or "") if orig else "")
+                out.setdefault(sel, set()).add(rule.get("uid", "?"))
+    return out
+
+
+def prom_count(selector: str) -> int:
+    url = f"{PROM}/api/v1/query?query=" + urllib.parse.quote(f"count({selector})")
+    with urllib.request.urlopen(url, timeout=15) as resp:
+        res = json.load(resp).get("data", {}).get("result", [])
+    return int(float(res[0]["value"][1])) if res else 0
+
+
+def loki_labels() -> set[str]:
+    with urllib.request.urlopen(f"{LOKI}/loki/api/v1/labels", timeout=15) as resp:
+        return set(json.load(resp).get("data") or [])
 
 
 def recent_records() -> list[dict]:
@@ -89,53 +179,75 @@ def recent_records() -> list[dict]:
 
 
 def main() -> int:
-    if not RULES.exists():
+    files = sorted(RULES_DIR.glob("*.y*ml"))
+    if not files:
         # Distinguished from "a field is missing" on purpose: the two have
         # completely different fixes and the caller logs a different line.
-        print(f"\n  alert rules not found at {RULES} — cannot check")
+        print(f"\n  no alert rule files in {RULES_DIR} — cannot check")
         print("  SKIPPING. If this is the builder container, the image needs")
         print("  COPY grafana/alerting /app/grafana/alerting.")
         return 2
 
-    doc = yaml.safe_load(RULES.read_text())
-    fields = queried_fields(doc)
-    print(f"\n-- fields queried by Loki-backed alert rules --")
+    docs = [yaml.safe_load(f.read_text()) or {} for f in files]
+    paused = {r.get("uid") for r in rules(docs) if r.get("isPaused")}
+    tag = lambda uids: ", ".join(sorted(u + (" [paused]" if u in paused else "") for u in uids))
+    fields, labels, selectors = queried_fields(docs), stream_labels(docs), prom_selectors(docs)
+    unchecked = 0
+
+    print(f"\n-- Loki: fields filtered or unwrapped by {{job=\"{JOB}\"}} rules --")
     for f, uids in sorted(fields.items()):
-        print(f"     {f:<22} {', '.join(sorted(uids))}")
-    if not fields:
-        print("  no Loki-backed rules found — nothing to check")
-        return 0
+        print(f"     {f:<22} {tag(uids)}")
+    if fields:
+        try:
+            records = recent_records()
+        except (urllib.error.URLError, OSError, TimeoutError) as exc:
+            print(f"  could not reach Loki at {LOKI}: {exc} — SKIPPED")
+            records, unchecked = None, unchecked + 1
+        if records == []:
+            print("  Loki holds no records for this job — cannot verify.")
+            unchecked += 1
+        elif records:
+            print(f"  against {len(records)} record(s) from the last {LOOKBACK_H}h:")
+            present = set().union(*(r.keys() for r in records))
+            for field, uids in sorted(fields.items()):
+                check(f"field {field} arrives in Loki ({tag(uids)})", field in present)
 
-    try:
-        records = recent_records()
-    except (urllib.error.URLError, OSError, TimeoutError) as exc:
-        print(f"\n  could not reach Loki at {LOKI}: {exc}")
-        print("  SKIPPING (this is a check, not a gate on the cycle)")
-        return 2
+    if labels:
+        print(f"\n-- Loki: stream labels named by other selectors --")
+        try:
+            known = loki_labels()
+            for lab, uids in sorted(labels.items()):
+                ok = lab in known
+                if not ok and uids <= paused:
+                    print(f"  WARN  stream label {lab} absent, but only paused rules use it ({tag(uids)})")
+                else:
+                    check(f"stream label {lab} exists in Loki ({tag(uids)})", ok)
+        except (urllib.error.URLError, OSError, TimeoutError) as exc:
+            print(f"  could not reach Loki at {LOKI}: {exc} — SKIPPED")
+            unchecked += 1
 
-    print(f"\n-- against {len(records)} record(s) from the last {LOOKBACK_H}h --")
-    if not records:
-        print("  Loki holds no records for this job — cannot verify. Not a failure:")
-        print("  the stalled-cycle rules already cover the curator not reporting.")
-        return 2
-
-    present = set()
-    for r in records:
-        present |= set(r.keys())
-
-    for field, uids in sorted(fields.items()):
-        check(f"{field} appears in shipped records ({', '.join(sorted(uids))})",
-              field in present)
+    if selectors:
+        print(f"\n-- Prometheus: every selector must return a live series --")
+        try:
+            for sel, uids in sorted(selectors.items()):
+                n = prom_count(sel)
+                check(f"{sel} -> {n} series ({tag(uids)})", n > 0)
+        except (urllib.error.URLError, OSError, TimeoutError) as exc:
+            print(f"  could not reach Prometheus at {PROM}: {exc} — SKIPPED")
+            unchecked += 1
 
     print()
     if FAILURES:
         print(f"FAILED: {FAILURES}")
-        print("A rule queries a field that never arrives. Its `or vector(0)` fallback")
-        print("makes this look identical to a healthy zero, so the rule can never fire.")
-        print("Add the field to the record in curator/ship_to_loki.py — that record is")
-        print("an explicit WHITELIST, and a field in METRICS does not reach Loki without it.")
+        print("A rule queries an input that never arrives. Its `or vector(0)` fallback")
+        print("makes this look identical to a healthy value, so the rule can never fire.")
+        print("Loki field: add it to the record in curator/ship_to_loki.py (an explicit")
+        print("WHITELIST). Prometheus: fix the metric name or matcher in the rule.")
         return 1
-    print("Every field the alerts query is present in shipped records.")
+    if unchecked:
+        print(f"{unchecked} backend(s) could not be checked — not a pass.")
+        return 2
+    print("Every field, label and series the alerts query is present.")
     return 0
 
 

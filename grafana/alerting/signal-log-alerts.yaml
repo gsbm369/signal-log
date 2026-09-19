@@ -1,10 +1,19 @@
 # Grafana unified-alerting provisioning for signal.log.
 #
-# Mount at /etc/grafana/provisioning/alerting/ , or apply through the API with
-#   ansible-playbook deploy.yml -e grafana_user=admin -e grafana_password=... --tags alert
+# ONE PROVISIONING PATH: this directory is copied into Grafana's file
+# provisioning by grafana/install.sh and loaded when Grafana starts. There is no
+# API push any more — ansible/tasks/grafana_alert.yml was deleted, because two
+# paths meant two sources of truth and one of them needed an admin credential
+# that was never present on an ordinary deploy.
 #
-# Replace LOKI_DATASOURCE_UID if applying this file by hand; the Ansible task
-# looks the UID up automatically.
+# Datasource uids are CONSTANTS, pinned in grafana/provisioning/datasources:
+#   loki        the Loki datasource
+#   prometheus  the Prometheus datasource
+# There is nothing to look up or substitute, so a file that works here works
+# on a rebuilt Grafana too.
+#
+# Secrets are NOT in this file. ${NTFY_ALERT_TOPIC} is expanded by Grafana from
+# its environment when it loads the file; the value lives in ~/ai-blog/.env.
 #
 # What it watches: ABSENCE, not failure.
 #
@@ -69,7 +78,32 @@ contactPoints:
           # The two halves now meet: Grafana renders the alert into .title and
           # .message, ntfy lifts those two fields back out. Neither side has to
           # know the other's template language.
-          url: https://ntfy.sh/signal-log-gjkmclsg0ag?tpl=yes
+          # The topic comes from Grafana's environment. The previous topic
+          # was committed here in plain text, so anyone could subscribe to the
+          # alerts or post fake ones (including a false all-clear); git
+          # history keeps it forever, so it was ROTATED, not just hidden.
+          url: https://ntfy.sh/${NTFY_ALERT_TOPIC}?tpl=yes
+          httpMethod: POST
+          maxAlerts: 5
+          headers:
+            X-Title: '{{.title}}'
+            X-Message: '{{.message}}'
+            X-Tags: 'rotating_light'
+            X-Priority: 'default'
+          title: '[{{ .CommonLabels.severity }}] {{ .CommonLabels.alertname }}'
+          message: |-
+            {{ range .Alerts }}{{ .Annotations.summary }}
+            {{ end }}status: {{ .Status }}
+
+      # TRANSITIONAL — DELETE THIS RECEIVER once the owner confirms his phone
+      # receives the new topic. Until then alerts go to BOTH topics, so the
+      # rotation can never leave him with no alerts at all. The old topic's
+      # value lives only in ~/ai-blog/.env as NTFY_ALERT_TOPIC_LEGACY; delete
+      # that line in the same change.
+      - uid: signal-log-ntfy-legacy
+        type: webhook
+        settings:
+          url: https://ntfy.sh/${NTFY_ALERT_TOPIC_LEGACY}?tpl=yes
           httpMethod: POST
           maxAlerts: 5
           headers:
@@ -112,10 +146,10 @@ groups:
         data:
           - refId: QUERY
             relativeTimeRange: { from: 43200, to: 0 }   # 12h
-            datasourceUid: LOKI_DATASOURCE_UID
+            datasourceUid: loki
             model:
               refId: QUERY
-              datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
+              datasource: { type: loki, uid: loki }
               editorMode: code
               queryType: instant
               # `or vector(0)` — see the note on the 48h rule. Without it this
@@ -164,10 +198,10 @@ groups:
         data:
           - refId: QUERY
             relativeTimeRange: { from: 172800, to: 0 }   # 48h
-            datasourceUid: LOKI_DATASOURCE_UID
+            datasourceUid: loki
             model:
               refId: QUERY
-              datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
+              datasource: { type: loki, uid: loki }
               editorMode: code
               queryType: instant
               # `or vector(0)` is load-bearing. Without it, total silence returns an
@@ -242,10 +276,10 @@ groups:
         data:
           - refId: QUERY
             relativeTimeRange: { from: 50400, to: 0 }   # 14h — two 6h cycles plus slack
-            datasourceUid: LOKI_DATASOURCE_UID
+            datasourceUid: loki
             model:
               refId: QUERY
-              datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
+              datasource: { type: loki, uid: loki }
               editorMode: code
               queryType: instant
               # min_over_time, not max: alert only when EVERY cycle in the window
@@ -318,10 +352,10 @@ groups:
             # every ingest window is wider than its source's publication gap by
             # design. Four cycles also rides out one transient outage.
             relativeTimeRange: { from: 93600, to: 0 }
-            datasourceUid: LOKI_DATASOURCE_UID
+            datasourceUid: loki
             model:
               refId: QUERY
-              datasource: { type: loki, uid: LOKI_DATASOURCE_UID }
+              datasource: { type: loki, uid: loki }
               editorMode: code
               queryType: instant
               expr: >-
@@ -381,10 +415,10 @@ groups:
         data:
           - refId: QUERY
             relativeTimeRange: { from: 600, to: 0 }
-            datasourceUid: PROM_DATASOURCE_UID
+            datasourceUid: prometheus
             model:
               refId: QUERY
-              datasource: { type: prometheus, uid: PROM_DATASOURCE_UID }
+              datasource: { type: prometheus, uid: prometheus }
               editorMode: code
               instant: true
               # `or vector(0)` for the same reason as every other rule here: if the
@@ -402,7 +436,12 @@ groups:
               datasource: { type: __expr__, uid: __expr__ }
               expression: QUERY
               conditions:
-                - evaluator: { type: lt, params: [3221225472] }   # 3 GiB
+                - evaluator: { type: lt, params: [3221225472] }   # fire below 3 GiB
+                  # HYSTERESIS. With one threshold the alert flapped: free
+                  # space hovers near 3 GiB as builds and snapshots come and go,
+                  # and it fired 12 times in the week to 2026-09-18. It now
+                  # resolves only once free space is back ABOVE 4 GiB.
+                  unloadEvaluator: { type: gt, params: [4294967296] }   # 4 GiB
                   operator: { type: and }
                   query: { params: [QUERY] }
                   reducer: { type: last, params: [] }

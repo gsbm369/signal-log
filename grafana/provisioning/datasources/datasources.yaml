@@ -1,0 +1,35 @@
+# The estate's two datasources, with their uids PINNED.
+#
+# Every alert rule names its datasource by uid. Grafana mints a random uid for
+# a datasource created in the UI (these were dfr0ktb167o5ce and afr0kuor3gc1sb),
+# so the rule files carried a placeholder and two different installers looked
+# the real value up and substituted it. One of them forgot Prometheus. Pinning
+# the uid here makes it a constant: the rule files say `loki` and `prometheus`,
+# and a rebuilt Grafana resolves them identically with no lookup at all.
+#
+# Grafana CANNOT move an existing datasource to a new uid in place: pointed at
+# the UI-created `loki` with uid `loki`, provisioning failed with "data source
+# not found" and Grafana did not start (rehearsed on a copy of the live
+# database, 2026-09-19). So the old ones are deleted by name and recreated with
+# the pinned uid. Grafana applies deleteDatasources before datasources, so this
+# is a no-op-in-effect on every later start. No dashboard references them.
+apiVersion: 1
+deleteDatasources:
+  - name: loki
+    orgId: 1
+  - name: prometheus
+    orgId: 1
+datasources:
+  - name: loki
+    uid: loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    isDefault: true
+    editable: false
+  - name: prometheus
+    uid: prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    editable: false

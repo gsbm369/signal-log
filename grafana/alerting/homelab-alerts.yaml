@@ -9,9 +9,9 @@
 #
 # Copied AS-IS. It is still paused (isPaused: true), exactly as it was found;
 # bringing it under provisioning is not the same as turning it on, and that is
-# the owner's call. The only edit is the datasource uid, replaced with the
-# placeholder the provisioner substitutes, so the file survives a Grafana
-# rebuild that mints new uids. It resolves to the same datasource today.
+# the owner's call. The only edit is the datasource uid, which is now the pinned
+# constant `loki` (grafana/provisioning/datasources), so the file survives a
+# Grafana rebuild without any lookup or substitution.
 apiVersion: 1
 groups:
 - orgId: 1
@@ -42,7 +42,7 @@ groups:
       relativeTimeRange:
         from: 600
         to: 0
-      datasourceUid: LOKI_DATASOURCE_UID
+      datasourceUid: loki
       model:
         editorMode: code
         expr: sum(count_over_time({computer=~".+"} |~ `(?i)(error|fail|critical)` [5m]))
