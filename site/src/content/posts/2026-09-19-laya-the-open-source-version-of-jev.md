@@ -1,15 +1,16 @@
 ---
-title: "The scourge of x86 emulation"
+title: "Laya the open source version of Jev"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T04:09:48+00:00
-addedAt: 2026-09-18T21:17:27.133786+00:00
+pubDate: 2026-09-19T10:46:58+00:00
+addedAt: 2026-09-19T15:17:32.171220+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://fex-emu.com/Scourge-of-emulation/"
+sourceUrl: "https://laya.convaiinnovations.com/"
 tags: ["tech"]
-heat: 66
-score: 0.36197
+heat: 64
+score: 0.58845
 readMinutes: 1
+image: "https://laya-ai.vercel.app/laya_vs_jev_full.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

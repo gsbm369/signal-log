@@ -1,17 +1,15 @@
 ---
-title: "Vale, code-like linting for prose"
+title: "Consistent Hashing Proofs"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T20:38:52+00:00
-addedAt: 2026-09-18T21:17:27.133428+00:00
+pubDate: 2026-09-19T14:24:51+00:00
+addedAt: 2026-09-19T15:17:32.171099+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://vale.sh"
+sourceUrl: "https://ch.terabyteoff.com/"
 tags: ["tech"]
-heat: 100
-score: 0.73168
+heat: 73
+score: 0.72511
 readMinutes: 1
-image: "https://vale.sh/media/mac.png"
-imageAlt: "Example Vale output"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
