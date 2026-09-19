@@ -26,9 +26,11 @@ FAILURES: list[str] = []
 
 
 def ship(metrics: dict, age_s: float = 0, *, build="ok", push="ok", deploy="ok",
-         exit_code=0, duration=90.0) -> dict:
+         exit_code=0, duration=90.0, stamp_age_s: float | None = None) -> dict:
     with tempfile.TemporaryDirectory() as td:
         f = Path(td) / "metrics.json"
+        if stamp_age_s is not None:
+            metrics = dict(metrics, curated_at_epoch=time.time() - stamp_age_s)
         f.write_text(json.dumps(metrics))
         if age_s:
             t = time.time() - age_s
@@ -70,6 +72,12 @@ def main() -> int:
     for st in ("never_triggered", "bad_sha"):
         check(f"deploy_status {st} (content pushed, no build ran) is publish_failed",
               ship(healthy, deploy=st, exit_code=1).get("cycle_status"), "publish_failed")
+    # QA's case: the curator was killed, then check_freshness.py rewrote the
+    # file, so the mtime is fresh but the curator's stamp is an hour old.
+    check("stale counts behind a FRESH mtime (curator killed, file rewritten) are not_run",
+          ship(healthy, age_s=0, stamp_age_s=3600, duration=90).get("curator_status"), "not_run")
+    check("a curator stamp from this cycle is used",
+          ship(healthy, stamp_age_s=30, duration=90).get("curator_status"), "ok")
     check("a metrics.json written during this cycle is used",
           ship(healthy, age_s=30, duration=90).get("curator_status"), "ok")
 

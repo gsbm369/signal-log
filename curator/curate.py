@@ -189,6 +189,11 @@ def write_metrics() -> None:
     """Persist run metrics where the cycle script can find them. Never raises."""
     try:
         STATE_DIR.mkdir(parents=True, exist_ok=True)
+        # The curator's own stamp. ship_to_loki decides "is this THIS cycle's
+        # evidence" from it, not from the file's mtime: check_freshness.py
+        # rewrites metrics.json after every build, so a curator killed mid-run
+        # would leave the previous cycle's counts with a fresh mtime.
+        METRICS["curated_at_epoch"] = round(time.time(), 1)
         (STATE_DIR / "metrics.json").write_text(json.dumps(METRICS, indent=2))
     except OSError as exc:
         log.warning("could not write metrics.json: %s", exc)

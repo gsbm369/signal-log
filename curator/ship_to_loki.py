@@ -51,10 +51,17 @@ def load_metrics(cycle_seconds: float = 0.0) -> dict:
     a no_network cycle recorded curator_status "ok". A file older than this
     cycle is not this cycle's evidence."""
     path = STATE_DIR / "metrics.json"
-    if cycle_seconds > 0 and path.exists() and path.stat().st_mtime < time.time() - cycle_seconds - 5:
+    m = _read("metrics.json")
+    # The curator's own stamp, not the file's mtime: check_freshness.py rewrites
+    # metrics.json after every build, which refreshes the mtime of stale counts
+    # if the curator was killed before writing (QA finding, 2026-09-19). The
+    # mtime is the fallback only for a file written before the stamp existed.
+    written = m.get("curated_at_epoch") if m else None
+    if written is None and path.exists():
+        written = path.stat().st_mtime
+    if cycle_seconds > 0 and written is not None and float(written) < time.time() - cycle_seconds - 5:
         return {"curator_status": "not_run", "feeds_ok": 0,
                 "error": "curator did not run this cycle (metrics.json is from an earlier one)"}
-    m = _read("metrics.json")
     if not m:
         m = {"curator_status": "unknown", "error": "metrics.json missing or unreadable"}
     m.update({k: v for k, v in _read("build.json").items()
