@@ -71,6 +71,7 @@ sha      = os.environ["SHA"]
 timeout  = float(os.environ["TIMEOUT"])
 interval = float(os.environ["INTERVAL"])
 grace    = float(os.environ["GRACE"])
+WORKFLOW = ".github/workflows/deploy.yml"
 
 # Read the token from the credential store; never touches argv or the environment
 # of any child process.
@@ -96,7 +97,7 @@ def stamp(msg):
 
 def latest_run():
     req = urllib.request.Request(
-        f"https://api.github.com/repos/{repo}/actions/runs?head_sha={sha}&per_page=5",
+        f"https://api.github.com/repos/{repo}/actions/runs?head_sha={sha}&event=push&per_page=20",
         headers={
             "Authorization": f"Bearer {token}",
             "Accept": "application/vnd.github+json",
@@ -106,6 +107,11 @@ def latest_run():
     )
     with urllib.request.urlopen(req, timeout=20) as resp:
         runs = json.load(resp).get("workflow_runs", [])
+    # Only the DEPLOY workflow's run for this push answers the question. Other
+    # runs share the head_sha — Dependabot's "Graph Update" was runs[0] for
+    # 646a1cd, so its success was reported as the deploy's — and so will the
+    # hourly scheduled rebuilds once they exist.
+    runs = [r for r in runs if r.get("path") == WORKFLOW and r.get("event") == "push"]
     return runs[0] if runs else None
 
 
