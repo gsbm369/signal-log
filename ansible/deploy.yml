@@ -160,6 +160,14 @@
       # Posts every few weeks. Under the 7-day policy he appears only in the
       # week after he publishes, and contributes nothing in between — expected.
       - { name: Marc Brooker,       url: "https://brooker.co.za/blog/rss.xml",            category: system_design, weight: 0.95, fetch: 40 }
+      # Added 2026-09-19 to unstick thin sections. Measured from this box, same
+      # method as 2026-09-18: newest item, items in the last 7 days, items/week.
+      #   Martin Fowler 2.1d 7d:3 2.2/wk   Murat Demirbas 3.4d 1.2/wk
+      #   Architecture Weekly 5.0d 0.7/wk  System Design One 0.2d 7d:3 1.9/wk
+      - { name: Martin Fowler,      url: "https://martinfowler.com/feed.atom",            category: system_design, weight: 1.00, fetch: 15 }
+      - { name: Murat Demirbas,     url: "https://muratbuffalo.blogspot.com/feeds/posts/default", category: system_design, weight: 0.95, fetch: 10 }
+      - { name: Architecture Weekly, url: "https://www.architecture-weekly.com/feed",    category: system_design, weight: 0.90, fetch: 10 }
+      - { name: System Design One,  url: "https://newsletter.systemdesign.one/feed",      category: system_design, weight: 0.80, fetch: 10 }
 
       # ---- company_eng ----
       - { name: Cloudflare,         url: "https://blog.cloudflare.com/rss/",              category: company_eng,   weight: 0.95, fetch: 15 }
@@ -167,6 +175,18 @@
       - { name: AWS Architecture,   url: "https://aws.amazon.com/blogs/architecture/feed/", category: company_eng, weight: 0.85, fetch: 15 }
       - { name: Discord Eng,        url: "https://discord.com/blog/rss.xml",              category: company_eng,   weight: 0.80, fetch: 10 }
       - { name: GitHub Eng,         url: "https://github.blog/engineering/feed/",         category: company_eng,   weight: 0.80, fetch: 15 }
+      # Added 2026-09-19 to unstick thin sections. Measured from this box, same
+      # method as 2026-09-18: newest item, items in the last 7 days, items/week.
+      #   Airbnb 2.0d 7d:2 0.7/wk  Pinterest 2.1d 0.6/wk  Spotify 2.9d 0.6/wk
+      #   Tailscale 8.0d 1.3/wk    Meta 16.0d 0.9/wk      Shopify 9.2d 0.5/wk
+      #   Grab 22.7d 0.8/wk
+      - { name: Airbnb Engineering, url: "https://medium.com/feed/airbnb-engineering",   category: company_eng,   weight: 0.95, fetch: 10 }
+      - { name: Meta Engineering,   url: "https://engineering.fb.com/feed/",              category: company_eng,   weight: 0.95, fetch: 10 }
+      - { name: Pinterest Engineering, url: "https://medium.com/feed/pinterest-engineering", category: company_eng, weight: 0.90, fetch: 10 }
+      - { name: Spotify Engineering, url: "https://engineering.atspotify.com/feed/",     category: company_eng,   weight: 0.90, fetch: 10 }
+      - { name: Shopify Engineering, url: "https://shopify.engineering/blog.atom",        category: company_eng,   weight: 0.90, fetch: 15 }
+      - { name: Tailscale Blog,     url: "https://tailscale.com/blog/index.xml",          category: company_eng,   weight: 0.90, fetch: 10 }
+      - { name: Grab Engineering,   url: "https://engineering.grab.com/feed.xml",         category: company_eng,   weight: 0.85, fetch: 10 }
 
       # ---- devops_linux ----
       # Two sources could not sustain a section: the Kubernetes blog is weekly
@@ -197,6 +217,13 @@
       - { name: HashiCorp,          url: "https://www.hashicorp.com/blog/feed.xml",       category: devops_linux,  weight: 0.75, fetch: 12 }
       - { name: Ubuntu,             url: "https://ubuntu.com/blog/feed",                  category: devops_linux,  weight: 0.70, fetch: 10 }
       - { name: Fedora Magazine,    url: "https://fedoramagazine.org/feed/",              category: devops_linux,  weight: 0.70, fetch: 10 }
+      # Added 2026-09-19 to unstick thin sections. Measured from this box, same
+      # method as 2026-09-18: newest item, items in the last 7 days, items/week.
+      #   Collabora 2.0d 7d:2 1.0/wk (kernel, Mesa, GPU drivers upstream)
+      #   Chainguard 4.7d 7d:3 2.3/wk (supply chain)   Linux Foundation 2.1d 7d:2 1.1/wk
+      - { name: Collabora,          url: "https://www.collabora.com/feed",                category: devops_linux,  weight: 0.90, fetch: 15 }
+      - { name: Chainguard,         url: "https://www.chainguard.dev/unchained/rss.xml",  category: devops_linux,  weight: 0.80, fetch: 10 }
+      - { name: Linux Foundation,   url: "https://www.linuxfoundation.org/blog/rss.xml",  category: devops_linux,  weight: 0.70, fetch: 10 }
 
       # ---- deep_dives ----
       # fetch is raised here because depth is the whole point and the archives
@@ -205,6 +232,18 @@
       - { name: Brendan Gregg,      url: "https://www.brendangregg.com/blog/rss.xml",     category: deep_dives,    weight: 1.00, fetch: 10 }
       - { name: Dan Luu,            url: "https://danluu.com/atom.xml",                   category: deep_dives,    weight: 0.95, fetch: 40 }
       - { name: The Changelog,      url: "https://changelog.com/feed",                    category: deep_dives,    weight: 0.75, fetch: 15 }
+      # Added 2026-09-19 to unstick thin sections. Measured from this box, same
+      # method as 2026-09-18: newest item, items in the last 7 days, items/week.
+      #   Lemire 0.0d 7d:5 1.5/wk   Eli Bendersky 0.0d 0.8/wk   Hillel Wayne 2.9d 0.6/wk
+      #   Chips and Cheese 9.3d 2.3/wk   Phil Eaton 6.7d 0.4/wk
+      #   Jeff Geerling 1.1d 1.2/wk      Xe Iaso 4.7d 1.8/wk
+      - { name: Daniel Lemire,      url: "https://lemire.me/blog/feed/",                  category: deep_dives,    weight: 1.00, fetch: 10 }
+      - { name: Eli Bendersky,      url: "https://eli.thegreenplace.net/feeds/all.atom.xml", category: deep_dives, weight: 1.00, fetch: 10 }
+      - { name: Hillel Wayne,       url: "https://buttondown.com/hillelwayne/rss",        category: deep_dives,    weight: 1.00, fetch: 10 }
+      - { name: Chips and Cheese,   url: "https://chipsandcheese.com/feed/",              category: deep_dives,    weight: 0.95, fetch: 10 }
+      - { name: Phil Eaton,         url: "https://notes.eatonphil.com/rss.xml",           category: deep_dives,    weight: 0.95, fetch: 10 }
+      - { name: Jeff Geerling,      url: "https://www.jeffgeerling.com/blog.xml",         category: deep_dives,    weight: 0.85, fetch: 10 }
+      - { name: Xe Iaso,            url: "https://xeiaso.net/blog.rss",                   category: deep_dives,    weight: 0.85, fetch: 10 }
 
       # ---- aggregators ----
       - { name: Hacker News Best,   url: "https://hnrss.org/best",                        category: aggregators,   weight: 0.70, fetch: 25 }
@@ -226,6 +265,13 @@
       # published issue; this only changes what the gate gets to see.
       - { name: Finextra,           url: "https://www.finextra.com/rss/headlines.aspx",   category: fintech,       weight: 0.75, fetch: 60 }
       - { name: TechCrunch Fintech, url: "https://techcrunch.com/category/fintech/feed/", category: fintech,       weight: 0.70, fetch: 15 }
+      # Added 2026-09-19 to unstick thin sections. Measured from this box, same
+      # method as 2026-09-18: newest item, items in the last 7 days, items/week.
+      #   Nubank Building 2.1d 7d:4 0.9/wk   Fintech Business Weekly 3.2d 7d:2 1.8/wk
+      #   Block Engineering 18.2d 0.8/wk
+      - { name: Block Engineering,  url: "https://engineering.block.xyz/blog/rss.xml",    category: fintech,       weight: 0.95, fetch: 10 }
+      - { name: Nubank Building,    url: "https://building.nubank.com/feed/",             category: fintech,       weight: 0.90, fetch: 10 }
+      - { name: Fintech Business Weekly, url: "https://fintechbusinessweekly.substack.com/feed", category: fintech, weight: 0.85, fetch: 10 }
 
       # ---- gaming ----
       # Engine/tooling sources (Game Developer, Unity, Godot) previously had a
@@ -289,6 +335,27 @@
       #     Coinbase Eng       HTTP 403 — blocks automated clients
       #     Fintech Futures    HTTP 404
       #     Wise Engineering   HTTP 200, newest item 568 days old. Abandoned.
+      #
+      #   Measured 2026-09-19 to unstick thin sections (61 candidates, 24 in):
+      #     LOUD — would fill a category's 10-post stock on their own, the
+      #     Phoronix reasoning: The New Stack 46.4/wk, SUSE 20.5/wk (marketing,
+      #     non-English items), Red Hat 18.9/wk (enterprise-AI marketing),
+      #     Payments Dive 17.0/wk (duplicates Finextra's role), OMG Ubuntu
+      #     14.2/wk (desktop news), Vercel 21 in 7d (product changelog).
+      #     Simon Willison 23.7/wk is HELD, not rejected: the best writing of
+      #     the set, but at that rate it would own deep_dives' whole stock and
+      #     evict Dan Luu / Gregg the day they post. Needs a per-source stock
+      #     limit inside a category first.
+      #     QUIET/STALE — newest item, items/week: Slack 67.0d, Etsy 50.0d,
+      #     Mozilla Hacks 26.1d, Dropbox 19.0d 0.4, Zalando 18.8d 0.3, Datadog
+      #     18.7d 0.2, Fly.io 16.7d 0.3, Instacart 16.0d 0.3, Lyft 9.0d 0.3,
+      #     Canva 0.1/wk, Prometheus 81.7d, Tigera (AI-agent marketing),
+      #     Modern Treasury 37.7d, matklad 17.7d, Mitchell Hashimoto 52.7d,
+      #     Drew DeVault 58.7d, Fabien Sanglard 29.7d, Jack Vanlightly 22.2d,
+      #     High Scalability 862.9d, rachelbythebay (1-item feed, 1072.9d)
+      #     BROKEN — LinkedIn Eng and Isovalent (0 dated entries), Google
+      #     Developers (no dates), Figma/Adyen/This Week in Fintech/Fintech
+      #     Brainfood HTTP 404, 9to5Linux HTTP 403, Quastor DNS failure
       #
       #   Measured 2026-09-18 for microsoft and languages:
       #     Azure SDK Blog     newest 14.0d, 1.1/wk

@@ -40,6 +40,26 @@ feeds:
     category: system_design
     weight: 0.95
     fetch: 40
+  - name: Martin Fowler
+    url: https://martinfowler.com/feed.atom
+    category: system_design
+    weight: 1.0
+    fetch: 15
+  - name: Murat Demirbas
+    url: https://muratbuffalo.blogspot.com/feeds/posts/default
+    category: system_design
+    weight: 0.95
+    fetch: 10
+  - name: Architecture Weekly
+    url: https://www.architecture-weekly.com/feed
+    category: system_design
+    weight: 0.9
+    fetch: 10
+  - name: System Design One
+    url: https://newsletter.systemdesign.one/feed
+    category: system_design
+    weight: 0.8
+    fetch: 10
   - name: Cloudflare
     url: https://blog.cloudflare.com/rss/
     category: company_eng
@@ -65,6 +85,41 @@ feeds:
     category: company_eng
     weight: 0.8
     fetch: 15
+  - name: Airbnb Engineering
+    url: https://medium.com/feed/airbnb-engineering
+    category: company_eng
+    weight: 0.95
+    fetch: 10
+  - name: Meta Engineering
+    url: https://engineering.fb.com/feed/
+    category: company_eng
+    weight: 0.95
+    fetch: 10
+  - name: Pinterest Engineering
+    url: https://medium.com/feed/pinterest-engineering
+    category: company_eng
+    weight: 0.9
+    fetch: 10
+  - name: Spotify Engineering
+    url: https://engineering.atspotify.com/feed/
+    category: company_eng
+    weight: 0.9
+    fetch: 10
+  - name: Shopify Engineering
+    url: https://shopify.engineering/blog.atom
+    category: company_eng
+    weight: 0.9
+    fetch: 15
+  - name: Tailscale Blog
+    url: https://tailscale.com/blog/index.xml
+    category: company_eng
+    weight: 0.9
+    fetch: 10
+  - name: Grab Engineering
+    url: https://engineering.grab.com/feed.xml
+    category: company_eng
+    weight: 0.85
+    fetch: 10
   - name: LWN.net
     url: https://lwn.net/headlines/newrss
     category: devops_linux
@@ -100,6 +155,21 @@ feeds:
     category: devops_linux
     weight: 0.7
     fetch: 10
+  - name: Collabora
+    url: https://www.collabora.com/feed
+    category: devops_linux
+    weight: 0.9
+    fetch: 15
+  - name: Chainguard
+    url: https://www.chainguard.dev/unchained/rss.xml
+    category: devops_linux
+    weight: 0.8
+    fetch: 10
+  - name: Linux Foundation
+    url: https://www.linuxfoundation.org/blog/rss.xml
+    category: devops_linux
+    weight: 0.7
+    fetch: 10
   - name: jvns.ca
     url: https://jvns.ca/atom.xml
     category: deep_dives
@@ -120,6 +190,41 @@ feeds:
     category: deep_dives
     weight: 0.75
     fetch: 15
+  - name: Daniel Lemire
+    url: https://lemire.me/blog/feed/
+    category: deep_dives
+    weight: 1.0
+    fetch: 10
+  - name: Eli Bendersky
+    url: https://eli.thegreenplace.net/feeds/all.atom.xml
+    category: deep_dives
+    weight: 1.0
+    fetch: 10
+  - name: Hillel Wayne
+    url: https://buttondown.com/hillelwayne/rss
+    category: deep_dives
+    weight: 1.0
+    fetch: 10
+  - name: Chips and Cheese
+    url: https://chipsandcheese.com/feed/
+    category: deep_dives
+    weight: 0.95
+    fetch: 10
+  - name: Phil Eaton
+    url: https://notes.eatonphil.com/rss.xml
+    category: deep_dives
+    weight: 0.95
+    fetch: 10
+  - name: Jeff Geerling
+    url: https://www.jeffgeerling.com/blog.xml
+    category: deep_dives
+    weight: 0.85
+    fetch: 10
+  - name: Xe Iaso
+    url: https://xeiaso.net/blog.rss
+    category: deep_dives
+    weight: 0.85
+    fetch: 10
   - name: Hacker News Best
     url: https://hnrss.org/best
     category: aggregators
@@ -150,6 +255,21 @@ feeds:
     category: fintech
     weight: 0.7
     fetch: 15
+  - name: Block Engineering
+    url: https://engineering.block.xyz/blog/rss.xml
+    category: fintech
+    weight: 0.95
+    fetch: 10
+  - name: Nubank Building
+    url: https://building.nubank.com/feed/
+    category: fintech
+    weight: 0.9
+    fetch: 10
+  - name: Fintech Business Weekly
+    url: https://fintechbusinessweekly.substack.com/feed
+    category: fintech
+    weight: 0.85
+    fetch: 10
   - name: Game Developer
     url: https://www.gamedeveloper.com/rss.xml
     category: gaming
