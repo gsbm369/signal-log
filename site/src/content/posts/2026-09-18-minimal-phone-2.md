@@ -1,16 +1,15 @@
 ---
-title: "Laya the open source version of Jev"
+title: "Minimal Phone 2"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-19T10:46:58+00:00
-addedAt: 2026-09-19T15:17:32.171220+00:00
+pubDate: 2026-09-18T02:00:25+00:00
+addedAt: 2026-09-19T17:01:05.808599+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://laya.convaiinnovations.com/"
+sourceUrl: "https://minimalcompany.com/"
 tags: ["tech"]
-heat: 64
-score: 0.58845
+heat: 39
+score: 0.15585
 readMinutes: 1
-image: "https://laya-ai.vercel.app/laya_vs_jev_full.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
