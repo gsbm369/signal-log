@@ -1,14 +1,14 @@
 ---
-title: "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+title: "Inside ZCode: Silently uploading your Git history to the cloud"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T19:03:09+00:00
-addedAt: 2026-09-19T10:21:15.909940+00:00
+pubDate: 2026-09-18T06:11:17+00:00
+addedAt: 2026-09-19T16:58:10.136234+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://grapheneos.social/@GrapheneOS/117282080803799576"
+sourceUrl: "https://blog.ferstar.org/en/posts/zcode-silent-workspace-snapshot-upload/"
 tags: ["tech"]
-heat: 46
-score: 0.38835
+heat: 28
+score: 0.18343
 readMinutes: 1
 ---
 
