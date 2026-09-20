@@ -1,15 +1,16 @@
 ---
-title: "What Zig felt like, coming from Rust"
+title: "Pirate Face Rescues LLM Models from Deletion"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-19T13:55:18+00:00
-addedAt: 2026-09-20T09:17:34.632679+00:00
+pubDate: 2026-09-20T15:16:07+00:00
+addedAt: 2026-09-20T21:17:32.561504+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://besok.github.io/posts/what-zig-felt-like-coming-from-rust/"
-tags: ["rust"]
-heat: 57
-score: 0.54781
+sourceUrl: "https://pirateface.co/"
+tags: ["llm"]
+heat: 78
+score: 0.91591
 readMinutes: 1
+image: "https://pirateface.co/og/home"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

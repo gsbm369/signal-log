@@ -1,14 +1,14 @@
 ---
-title: "Software sandboxing: The basics (2025)"
+title: "Scott Jenson: Are we really going to use the same Desktop UX forever?"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-20T14:13:11+00:00
-addedAt: 2026-09-20T15:17:34.128925+00:00
+pubDate: 2026-09-20T20:34:34+00:00
+addedAt: 2026-09-20T21:17:32.561860+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blog.emilua.org/2025/01/12/software-sandboxing-basics/"
+sourceUrl: "https://www.youtube.com/watch?v=V7AfAcQwLW0"
 tags: ["tech"]
 heat: 68
-score: 0.71967
+score: 0.72961
 readMinutes: 1
 ---
 

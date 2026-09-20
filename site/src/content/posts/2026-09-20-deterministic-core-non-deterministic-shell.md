@@ -1,16 +1,15 @@
 ---
-title: "OpenMote: ESP32 board for a WiiMote shell"
+title: "Deterministic Core, Non-Deterministic Shell"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-20T08:09:24+00:00
-addedAt: 2026-09-20T09:17:34.632577+00:00
+pubDate: 2026-09-20T21:13:51+00:00
+addedAt: 2026-09-20T21:17:32.561732+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.crowdsupply.com/hat-and-hammer/openmote"
+sourceUrl: "https://outdata.net/blog/260803"
 tags: ["tech"]
-heat: 67
-score: 0.71791
+heat: 69
+score: 0.74824
 readMinutes: 1
-image: "https://www.crowdsupply.com/img/d904/49ef64eb-aaa1-4682-8269-3394aa9ad904_open-graph.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
