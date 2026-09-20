@@ -1,16 +1,15 @@
 ---
-title: "Spain Orders Blocks On Archive.today And Its Mirrors"
+title: "Beyond jj: config & tools ecosystem"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-20T09:05:22+00:00
-addedAt: 2026-09-20T09:17:34.632204+00:00
+pubDate: 2026-09-20T10:51:04+00:00
+addedAt: 2026-09-20T15:17:34.129239+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://reclaimthenet.org/spain-blocks-archive-today-and-mirrors"
+sourceUrl: "https://andre.arko.net/2026/09/16/beyond-jj-config-and-tools-ecosystem/"
 tags: ["tech"]
-heat: 69
-score: 0.74417
+heat: 63
+score: 0.63212
 readMinutes: 1
-image: "https://media.reclaimthenet.org/images/2026/09/VlEW9CtTFnlS.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -1,16 +1,15 @@
 ---
-title: "Photon-Emission-Guided Laser Fault Injection Enables RP2350 Secure Debug"
+title: "AI and the Destruction of the Creative Commons"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T16:54:18+00:00
-addedAt: 2026-09-20T03:17:34.771026+00:00
+pubDate: 2026-09-20T10:07:51+00:00
+addedAt: 2026-09-20T15:17:34.129401+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://donjon.ledger.com/blog/rp2350-secure-debug-laser-fault-injection/"
+sourceUrl: "https://www.chesterwisniewski.com/post/2026-09-13-ai-is-destroying-the-creative-commons/"
 tags: ["tech"]
-heat: 28
-score: 0.18622
+heat: 59
+score: 0.57384
 readMinutes: 1
-image: "https://donjon.ledger.com/blog/rp2350-secure-debug-laser-fault-injection/cover.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
