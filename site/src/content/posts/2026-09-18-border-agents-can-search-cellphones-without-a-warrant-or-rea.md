@@ -1,14 +1,14 @@
 ---
-title: "Inside ZCode: Silently uploading your Git history to the cloud"
+title: "Border agents can search cellphones without a warrant or reasonable suspicion"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-18T06:11:17+00:00
-addedAt: 2026-09-19T16:58:10.136234+00:00
+pubDate: 2026-09-18T18:08:32+00:00
+addedAt: 2026-09-20T03:17:34.770828+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://blog.ferstar.org/en/posts/zcode-silent-workspace-snapshot-upload/"
+sourceUrl: "https://lawandcrime.com/high-profile/the-government-was-entitled-trumps-border-agents-can-now-search-cellphones-without-a-warrant-probable-cause-or-reasonable-suspicion-2nd-circuit-rules/"
 tags: ["tech"]
-heat: 28
-score: 0.18343
+heat: 29
+score: 0.1953
 readMinutes: 1
 ---
 
