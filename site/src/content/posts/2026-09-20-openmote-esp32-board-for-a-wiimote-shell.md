@@ -1,15 +1,16 @@
 ---
-title: "V Language Review (2023)"
+title: "OpenMote: ESP32 board for a WiiMote shell"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-19T22:36:30+00:00
-addedAt: 2026-09-20T03:17:34.770401+00:00
+pubDate: 2026-09-20T08:09:24+00:00
+addedAt: 2026-09-20T09:17:34.632577+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://n-skvortsov-1997.github.io/reviews/"
+sourceUrl: "https://www.crowdsupply.com/hat-and-hammer/openmote"
 tags: ["tech"]
-heat: 58
-score: 0.62623
+heat: 67
+score: 0.71791
 readMinutes: 1
+image: "https://www.crowdsupply.com/img/d904/49ef64eb-aaa1-4682-8269-3394aa9ad904_open-graph.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

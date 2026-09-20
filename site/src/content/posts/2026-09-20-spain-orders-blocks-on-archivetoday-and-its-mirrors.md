@@ -1,16 +1,16 @@
 ---
-title: "Persistent Databases in the Browser with DuckDB-Wasm and OPFS"
+title: "Spain Orders Blocks On Archive.today And Its Mirrors"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-19T18:46:39+00:00
-addedAt: 2026-09-19T21:17:29.277208+00:00
+pubDate: 2026-09-20T09:05:22+00:00
+addedAt: 2026-09-20T09:17:34.632204+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://duckdb.org/2026/09/18/opfs-wasm"
-tags: ["duckdb", "wasm"]
-heat: 97
-score: 1.46374
+sourceUrl: "https://reclaimthenet.org/spain-blocks-archive-today-and-mirrors"
+tags: ["tech"]
+heat: 69
+score: 0.74417
 readMinutes: 1
-image: "https://duckdb.org/images/blog/thumbs/webassembly.png"
+image: "https://media.reclaimthenet.org/images/2026/09/VlEW9CtTFnlS.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

