@@ -1,15 +1,16 @@
 ---
-title: "Grim Fandango Puzzle Document (1996) [pdf]"
+title: "Fable 5 – Median thinking declined in August"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-21T05:55:22+00:00
-addedAt: 2026-09-21T12:23:36.666856+00:00
+pubDate: 2026-09-21T16:13:57+00:00
+addedAt: 2026-09-21T21:17:36.837982+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "http://gameshelf.jmac.org/2008/11/13/GrimPuzzleDoc_small.pdf"
+sourceUrl: "https://twitter.com/Lon/status/2101793422487204027"
 tags: ["tech"]
-heat: 57
-score: 0.54564
+heat: 68
+score: 0.57609
 readMinutes: 1
+image: "https://pbs.twimg.com/media/HSsLl3FbkAAWMMW?format=webp&amp;name=large"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

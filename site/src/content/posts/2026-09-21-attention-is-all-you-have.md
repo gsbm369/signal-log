@@ -1,15 +1,16 @@
 ---
-title: "What happened to the Snowden archive"
+title: "Attention is all you have"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-20T22:35:49+00:00
-addedAt: 2026-09-21T12:23:36.667196+00:00
+pubDate: 2026-09-21T14:26:56+00:00
+addedAt: 2026-09-21T21:17:36.838083+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://libroot.org/posts/what-happened-to-the-snowden-archive"
+sourceUrl: "https://alicegg.tech/2026/09/21/attention"
 tags: ["tech"]
-heat: 48
-score: 0.41152
+heat: 65
+score: 0.53785
 readMinutes: 1
+image: "https://www.alicegg.tech/assets/2026-09-21-attention/tetris.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -1,16 +1,17 @@
 ---
-title: "Running an Optimal Trace"
+title: "Self-Hosting Behind CGNAT"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-21T15:13:38+00:00
-addedAt: 2026-09-21T15:17:36.726908+00:00
+pubDate: 2026-09-21T17:53:28+00:00
+addedAt: 2026-09-21T21:17:36.837888+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://anishathalye.com/optimal-trace/"
+sourceUrl: "https://david.alvarezrosa.com/posts/self-hosting-behind-cgnat/"
 tags: ["tech"]
-heat: 64
-score: 0.74813
+heat: 73
+score: 0.65795
 readMinutes: 1
-image: "https://anishathalye.com/_next/static/images/thumb-2e59e04ecdfd8f38bc3e2bc0b3a21d84.png"
+image: "https://david.alvarezrosa.com/images/self-hosting-behind-cgnat.png"
+imageAlt: "Self-Hosting Behind CGNAT | David Álvarez Rosa"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -1,14 +1,14 @@
 ---
-title: "ZuckOff Know when a camera is in the room"
+title: "What Sun got wrong"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-21T10:33:14+00:00
-addedAt: 2026-09-21T12:23:36.666797+00:00
+pubDate: 2026-09-21T14:03:18+00:00
+addedAt: 2026-09-21T21:17:36.838153+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://zuckoff.app/"
+sourceUrl: "https://bcantrill.dtrace.org/2026/09/20/what-sun-got-wrong/"
 tags: ["tech"]
 heat: 64
-score: 0.65216
+score: 0.52975
 readMinutes: 1
 ---
 
