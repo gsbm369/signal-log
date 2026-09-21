@@ -1,16 +1,15 @@
 ---
-title: "Pirate Face Rescues LLM Models from Deletion"
+title: "ZuckOff Know when a camera is in the room"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-20T15:16:07+00:00
-addedAt: 2026-09-20T21:17:32.561504+00:00
+pubDate: 2026-09-21T10:33:14+00:00
+addedAt: 2026-09-21T12:23:36.666797+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://pirateface.co/"
-tags: ["llm"]
-heat: 78
-score: 0.91591
+sourceUrl: "https://zuckoff.app/"
+tags: ["tech"]
+heat: 64
+score: 0.65216
 readMinutes: 1
-image: "https://pirateface.co/og/home"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

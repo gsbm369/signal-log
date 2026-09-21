@@ -1,16 +1,15 @@
 ---
-title: "Adversarial examples for fast hash functions"
+title: "Skia compositor for WPE WebKit and WebKitGTK"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-20T19:14:36+00:00
-addedAt: 2026-09-20T21:17:32.561939+00:00
+pubDate: 2026-09-21T11:02:50+00:00
+addedAt: 2026-09-21T12:23:36.666719+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://thomasahle.com/blog/adversarial-examples-for-hashes/"
+sourceUrl: "https://blogs.igalia.com/carlosgc/2026/09/21/skia-compositor-for-wpe-webkit-and-webkitgtk/"
 tags: ["tech"]
-heat: 66
-score: 0.69311
+heat: 67
+score: 0.71215
 readMinutes: 1
-image: "https://thomasahle.com/blog/adversarial-examples-for-hashes/social-preview.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
