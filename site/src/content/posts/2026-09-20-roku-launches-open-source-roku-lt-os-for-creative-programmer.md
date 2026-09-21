@@ -1,15 +1,16 @@
 ---
-title: "Beyond jj: config & tools ecosystem"
+title: "Roku launches open-source Roku LT OS for creative programmers"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-20T10:51:04+00:00
-addedAt: 2026-09-20T15:17:34.129239+00:00
+pubDate: 2026-09-20T23:15:16+00:00
+addedAt: 2026-09-21T03:17:29.771883+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://andre.arko.net/2026/09/16/beyond-jj-config-and-tools-ecosystem/"
+sourceUrl: "https://blog.roku.com/developer/roku-lt-os"
 tags: ["tech"]
 heat: 63
-score: 0.63212
+score: 0.64203
 readMinutes: 1
+image: "https://www.roku.com/assets/roku-logo-purple.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
