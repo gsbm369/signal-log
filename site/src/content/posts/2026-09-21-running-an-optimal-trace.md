@@ -1,16 +1,16 @@
 ---
-title: "Creating a Blog in Gemini://"
+title: "Running an Optimal Trace"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-21T11:24:46+00:00
-addedAt: 2026-09-21T12:23:36.664525+00:00
+pubDate: 2026-09-21T15:13:38+00:00
+addedAt: 2026-09-21T15:17:36.726908+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://brennan.day/creating-a-blog-in-gemini/"
-tags: ["gemini"]
-heat: 92
-score: 1.1917
+sourceUrl: "https://anishathalye.com/optimal-trace/"
+tags: ["tech"]
+heat: 64
+score: 0.74813
 readMinutes: 1
-image: "https://brennan.day/assets/images/blog/gemini2.jpg"
+image: "https://anishathalye.com/_next/static/images/thumb-2e59e04ecdfd8f38bc3e2bc0b3a21d84.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
