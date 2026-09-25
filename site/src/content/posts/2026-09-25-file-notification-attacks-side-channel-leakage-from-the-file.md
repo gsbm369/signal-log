@@ -1,15 +1,16 @@
 ---
-title: "whatsnewt: A TUI text adventure through what's new in Python 3.15"
+title: "File Notification Attacks: Side-Channel Leakage from the File-Notification System on Linux, Android, Windows, and macOS"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-24T12:19:28+00:00
-addedAt: 2026-09-24T18:07:10.622318+00:00
+pubDate: 2026-09-25T02:50:41+00:00
+addedAt: 2026-09-25T05:52:51.188240+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://pypi.org/project/whatsnewt/"
-tags: ["python"]
-heat: 65
-score: 0.99009
+sourceUrl: "https://inoti.fyi/"
+tags: ["linux"]
+heat: 96
+score: 1.10107
 readMinutes: 1
+image: "https://inoti.fyi/img/logo.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -1,16 +1,15 @@
 ---
-title: "Jev in 25 Lines of Python"
+title: "Owners mourn spoiled food after firmware update bricks Samsung smart fridges"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-23T07:26:23+00:00
-addedAt: 2026-09-23T19:10:58.633784+00:00
+pubDate: 2026-09-24T12:58:08+00:00
+addedAt: 2026-09-25T05:52:51.189026+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.nobodywho.ai/posts/jev-in-25-lines/"
-tags: ["python"]
-heat: 56
-score: 0.73491
+sourceUrl: "https://arstechnica.com/gadgets/2026/09/owners-mourn-spoiled-food-after-firmware-update-bricks-samsung-smart-fridges/"
+tags: ["tech"]
+heat: 50
+score: 0.36501
 readMinutes: 1
-image: "https://www.nobodywho.ai/assets/images/blog/2026/jev-in-25-lines/jev.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

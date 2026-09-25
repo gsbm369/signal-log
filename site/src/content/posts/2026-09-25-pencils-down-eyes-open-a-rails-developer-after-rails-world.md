@@ -1,14 +1,14 @@
 ---
-title: "Cheaper LLM labelling"
+title: "Pencils Down, Eyes Open: A Rails Developer After Rails World"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-23T13:14:06+00:00
-addedAt: 2026-09-23T19:10:58.631909+00:00
+pubDate: 2026-09-25T01:31:43+00:00
+addedAt: 2026-09-25T05:52:51.188561+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://entropicthoughts.com/cheaper-llm-labeling"
-tags: ["llm"]
-heat: 67
-score: 0.98428
+sourceUrl: "https://caio.ca/blog/pencils-down-eyes-open-rails-world"
+tags: ["tech"]
+heat: 69
+score: 0.63434
 readMinutes: 1
 ---
 

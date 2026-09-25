@@ -1,16 +1,15 @@
 ---
-title: "Apple's Two-Tier Encryption in the UK"
+title: "Lobsters: Rename vibecoding to llms (Greasemonkey script)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-24T18:05:22+00:00
-addedAt: 2026-09-24T18:07:10.623371+00:00
+pubDate: 2026-09-25T05:33:53+00:00
+addedAt: 2026-09-25T05:52:51.188459+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://macanorak.com/two-tier-encryption-in-the-uk/"
+sourceUrl: "https://greasyfork.org/en/scripts?by=1646191"
 tags: ["tech"]
-heat: 55
-score: 0.74921
+heat: 76
+score: 0.741
 readMinutes: 1
-image: "https://macanorak.com/content/images/2026/09/Two-Tier-Encrypyion-Cover-Image.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
