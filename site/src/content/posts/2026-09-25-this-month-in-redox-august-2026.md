@@ -1,14 +1,14 @@
 ---
-title: "LLM Policies: Progress At All Costs"
+title: "This Month in Redox - August 2026"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-25T12:30:36+00:00
-addedAt: 2026-09-25T15:17:34.416827+00:00
+pubDate: 2026-09-25T15:59:24+00:00
+addedAt: 2026-09-25T21:51:03.058500+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://diegoe.be/2026/09/25/llm-policies-progress-at-all-costs/"
-tags: ["llm"]
-heat: 75
-score: 1.11182
+sourceUrl: "https://www.redox-os.org/news/this-month-260831/"
+tags: ["tech"]
+heat: 67
+score: 0.59851
 readMinutes: 1
 ---
 

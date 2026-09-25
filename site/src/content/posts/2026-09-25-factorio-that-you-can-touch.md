@@ -1,16 +1,16 @@
 ---
-title: "GitHub has not removed malicious imitation software after 3 weeks"
+title: "Factorio that you can touch"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-24T15:50:26+00:00
-addedAt: 2026-09-25T09:17:33.156187+00:00
+pubDate: 2026-09-25T14:24:42+00:00
+addedAt: 2026-09-25T21:51:03.058599+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://successfulsoftware.net/2026/09/24/github-has-not-removed-malicious-imitation-software-after-3-weeks/"
+sourceUrl: "https://factorio.com/blog/post/fff-447"
 tags: ["tech"]
-heat: 44
-score: 0.35748
+heat: 62
+score: 0.52567
 readMinutes: 1
-image: "https://successfulsoftware.net/wp-content/uploads/2026/09/github.png"
+image: "https://cdn.factorio.com/assets/img/blog/fff-447-thumbnail.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
