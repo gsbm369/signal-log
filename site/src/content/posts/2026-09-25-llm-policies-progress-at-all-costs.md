@@ -1,14 +1,14 @@
 ---
-title: "Pencils Down, Eyes Open: A Rails Developer After Rails World"
+title: "LLM Policies: Progress At All Costs"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-25T01:31:43+00:00
-addedAt: 2026-09-25T05:52:51.188561+00:00
+pubDate: 2026-09-25T12:30:36+00:00
+addedAt: 2026-09-25T15:17:34.416827+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://caio.ca/blog/pencils-down-eyes-open-rails-world"
-tags: ["tech"]
-heat: 69
-score: 0.63434
+sourceUrl: "https://diegoe.be/2026/09/25/llm-policies-progress-at-all-costs/"
+tags: ["llm"]
+heat: 75
+score: 1.11182
 readMinutes: 1
 ---
 

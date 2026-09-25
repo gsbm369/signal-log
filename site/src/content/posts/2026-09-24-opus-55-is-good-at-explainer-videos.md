@@ -1,15 +1,17 @@
 ---
-title: "Owners mourn spoiled food after firmware update bricks Samsung smart fridges"
+title: "Opus 5.5 is good at explainer videos"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-24T12:58:08+00:00
-addedAt: 2026-09-25T05:52:51.189026+00:00
+pubDate: 2026-09-24T20:28:47+00:00
+addedAt: 2026-09-25T15:17:34.417701+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://arstechnica.com/gadgets/2026/09/owners-mourn-spoiled-food-after-firmware-update-bricks-samsung-smart-fridges/"
+sourceUrl: "https://launchvideo.io"
 tags: ["tech"]
-heat: 50
-score: 0.36501
+heat: 37
+score: 0.33923
 readMinutes: 1
+image: "https://gzvxcspoxhhgoeog.public.blob.vercel-storage.com/examples/infera-gXTtuX8hOzbsPSy3SAAdqKElG42trA.jpg"
+imageAlt: "End card of a launch video made by LaunchVideo"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

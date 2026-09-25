@@ -1,14 +1,14 @@
 ---
-title: "Every package is already installed"
+title: "Amiga screens: a primer"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-25T06:39:43+00:00
-addedAt: 2026-09-25T09:17:33.156022+00:00
+pubDate: 2026-09-25T13:01:42+00:00
+addedAt: 2026-09-25T15:17:34.417214+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://fzakaria.com/2026/09/24/every-package-is-already-installed"
+sourceUrl: "https://www.datagubbe.se/amscr/"
 tags: ["tech"]
-heat: 65
-score: 0.67778
+heat: 56
+score: 0.68741
 readMinutes: 1
 ---
 
