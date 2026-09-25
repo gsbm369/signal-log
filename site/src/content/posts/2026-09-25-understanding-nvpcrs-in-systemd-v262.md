@@ -1,16 +1,15 @@
 ---
-title: "File Notification Attacks: Side-Channel Leakage from the File-Notification System on Linux, Android, Windows, and macOS"
+title: "Understanding NvPCRs in systemd v262"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-25T02:50:41+00:00
-addedAt: 2026-09-25T05:52:51.188240+00:00
+pubDate: 2026-09-25T08:26:44+00:00
+addedAt: 2026-09-25T09:17:33.155828+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://inoti.fyi/"
-tags: ["linux"]
-heat: 96
-score: 1.10107
+sourceUrl: "https://katexochen.aro.bz/posts/systemd-v262-nvpcrs/"
+tags: ["systemd"]
+heat: 92
+score: 1.19784
 readMinutes: 1
-image: "https://inoti.fyi/img/logo.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
