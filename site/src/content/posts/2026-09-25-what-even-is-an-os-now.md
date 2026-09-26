@@ -1,16 +1,17 @@
 ---
-title: "Factorio that you can touch"
+title: "What even is an OS now?"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-25T14:24:42+00:00
-addedAt: 2026-09-25T21:51:03.058599+00:00
+pubDate: 2026-09-25T21:36:56+00:00
+addedAt: 2026-09-26T13:13:24.173938+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://factorio.com/blog/post/fff-447"
+sourceUrl: "https://sockpuppet.org/blog/2026/09/25/what-even-is-an-os-now/"
 tags: ["tech"]
-heat: 62
-score: 0.52567
+heat: 46
+score: 0.38379
 readMinutes: 1
-image: "https://cdn.factorio.com/assets/img/blog/fff-447-thumbnail.png"
+image: "https://sockpuppet.org/images/og-default.png"
+imageAlt: "A Final Ward logo"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
