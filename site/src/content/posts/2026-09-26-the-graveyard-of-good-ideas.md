@@ -1,14 +1,14 @@
 ---
-title: "The state of SIMD in Rust in 2026"
+title: "The Graveyard of Good Ideas"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-26T08:28:50+00:00
-addedAt: 2026-09-26T13:13:24.173599+00:00
+pubDate: 2026-09-26T15:09:50+00:00
+addedAt: 2026-09-26T15:17:35.848450+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://shnatsel.github.io/state-of-simd-rust-2026/"
-tags: ["rust"]
-heat: 84
-score: 1.03096
+sourceUrl: "https://www.youtube.com/watch?v=ovlQ81rBc-4"
+tags: ["tech"]
+heat: 80
+score: 0.74633
 readMinutes: 1
 ---
 

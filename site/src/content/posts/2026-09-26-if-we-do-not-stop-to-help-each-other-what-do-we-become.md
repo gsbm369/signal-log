@@ -1,14 +1,14 @@
 ---
-title: "NetBSD Playing with disklabels"
+title: "If we do not stop to help each other, what do we become?"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-26T02:14:59+00:00
-addedAt: 2026-09-26T03:17:33.704209+00:00
+pubDate: 2026-09-26T11:02:48+00:00
+addedAt: 2026-09-26T15:17:35.848847+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://movq.de/blog/postings/2026-09-25/0/POSTING-en.html"
+sourceUrl: "https://blog.codinghorror.com/if-we-do-not-stop-to-help-each-other-what-do-we-become/"
 tags: ["tech"]
-heat: 82
-score: 0.72051
+heat: 72
+score: 0.63691
 readMinutes: 1
 ---
 

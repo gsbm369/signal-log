@@ -1,16 +1,15 @@
 ---
-title: "Allow babywearing carriers on planes"
+title: "We're gonna need a lot more mathematicians"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-25T14:00:10+00:00
-addedAt: 2026-09-26T03:17:33.704640+00:00
+pubDate: 2026-09-26T02:46:54+00:00
+addedAt: 2026-09-26T15:17:35.849063+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.jefftk.com/p/allow-carriers-on-planes"
+sourceUrl: "https://terrytao.wordpress.com/2026/09/24/were-gonna-need-a-lot-more-mathematicians/"
 tags: ["tech"]
-heat: 59
-score: 0.41962
+heat: 57
+score: 0.4324
 readMinutes: 1
-image: "https://www.jefftk.com/baby-in-carrier-on-plane-big.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
