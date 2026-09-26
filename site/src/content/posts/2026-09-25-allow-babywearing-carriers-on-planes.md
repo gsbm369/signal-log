@@ -1,17 +1,16 @@
 ---
-title: "Opus 5.5 is good at explainer videos"
+title: "Allow babywearing carriers on planes"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-24T20:28:47+00:00
-addedAt: 2026-09-25T15:17:34.417701+00:00
+pubDate: 2026-09-25T14:00:10+00:00
+addedAt: 2026-09-26T03:17:33.704640+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://launchvideo.io"
+sourceUrl: "https://www.jefftk.com/p/allow-carriers-on-planes"
 tags: ["tech"]
-heat: 37
-score: 0.33923
+heat: 59
+score: 0.41962
 readMinutes: 1
-image: "https://gzvxcspoxhhgoeog.public.blob.vercel-storage.com/examples/infera-gXTtuX8hOzbsPSy3SAAdqKElG42trA.jpg"
-imageAlt: "End card of a launch video made by LaunchVideo"
+image: "https://www.jefftk.com/baby-in-carrier-on-plane-big.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
