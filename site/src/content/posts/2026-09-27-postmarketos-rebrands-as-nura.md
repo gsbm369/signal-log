@@ -1,15 +1,16 @@
 ---
-title: "The Graveyard of Good Ideas"
+title: "postmarketOS rebrands as Nura"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-26T15:09:50+00:00
-addedAt: 2026-09-26T15:17:35.848450+00:00
+pubDate: 2026-09-27T17:34:21+00:00
+addedAt: 2026-09-27T19:24:43.026594+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=ovlQ81rBc-4"
+sourceUrl: "https://nura.eco/blog/2026/09/27/nura-rename/"
 tags: ["tech"]
-heat: 80
-score: 0.74633
+heat: 62
+score: 0.69875
 readMinutes: 1
+image: "https://postmarketos.org/static/img/2026-09/stickers.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
