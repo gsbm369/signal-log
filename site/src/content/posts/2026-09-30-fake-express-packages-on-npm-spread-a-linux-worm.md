@@ -1,15 +1,16 @@
 ---
-title: "Pining for Arc Downcasting in Rust"
+title: "Fake Express Packages on npm Spread a Linux Worm"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-09-29T15:35:14+00:00
-addedAt: 2026-09-29T18:17:27.586950+00:00
+pubDate: 2026-09-30T04:05:15+00:00
+addedAt: 2026-09-30T06:10:44.444580+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://wolfgirl.dev/blog/2026-09-29-pining-for-arc-downcasting-in-rust/"
-tags: ["rust"]
-heat: 76
-score: 1.11525
+sourceUrl: "https://safedep.io/dirtyblanket-express-impersonation-npm"
+tags: ["linux"]
+heat: 90
+score: 1.14181
 readMinutes: 1
+image: "https://safedep.io/images/express-impersonation-blog-banner.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
