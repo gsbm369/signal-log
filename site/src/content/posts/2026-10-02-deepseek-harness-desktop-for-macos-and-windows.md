@@ -1,15 +1,17 @@
 ---
-title: "Returning from vacation? The government can search your phone without a warrant"
+title: "DeepSeek Harness Desktop for macOS and Windows"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-01T11:13:59+00:00
-addedAt: 2026-10-01T21:17:40.518277+00:00
+pubDate: 2026-10-02T03:11:20+00:00
+addedAt: 2026-10-02T10:55:50.065092+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://arstechnica.com/tech-policy/2026/09/immigration-advocate-sues-border-agents-for-demanding-his-cell-phone/"
+sourceUrl: "https://www.deepseek.com/en/harness/"
 tags: ["tech"]
-heat: 49
-score: 0.47521
+heat: 55
+score: 0.51957
 readMinutes: 1
+image: "https://www.deepseek.com/harness/images/deepseek-harness-social.jpg"
+imageAlt: "DeepSeek Harness"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

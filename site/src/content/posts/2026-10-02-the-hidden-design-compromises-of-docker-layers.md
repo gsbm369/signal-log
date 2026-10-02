@@ -1,15 +1,16 @@
 ---
-title: "We Should be Able to Change our Languages"
+title: "The hidden design compromises of Docker layers"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-01T18:55:58+00:00
-addedAt: 2026-10-02T03:17:38.909218+00:00
+pubDate: 2026-10-02T08:29:47+00:00
+addedAt: 2026-10-02T10:55:50.064195+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://jimmyhmiller.com/change-our-languages"
-tags: ["tech"]
-heat: 53
-score: 0.54358
+sourceUrl: "https://loige.co/hidden-design-compromises-of-docker-layers/"
+tags: ["docker"]
+heat: 88
+score: 1.12682
 readMinutes: 1
+image: "https://loige.co/og/hidden-design-compromises-of-docker-layers.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
