@@ -1,16 +1,15 @@
 ---
-title: "Generic Const Args and You"
+title: "Driving the GDEH0154D67 e-paper display with Rust"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-02T09:20:42+00:00
-addedAt: 2026-10-02T10:55:50.064824+00:00
+pubDate: 2026-10-02T17:55:35+00:00
+addedAt: 2026-10-02T21:17:36.267141+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blog.rust-lang.org/inside-rust/2026/10/02/generic-const-args-and-you/"
-tags: ["tech"]
-heat: 66
-score: 0.70561
+sourceUrl: "https://sgt.hootr.club/blog/driving-gdeh0154d67-with-rust/"
+tags: ["rust"]
+heat: 81
+score: 1.0871
 readMinutes: 1
-image: "https://www.rust-lang.org/static/images/rust-social.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
