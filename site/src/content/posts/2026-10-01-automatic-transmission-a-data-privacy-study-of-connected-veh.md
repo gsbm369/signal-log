@@ -1,14 +1,14 @@
 ---
-title: "Several vulnerabilities have been discovered in the Linux kernel"
+title: "Automatic Transmission – a data-privacy study of connected vehicles"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-01T23:10:44+00:00
-addedAt: 2026-10-02T10:55:50.063632+00:00
+pubDate: 2026-10-01T20:23:27+00:00
+addedAt: 2026-10-02T15:17:34.805764+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://lwn.net/Articles/1097401/"
-tags: ["linux", "kernel", "vulnerab"]
-heat: 90
-score: 1.17985
+sourceUrl: "https://automatictransmission.khoury.northeastern.edu/index.html"
+tags: ["tech"]
+heat: 34
+score: 0.33807
 readMinutes: 1
 ---
 

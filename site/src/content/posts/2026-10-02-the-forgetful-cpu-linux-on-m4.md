@@ -1,16 +1,15 @@
 ---
-title: "The hidden design compromises of Docker layers"
+title: "The forgetful CPU (Linux on M4)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-02T08:29:47+00:00
-addedAt: 2026-10-02T10:55:50.064195+00:00
+pubDate: 2026-10-02T14:01:47+00:00
+addedAt: 2026-10-02T15:17:34.805449+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://loige.co/hidden-design-compromises-of-docker-layers/"
-tags: ["docker"]
-heat: 88
-score: 1.12682
+sourceUrl: "https://yuka.dev/blog-2026-10-02-linux-m4.html"
+tags: ["linux"]
+heat: 72
+score: 1.1788
 readMinutes: 1
-image: "https://loige.co/og/hidden-design-compromises-of-docker-layers.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

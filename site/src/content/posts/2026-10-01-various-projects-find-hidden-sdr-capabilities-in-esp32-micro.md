@@ -1,16 +1,15 @@
 ---
-title: "Fuck Android Developer Verification Program"
+title: "Various Projects Find Hidden SDR Capabilities in ESP32 Microcontrollers"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-01T04:32:38+00:00
-addedAt: 2026-10-02T03:17:38.909498+00:00
+pubDate: 2026-10-01T15:07:42+00:00
+addedAt: 2026-10-02T15:17:34.805809+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://twitter.com/0xcrypto/status/2105515822643114182"
+sourceUrl: "https://www.rtl-sdr.com/various-projects-independently-find-hidden-sdr-capabilities-in-esp32-microcontrollers/"
 tags: ["tech"]
-heat: 37
-score: 0.29151
+heat: 30
+score: 0.27605
 readMinutes: 1
-image: "https://pbs.twimg.com/media/HThJZPraAAEQysp?format=webp&amp;name=large"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
