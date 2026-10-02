@@ -1,16 +1,16 @@
 ---
-title: "Micron CEO Says Memory Supply Will Be Much Tighter in 2027 and 2028 Than in 2026"
+title: "Fuck Android Developer Verification Program"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-01T12:48:59+00:00
-addedAt: 2026-10-01T20:05:21.112213+00:00
+pubDate: 2026-10-01T04:32:38+00:00
+addedAt: 2026-10-02T03:17:38.909498+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.techpowerup.com/353296/micron-ceo-says-memory-supply-will-be-much-tighter-in-2027-and-2028-than-in-2026"
+sourceUrl: "https://twitter.com/0xcrypto/status/2105515822643114182"
 tags: ["tech"]
-heat: 48
-score: 0.52911
+heat: 37
+score: 0.29151
 readMinutes: 1
-image: "https://www.techpowerup.com/img/gh4AFBdm8kLj5cs8.jpg"
+image: "https://pbs.twimg.com/media/HThJZPraAAEQysp?format=webp&amp;name=large"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

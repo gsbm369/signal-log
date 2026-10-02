@@ -1,16 +1,15 @@
 ---
-title: "The death of web development education"
+title: "We Should be Able to Change our Languages"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-01T17:14:23+00:00
-addedAt: 2026-10-01T21:17:40.517732+00:00
+pubDate: 2026-10-01T18:55:58+00:00
+addedAt: 2026-10-02T03:17:38.909218+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://molily.de/web-dev-education/"
+sourceUrl: "https://jimmyhmiller.com/change-our-languages"
 tags: ["tech"]
-heat: 59
-score: 0.64166
+heat: 53
+score: 0.54358
 readMinutes: 1
-image: "https://molily.de/img/spidermum-gray-bg-square-small.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

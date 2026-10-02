@@ -1,15 +1,17 @@
 ---
-title: "How to make a text box: A crash course in Unicode and OpenType - Jimmy Lefevre, BSC 2026"
+title: "Waterfox 6.7.5 Adds a Built-in Feed Reader"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-01T18:31:36+00:00
-addedAt: 2026-10-01T20:05:21.111961+00:00
+pubDate: 2026-10-02T02:17:04+00:00
+addedAt: 2026-10-02T03:17:38.909035+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=7Tr0ty9-yeQ"
+sourceUrl: "https://www.waterfox.com/releases/6.7.5/"
 tags: ["tech"]
-heat: 57
-score: 0.70633
+heat: 63
+score: 0.72146
 readMinutes: 1
+image: "https://www.waterfox.com/open-graph/releases/6.7.5.png"
+imageAlt: "Waterfox 6.7.5 — Read the Feed — Release Notes"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
