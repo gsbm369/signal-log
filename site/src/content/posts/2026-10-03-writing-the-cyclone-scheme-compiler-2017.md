@@ -1,14 +1,14 @@
 ---
-title: "Grow and control a swarm"
+title: "Writing the Cyclone Scheme Compiler (2017)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-03T09:03:13+00:00
-addedAt: 2026-10-03T10:03:11.098668+00:00
+pubDate: 2026-10-03T13:23:29+00:00
+addedAt: 2026-10-03T15:17:36.183718+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://nohope.io"
+sourceUrl: "https://justinethier.github.io/cyclone/docs/Writing-the-Cyclone-Scheme-Compiler-Revised-2017"
 tags: ["tech"]
-heat: 80
-score: 0.72172
+heat: 78
+score: 0.69707
 readMinutes: 1
 ---
 

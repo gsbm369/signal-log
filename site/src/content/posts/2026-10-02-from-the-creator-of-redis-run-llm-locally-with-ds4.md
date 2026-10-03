@@ -1,15 +1,17 @@
 ---
-title: "The Legend of von Neumann (1973) [pdf]"
+title: "From the creator of Redis; run LLM locally with ds4"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-02T13:18:32+00:00
-addedAt: 2026-10-02T21:17:36.267207+00:00
+pubDate: 2026-10-02T18:01:16+00:00
+addedAt: 2026-10-03T15:17:36.183969+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://gwern.net/doc/math/1973-halmos.pdf"
-tags: ["tech"]
-heat: 52
-score: 0.51475
+sourceUrl: "https://dwarfstar.sh/"
+tags: ["redis", "llm"]
+heat: 76
+score: 0.66344
 readMinutes: 1
+image: "https://dwarfstar.sh/og-preview-v2.png"
+imageAlt: "DwarfStar 4 logo and local inference project card"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -1,16 +1,15 @@
 ---
-title: "Shimano Bicycle Museum Review"
+title: "Greg Kroah-Hartman – Security in the LLM Age [video]"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-02T05:12:58+00:00
-addedAt: 2026-10-02T21:17:36.267255+00:00
+pubDate: 2026-10-02T02:51:27+00:00
+addedAt: 2026-10-03T15:17:36.184091+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://inrng.com/2026/10/shimano-bicycle-museum/"
-tags: ["tech"]
-heat: 43
-score: 0.37693
+sourceUrl: "https://www.youtube.com/watch?v=NnV_cWeoo5Q"
+tags: ["llm"]
+heat: 46
+score: 0.28396
 readMinutes: 1
-image: "https://inrng.com/wp-content/uploads/2023/12/inrng_logo-120.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
