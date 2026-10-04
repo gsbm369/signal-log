@@ -1,15 +1,16 @@
 ---
-title: "Extra Big Ass Intelligence"
+title: "Kolibri: A Sovereign Open-Weight Model"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-03T03:19:10+00:00
-addedAt: 2026-10-03T10:03:11.099020+00:00
+pubDate: 2026-10-03T09:36:04+00:00
+addedAt: 2026-10-04T18:18:46.450179+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.extrabigassintelligence.com/"
-tags: ["tech"]
-heat: 67
-score: 0.54014
+sourceUrl: "https://aleph-alpha.com/en/blog/kolibri-has-landed-a-sovereign-open-weight-model/"
+tags: ["open-weight"]
+heat: 38
+score: 0.32774
 readMinutes: 1
+image: "https://aleph-alpha.com/_astro/00-cover.Du35XCGh_zJqw.jpeg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

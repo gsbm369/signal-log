@@ -1,16 +1,16 @@
 ---
-title: "Apple Pass Designer"
+title: "Updates to Full Disk Access in macOS"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-02T19:06:56+00:00
-addedAt: 2026-10-03T10:03:11.099506+00:00
+pubDate: 2026-10-02T19:37:01+00:00
+addedAt: 2026-10-04T18:18:46.450248+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://developer.apple.com/pass-designer/"
+sourceUrl: "https://developer.apple.com/news/?id=p6zjojqw"
 tags: ["tech"]
-heat: 56
-score: 0.39383
+heat: 20
+score: 0.11592
 readMinutes: 1
-image: "https://developer.apple.com/news/images/og/pass-designer-og.png"
+image: "https://developer.apple.com/news/images/og/full-disk-access-og.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

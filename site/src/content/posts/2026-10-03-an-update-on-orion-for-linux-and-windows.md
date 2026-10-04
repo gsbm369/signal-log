@@ -1,15 +1,17 @@
 ---
-title: "The Era of Software Quality, or the Era of Ostriches?"
+title: "An Update on Orion for Linux and Windows"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-03T13:31:58+00:00
-addedAt: 2026-10-03T15:17:36.183497+00:00
+pubDate: 2026-10-03T15:57:16+00:00
+addedAt: 2026-10-04T18:18:46.448515+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blogs.gnome.org/mcatanzaro/2026/10/02/the-era-of-software-quality-or-the-era-of-ostriches/"
-tags: ["tech"]
-heat: 78
-score: 0.70087
+sourceUrl: "https://blog.kagi.com/update-orion-linux-windows"
+tags: ["linux"]
+heat: 46
+score: 0.44848
 readMinutes: 1
+image: "https://blog.kagi.com/og-image.png"
+imageAlt: "Kagi Blog mascot reading beside the Kagi Blog wordmark"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

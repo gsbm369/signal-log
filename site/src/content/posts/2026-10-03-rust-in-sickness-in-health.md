@@ -1,14 +1,14 @@
 ---
-title: "Problems and solutions to the modern desktop (Make tmux the OS)"
+title: "Rust, In Sickness & In Health"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-03T08:17:27+00:00
-addedAt: 2026-10-03T10:03:11.098858+00:00
+pubDate: 2026-10-03T20:37:40+00:00
+addedAt: 2026-10-04T18:18:46.446011+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://matduggan.com/what-does-my-dream-os-ui-look-like/"
-tags: ["tech"]
-heat: 79
-score: 0.70083
+sourceUrl: "https://www.youtube.com/watch?v=3kbPyuAtk7g"
+tags: ["rust"]
+heat: 51
+score: 0.53691
 readMinutes: 1
 ---
 
