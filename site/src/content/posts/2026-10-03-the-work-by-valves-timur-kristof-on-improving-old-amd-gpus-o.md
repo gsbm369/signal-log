@@ -1,15 +1,16 @@
 ---
-title: "Greg Kroah-Hartman – Security in the LLM Age [video]"
+title: "The work by Valve's Timur Kristóf on improving old AMD GPUs on Linux"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-02T02:51:27+00:00
-addedAt: 2026-10-03T15:17:36.184091+00:00
+pubDate: 2026-10-03T19:14:48+00:00
+addedAt: 2026-10-04T18:20:31.251653+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=NnV_cWeoo5Q"
-tags: ["llm"]
-heat: 46
-score: 0.28396
+sourceUrl: "https://www.phoronix.com/news/XDC-2026-Valve-Timur-AMDGPU"
+tags: ["linux", "amd"]
+heat: 56
+score: 0.61846
 readMinutes: 1
+image: "https://www.phoronix.net/image.php?id=2026&image=timur"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

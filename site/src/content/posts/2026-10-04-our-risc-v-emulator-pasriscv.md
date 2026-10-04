@@ -1,15 +1,16 @@
 ---
-title: "Two-Stack Sliding-Window Aggregation"
+title: "Our RISC-V emulator PasRISCV"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-03T12:39:14+00:00
-addedAt: 2026-10-03T15:17:36.183846+00:00
+pubDate: 2026-10-04T08:40:38+00:00
+addedAt: 2026-10-04T18:20:31.251510+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://orlp.net/blog/two-stack-sliding-window-aggregation/"
-tags: ["tech"]
-heat: 77
-score: 0.67755
+sourceUrl: "https://againstallodds.games/blog/2026/10/03/our-risc-v-emulator-pasriscv/"
+tags: ["risc-v"]
+heat: 68
+score: 0.85297
 readMinutes: 1
+image: "https://againstallodds.games/images/icons/aao.svg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

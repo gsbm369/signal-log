@@ -1,17 +1,15 @@
 ---
-title: "An Update on Orion for Linux and Windows"
+title: "Flatpak from the CLI sucks"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-03T15:57:16+00:00
-addedAt: 2026-10-04T18:18:46.448515+00:00
+pubDate: 2026-10-04T15:21:34+00:00
+addedAt: 2026-10-04T18:20:31.251590+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blog.kagi.com/update-orion-linux-windows"
-tags: ["linux"]
-heat: 46
-score: 0.44848
+sourceUrl: "https://kowalski7cc.xyz/blog/flatpak-from-the-cli-sucks/"
+tags: ["tech"]
+heat: 58
+score: 0.66865
 readMinutes: 1
-image: "https://blog.kagi.com/og-image.png"
-imageAlt: "Kagi Blog mascot reading beside the Kagi Blog wordmark"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

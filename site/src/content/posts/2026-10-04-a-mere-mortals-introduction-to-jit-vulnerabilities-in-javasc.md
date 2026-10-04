@@ -1,14 +1,14 @@
 ---
-title: "Rust, In Sickness & In Health"
+title: "A Mere Mortal's Introduction to JIT Vulnerabilities in JavaScript Engines"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-03T20:37:40+00:00
-addedAt: 2026-10-04T18:18:46.446011+00:00
+pubDate: 2026-10-04T11:53:51+00:00
+addedAt: 2026-10-04T18:20:31.251319+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=3kbPyuAtk7g"
-tags: ["rust"]
-heat: 51
-score: 0.53691
+sourceUrl: "https://trustfoundry.net/blog/jit-vulnerabilities-javascript-engines"
+tags: ["vulnerab"]
+heat: 73
+score: 0.96558
 readMinutes: 1
 ---
 
