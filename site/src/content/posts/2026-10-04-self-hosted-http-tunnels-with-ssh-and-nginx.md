@@ -1,16 +1,16 @@
 ---
-title: "Updates to Full Disk Access in macOS"
+title: "Self-hosted HTTP tunnels with SSH and Nginx"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-02T19:37:01+00:00
-addedAt: 2026-10-04T18:18:46.450248+00:00
+pubDate: 2026-10-04T22:25:10+00:00
+addedAt: 2026-10-05T17:33:25.484683+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://developer.apple.com/news/?id=p6zjojqw"
-tags: ["tech"]
-heat: 20
-score: 0.11592
+sourceUrl: "https://vincent.bernat.ch/en/blog/2026-http-over-ssh"
+tags: ["nginx", "self-hosted"]
+heat: 63
+score: 0.72029
 readMinutes: 1
-image: "https://developer.apple.com/news/images/og/full-disk-access-og.png"
+image: "https://d2pzklc15kok91.cloudfront.net/images/covers/en/blog/2026-http-over-ssh.922a043bebfeb0.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

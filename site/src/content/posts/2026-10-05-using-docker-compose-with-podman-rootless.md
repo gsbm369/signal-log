@@ -1,16 +1,15 @@
 ---
-title: "Our RISC-V emulator PasRISCV"
+title: "Using docker-compose with Podman rootless"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-04T08:40:38+00:00
-addedAt: 2026-10-04T18:20:31.251510+00:00
+pubDate: 2026-10-05T09:51:28+00:00
+addedAt: 2026-10-05T17:33:25.484231+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://againstallodds.games/blog/2026/10/03/our-risc-v-emulator-pasriscv/"
-tags: ["risc-v"]
-heat: 68
-score: 0.85297
+sourceUrl: "https://elou.world/en/tutorial/podman-docker-compose"
+tags: ["docker"]
+heat: 73
+score: 0.92004
 readMinutes: 1
-image: "https://againstallodds.games/images/icons/aao.svg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
