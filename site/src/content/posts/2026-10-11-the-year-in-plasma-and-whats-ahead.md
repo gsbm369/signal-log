@@ -1,14 +1,14 @@
 ---
-title: "The kernel from a PostgreSQL point of view"
+title: "The year in Plasma and what's ahead"
 description: "LWN.net linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-10T16:15:21+00:00
-addedAt: 2026-10-10T16:16:16.937882+00:00
+pubDate: 2026-10-11T16:30:49+00:00
+addedAt: 2026-10-11T16:31:29.457103+00:00
 source: "LWN.net"
 category: devops_linux
-sourceUrl: "https://lwn.net/Articles/1096827/"
-tags: ["kernel", "postgresql"]
-heat: 100
-score: 2.04227
+sourceUrl: "https://lwn.net/Articles/1096518/"
+tags: ["tech"]
+heat: 81
+score: 0.94993
 readMinutes: 1
 ---
 

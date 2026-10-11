@@ -1,16 +1,16 @@
 ---
-title: "Shipping JPEG XL in Chrome"
+title: "3rd Yandex Cloud Data Center Was Hit"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-07T11:25:02+00:00
-addedAt: 2026-10-07T16:43:25.779938+00:00
+pubDate: 2026-10-11T07:34:45+00:00
+addedAt: 2026-10-11T16:31:29.456165+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://developer.chrome.com/blog/jpeg-xl-in-chrome"
-tags: ["tech"]
-heat: 55
-score: 0.57069
+sourceUrl: "https://status.yandex.cloud/en/incidents/2136"
+tags: ["data-center"]
+heat: 74
+score: 0.81852
 readMinutes: 1
-image: "https://developer.chrome.com/static/blog/jpeg-xl-in-chrome/images/cover.png"
+image: "https://storage.yandexcloud.net/cloud-www-assets/statusboard/share/main.en.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

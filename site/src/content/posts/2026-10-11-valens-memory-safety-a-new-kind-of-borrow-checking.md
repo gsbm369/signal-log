@@ -1,14 +1,14 @@
 ---
-title: "Reporting vulnerabilities to Estonian companies"
+title: "Valen's Memory Safety: A New Kind of Borrow Checking"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-10T14:56:06+00:00
-addedAt: 2026-10-10T16:16:16.931329+00:00
+pubDate: 2026-10-11T12:23:01+00:00
+addedAt: 2026-10-11T16:31:29.456574+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=4gcSlBORoTI"
-tags: ["vulnerab"]
-heat: 72
-score: 1.17561
+sourceUrl: "https://verdagon.dev/blog/valen-group-borrowing"
+tags: ["tech"]
+heat: 64
+score: 0.63952
 readMinutes: 1
 ---
 
