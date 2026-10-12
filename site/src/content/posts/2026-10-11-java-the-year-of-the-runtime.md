@@ -2,13 +2,13 @@
 title: "Java - The Year of the Runtime!"
 description: "As AI coding agents make language syntax less central, runtime performance and operability become increasingly important. This keynote explores why Java’s JVM and standard library are well suited to this shift: newer JDK"
 pubDate: 2026-10-11T00:00:00+00:00
-addedAt: 2026-10-11T16:31:29.458918+00:00
+addedAt: 2026-10-12T15:40:20.309759+00:00
 source: "Inside Java"
 category: languages
-sourceUrl: "https://inside.java/2026/10/11/devoxxbelgium-runtime-year-keynite/"
+sourceUrl: "https://inside.java/2026/10/11/devoxxbelgium-runtime-year-keynote/"
 tags: ["observability"]
-heat: 82
-score: 0.9668
+heat: 69
+score: 0.87873
 readMinutes: 1
 image: "https://inside.java/resources/social-image--nAgZMYNGE8fqdi2dNsobXsdOYjHge7YemY2jQDyJc0.jpg"
 imageAlt: "Inside.java - News and views from members of the Java team at Oracle"
