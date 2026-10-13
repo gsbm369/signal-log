@@ -1,14 +1,14 @@
 ---
-title: "Linux boots on iPhone 11"
+title: "Accelerating the Zig Tokenizer (with AVX-512)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-12T08:59:03+00:00
-addedAt: 2026-10-12T15:40:20.307653+00:00
+pubDate: 2026-10-13T20:36:59+00:00
+addedAt: 2026-10-13T21:18:05.489782+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.patreon.com/partshacker/posts/linux-boots-on-172091834"
-tags: ["linux"]
-heat: 73
-score: 0.9566
+sourceUrl: "https://www.youtube.com/watch?v=E6dWIwPLx3s"
+tags: ["tech"]
+heat: 67
+score: 0.73053
 readMinutes: 1
 ---
 

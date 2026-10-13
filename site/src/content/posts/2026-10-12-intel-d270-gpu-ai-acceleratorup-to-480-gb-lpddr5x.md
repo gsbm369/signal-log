@@ -1,16 +1,15 @@
 ---
-title: "We turned EmbeddingGemma 2 into a speech-to-text model"
+title: "Intel D270 GPU AI Accelerator–Up to 480 GB LPDDR5X"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-13T11:27:14+00:00
-addedAt: 2026-10-13T16:25:24.322457+00:00
+pubDate: 2026-10-12T21:35:35+00:00
+addedAt: 2026-10-13T21:18:05.489945+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://eg2.haku.sh/"
-tags: ["embedding"]
-heat: 74
-score: 0.95393
+sourceUrl: "https://www.intel.com/content/www/us/en/products/details/discrete-gpus/data-center-gpu/d-series.html"
+tags: ["gpu"]
+heat: 51
+score: 0.46358
 readMinutes: 1
-image: "https://eg2.haku.sh/speed-table.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
