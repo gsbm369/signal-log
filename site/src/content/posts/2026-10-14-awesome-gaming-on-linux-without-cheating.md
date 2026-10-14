@@ -1,16 +1,15 @@
 ---
-title: "A UAF turned RCE"
+title: "Awesome Gaming on Linux Without Cheating"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T09:44:11+00:00
-addedAt: 2026-10-14T15:18:06.806224+00:00
+pubDate: 2026-10-14T15:13:26+00:00
+addedAt: 2026-10-14T21:18:05.708120+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://daniel.haxx.se/blog/2026/10/14/a-uaf-turned-rce/"
-tags: ["rce"]
-heat: 77
-score: 0.99887
+sourceUrl: "https://onlineservices.epicgames.com/news/introducing-easy-anti-cheat-linux-v2"
+tags: ["linux"]
+heat: 67
+score: 0.97935
 readMinutes: 1
-image: "https://daniel.haxx.se/blog/wp-content/uploads/2017/10/bobby-car-crash-1200x800.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

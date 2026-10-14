@@ -1,16 +1,15 @@
 ---
-title: "New Apple TV 4K"
+title: "Google is silently linking your phone number across all signed-in accounts"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-13T13:21:35+00:00
-addedAt: 2026-10-14T09:18:06.467846+00:00
+pubDate: 2026-10-14T16:28:51+00:00
+addedAt: 2026-10-14T21:18:05.708319+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.apple.com/newsroom/2026/10/apple-unveils-the-new-apple-tv-4k/"
+sourceUrl: "https://www.androidauthority.com/google-auto-phone-number-verification-android-3723117/"
 tags: ["tech"]
-heat: 39
-score: 0.32481
+heat: 49
+score: 0.58145
 readMinutes: 1
-image: "https://www.apple.com/newsroom/images/2026/10/apple-unveils-the-new-apple-tv-4k/tile/Apple-TV-4K-261013-lp.jpg.og.jpg?202610131304"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

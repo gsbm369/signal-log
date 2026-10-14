@@ -1,14 +1,14 @@
 ---
-title: "Gemini 4 Argon tops the finance benchmark"
+title: "Before You Put AI on Regulatory Reporting"
 description: "Finextra linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T09:15:14+00:00
-addedAt: 2026-10-14T15:18:06.808817+00:00
+pubDate: 2026-10-14T18:26:19+00:00
+addedAt: 2026-10-14T21:18:05.708890+00:00
 source: "Finextra"
 category: fintech
-sourceUrl: "https://www.finextra.com/blogposting/33155/gemini-4-argon-tops-the-finance-benchmark?utm_medium=rssfinextra&utm_source=finextrafeed"
-tags: ["gemini", "benchmark"]
-heat: 99
-score: 1.52133
+sourceUrl: "https://www.finextra.com/blogposting/33167/before-you-put-ai-on-regulatory-reporting?utm_medium=rssfinextra&utm_source=finextrafeed"
+tags: ["tech"]
+heat: 56
+score: 0.72963
 readMinutes: 1
 ---
 
