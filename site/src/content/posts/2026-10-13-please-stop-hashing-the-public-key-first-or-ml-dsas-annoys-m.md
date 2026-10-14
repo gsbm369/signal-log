@@ -1,16 +1,15 @@
 ---
-title: "Creusot 0.14.0 release - Contracts for Rust, formally proved"
+title: "Please stop hashing the public key first (or: ML-DSA's µ annoys me)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-13T07:57:16+00:00
-addedAt: 2026-10-13T16:25:24.322638+00:00
+pubDate: 2026-10-13T22:01:20+00:00
+addedAt: 2026-10-14T03:18:00.172827+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://devlog.creusot.rs/v0-14-0/"
-tags: ["rust"]
-heat: 71
-score: 0.89322
+sourceUrl: "https://blog.erincandescent.net/2026/10/mu-annoys-me/"
+tags: ["tech"]
+heat: 61
+score: 0.61209
 readMinutes: 1
-image: "https://devlog.creusot.rs/creusot-logo-center.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -1,15 +1,16 @@
 ---
-title: "A plea not to use uv-build"
+title: "Bru: Send and read SMS from the browser"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-13T14:36:52+00:00
-addedAt: 2026-10-13T16:25:24.322691+00:00
+pubDate: 2026-10-14T01:14:17+00:00
+addedAt: 2026-10-14T03:18:00.172566+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blogs.gentoo.org/mgorny/2026/10/12/a-plea-not-to-use-uv-build/"
+sourceUrl: "https://sverre.me/projects/bru/"
 tags: ["tech"]
-heat: 62
-score: 0.69961
+heat: 66
+score: 0.69278
 readMinutes: 1
+image: "https://sverre.me/projects/bru/&#x2F;&#x2F;sverre.me&#x2F;processed_images&#x2F;image.256b51449204168d.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

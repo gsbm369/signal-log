@@ -1,16 +1,16 @@
 ---
-title: "Mozilla Introduces Firefox Enterprise"
+title: "Thunderbird for iOS"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-13T12:00:42+00:00
-addedAt: 2026-10-13T16:25:24.322738+00:00
+pubDate: 2026-10-13T15:07:37+00:00
+addedAt: 2026-10-14T03:18:00.172948+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.firefox.com/en-US/enterprise/"
+sourceUrl: "https://blog.thunderbird.net/2026/10/thunderbird-for-ios-a-first-look-at-the-native-iphone-email-app-in-development/"
 tags: ["tech"]
-heat: 56
-score: 0.59069
+heat: 50
+score: 0.43806
 readMinutes: 1
-image: "https://www.firefox.com/media/img/firefox/flare/og.4d50d9b1674b.png"
+image: "https://blog.thunderbird.net/files/2026/10/Cover2-scaled.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
