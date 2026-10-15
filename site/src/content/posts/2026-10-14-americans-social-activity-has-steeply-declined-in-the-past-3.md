@@ -1,14 +1,14 @@
 ---
-title: "Google is silently linking your phone number across all signed-in accounts"
+title: "Americans' social activity has steeply declined in the past 30 years"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T16:28:51+00:00
-addedAt: 2026-10-14T21:18:05.708319+00:00
+pubDate: 2026-10-14T16:09:00+00:00
+addedAt: 2026-10-15T09:18:01.001237+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.androidauthority.com/google-auto-phone-number-verification-android-3723117/"
+sourceUrl: "https://www.dataforprogress.org/blog/2026/9/29/americans-social-activity-has-steeply-declined-in-the-past-30-years"
 tags: ["tech"]
-heat: 49
-score: 0.58145
+heat: 59
+score: 0.36166
 readMinutes: 1
 ---
 

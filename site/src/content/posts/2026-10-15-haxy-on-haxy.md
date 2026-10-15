@@ -1,14 +1,14 @@
 ---
-title: "Awesome Gaming on Linux Without Cheating"
+title: "Haxy on Haxy"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T15:13:26+00:00
-addedAt: 2026-10-14T21:18:05.708120+00:00
+pubDate: 2026-10-15T07:58:35+00:00
+addedAt: 2026-10-15T09:18:00.999116+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://onlineservices.epicgames.com/news/introducing-easy-anti-cheat-linux-v2"
-tags: ["linux"]
-heat: 67
-score: 0.97935
+sourceUrl: "https://try.haxy.net/haxy:haxy"
+tags: ["tech"]
+heat: 88
+score: 0.71275
 readMinutes: 1
 ---
 

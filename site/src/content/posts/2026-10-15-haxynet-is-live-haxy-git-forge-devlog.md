@@ -1,16 +1,15 @@
 ---
-title: "ito - build terminal ui in lua"
+title: "Haxy.net is live! — HAXY (git forge) devlog"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T22:27:10+00:00
-addedAt: 2026-10-15T03:18:05.350409+00:00
+pubDate: 2026-10-15T07:47:41+00:00
+addedAt: 2026-10-15T09:18:00.999282+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://uji.sh/ito"
+sourceUrl: "https://youtu.be/89yAiqYEwKg"
 tags: ["tech"]
-heat: 57
-score: 0.6223
+heat: 88
+score: 0.70779
 readMinutes: 1
-image: "https://uji.sh/og.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

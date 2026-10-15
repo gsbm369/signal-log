@@ -1,16 +1,17 @@
 ---
-title: "Things to know if you get cancer in 2026"
+title: "Tiny Little Office"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T19:26:30+00:00
-addedAt: 2026-10-14T21:18:05.708177+00:00
+pubDate: 2026-10-14T22:10:08+00:00
+addedAt: 2026-10-15T09:18:01.001128+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://jjmaxwell4.com/writing/things-to-know-when-you-get-cancer/"
+sourceUrl: "https://tinylittleoffice.com/"
 tags: ["tech"]
-heat: 52
-score: 0.65167
+heat: 68
+score: 0.45599
 readMinutes: 1
-image: "https://jjmaxwell4.com/open-graph/things-to-know-when-you-get-cancer.png"
+image: "https://tinylittleoffice.com/og.png"
+imageAlt: "Tiny Little Office: a tiny office suite where the link is the document."
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
