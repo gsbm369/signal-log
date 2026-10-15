@@ -1,17 +1,15 @@
 ---
-title: "BotStopper from Techaro"
+title: "Fixing C Strings With String Views"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T14:59:14+00:00
-addedAt: 2026-10-14T15:18:06.806303+00:00
+pubDate: 2026-10-14T21:04:44+00:00
+addedAt: 2026-10-15T03:18:05.350477+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://botstopper.net"
+sourceUrl: "https://eliasebner.com/blog/guides/fixing-strings-in-c/"
 tags: ["tech"]
-heat: 64
-score: 0.74104
+heat: 56
+score: 0.59024
 readMinutes: 1
-image: "https://botstopper.net/opengraph-image?4cf6ef8ebc04e8a9"
-imageAlt: "BotStopper from Techaro: Good traffic gets through. Bad bots don&#x27;t."
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

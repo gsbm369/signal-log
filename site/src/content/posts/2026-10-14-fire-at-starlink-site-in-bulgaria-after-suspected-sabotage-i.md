@@ -1,14 +1,14 @@
 ---
-title: "Iosevka is an open-source, sans-serif and slab-serif, monospace font"
+title: "Fire at Starlink site in Bulgaria after suspected sabotage in Poland"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T08:27:59+00:00
-addedAt: 2026-10-14T15:18:06.808218+00:00
+pubDate: 2026-10-14T18:37:21+00:00
+addedAt: 2026-10-15T03:18:05.350617+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://typeof.net/Iosevka/"
+sourceUrl: "https://dpa-international.com/politics/urn:newsml:dpa.com:20090101:261014-930-839530/"
 tags: ["tech"]
-heat: 53
-score: 0.53805
+heat: 50
+score: 0.50117
 readMinutes: 1
 ---
 
