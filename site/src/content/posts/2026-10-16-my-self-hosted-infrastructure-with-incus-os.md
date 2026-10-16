@@ -1,15 +1,16 @@
 ---
-title: "Epic's EAC2 v2 seems fairly easily bypassable"
+title: "My self-hosted infrastructure with Incus OS"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-15T22:48:19+00:00
-addedAt: 2026-10-16T03:18:05.006794+00:00
+pubDate: 2026-10-16T03:25:49+00:00
+addedAt: 2026-10-16T09:18:00.640486+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://codon.org.uk/~mjg59/blog/p/epics-eac2-v2-seems-fairly-easily-bypassable/"
-tags: ["tech"]
-heat: 57
-score: 0.6308
+sourceUrl: "https://dataswamp.org/~solene/2026-10-15-selfhosting-infrastructure-incus-os.html"
+tags: ["self-hosted"]
+heat: 82
+score: 0.98719
 readMinutes: 1
+image: "https://dataswamp.org/~solene/static/og-logo.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

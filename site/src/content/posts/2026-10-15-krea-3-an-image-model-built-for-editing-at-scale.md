@@ -1,17 +1,17 @@
 ---
-title: "Neural networks are clean"
+title: "Krea 3 – An image model built for editing at scale"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-15T16:04:01+00:00
-addedAt: 2026-10-15T21:18:18.883560+00:00
+pubDate: 2026-10-15T16:04:05+00:00
+addedAt: 2026-10-16T09:18:00.640853+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://already-clean.goodfire.com/"
+sourceUrl: "https://www.krea.ai/krea-3"
 tags: ["tech"]
-heat: 55
-score: 0.57222
+heat: 45
+score: 0.36052
 readMinutes: 1
-image: "https://already-clean.goodfire.com/assets/social/city-and-knot-20261015.png"
-imageAlt: "A city with connected neighborhoods beside a knot woven from the same buildings and streets."
+image: "https://s.krea.ai/krea-3-og-boxes-3.webp"
+imageAlt: "The Krea 3 wordmark with three edit boxes: make the K glass outline, the e blackletter, and the 3 liquid chrome."
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
