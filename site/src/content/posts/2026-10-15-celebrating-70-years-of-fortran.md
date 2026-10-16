@@ -1,16 +1,15 @@
 ---
-title: "Steam Client is now faster than Epic's new vibe coded launcher"
+title: "Celebrating 70 Years of Fortran"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-15T16:03:19+00:00
-addedAt: 2026-10-16T03:18:05.007132+00:00
+pubDate: 2026-10-15T15:03:17+00:00
+addedAt: 2026-10-16T15:54:24.072558+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://respawnfirst.com/steam-client-is-now-faster-than-epics-new-vibe-coded-launcher/"
+sourceUrl: "https://fortran-lang.org/news/2026/09-15-Fortran-birthday/"
 tags: ["tech"]
-heat: 47
-score: 0.45399
+heat: 27
+score: 0.26885
 readMinutes: 1
-image: "https://respawnfirst.com/wp-content/uploads/2026/10/New-Steam-client-is-faster.webp"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

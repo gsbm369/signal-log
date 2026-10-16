@@ -1,16 +1,16 @@
 ---
-title: "Jev meets the Trolley Problem"
+title: "Meta’s new commercial terms will allow the scraping of news sites: experts"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-15T16:24:52+00:00
-addedAt: 2026-10-16T03:18:05.007069+00:00
+pubDate: 2026-10-15T23:37:42+00:00
+addedAt: 2026-10-16T15:54:24.072469+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://zachlandes.com/trolley-problem/"
+sourceUrl: "https://www.niemanlab.org/2026/10/metas-new-commercial-terms-will-allow-the-scraping-of-news-sites-legal-experts-say/"
 tags: ["tech"]
-heat: 47
-score: 0.46031
+heat: 33
+score: 0.37402
 readMinutes: 1
-image: "https://zachlandes.com/assets/og/trolley-problem.jpg"
+image: "https://www.niemanlab.org/images/Meta-stock-image-700x467.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
