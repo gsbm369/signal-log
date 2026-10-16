@@ -1,14 +1,14 @@
 ---
-title: "What agents mean for Rust (and vice versa)"
+title: "There's never been a better time to go into math"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-16T11:26:57+00:00
-addedAt: 2026-10-16T15:54:24.072199+00:00
+pubDate: 2026-10-16T20:49:12+00:00
+addedAt: 2026-10-16T21:17:47.453501+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://smallcultfollowing.com/babysteps/blog/2026/10/14/agentic-dev-and-rust/"
-tags: ["rust"]
-heat: 61
-score: 1.04239
+sourceUrl: "https://www.youtube.com/watch?v=LKrwhjOI8Nc"
+tags: ["tech"]
+heat: 66
+score: 0.7364
 readMinutes: 1
 ---
 
