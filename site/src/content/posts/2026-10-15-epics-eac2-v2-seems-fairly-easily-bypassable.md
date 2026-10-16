@@ -1,17 +1,15 @@
 ---
-title: "Forgejo v17.0 is available"
+title: "Epic's EAC2 v2 seems fairly easily bypassable"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-15T19:43:19+00:00
-addedAt: 2026-10-15T21:18:18.883328+00:00
+pubDate: 2026-10-15T22:48:19+00:00
+addedAt: 2026-10-16T03:18:05.006794+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://forgejo.org/2026-10-release-v17-0/"
+sourceUrl: "https://codon.org.uk/~mjg59/blog/p/epics-eac2-v2-seems-fairly-easily-bypassable/"
 tags: ["tech"]
-heat: 62
-score: 0.70576
+heat: 57
+score: 0.6308
 readMinutes: 1
-image: "https://forgejo.org/_astro/og-preview.Uy75QWb0_6Lpd2.webp"
-imageAlt: "Forgejo v17.0 is available"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

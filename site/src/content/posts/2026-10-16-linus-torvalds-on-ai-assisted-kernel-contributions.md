@@ -1,14 +1,14 @@
 ---
-title: "End-to-end encrypted relays for OCapN"
+title: "Linus Torvalds on AI-assisted kernel contributions"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-15T14:42:12+00:00
-addedAt: 2026-10-15T15:18:08.638489+00:00
+pubDate: 2026-10-16T02:50:33+00:00
+addedAt: 2026-10-16T03:18:05.006571+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://spritely.institute/news/end-to-end-encrypted-relays-for-ocapn.html"
-tags: ["tech"]
-heat: 54
-score: 0.73296
+sourceUrl: "https://lore.kernel.org/lkml/CAHk-=whTs09_ozN+e09GU68N1wPP56MUzDjrg9rnKxQUa0A_4Q@mail.gmail.com/"
+tags: ["kernel"]
+heat: 84
+score: 1.21589
 readMinutes: 1
 ---
 

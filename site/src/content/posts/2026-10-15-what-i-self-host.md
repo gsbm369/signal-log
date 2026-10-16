@@ -1,16 +1,15 @@
 ---
-title: "We’re releasing Jev 1.14.0 along with experimental features for dreamers"
+title: "What I Self-Host"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-14T21:11:03+00:00
-addedAt: 2026-10-15T15:18:08.638603+00:00
+pubDate: 2026-10-15T20:23:25+00:00
+addedAt: 2026-10-16T03:18:05.006909+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://typesafe.ai/blog/jev-1-14"
+sourceUrl: "https://viceconsole.fyi/blog/2026/10/10/what-i-self-host/"
 tags: ["tech"]
-heat: 35
-score: 0.34844
+heat: 52
+score: 0.53646
 readMinutes: 1
-image: "https://framerusercontent.com/images/KBTvCTXoQaZeABcI7te5PTQw7Q.png?width=1574&amp;height=996"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
