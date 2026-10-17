@@ -1,14 +1,14 @@
 ---
-title: "There's never been a better time to go into math"
+title: "Some quick thoughts on Unit Testing ActivityPub"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-16T20:49:12+00:00
-addedAt: 2026-10-16T21:17:47.453501+00:00
+pubDate: 2026-10-17T06:12:46+00:00
+addedAt: 2026-10-17T09:18:22.464006+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=LKrwhjOI8Nc"
+sourceUrl: "https://shkspr.mobi/blog/2026/10/some-thoughts-on-unit-testing-activitypub/"
 tags: ["tech"]
-heat: 66
-score: 0.7364
+heat: 80
+score: 0.6658
 readMinutes: 1
 ---
 
