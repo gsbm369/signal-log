@@ -1,16 +1,15 @@
 ---
-title: "Waymo in Toronto"
+title: "Anthropic assigned highest junk credit rating in June"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-16T14:44:17+00:00
-addedAt: 2026-10-17T06:23:07.658219+00:00
+pubDate: 2026-10-16T18:11:42+00:00
+addedAt: 2026-10-17T15:18:23.569851+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://waymo.com/blog/2026/10/waymo-in-toronto/"
-tags: ["tech"]
-heat: 39
-score: 0.3832
+sourceUrl: "https://www.ft.com/content/5a310aee-f555-4266-874c-b1b4db20186d"
+tags: ["anthropic"]
+heat: 65
+score: 0.5123
 readMinutes: 1
-image: "https://lh3.googleusercontent.com/oT69lnzKavWqyUu7BiCQCRwO5_quNkMhToRgNG_txw-llzetBvuR1663he58eSjZiEfPPVIzga1NGPvOJSlF-PbJfiAQVSboho1oVbK3Q6phCM2t"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
