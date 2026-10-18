@@ -1,16 +1,15 @@
 ---
-title: "Intuitive concurrent programming in any language"
+title: "My obituary for programming"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-17T12:17:20+00:00
-addedAt: 2026-10-17T15:18:23.569631+00:00
+pubDate: 2026-10-18T16:44:36+00:00
+addedAt: 2026-10-18T16:53:00.424642+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.lf-lang.org/"
+sourceUrl: "https://dumbmatter.com/2026/10/programming-obituary/"
 tags: ["tech"]
-heat: 76
-score: 0.66774
+heat: 68
+score: 0.74602
 readMinutes: 1
-image: "https://www.lf-lang.org/img/lf-social-card.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

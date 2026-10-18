@@ -1,17 +1,15 @@
 ---
-title: "Introducing GNOME OS Preview"
+title: "The Problem with C++ Safety: Why “It Works” Isn’t Good Enough"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-16T18:25:15+00:00
-addedAt: 2026-10-17T09:18:22.464211+00:00
+pubDate: 2026-10-18T16:10:47+00:00
+addedAt: 2026-10-18T16:53:00.424839+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blogs.gnome.org/adrianvovk/2026/10/16/gnome-os-preview/"
+sourceUrl: "https://www.modernescpp.com/index.php/cpp-and-memory-safety-part-1/"
 tags: ["tech"]
-heat: 61
-score: 0.4228
+heat: 67
+score: 0.73
 readMinutes: 1
-image: "https://blogs.gnome.org/adrianvovk/files/2026/10/gnome-os-preview.jpg"
-imageAlt: "gnome-os-preview"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
