@@ -1,14 +1,14 @@
 ---
-title: "Using timers to perform weekly tasks"
+title: "2026 is an exciting year for the Rust compiler (and me)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-18T14:52:34+00:00
-addedAt: 2026-10-18T16:53:00.424933+00:00
+pubDate: 2026-10-19T17:52:41+00:00
+addedAt: 2026-10-19T21:18:32.894858+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://mbork.pl/2026-10-17_Using_timers_to_perform_weekly_tasks"
-tags: ["tech"]
-heat: 65
-score: 0.69426
+sourceUrl: "https://yoyo-code.com/2026-is-exciting-year-for-rust-compiler-and-me/"
+tags: ["rust"]
+heat: 80
+score: 1.0844
 readMinutes: 1
 ---
 

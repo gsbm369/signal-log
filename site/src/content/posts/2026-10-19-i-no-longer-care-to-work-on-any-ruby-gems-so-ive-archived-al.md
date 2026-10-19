@@ -1,16 +1,15 @@
 ---
-title: "DeepSeek search and fetch – $0.75 per 1000 successful requests"
+title: "I no longer care to work on any Ruby gems so I've archived all my repositories"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-18T06:50:36+00:00
-addedAt: 2026-10-18T16:53:00.424998+00:00
+pubDate: 2026-10-19T16:37:10+00:00
+addedAt: 2026-10-19T21:18:32.895283+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://api-docs.deepseek.com/guides/search/"
+sourceUrl: "https://po-ru.com/2026/10/18/why-im-no-longer-updating-this-repository"
 tags: ["tech"]
-heat: 52
-score: 0.47558
+heat: 55
+score: 0.58438
 readMinutes: 1
-image: "https://api-docs.deepseek.com/img/deepseek-social-card.jpeg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

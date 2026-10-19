@@ -1,16 +1,15 @@
 ---
-title: "Timestral: Mistral release time-series foundation models"
+title: "CERN and Mistral sign a statement of intent to establish a strategic partnership"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T09:59:32+00:00
-addedAt: 2026-10-19T16:47:03.460824+00:00
+pubDate: 2026-10-19T15:28:24+00:00
+addedAt: 2026-10-19T21:18:32.895042+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://mistral.ai/news/timestral/"
+sourceUrl: "https://home.cern/cern-and-mistral-join-forces-to-accelerate-ai-for-science/"
 tags: ["mistral"]
-heat: 72
-score: 0.88924
+heat: 73
+score: 0.92259
 readMinutes: 1
-image: "https://mistral.ai/cms-media/api/media/file/og-timestral.webp"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

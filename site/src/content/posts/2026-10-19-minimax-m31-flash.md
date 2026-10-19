@@ -1,15 +1,17 @@
 ---
-title: "Zuckerberg's Meta Takes Down No Kings Instagram During Protest Day"
+title: "MiniMax M3.1 Flash"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-18T01:18:50+00:00
-addedAt: 2026-10-18T16:53:00.425099+00:00
+pubDate: 2026-10-19T16:39:09+00:00
+addedAt: 2026-10-19T21:18:32.895237+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://meidasnews.com/news/zuckerbergs-meta-takes-down-no-kings-instagram-during-massive-protest-day"
+sourceUrl: "https://www.minimax.io/blog/minimax-m31f"
 tags: ["tech"]
-heat: 46
-score: 0.38437
+heat: 56
+score: 0.58512
 readMinutes: 1
+image: "https://filecdn.minimax.chat/public/m31-flash-zh-1-1792403273121.png?x-oss-process=image/format,webp"
+imageAlt: "MiniMax M3.1 Flash: Redefining Agent Performance and Cost"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
