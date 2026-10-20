@@ -1,16 +1,15 @@
 ---
-title: "The Annotated VT100 Firmware (2022)"
+title: "NixOS is making me less afraid"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-20T09:12:23+00:00
-addedAt: 2026-10-20T09:18:29.808470+00:00
+pubDate: 2026-10-20T13:44:53+00:00
+addedAt: 2026-10-20T15:18:32.708645+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://vt100.net/dec/vt100/rom/"
+sourceUrl: "https://entropicthoughts.com/nixos-is-making-me-less-afraid"
 tags: ["tech"]
-heat: 94
-score: 0.74709
+heat: 53
+score: 0.70628
 readMinutes: 1
-image: "https://vt100.net/dec/vt100/rom/vt100-disassembly.256x256.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

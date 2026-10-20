@@ -1,16 +1,15 @@
 ---
-title: "Mercury 3: Diffusion at scale"
+title: "An ad-free Android TV"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T17:27:11+00:00
-addedAt: 2026-10-20T03:18:31.633828+00:00
+pubDate: 2026-10-19T22:32:37+00:00
+addedAt: 2026-10-20T15:18:32.708765+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.inceptionlabs.ai/blog/introducing-mercury-3"
+sourceUrl: "https://cretezy.com/2026/ad-free-android-tv"
 tags: ["tech"]
-heat: 67
-score: 0.47895
+heat: 36
+score: 0.36706
 readMinutes: 1
-image: "https://framerusercontent.com/images/Zgp1I1AaILVgkXF4Xlk7iImaE.png?width=1200&amp;height=630"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
