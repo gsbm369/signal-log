@@ -1,15 +1,16 @@
 ---
-title: "I no longer care to work on any Ruby gems so I've archived all my repositories"
+title: "Putting Linux on my RTX Spark laptop because I don't have a Microsoft account"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T16:37:10+00:00
-addedAt: 2026-10-19T21:18:32.895283+00:00
+pubDate: 2026-10-19T21:08:18+00:00
+addedAt: 2026-10-20T09:18:29.808544+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://po-ru.com/2026/10/18/why-im-no-longer-updating-this-repository"
-tags: ["tech"]
-heat: 55
-score: 0.58438
+sourceUrl: "https://josie.lol/blog/linux-rtx-spark"
+tags: ["linux"]
+heat: 92
+score: 0.72288
 readMinutes: 1
+image: "https://josie.lol/screenshot.png?v=20261019"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
