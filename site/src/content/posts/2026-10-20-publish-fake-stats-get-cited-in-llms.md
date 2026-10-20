@@ -1,16 +1,16 @@
 ---
-title: "Putting Linux on my RTX Spark laptop because I don't have a Microsoft account"
+title: "Publish fake stats, get cited in LLMs"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T21:08:18+00:00
-addedAt: 2026-10-20T09:18:29.808544+00:00
+pubDate: 2026-10-20T13:06:22+00:00
+addedAt: 2026-10-20T21:18:30.801756+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://josie.lol/blog/linux-rtx-spark"
-tags: ["linux"]
-heat: 92
-score: 0.72288
+sourceUrl: "https://peec.ai/blog/publish-stats-get-cited-the-tactic-that-put-my-data-all-over-the-web"
+tags: ["tech"]
+heat: 56
+score: 0.51043
 readMinutes: 1
-image: "https://josie.lol/screenshot.png?v=20261019"
+image: "https://framerusercontent.com/images/g61nppL2S0T51TuBYG0bTxac2U.png?width=2150&amp;height=1126"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
