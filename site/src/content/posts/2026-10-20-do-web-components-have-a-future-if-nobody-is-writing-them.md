@@ -1,15 +1,16 @@
 ---
-title: "Removing a Type Assertion with Object.assign"
+title: "Do web components have a future if nobody is writing them?"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T15:42:24+00:00
-addedAt: 2026-10-19T16:47:03.461114+00:00
+pubDate: 2026-10-20T00:41:18+00:00
+addedAt: 2026-10-20T03:18:31.633719+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://ataias.com.br/2026/10/01/removing-a-type-assertion-with-object.assign/"
+sourceUrl: "https://nolanlawson.com/2026/10/19/do-web-components-have-a-future-if-nobody-is-writing-them/"
 tags: ["tech"]
-heat: 63
-score: 0.71956
+heat: 82
+score: 0.67804
 readMinutes: 1
+image: "https://nolanlawson.com/_astro/video-with-controls.C2qozcS-_NiWXm.webp"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

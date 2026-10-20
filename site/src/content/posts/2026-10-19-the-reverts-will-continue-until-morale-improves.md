@@ -1,14 +1,14 @@
 ---
-title: "Wine Ported to OpenBSD"
+title: "The reverts will continue until morale improves"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T13:35:34+00:00
-addedAt: 2026-10-19T16:47:03.461235+00:00
+pubDate: 2026-10-19T18:42:32+00:00
+addedAt: 2026-10-20T03:18:31.633776+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://marc.info/?l=openbsd-ports&m=179236125692175"
+sourceUrl: "http://peter.eisentraut.org/blog/2026/10/09/the-reverts-will-continue-until-morale-improves"
 tags: ["tech"]
-heat: 58
-score: 0.61908
+heat: 69
+score: 0.50268
 readMinutes: 1
 ---
 

@@ -1,15 +1,16 @@
 ---
-title: "CERN and Mistral sign a statement of intent to establish a strategic partnership"
+title: "Mercury 3: Diffusion at scale"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T15:28:24+00:00
-addedAt: 2026-10-19T21:18:32.895042+00:00
+pubDate: 2026-10-19T17:27:11+00:00
+addedAt: 2026-10-20T03:18:31.633828+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://home.cern/cern-and-mistral-join-forces-to-accelerate-ai-for-science/"
-tags: ["mistral"]
-heat: 73
-score: 0.92259
+sourceUrl: "https://www.inceptionlabs.ai/blog/introducing-mercury-3"
+tags: ["tech"]
+heat: 67
+score: 0.47895
 readMinutes: 1
+image: "https://framerusercontent.com/images/Zgp1I1AaILVgkXF4Xlk7iImaE.png?width=1200&amp;height=630"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

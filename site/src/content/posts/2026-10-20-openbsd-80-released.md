@@ -1,14 +1,14 @@
 ---
-title: "2026 is an exciting year for the Rust compiler (and me)"
+title: "OpenBSD 8.0: released"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T17:52:41+00:00
-addedAt: 2026-10-19T21:18:32.894858+00:00
+pubDate: 2026-10-20T01:57:39+00:00
+addedAt: 2026-10-20T03:18:31.633651+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://yoyo-code.com/2026-is-exciting-year-for-rust-compiler-and-me/"
-tags: ["rust"]
-heat: 80
-score: 1.0844
+sourceUrl: "https://marc.info/?l=openbsd-announce&m=179245843570316&w=2"
+tags: ["tech"]
+heat: 85
+score: 0.7121
 readMinutes: 1
 ---
 
