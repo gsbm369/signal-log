@@ -1,18 +1,18 @@
 ---
 title: "Managing open-weight model risk in enterprise deployments"
-description: "New whitepaper from Microsoft and NVIDIA helps enterprises manage open-weight AI model risks with a shared taxonomy, evaluations, and controls. The post Managing open-weight model risk in enterprise deployments appeared "
-pubDate: 2026-10-16T16:00:00+00:00
-addedAt: 2026-10-16T21:17:47.454708+00:00
-source: "MS Security Blog"
+description: "The growing AI landscape is giving enterprises more choice in how they build, customize, and deploy increasingly capable models. The post Managing open-weight model risk in enterprise deployments appeared first on Micros"
+pubDate: 2026-10-16T16:05:00+00:00
+addedAt: 2026-10-21T15:18:36.724737+00:00
+source: "Azure Blog"
 category: microsoft
-sourceUrl: "https://www.microsoft.com/en-us/security/blog/2026/10/16/managing-open-weight-model-risk-in-enterprise-deployments/"
-tags: ["open-weight", "nvidia"]
-heat: 91
-score: 1.2544
+sourceUrl: "https://azure.microsoft.com/en-us/blog/managing-open-weight-model-risk-in-enterprise-deployments/"
+tags: ["open-weight", "azure"]
+heat: 32
+score: 0.36653
 readMinutes: 1
-image: "https://www.microsoft.com/en-us/security/blog/wp-content/uploads/2026/10/MSFT-NVIDIA-SCI.jpg"
+image: "https://azure.microsoft.com/en-us/blog/wp-content/uploads/2026/10/MSFT-NVIDIA-SCI.jpg"
 ---
 
-New whitepaper from Microsoft and NVIDIA helps enterprises manage open-weight AI model risks with a shared taxonomy, evaluations, and controls. The post Managing open-weight model risk in enterprise deployments appeared first on Microsoft Security Blog .
+The growing AI landscape is giving enterprises more choice in how they build, customize, and deploy increasingly capable models. The post Managing open-weight model risk in enterprise deployments appeared first on Microsoft Azure Blog .
 
-*Reproduced from the MS Security Blog feed. No model was used to write this entry — follow the link for the full article.*
+*Reproduced from the Azure Blog feed. No model was used to write this entry — follow the link for the full article.*
