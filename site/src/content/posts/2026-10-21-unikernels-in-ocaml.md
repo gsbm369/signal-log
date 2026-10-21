@@ -1,14 +1,14 @@
 ---
-title: "EDG is open source"
+title: "Unikernels in OCaml"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-20T20:33:19+00:00
-addedAt: 2026-10-20T21:18:30.801555+00:00
+pubDate: 2026-10-21T07:51:20+00:00
+addedAt: 2026-10-21T09:18:31.014400+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://edgcpp.org/"
+sourceUrl: "https://uniker.nl/"
 tags: ["tech"]
-heat: 69
-score: 0.72858
+heat: 57
+score: 0.70921
 readMinutes: 1
 ---
 

@@ -1,15 +1,17 @@
 ---
-title: "EMudhra Intermediate CA Compromise"
+title: "How I got over 300 Tor exit nodes removed"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-20T13:58:33+00:00
-addedAt: 2026-10-20T21:18:30.801661+00:00
+pubDate: 2026-10-20T13:39:24+00:00
+addedAt: 2026-10-21T09:18:31.014817+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://emudhra.we-have-a-problem.com/"
+sourceUrl: "https://kaba.cx/posts/20261020_Tor/"
 tags: ["tech"]
-heat: 57
-score: 0.52782
+heat: 36
+score: 0.32844
 readMinutes: 1
+image: "https://kaba.cx/img/tor/relays_offline_hero.png"
+imageAlt: "How I got over 300 Tor exit nodes removed"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

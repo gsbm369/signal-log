@@ -1,16 +1,15 @@
 ---
-title: "Unauthorized Access to PingCAP Cloud Resources"
+title: "ConcurrentML: Improving on Go's concurrency model"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-21T00:44:49+00:00
-addedAt: 2026-10-21T03:18:36.924399+00:00
+pubDate: 2026-10-21T07:38:00+00:00
+addedAt: 2026-10-21T09:18:31.014601+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.pingcap.com/trust-hub/security/security-update-october-2026/"
+sourceUrl: "https://nikhilism.com/post/2026/golang-racket-concurrency/"
 tags: ["tech"]
-heat: 65
-score: 0.67957
+heat: 56
+score: 0.70317
 readMinutes: 1
-image: "https://static.pingcap.com/files/2024/09/11005522/Homepage-Ad.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

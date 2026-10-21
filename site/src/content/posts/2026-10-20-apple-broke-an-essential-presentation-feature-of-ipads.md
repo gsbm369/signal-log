@@ -1,16 +1,16 @@
 ---
-title: "Publish fake stats, get cited in LLMs"
+title: "Apple broke an essential presentation feature of iPads"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-20T13:06:22+00:00
-addedAt: 2026-10-20T21:18:30.801756+00:00
+pubDate: 2026-10-20T12:17:28+00:00
+addedAt: 2026-10-21T09:18:31.014881+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://peec.ai/blog/publish-stats-get-cited-the-tactic-that-put-my-data-all-over-the-web"
+sourceUrl: "https://teddysvoronos.com/2026-10-19-apple-broke-an-essential-presentation-feature-of-ipads/"
 tags: ["tech"]
-heat: 56
-score: 0.51043
+heat: 35
+score: 0.31162
 readMinutes: 1
-image: "https://framerusercontent.com/images/g61nppL2S0T51TuBYG0bTxac2U.png?width=2150&amp;height=1126"
+image: "https://teddysvoronos.com/assets/img/headshot-nav.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
