@@ -1,14 +1,14 @@
 ---
-title: "An ad-free Android TV"
+title: "What shall I teach my son?"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-19T22:32:37+00:00
-addedAt: 2026-10-20T15:18:32.708765+00:00
+pubDate: 2026-10-20T17:25:07+00:00
+addedAt: 2026-10-21T03:18:36.924585+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://cretezy.com/2026/ad-free-android-tv"
+sourceUrl: "https://stevekrouse.com/ends"
 tags: ["tech"]
-heat: 36
-score: 0.36706
+heat: 52
+score: 0.47832
 readMinutes: 1
 ---
 
