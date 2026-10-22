@@ -1,14 +1,14 @@
 ---
-title: "I built a garbage collector for Rust (2023)"
+title: "Docker is weird"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T14:49:22+00:00
-addedAt: 2026-10-22T15:18:32.894934+00:00
+pubDate: 2026-10-22T20:09:22+00:00
+addedAt: 2026-10-22T21:18:35.528741+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://claytonwramsey.com/blog/dumpster/"
-tags: ["rust"]
-heat: 89
-score: 1.21464
+sourceUrl: "https://codeandcake.dev/posts/2026-10-22-docker-is-weird"
+tags: ["docker"]
+heat: 97
+score: 1.18381
 readMinutes: 1
 ---
 

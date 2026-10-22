@@ -1,15 +1,16 @@
 ---
-title: "CVE-2026-111943: Compromised Intermediate Certificate Authority"
+title: "Quad9 (DNS Resolver) to Exit France"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T08:51:31+00:00
-addedAt: 2026-10-22T15:18:32.895110+00:00
+pubDate: 2026-10-22T14:32:38+00:00
+addedAt: 2026-10-22T21:18:35.529239+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://nvd.nist.gov/vuln/detail/cve-2026-111943"
-tags: ["cve"]
-heat: 74
-score: 0.90103
+sourceUrl: "https://quad9.net/news/blog/au-revoir-france/"
+tags: ["tech"]
+heat: 61
+score: 0.53948
 readMinutes: 1
+image: "https://quad9.net/images/cover_c2f081e020.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

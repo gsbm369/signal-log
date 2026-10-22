@@ -1,16 +1,16 @@
 ---
-title: "Compromised LiteLLM 1.107.0 on PyPI Installs a Credential Stealer and Backdoor"
+title: "eMudhra to exit global SSL/TLS certificate business"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-21T14:00:26+00:00
-addedAt: 2026-10-22T09:18:32.490936+00:00
+pubDate: 2026-10-22T13:33:39+00:00
+addedAt: 2026-10-22T21:18:35.529282+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/"
+sourceUrl: "https://emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business"
 tags: ["tech"]
-heat: 42
-score: 0.3329
+heat: 59
+score: 0.51944
 readMinutes: 1
-image: "https://safedep.io/images/litellm-pypi-compromise-credential-stealer-backdoor-banner.jpg"
+image: "https://emudhra.com/images/press-release/thumbs/emudhra-to-exit-global-ssl-tls-certificate-business.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
