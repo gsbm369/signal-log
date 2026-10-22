@@ -1,16 +1,16 @@
 ---
-title: "Flow Typing, A New Lens on Linearity"
+title: "Announcing DuckDB 2.0.0 LTS “Cinnamon Teal”"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-21T18:54:02+00:00
-addedAt: 2026-10-21T21:18:33.251304+00:00
+pubDate: 2026-10-22T06:15:07+00:00
+addedAt: 2026-10-22T09:18:32.490701+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://jaredforsyth.com/posts/papers-we-love-lens-on-linearity/"
-tags: ["tech"]
-heat: 62
-score: 0.68362
+sourceUrl: "https://duckdb.org/2026/10/21/announcing-duckdb-200.html"
+tags: ["duckdb"]
+heat: 87
+score: 1.10011
 readMinutes: 1
-image: "https://jaredforsyth.com/images/logo/JF_black_128.png"
+image: "https://duckdb.org/images/blog/thumbs/duckdb-release-2-0-0.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
