@@ -1,14 +1,14 @@
 ---
-title: "CVE-2026-107891: musl libc: multiple integer overflow in regcomp, possibly leading to incorrect allocation sizes and out"
+title: "Understanding Nix flakes"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-21T17:40:17+00:00
-addedAt: 2026-10-21T21:18:33.251131+00:00
+pubDate: 2026-10-21T23:53:40+00:00
+addedAt: 2026-10-22T03:18:33.053155+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.openwall.com/lists/oss-security/2026/10/21/18"
-tags: ["cve"]
-heat: 81
-score: 1.07582
+sourceUrl: "https://lwn.net/SubscriberLink/1094226/7bb13383b169d475/"
+tags: ["tech"]
+heat: 59
+score: 0.65762
 readMinutes: 1
 ---
 

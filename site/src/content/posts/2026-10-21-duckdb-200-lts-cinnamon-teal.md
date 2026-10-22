@@ -1,16 +1,16 @@
 ---
-title: "The Future of CSS"
+title: "DuckDB 2.0.0 LTS “Cinnamon Teal”"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-21T01:47:28+00:00
-addedAt: 2026-10-21T15:18:36.723273+00:00
+pubDate: 2026-10-21T14:01:22+00:00
+addedAt: 2026-10-22T03:18:33.053070+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.joshwcomeau.com/css/interop-2027/"
-tags: ["tech"]
-heat: 34
-score: 0.41596
+sourceUrl: "https://duckdb.org/2026/10/21/announcing-duckdb-200"
+tags: ["duckdb"]
+heat: 61
+score: 0.69247
 readMinutes: 1
-image: "https://www.joshwcomeau.com/images/og-interop-2027.png"
+image: "https://duckdb.org/images/blog/thumbs/duckdb-release-2-0-0.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

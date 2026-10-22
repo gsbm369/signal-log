@@ -1,16 +1,15 @@
 ---
-title: "The 1.5°C goal of the Paris Agreement is no longer viable"
+title: "The No Kings Takedown Is Why You Shouldn't Rent Your Megaphone from Zuck"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-21T09:07:49+00:00
-addedAt: 2026-10-21T15:18:36.723231+00:00
+pubDate: 2026-10-21T14:01:25+00:00
+addedAt: 2026-10-22T03:18:33.053304+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://unric.org/en/unep-emissions-gap-report-2026-1-5-degree-overshoot/"
+sourceUrl: "https://www.techdirt.com/2026/10/20/accident-or-not-the-no-kings-takedown-is-why-you-shouldnt-rent-your-megaphone-from-zuck/"
 tags: ["tech"]
-heat: 40
-score: 0.55182
+heat: 45
+score: 0.41969
 readMinutes: 1
-image: "https://e4k4c4x9.delivery.rocketcdn.me/en/wp-content/uploads/sites/15/2026/10/city-smog.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

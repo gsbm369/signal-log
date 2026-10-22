@@ -1,15 +1,16 @@
 ---
-title: "Google's Rust Style Guide"
+title: "Embedding EYG in Erlang programs"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-21T19:12:02+00:00
-addedAt: 2026-10-21T21:18:33.250966+00:00
+pubDate: 2026-10-21T21:27:36+00:00
+addedAt: 2026-10-22T03:18:33.052811+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://google.github.io/styleguide/rustguide.html"
-tags: ["rust"]
-heat: 84
-score: 1.14107
+sourceUrl: "https://eyg.run/guides/embedding-eyg-in-erlang-programs"
+tags: ["embedding"]
+heat: 76
+score: 0.98798
 readMinutes: 1
+image: "https://eyg.run/share.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
