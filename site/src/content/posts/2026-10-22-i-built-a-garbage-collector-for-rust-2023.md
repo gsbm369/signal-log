@@ -1,16 +1,15 @@
 ---
-title: "Announcing DuckDB 2.0.0 LTS “Cinnamon Teal”"
+title: "I built a garbage collector for Rust (2023)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T06:15:07+00:00
-addedAt: 2026-10-22T09:18:32.490701+00:00
+pubDate: 2026-10-22T14:49:22+00:00
+addedAt: 2026-10-22T15:18:32.894934+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://duckdb.org/2026/10/21/announcing-duckdb-200.html"
-tags: ["duckdb"]
-heat: 87
-score: 1.10011
+sourceUrl: "https://claytonwramsey.com/blog/dumpster/"
+tags: ["rust"]
+heat: 89
+score: 1.21464
 readMinutes: 1
-image: "https://duckdb.org/images/blog/thumbs/duckdb-release-2-0-0.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

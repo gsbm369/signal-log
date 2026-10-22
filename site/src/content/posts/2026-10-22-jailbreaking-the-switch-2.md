@@ -1,14 +1,14 @@
 ---
-title: "The No Kings Takedown Is Why You Shouldn't Rent Your Megaphone from Zuck"
+title: "Jailbreaking the Switch 2"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-21T14:01:25+00:00
-addedAt: 2026-10-22T03:18:33.053304+00:00
+pubDate: 2026-10-22T08:01:52+00:00
+addedAt: 2026-10-22T15:18:32.895293+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.techdirt.com/2026/10/20/accident-or-not-the-no-kings-takedown-is-why-you-shouldnt-rent-your-megaphone-from-zuck/"
+sourceUrl: "https://pepsipu.com/blog/2026-10-switch2-jailbreak-ns2jb/"
 tags: ["tech"]
-heat: 45
-score: 0.41969
+heat: 54
+score: 0.52895
 readMinutes: 1
 ---
 
