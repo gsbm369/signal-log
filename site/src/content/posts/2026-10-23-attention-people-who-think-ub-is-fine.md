@@ -1,16 +1,15 @@
 ---
-title: "The glorious @xkcdRandom Zig builtin"
+title: "Attention people who think UB is fine"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-23T14:30:57+00:00
-addedAt: 2026-10-23T15:18:27.619825+00:00
+pubDate: 2026-10-23T20:47:58+00:00
+addedAt: 2026-10-23T21:18:36.348272+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://ochagavia.nl/blog/the-glorious-@xkcdrandom-zig-builtin/"
+sourceUrl: "https://blog.habets.se/2026/10/Attention-people-who-think-UB-is-fine.html"
 tags: ["tech"]
-heat: 59
-score: 0.72749
+heat: 61
+score: 0.73546
 readMinutes: 1
-image: "https://ochagavia.nl/images/headshot.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
