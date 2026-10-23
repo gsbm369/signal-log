@@ -1,14 +1,14 @@
 ---
-title: "Docker is weird"
+title: "UUIDv7 doesn't have the properties you think it does"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T20:09:22+00:00
-addedAt: 2026-10-22T21:18:35.528741+00:00
+pubDate: 2026-10-23T01:22:17+00:00
+addedAt: 2026-10-23T03:18:32.346770+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://codeandcake.dev/posts/2026-10-22-docker-is-weird"
-tags: ["docker"]
-heat: 97
-score: 1.18381
+sourceUrl: "https://alexsci.com/blog/uuidv7-is-weird/"
+tags: ["tech"]
+heat: 79
+score: 0.6961
 readMinutes: 1
 ---
 

@@ -1,15 +1,17 @@
 ---
-title: "Jailbreaking the Switch 2"
+title: "What’s getting pwned right now"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T08:01:52+00:00
-addedAt: 2026-10-22T15:18:32.895293+00:00
+pubDate: 2026-10-22T14:08:12+00:00
+addedAt: 2026-10-23T03:18:32.347202+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://pepsipu.com/blog/2026-10-switch2-jailbreak-ns2jb/"
+sourceUrl: "https://pwn.watch/"
 tags: ["tech"]
-heat: 54
-score: 0.52895
+heat: 59
+score: 0.42152
 readMinutes: 1
+image: "https://pwn.watch/og/home.jpg"
+imageAlt: "pwn.watch: live security incidents, patch status and fixed versions"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
