@@ -1,15 +1,16 @@
 ---
-title: "We have Traits at Home"
+title: "The glorious @xkcdRandom Zig builtin"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T21:52:10+00:00
-addedAt: 2026-10-23T03:18:32.347041+00:00
+pubDate: 2026-10-23T14:30:57+00:00
+addedAt: 2026-10-23T15:18:27.619825+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.axelmagn.com/blog/202610-zig-traits/"
+sourceUrl: "https://ochagavia.nl/blog/the-glorious-@xkcdrandom-zig-builtin/"
 tags: ["tech"]
-heat: 73
-score: 0.60829
+heat: 59
+score: 0.72749
 readMinutes: 1
+image: "https://ochagavia.nl/images/headshot.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

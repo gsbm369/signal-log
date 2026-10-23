@@ -1,17 +1,17 @@
 ---
-title: "What’s getting pwned right now"
+title: "Local Wikipedia: Wikipedia, but only for things a half hour walk from you"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T14:08:12+00:00
-addedAt: 2026-10-23T03:18:32.347202+00:00
+pubDate: 2026-10-22T23:01:18+00:00
+addedAt: 2026-10-23T15:18:27.620044+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://pwn.watch/"
+sourceUrl: "https://edjefferson.com/localwiki/"
 tags: ["tech"]
-heat: 59
-score: 0.42152
+heat: 39
+score: 0.37389
 readMinutes: 1
-image: "https://pwn.watch/og/home.jpg"
-imageAlt: "pwn.watch: live security incidents, patch status and fixed versions"
+image: "https://edjefferson.com/localwiki/share.png"
+imageAlt: "A jigsaw piece above the words Local Wikipedia, The Encyclopedia For Local People"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
