@@ -1,14 +1,14 @@
 ---
-title: "Memory is slow, Disk is fast"
+title: "Twelve years of distributed SQLite"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-23T20:44:07+00:00
-addedAt: 2026-10-23T21:18:36.348327+00:00
+pubDate: 2026-10-24T06:41:52+00:00
+addedAt: 2026-10-24T09:18:27.509409+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.bitflux.ai/blog/memory-is-slow-part3/"
-tags: ["tech"]
-heat: 61
-score: 0.73364
+sourceUrl: "https://philipotoole.com/twelve-years-of-distributed-sqlite/"
+tags: ["sqlite"]
+heat: 88
+score: 1.11922
 readMinutes: 1
 ---
 

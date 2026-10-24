@@ -1,14 +1,14 @@
 ---
-title: "Attention people who think UB is fine"
+title: "Big Runtimes Make Efficient Programs"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-23T20:47:58+00:00
-addedAt: 2026-10-23T21:18:36.348272+00:00
+pubDate: 2026-10-24T07:51:04+00:00
+addedAt: 2026-10-24T09:18:27.509591+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blog.habets.se/2026/10/Attention-people-who-think-UB-is-fine.html"
+sourceUrl: "https://www.youtube.com/watch?v=vhDwy1eCXbs"
 tags: ["tech"]
-heat: 61
-score: 0.73546
+heat: 67
+score: 0.70912
 readMinutes: 1
 ---
 
