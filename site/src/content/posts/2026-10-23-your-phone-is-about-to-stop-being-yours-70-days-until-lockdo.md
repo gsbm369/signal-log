@@ -1,17 +1,15 @@
 ---
-title: "Local Wikipedia: Wikipedia, but only for things a half hour walk from you"
+title: "Your Phone Is About to Stop Being Yours: 70 Days Until Lockdown"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T23:01:18+00:00
-addedAt: 2026-10-23T15:18:27.620044+00:00
+pubDate: 2026-10-23T13:19:42+00:00
+addedAt: 2026-10-24T03:18:27.645847+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://edjefferson.com/localwiki/"
+sourceUrl: "https://keepandroidopen.org/"
 tags: ["tech"]
-heat: 39
-score: 0.37389
+heat: 71
+score: 0.40862
 readMinutes: 1
-image: "https://edjefferson.com/localwiki/share.png"
-imageAlt: "A jigsaw piece above the words Local Wikipedia, The Encyclopedia For Local People"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

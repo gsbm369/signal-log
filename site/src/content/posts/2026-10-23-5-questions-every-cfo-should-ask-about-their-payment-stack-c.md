@@ -1,14 +1,14 @@
 ---
-title: "The agent is not your trust problem. Your client data is"
+title: "5 Questions Every CFO Should Ask About Their Payment Stack Costs"
 description: "Finextra linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-22T17:13:31+00:00
-addedAt: 2026-10-23T09:18:29.211461+00:00
+pubDate: 2026-10-23T13:23:39+00:00
+addedAt: 2026-10-24T03:18:27.646042+00:00
 source: "Finextra"
 category: fintech
-sourceUrl: "https://www.finextra.com/blogposting/33263/the-agent-is-not-your-trust-problem-your-client-data-is?utm_medium=rssfinextra&utm_source=finextrafeed"
+sourceUrl: "https://www.finextra.com/blogposting/33277/5-questions-every-cfo-should-ask-about-their-payment-stack-costs?utm_medium=rssfinextra&utm_source=finextrafeed"
 tags: ["tech"]
-heat: 60
-score: 0.64243
+heat: 95
+score: 0.65598
 readMinutes: 1
 ---
 
