@@ -1,15 +1,16 @@
 ---
-title: "Twelve years of distributed SQLite"
+title: "How to run a city builder on 16 MHz"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-24T06:41:52+00:00
-addedAt: 2026-10-24T09:18:27.509409+00:00
+pubDate: 2026-10-24T14:18:48+00:00
+addedAt: 2026-10-24T15:18:28.981981+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://philipotoole.com/twelve-years-of-distributed-sqlite/"
-tags: ["sqlite"]
-heat: 88
-score: 1.11922
+sourceUrl: "https://larstofus.com/2025/11/16/how-to-run-a-city-builder-on-12-5-mhz/"
+tags: ["tech"]
+heat: 54
+score: 0.72184
 readMinutes: 1
+image: "https://larstofus.com/wp-content/uploads/2025/11/simcityarticlethumbnail-2.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
