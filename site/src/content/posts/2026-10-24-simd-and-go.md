@@ -1,16 +1,17 @@
 ---
-title: "How to run a city builder on 16 MHz"
+title: "SIMD and Go"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-24T14:18:48+00:00
-addedAt: 2026-10-24T15:18:28.981981+00:00
+pubDate: 2026-10-24T23:11:40+00:00
+addedAt: 2026-10-25T04:18:34.791238+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://larstofus.com/2025/11/16/how-to-run-a-city-builder-on-12-5-mhz/"
+sourceUrl: "https://internals-for-interns.com/posts/go-simd/"
 tags: ["tech"]
-heat: 54
-score: 0.72184
+heat: 73
+score: 0.61596
 readMinutes: 1
-image: "https://larstofus.com/wp-content/uploads/2025/11/simcityarticlethumbnail-2.png"
+image: "https://internals-for-interns.com/images/go-header.webp"
+imageAlt: "SIMD and Go"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
