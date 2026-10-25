@@ -1,16 +1,16 @@
 ---
-title: "Roku developer repositories moved from GitHub to GitLab"
+title: "No signs of AI payoff outside the tech sector"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-24T16:06:26+00:00
-addedAt: 2026-10-24T21:18:33.360875+00:00
+pubDate: 2026-10-24T19:47:19+00:00
+addedAt: 2026-10-25T10:18:31.606185+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://blog.roku.com/developer/gitlab-move"
+sourceUrl: "https://www.apollo.com/wealth/insights-news/insights/daily-spark/no-signs-of-ai-payoff-outside-the-tech-sector"
 tags: ["tech"]
-heat: 51
-score: 0.57296
+heat: 48
+score: 0.40021
 readMinutes: 1
-image: "https://www.roku.com/assets/roku-logo-purple.png"
+image: "https://www.apollo.com/content/dam/apolloaem/apollo-default-page-share-image/apollo-og-image.png"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

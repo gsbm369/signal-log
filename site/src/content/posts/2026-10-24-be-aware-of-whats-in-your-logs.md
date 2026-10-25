@@ -1,16 +1,15 @@
 ---
-title: "The Polyglot's Dilemma: Conformance Testing a Dozen Specs in as Many Languages"
+title: "Be Aware of What's in Your Logs"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-24T16:59:53+00:00
-addedAt: 2026-10-24T21:18:33.360599+00:00
+pubDate: 2026-10-24T10:42:05+00:00
+addedAt: 2026-10-25T10:18:31.606973+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://emptysqua.re/blog/polyglots-dilemma/"
+sourceUrl: "https://fireborn.mataroa.blog/blog/be-aware-of-whats-in-your-logs/"
 tags: ["tech"]
-heat: 54
-score: 0.63531
+heat: 40
+score: 0.30219
 readMinutes: 1
-image: "https://emptysqua.re/blog/polyglots-dilemma/frog-juggling.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
