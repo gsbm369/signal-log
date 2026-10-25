@@ -1,14 +1,14 @@
 ---
-title: "Be Aware of What's in Your Logs"
+title: "Every Clojure Talk Ever (2018)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-24T10:42:05+00:00
-addedAt: 2026-10-25T10:18:31.606973+00:00
+pubDate: 2026-10-25T17:13:59+00:00
+addedAt: 2026-10-25T22:18:29.326568+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://fireborn.mataroa.blog/blog/be-aware-of-whats-in-your-logs/"
+sourceUrl: "https://www.youtube.com/watch?v=jlPaby7suOc"
 tags: ["tech"]
-heat: 40
-score: 0.30219
+heat: 62
+score: 0.61688
 readMinutes: 1
 ---
 

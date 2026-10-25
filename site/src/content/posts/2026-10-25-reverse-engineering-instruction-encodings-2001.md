@@ -1,14 +1,14 @@
 ---
-title: "When a glibc update accidentally breaks Chromium's audio (2021)"
+title: "Reverse-Engineering Instruction Encodings (2001)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-25T15:34:21+00:00
-addedAt: 2026-10-25T16:18:29.369541+00:00
+pubDate: 2026-10-25T21:58:42+00:00
+addedAt: 2026-10-25T22:18:29.325993+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://refi64.dev/posts/chromium-audio-break.html"
+sourceUrl: "https://www.usenix.org/legacy/events/usenix01/full_papers/hsieh/hsieh_html/"
 tags: ["tech"]
-heat: 93
-score: 0.72908
+heat: 69
+score: 0.74056
 readMinutes: 1
 ---
 
