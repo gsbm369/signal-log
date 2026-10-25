@@ -1,16 +1,15 @@
 ---
-title: "Bringing uv and ty together"
+title: "POSIX wordexp(3) is dangerous"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-24T15:27:34+00:00
-addedAt: 2026-10-25T04:18:34.791463+00:00
+pubDate: 2026-10-25T15:09:29+00:00
+addedAt: 2026-10-25T16:18:29.369757+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://astral.sh/blog/uv-ty-integration"
+sourceUrl: "https://yossarian.net/til/post/posix-wordexp-3-is-dangerous/"
 tags: ["tech"]
-heat: 61
-score: 0.4573
+heat: 92
+score: 0.71754
 readMinutes: 1
-image: "https://astral.sh/static/OpenGraph/Uv_Ty_Integration.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

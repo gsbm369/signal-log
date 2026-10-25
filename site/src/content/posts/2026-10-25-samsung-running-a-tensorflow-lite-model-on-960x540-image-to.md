@@ -1,16 +1,16 @@
 ---
-title: "No signs of AI payoff outside the tech sector"
+title: "Samsung running a TensorFlow lite model on 960x540 image to track you"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-24T19:47:19+00:00
-addedAt: 2026-10-25T10:18:31.606185+00:00
+pubDate: 2026-10-25T10:42:01+00:00
+addedAt: 2026-10-25T16:18:29.370082+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.apollo.com/wealth/insights-news/insights/daily-spark/no-signs-of-ai-payoff-outside-the-tech-sector"
+sourceUrl: "https://twitter.com/mike64_t/status/2114150399406202896"
 tags: ["tech"]
-heat: 48
-score: 0.40021
+heat: 80
+score: 0.56407
 readMinutes: 1
-image: "https://www.apollo.com/content/dam/apolloaem/apollo-default-page-share-image/apollo-og-image.png"
+image: "https://pbs.twimg.com/media/HVb1282bgAAg6jY?format=webp&amp;name=large"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

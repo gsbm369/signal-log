@@ -1,17 +1,15 @@
 ---
-title: "SIMD and Go"
+title: "When a glibc update accidentally breaks Chromium's audio (2021)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-24T23:11:40+00:00
-addedAt: 2026-10-25T04:18:34.791238+00:00
+pubDate: 2026-10-25T15:34:21+00:00
+addedAt: 2026-10-25T16:18:29.369541+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://internals-for-interns.com/posts/go-simd/"
+sourceUrl: "https://refi64.dev/posts/chromium-audio-break.html"
 tags: ["tech"]
-heat: 73
-score: 0.61596
+heat: 93
+score: 0.72908
 readMinutes: 1
-image: "https://internals-for-interns.com/images/go-header.webp"
-imageAlt: "SIMD and Go"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
