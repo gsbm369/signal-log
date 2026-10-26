@@ -1,14 +1,14 @@
 ---
-title: "Every Clojure Talk Ever (2018)"
+title: "About the compromised eMudhra intermediate CAs"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-25T17:13:59+00:00
-addedAt: 2026-10-25T22:18:29.326568+00:00
+pubDate: 2026-10-26T09:58:55+00:00
+addedAt: 2026-10-26T10:18:28.557061+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=jlPaby7suOc"
+sourceUrl: "https://support.apple.com/en-us/149555"
 tags: ["tech"]
-heat: 62
-score: 0.61688
+heat: 65
+score: 0.74067
 readMinutes: 1
 ---
 

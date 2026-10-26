@@ -1,14 +1,14 @@
 ---
-title: "A 10-year-old CNN outperforms frontier LLMs for skin cancer diagnosis"
+title: "Lula wins election after final votes tallied"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-25T17:15:38+00:00
-addedAt: 2026-10-25T22:18:29.326439+00:00
+pubDate: 2026-10-26T00:31:07+00:00
+addedAt: 2026-10-26T10:18:28.557793+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://lynchlab.net/llm-skin-cancer"
-tags: ["llm"]
-heat: 64
-score: 0.66282
+sourceUrl: "https://www.reuters.com/live/brazil-election-live-lula-bolsonaro-face-off-presidential-runoff-2026-10-25/"
+tags: ["tech"]
+heat: 50
+score: 0.48017
 readMinutes: 1
 ---
 
