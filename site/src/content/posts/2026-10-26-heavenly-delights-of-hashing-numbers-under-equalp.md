@@ -1,14 +1,14 @@
 ---
-title: "OpenLDK: Bringing the Java World into Common Lisp"
+title: "Heavenly delights of hashing numbers under EQUALP"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T06:15:19+00:00
-addedAt: 2026-10-26T10:18:28.557323+00:00
+pubDate: 2026-10-26T15:40:59+00:00
+addedAt: 2026-10-26T16:18:33.240233+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://atgreen.github.io/repl-yell/posts/openldk-java-in-common-lisp/"
+sourceUrl: "https://turtleware.eu/posts/Heavenly-delights-of-hashing-numbers-under-EQUALP.html"
 tags: ["tech"]
-heat: 60
-score: 0.64166
+heat: 54
+score: 0.73217
 readMinutes: 1
 ---
 

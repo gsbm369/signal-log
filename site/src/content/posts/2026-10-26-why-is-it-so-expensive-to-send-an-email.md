@@ -1,14 +1,14 @@
 ---
-title: "About the compromised eMudhra intermediate CAs"
+title: "Why is it so expensive to send an email?"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T09:58:55+00:00
-addedAt: 2026-10-26T10:18:28.557061+00:00
+pubDate: 2026-10-26T13:25:41+00:00
+addedAt: 2026-10-26T16:18:33.240622+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://support.apple.com/en-us/149555"
+sourceUrl: "https://evancz.dev/why-is-it-so-expensive-to-send-an-email"
 tags: ["tech"]
-heat: 65
-score: 0.74067
+heat: 52
+score: 0.67128
 readMinutes: 1
 ---
 

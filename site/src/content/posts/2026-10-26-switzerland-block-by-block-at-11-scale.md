@@ -1,14 +1,14 @@
 ---
-title: "Serbia's Vucic concedes election defeat in historic win for student movement"
+title: "Switzerland. Block by block. At 1:1 scale"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-25T21:08:28+00:00
-addedAt: 2026-10-26T04:18:29.488101+00:00
+pubDate: 2026-10-26T08:46:09+00:00
+addedAt: 2026-10-26T16:18:33.240782+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.reuters.com/world/europe/serbia-votes-students-seek-unseat-vucic-snap-election-2026-10-25/"
+sourceUrl: "https://blocks.manifold3d.ch/"
 tags: ["tech"]
-heat: 56
-score: 0.53119
+heat: 44
+score: 0.52363
 readMinutes: 1
 ---
 

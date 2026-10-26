@@ -1,14 +1,14 @@
 ---
-title: "“AI Skills” are worthless in 2026"
+title: "Simple Sudoku Solver in Assembly"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T00:23:42+00:00
-addedAt: 2026-10-26T04:18:29.487929+00:00
+pubDate: 2026-10-26T13:28:45+00:00
+addedAt: 2026-10-26T16:18:33.240449+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://fishbowl.pastiche.org/2026/10/26/ai-skills"
+sourceUrl: "https://blog.veitheller.de/Simple_Sudoku_Solvers_SIII%2C_EII%3A_Assembly.html"
 tags: ["tech"]
-heat: 63
-score: 0.6451
+heat: 52
+score: 0.6726
 readMinutes: 1
 ---
 

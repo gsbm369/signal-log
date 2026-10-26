@@ -1,15 +1,16 @@
 ---
-title: "I refuse to accept a censored Internet. Join Me at FOSDEM 27"
+title: "The State of Context Engineering"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-25T17:30:55+00:00
-addedAt: 2026-10-26T04:18:29.488187+00:00
+pubDate: 2026-10-25T20:32:31+00:00
+addedAt: 2026-10-26T16:18:33.240949+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://talkweb.eu/openweb/4558/"
+sourceUrl: "https://www.dbreunig.com/2026/10/24/the-state-of-context-engineering.html"
 tags: ["tech"]
-heat: 51
-score: 0.46197
+heat: 34
+score: 0.32699
 readMinutes: 1
+image: "https://www.dbreunig.com/img/agnt_con/AGNT_Con.034.jpeg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
