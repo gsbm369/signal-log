@@ -1,14 +1,14 @@
 ---
-title: "Two musings on the design of compiler warnings (2020)"
+title: "Oldest GUI application that still runs on Windows 11"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-25T22:23:32+00:00
-addedAt: 2026-10-26T10:18:28.557956+00:00
+pubDate: 2026-10-26T19:49:43+00:00
+addedAt: 2026-10-26T22:18:30.653024+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://quuxplusone.github.io/blog/2020/09/02/wparentheses/"
+sourceUrl: "https://blog.enlyth.com/posts/oldest-windows-gui-app-win-11/"
 tags: ["tech"]
-heat: 50
-score: 0.47402
+heat: 65
+score: 0.68172
 readMinutes: 1
 ---
 

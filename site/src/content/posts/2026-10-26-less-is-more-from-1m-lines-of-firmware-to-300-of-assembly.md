@@ -1,15 +1,16 @@
 ---
-title: "Heavenly delights of hashing numbers under EQUALP"
+title: "Less Is More: From 1M Lines of Firmware to 300 of Assembly"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T15:40:59+00:00
-addedAt: 2026-10-26T16:18:33.240233+00:00
+pubDate: 2026-10-26T17:56:24+00:00
+addedAt: 2026-10-26T22:18:30.653199+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://turtleware.eu/posts/Heavenly-delights-of-hashing-numbers-under-EQUALP.html"
+sourceUrl: "https://tinfoil.sh/blog/2026-10-25-less-is-more"
 tags: ["tech"]
-heat: 54
-score: 0.73217
+heat: 62
+score: 0.6339
 readMinutes: 1
+image: "https://tinfoil.sh/blog-images/2026-10-25-less-is-more.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

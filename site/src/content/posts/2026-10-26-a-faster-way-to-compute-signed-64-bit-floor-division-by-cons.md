@@ -1,15 +1,16 @@
 ---
-title: "Simple Sudoku Solver in Assembly"
+title: "A faster way to compute signed 64-bit floor division by constants"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T13:28:45+00:00
-addedAt: 2026-10-26T16:18:33.240449+00:00
+pubDate: 2026-10-26T18:44:53+00:00
+addedAt: 2026-10-26T22:18:30.653114+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blog.veitheller.de/Simple_Sudoku_Solvers_SIII%2C_EII%3A_Assembly.html"
+sourceUrl: "https://www.benjoffe.com/fast-floordiv"
 tags: ["tech"]
-heat: 52
-score: 0.6726
+heat: 64
+score: 0.65394
 readMinutes: 1
+image: "https://www.benjoffe.com/manual-assets/fast-floordiv-socialthumb.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
