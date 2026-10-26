@@ -1,14 +1,14 @@
 ---
-title: "Reverse-Engineering Instruction Encodings (2001)"
+title: "“AI Skills” are worthless in 2026"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-25T21:58:42+00:00
-addedAt: 2026-10-25T22:18:29.325993+00:00
+pubDate: 2026-10-26T00:23:42+00:00
+addedAt: 2026-10-26T04:18:29.487929+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.usenix.org/legacy/events/usenix01/full_papers/hsieh/hsieh_html/"
+sourceUrl: "https://fishbowl.pastiche.org/2026/10/26/ai-skills"
 tags: ["tech"]
-heat: 69
-score: 0.74056
+heat: 63
+score: 0.6451
 readMinutes: 1
 ---
 

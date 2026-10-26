@@ -1,16 +1,16 @@
 ---
-title: "Building Java ME Apps with Modern Tooling"
+title: "writing about pratt parsing so I remember it"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-25T21:33:19+00:00
-addedAt: 2026-10-25T22:18:29.326274+00:00
+pubDate: 2026-10-26T03:06:36+00:00
+addedAt: 2026-10-26T04:18:29.487810+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://voxelmanip.se/2026/10/24/building-java-me-apps-with-modern-tooling/"
+sourceUrl: "https://www.unix.dog/~yosh/blog/2026-10-25_pratt-parsing.html"
 tags: ["tech"]
-heat: 68
-score: 0.72859
+heat: 67
+score: 0.7162
 readMinutes: 1
-image: "https://voxelmanip.se/media/building-java-me-apps-with-modern-tooling/cover.webp"
+image: "https://unix.dog/~yosh/img/renard_lftanthology.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
