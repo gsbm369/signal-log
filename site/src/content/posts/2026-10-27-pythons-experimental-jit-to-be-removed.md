@@ -1,16 +1,15 @@
 ---
-title: "A faster way to compute signed 64-bit floor division by constants"
+title: "Python's experimental JIT to be removed"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T18:44:53+00:00
-addedAt: 2026-10-26T22:18:30.653114+00:00
+pubDate: 2026-10-27T06:20:38+00:00
+addedAt: 2026-10-27T10:18:32.087206+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.benjoffe.com/fast-floordiv"
-tags: ["tech"]
+sourceUrl: "https://lwn.net/SubscriberLink/1102102/0c00e4d550f25f8c/"
+tags: ["python"]
 heat: 64
-score: 0.65394
+score: 1.06231
 readMinutes: 1
-image: "https://www.benjoffe.com/manual-assets/fast-floordiv-socialthumb.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -1,16 +1,15 @@
 ---
-title: "Less Is More: From 1M Lines of Firmware to 300 of Assembly"
+title: "TypeScript and Haskell: Unions & Singletons"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T17:56:24+00:00
-addedAt: 2026-10-26T22:18:30.653199+00:00
+pubDate: 2026-10-27T10:06:47+00:00
+addedAt: 2026-10-27T10:18:32.086658+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://tinfoil.sh/blog/2026-10-25-less-is-more"
-tags: ["tech"]
-heat: 62
-score: 0.6339
+sourceUrl: "https://garciat.com/posts/haskell-union-types/"
+tags: ["typescript"]
+heat: 70
+score: 1.22825
 readMinutes: 1
-image: "https://tinfoil.sh/blog-images/2026-10-25-less-is-more.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
