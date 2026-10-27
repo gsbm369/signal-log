@@ -1,17 +1,16 @@
 ---
-title: "CSS-Tricks has a new owner"
+title: "Police are using AI to pull over drivers for 'suspicious' behavior"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T15:51:23+00:00
-addedAt: 2026-10-27T10:18:32.087873+00:00
+pubDate: 2026-10-27T16:40:15+00:00
+addedAt: 2026-10-27T22:18:32.043771+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://css-tricks.com/css-tricks-has-a-new-owner/"
+sourceUrl: "https://gizmodo.com/police-are-using-ai-to-pull-over-drivers-for-suspicious-behavior-2000831220"
 tags: ["tech"]
-heat: 32
-score: 0.34397
+heat: 55
+score: 0.56341
 readMinutes: 1
-image: "https://css-tricks.com/wp-content/uploads/2019/12/css-tricks-logo-gradient-outline.png"
-imageAlt: "CSS-Tricks has a new owner!"
+image: "https://gizmodo.com/app/uploads/2026/09/flock-camera-miami-2026-1200x675.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

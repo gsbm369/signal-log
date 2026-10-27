@@ -1,15 +1,16 @@
 ---
-title: "slughorn — GPU Vector Graphics"
+title: "A fast and secure tar parser for the Rust ecosystem"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T13:11:26+00:00
-addedAt: 2026-10-27T16:18:30.635640+00:00
+pubDate: 2026-10-27T16:59:30+00:00
+addedAt: 2026-10-27T22:18:32.043230+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://slughorn.io/"
-tags: ["gpu"]
-heat: 81
-score: 1.09755
+sourceUrl: "https://astral.sh/blog/tar-codec"
+tags: ["rust"]
+heat: 77
+score: 1.00841
 readMinutes: 1
+image: "https://astral.sh/static/OpenGraph/UV.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
