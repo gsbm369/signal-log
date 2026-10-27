@@ -1,14 +1,14 @@
 ---
-title: "The passkey is worse"
+title: "A stackless floodfill automation (2023)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T23:44:15+00:00
-addedAt: 2026-10-27T04:18:32.264355+00:00
+pubDate: 2026-10-27T14:56:00+00:00
+addedAt: 2026-10-27T16:18:30.635906+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.kcoleman.me/2026/10/22/hacked.html"
+sourceUrl: "https://t3x.org/files/floodfill.pdf"
 tags: ["tech"]
-heat: 86
-score: 0.62896
+heat: 62
+score: 0.71135
 readMinutes: 1
 ---
 

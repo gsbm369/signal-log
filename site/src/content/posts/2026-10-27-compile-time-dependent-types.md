@@ -1,14 +1,14 @@
 ---
-title: "TypeScript and Haskell: Unions & Singletons"
+title: "Compile-Time Dependent Types"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T10:06:47+00:00
-addedAt: 2026-10-27T10:18:32.086658+00:00
+pubDate: 2026-10-27T14:40:12+00:00
+addedAt: 2026-10-27T16:18:30.636046+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://garciat.com/posts/haskell-union-types/"
-tags: ["typescript"]
-heat: 70
-score: 1.22825
+sourceUrl: "https://thenumb.at/Syl-Intro/"
+tags: ["tech"]
+heat: 62
+score: 0.70417
 readMinutes: 1
 ---
 
