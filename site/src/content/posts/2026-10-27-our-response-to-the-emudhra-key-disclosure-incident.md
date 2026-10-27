@@ -1,15 +1,16 @@
 ---
-title: "Why is it so expensive to send an email?"
+title: "Our Response To The eMudhra Key Disclosure Incident"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-26T13:25:41+00:00
-addedAt: 2026-10-26T16:18:33.240622+00:00
+pubDate: 2026-10-27T00:31:44+00:00
+addedAt: 2026-10-27T04:18:32.264190+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://evancz.dev/why-is-it-so-expensive-to-send-an-email"
+sourceUrl: "https://go.dev/blog/emudhra-incident"
 tags: ["tech"]
-heat: 52
-score: 0.67128
+heat: 87
+score: 0.64842
 readMinutes: 1
+image: "https://go.dev/doc/gopher/gopher5logo.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
