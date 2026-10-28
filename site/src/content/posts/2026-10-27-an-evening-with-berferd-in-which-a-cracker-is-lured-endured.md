@@ -1,16 +1,15 @@
 ---
-title: "A fast and secure tar parser for the Rust ecosystem"
+title: "An Evening with Berferd: In Which a Cracker is Lured, Endured, and Studied (1992)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T16:59:30+00:00
-addedAt: 2026-10-27T22:18:32.043230+00:00
+pubDate: 2026-10-27T18:48:45+00:00
+addedAt: 2026-10-28T04:18:34.883842+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://astral.sh/blog/tar-codec"
-tags: ["rust"]
-heat: 77
-score: 1.00841
+sourceUrl: "https://www.cheswick.com/ches/papers/berferd.pdf"
+tags: ["tech"]
+heat: 72
+score: 0.52031
 readMinutes: 1
-image: "https://astral.sh/static/OpenGraph/UV.jpg"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

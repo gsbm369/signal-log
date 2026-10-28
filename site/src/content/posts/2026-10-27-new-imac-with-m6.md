@@ -1,17 +1,16 @@
 ---
-title: "AI promised less work. I've never worked more"
+title: "New iMac with M6"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T11:08:14+00:00
-addedAt: 2026-10-27T16:18:30.636161+00:00
+pubDate: 2026-10-27T13:02:02+00:00
+addedAt: 2026-10-28T04:18:34.884432+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://oioannou.com/blog/ai-promised-less-work/"
+sourceUrl: "https://www.apple.com/imac/"
 tags: ["tech"]
-heat: 55
-score: 0.57363
+heat: 61
+score: 0.38874
 readMinutes: 1
-image: "https://oioannou.com/img/blog-by-orestis.jpg"
-imageAlt: "Blog post: AI Promised Less Work. I Have Never Worked More."
+image: "https://www.apple.com/v/imac/x/images/meta/imac__kaqcgp2n4duu_og.png?202610261111"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

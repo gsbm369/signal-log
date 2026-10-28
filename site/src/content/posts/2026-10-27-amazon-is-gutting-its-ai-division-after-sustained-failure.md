@@ -1,16 +1,16 @@
 ---
-title: "The Mythical Man-Month in the Age of AI"
+title: "Amazon Is Gutting Its AI Division After Sustained Failure"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T06:25:37+00:00
-addedAt: 2026-10-27T16:18:30.636340+00:00
+pubDate: 2026-10-27T16:25:30+00:00
+addedAt: 2026-10-28T04:18:34.884149+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://j11g.com/the-mythical-man-month-in-the-age-of-ai"
+sourceUrl: "https://futurism.com/artificial-intelligence/amazon-ai-division-failure-nova"
 tags: ["tech"]
-heat: 49
-score: 0.47848
+heat: 66
+score: 0.44296
 readMinutes: 1
-image: "https://j11g.com/content/images/cern-resized.jpg"
+image: "https://futurism.com/wp-content/uploads/2026/07/amazon-gutting-ai-division-failure.jpg?w=1200"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
