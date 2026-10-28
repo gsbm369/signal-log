@@ -1,16 +1,15 @@
 ---
-title: "Fuzzers vs. AI: Comparing Fuzzilli and BigSleep on JavaScript Engines"
+title: "The Benchmarking Crisis"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T19:08:23+00:00
-addedAt: 2026-10-27T22:18:32.043639+00:00
+pubDate: 2026-10-28T08:32:09+00:00
+addedAt: 2026-10-28T10:18:29.533091+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://projectzero.google/2026/10/fuzzing-v-AI.html"
-tags: ["tech"]
-heat: 60
-score: 0.66386
+sourceUrl: "http://databasearchitects.blogspot.com/2026/10/the-benchmarking-crisis.html"
+tags: ["benchmark"]
+heat: 89
+score: 1.1559
 readMinutes: 1
-image: "https://projectzero.google/images/preview_image.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

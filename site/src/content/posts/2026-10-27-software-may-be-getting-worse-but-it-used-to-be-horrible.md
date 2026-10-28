@@ -1,16 +1,15 @@
 ---
-title: "Police are using AI to pull over drivers for 'suspicious' behavior"
+title: "Software may be getting worse, but it used to be horrible"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T16:40:15+00:00
-addedAt: 2026-10-27T22:18:32.043771+00:00
+pubDate: 2026-10-27T11:30:35+00:00
+addedAt: 2026-10-28T10:18:29.533686+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://gizmodo.com/police-are-using-ai-to-pull-over-drivers-for-suspicious-behavior-2000831220"
+sourceUrl: "https://www.bitlog.com/2026/10/27/software-may-be-getting-worse-but-it-used-to-be-horrible/"
 tags: ["tech"]
-heat: 55
-score: 0.56341
+heat: 39
+score: 0.29096
 readMinutes: 1
-image: "https://gizmodo.com/app/uploads/2026/09/flock-camera-miami-2026-1200x675.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

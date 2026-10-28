@@ -1,16 +1,16 @@
 ---
-title: "This is not sustainable"
+title: "Start Doing Graph Theory"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-28T03:56:49+00:00
-addedAt: 2026-10-28T04:18:34.883331+00:00
+pubDate: 2026-10-28T10:12:59+00:00
+addedAt: 2026-10-28T10:18:29.533316+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.netmeister.org/blog/defense-ddos.html"
+sourceUrl: "https://vertex.degree/"
 tags: ["tech"]
-heat: 89
-score: 0.73964
+heat: 69
+score: 0.74738
 readMinutes: 1
-image: "https://www.netmeister.org/blog/images/captain-haddock.jpg"
+image: "https://vertex.degree/images/link.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
