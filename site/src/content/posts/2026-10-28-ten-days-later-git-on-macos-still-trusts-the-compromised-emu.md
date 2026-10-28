@@ -1,16 +1,15 @@
 ---
-title: "Amazon Is Gutting Its AI Division After Sustained Failure"
+title: "Ten days later, Git on macOS still trusts the compromised eMudhra certificates"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T16:25:30+00:00
-addedAt: 2026-10-28T04:18:34.884149+00:00
+pubDate: 2026-10-28T11:03:40+00:00
+addedAt: 2026-10-28T16:18:35.987695+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://futurism.com/artificial-intelligence/amazon-ai-division-failure-nova"
+sourceUrl: "https://emudhra.we-have-a-problem.com/apple.html"
 tags: ["tech"]
-heat: 66
-score: 0.44296
+heat: 50
+score: 0.57195
 readMinutes: 1
-image: "https://futurism.com/wp-content/uploads/2026/07/amazon-gutting-ai-division-failure.jpg?w=1200"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

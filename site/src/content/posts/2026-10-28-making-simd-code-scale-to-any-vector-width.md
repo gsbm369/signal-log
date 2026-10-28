@@ -1,15 +1,16 @@
 ---
-title: "An Evening with Berferd: In Which a Cracker is Lured, Endured, and Studied (1992)"
+title: "Making SIMD Code Scale to Any Vector Width"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T18:48:45+00:00
-addedAt: 2026-10-28T04:18:34.883842+00:00
+pubDate: 2026-10-28T14:23:20+00:00
+addedAt: 2026-10-28T16:18:35.987233+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.cheswick.com/ches/papers/berferd.pdf"
+sourceUrl: "https://streamhpc.com/blog/2026-10-28/making-simd-code-scale-to-any-vector-width/"
 tags: ["tech"]
-heat: 72
-score: 0.52031
+heat: 57
+score: 0.69658
 readMinutes: 1
+image: "https://streamhpc.com/wp-content/uploads/2026/10/3.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

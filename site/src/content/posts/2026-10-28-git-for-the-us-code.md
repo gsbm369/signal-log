@@ -1,16 +1,17 @@
 ---
-title: "New iMac with M6"
+title: "Git for the US Code"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T13:02:02+00:00
-addedAt: 2026-10-28T04:18:34.884432+00:00
+pubDate: 2026-10-28T01:47:50+00:00
+addedAt: 2026-10-28T16:18:35.987792+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.apple.com/imac/"
+sourceUrl: "https://lexifina.com/blog/git-for-the-us-code"
 tags: ["tech"]
-heat: 61
-score: 0.38874
+heat: 41
+score: 0.40034
 readMinutes: 1
-image: "https://www.apple.com/v/imac/x/images/meta/imac__kaqcgp2n4duu_og.png?202610261111"
+image: "https://lexifina.com/social-preview-v3.png?v=20261018"
+imageAlt: "Git for the US Code"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
