@@ -1,17 +1,16 @@
 ---
-title: "Survival LLM: AI assistant and emergency library that runs on your own computer"
+title: "Why is this fingerprinting script creating bioweapons?"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-27T19:55:06+00:00
-addedAt: 2026-10-28T10:18:29.533559+00:00
+pubDate: 2026-10-28T17:13:29+00:00
+addedAt: 2026-10-28T22:18:37.379695+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.brangus.io/survival-llm"
-tags: ["llm"]
-heat: 64
-score: 0.66366
+sourceUrl: "https://nullpt.rs/fingerprinting-bioweapons"
+tags: ["tech"]
+heat: 59
+score: 0.57555
 readMinutes: 1
-image: "https://www.brangus.io/survival-llm/social-card.png"
-imageAlt: "Survival LLM answering &quot;I"
+image: "https://nullpt.rs/opengraph-image.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
