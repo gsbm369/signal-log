@@ -1,15 +1,16 @@
 ---
-title: "Ten days later, Git on macOS still trusts the compromised eMudhra certificates"
+title: "CNC Stone Carving"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-28T11:03:40+00:00
-addedAt: 2026-10-28T16:18:35.987695+00:00
+pubDate: 2026-10-28T14:38:22+00:00
+addedAt: 2026-10-29T04:18:35.230941+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://emudhra.we-have-a-problem.com/apple.html"
+sourceUrl: "https://carmelitegothic.com/cnc-stone-carving/"
 tags: ["tech"]
-heat: 50
-score: 0.57195
+heat: 38
+score: 0.41353
 readMinutes: 1
+image: "https://carmelitegothic.com/wp-content/uploads/2022/05/carmelite-gothic-cnc1.jpg"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

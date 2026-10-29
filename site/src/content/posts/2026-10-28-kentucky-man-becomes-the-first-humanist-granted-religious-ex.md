@@ -1,17 +1,15 @@
 ---
-title: "Git for the US Code"
+title: "Kentucky man becomes the first humanist granted religious exemption from AI"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-28T01:47:50+00:00
-addedAt: 2026-10-28T16:18:35.987792+00:00
+pubDate: 2026-10-28T13:41:30+00:00
+addedAt: 2026-10-29T04:18:35.231011+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://lexifina.com/blog/git-for-the-us-code"
+sourceUrl: "https://religionnews.com/2026/10/26/in-a-first-a-humanist-granted-a-religious-exemption-from-using-ai/"
 tags: ["tech"]
-heat: 41
-score: 0.40034
+heat: 38
+score: 0.39871
 readMinutes: 1
-image: "https://lexifina.com/social-preview-v3.png?v=20261018"
-imageAlt: "Git for the US Code"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
