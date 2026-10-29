@@ -1,14 +1,14 @@
 ---
-title: "Go Empty Interface Explained & The Hidden Heap Allocation"
+title: "An open format for writing agent-native software requirements"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-29T09:27:01+00:00
-addedAt: 2026-10-29T10:18:26.290382+00:00
+pubDate: 2026-10-29T16:17:42+00:00
+addedAt: 2026-10-29T22:18:35.314505+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=_BxdvkLLnDc"
+sourceUrl: "https://slcr.dev/announcements#2026-10-29-slcr-launches"
 tags: ["tech"]
-heat: 58
-score: 0.72567
+heat: 60
+score: 0.59498
 readMinutes: 1
 ---
 

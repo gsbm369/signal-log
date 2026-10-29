@@ -1,14 +1,14 @@
 ---
-title: "A single malformed WAP Push SMS crashes com.android.phone on Android, dropping active calls (including emergency calls)"
+title: "My favourite PowerMac is a Nintendo Wii"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-29T07:22:37+00:00
-addedAt: 2026-10-29T10:18:26.290603+00:00
+pubDate: 2026-10-29T16:32:18+00:00
+addedAt: 2026-10-29T22:18:35.314460+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://smsofdeath.com/"
+sourceUrl: "https://virtuallyfun.com/2026/10/29/my-favourite-powermac-is-a-nintendo-wii/"
 tags: ["tech"]
-heat: 55
-score: 0.66998
+heat: 60
+score: 0.60058
 readMinutes: 1
 ---
 

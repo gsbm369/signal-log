@@ -1,15 +1,16 @@
 ---
-title: "Kentucky man becomes the first humanist granted religious exemption from AI"
+title: "We're releasing the weights of Mistral Large 4"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-28T13:41:30+00:00
-addedAt: 2026-10-29T04:18:35.231011+00:00
+pubDate: 2026-10-29T14:13:21+00:00
+addedAt: 2026-10-29T22:18:35.314093+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://religionnews.com/2026/10/26/in-a-first-a-humanist-granted-a-religious-exemption-from-using-ai/"
-tags: ["tech"]
-heat: 38
-score: 0.39871
+sourceUrl: "https://mistral.ai/news/mistral-large-4-oss/"
+tags: ["mistral"]
+heat: 74
+score: 0.84598
 readMinutes: 1
+image: "https://mistral.ai/cms-media/api/media/file/cover-mistral-sovereign%20copie.webp"
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
