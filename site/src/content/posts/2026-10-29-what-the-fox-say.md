@@ -1,14 +1,14 @@
 ---
-title: "Hoot 0.10.0 released"
+title: "What the fox say?"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-28T16:47:10+00:00
-addedAt: 2026-10-28T22:18:37.379607+00:00
+pubDate: 2026-10-29T06:42:40+00:00
+addedAt: 2026-10-29T10:18:26.290756+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://spritely.institute/news/hoot-0-10-0-released.html"
+sourceUrl: "https://entropicthoughts.com/what-the-fox-say"
 tags: ["tech"]
-heat: 61
-score: 0.60633
+heat: 54
+score: 0.65302
 readMinutes: 1
 ---
 
