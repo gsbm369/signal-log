@@ -43,8 +43,15 @@ export async function GET(context) {
         // For the evergreen categories these are months or years apart, and the
         // difference is the whole point of the publication.
         `<signal:originDate>${post.data.pubDate.toUTCString()}</signal:originDate>`,
+        // heat is OUR ranking score, scaled per run. It is not popularity.
         `<signal:heat>${post.data.heat}</signal:heat>`,
         `<signal:readMinutes>${post.data.readMinutes}</signal:readMinutes>`,
+        `<signal:category>${escapeXml(post.data.category)}</signal:category>`,
+        // Popularity, measured outside this site (curator/buzz.py). Omitted,
+        // not zeroed, when unknown: absence and 0 mean different things.
+        post.data.buzz !== undefined ? `<signal:buzz>${post.data.buzz}</signal:buzz>` : '',
+        post.data.hnPoints !== undefined ? `<signal:hnPoints>${post.data.hnPoints}</signal:hnPoints>` : '',
+        post.data.hnComments !== undefined ? `<signal:hnComments>${post.data.hnComments}</signal:hnComments>` : '',
       ]
         .filter(Boolean)
         .join(''),

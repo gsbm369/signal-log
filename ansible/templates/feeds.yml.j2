@@ -86,3 +86,6 @@ settings:
   publish_count: {{ publish_count }}
   # Keep at most this many posts on the site; oldest are pruned.
   max_posts: {{ max_posts }}
+  # Look up every live post's Hacker News points each cycle (curator/buzz.py)
+  # and publish them in rss.xml as signal:buzz. Never used for ranking.
+  buzz_lookup: {{ buzz_lookup | lower }}

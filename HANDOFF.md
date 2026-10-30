@@ -364,6 +364,9 @@ Every item was watched refusing before it was believed. Commits on `main`:
 | `a78a1dd`, `b32c513`, `56dbefa` | **Cycle verdict.** Zero feeds ⇒ `failed`, checked first. Stale `metrics.json` ⇒ `curator_status: not_run` — and, after QA found `check_freshness.py` refreshes that file's mtime, freshness is judged by `curated_at_epoch` written by the curator itself. `never_triggered`/`bad_sha` ⇒ `publish_failed`. |
 | `b3cabe7` | **24 more sources (47 → 71 feeds)** for the sections that were stuck. 61 candidates measured; 6 rejected as too loud for a 10-post stock, 20 quiet/stale, 9 broken — all reasons recorded in `deploy.yml`. Result on the live page: company_eng 0 → 6 cards, deep_dives 1 → 5, system_design 2 → 6. |
 
+| `8e729c3` | **`gadgets` category (2026-10-30), for the Instagram account.** Measured that day: consumer devices and games held 81% of its reel views; AI stories 1–12 views each. 8 feeds from 11 measured, `max_posts` 90 → 100. Watched: `test_categories.py` refused twice (site-only category; 90 < 10 × 10), `check_selection.py` refused the new section order. **Open:** the global `FOCUS_STACK` boosts openai/gemini/llm in every category — 4 of the first 6 dry-run gadget picks were AI stories. |
+| (next) | **`signal:buzz` in rss.xml (curator/buzz.py).** `heat` is our ranking score, not popularity; buzz is Hacker News points of the exact URL, refreshed every live post every cycle, never read by the ranker. Absent = unknown, 0 = measured. Watched: three mutants of buzz.py (domain match, failure→0, rewrite-always) and one of rss.xml.js (unknown→0) each refused. Real run: 87 posts, 6.1 s, 21 on HN, second pass 0 rewrites. |
+
 Not on `main`: `8f4a7b9` (hourly rebuild) on `ci/hourly-freshness-rebuild`, waiting for the owner's push.
 
 ## 9. How the owner wants to be worked with

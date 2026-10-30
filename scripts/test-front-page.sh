@@ -45,7 +45,11 @@ for pid, cat, src, age, score in rows:
     open(f"{out}/{pid}.md", "w").write(
         f'---\ntitle: "fixture {pid}"\ndescription: "fixture {pid}"\npubDate: {pub}\n'
         f'addedAt: {pub}\nsource: "{src}"\ncategory: {cat}\nsourceUrl: "https://example.com/{pid}"\n'
-        f'heat: 50\nscore: {score}\nreadMinutes: 1\n---\n\nfixture {pid}\n')
+        f'heat: 50\nscore: {score}\nreadMinutes: 1\n'
+        # a1 measured on HN; a2 looked up, not there; the rest never looked up.
+        + {"a1": "hnPoints: 310\nhnComments: 140\nbuzz: 92\n",
+           "a2": "hnPoints: 0\nhnComments: 0\nbuzz: 0\n"}.get(pid, "")
+        + f'---\n\nfixture {pid}\n')
 PY
 
 docker run --rm -e CYCLE_START_UTC="$CLOCK" \
@@ -112,6 +116,21 @@ fp = os.path.join(os.path.dirname(sys.argv[1]), "category", "fintech", "index.ht
 fh = open(fp, encoding="utf-8").read() if os.path.exists(fp) else ""
 check("/category/fintech/ does not render the 9-day story", bool(fh) and "/posts/f1/" not in fh
       and "No new posts this week." in fh)
+
+# rss.xml: the buzz fields reach the feed's consumers, and UNKNOWN stays
+# unknown — a post never looked up must not arrive as buzz 0.
+rp = os.path.join(os.path.dirname(sys.argv[1]), "rss.xml")
+rss = open(rp, encoding="utf-8").read() if os.path.exists(rp) else ""
+items = {re.search(r'/posts/([^/<]+)/', i).group(1): i
+         for i in re.findall(r"<item>(.*?)</item>", rss, re.S) if re.search(r'/posts/([^/<]+)/', i)}
+a1, a2, s1 = items.get("a1", ""), items.get("a2", ""), items.get("s1", "")
+check("rss: a1 carries signal:buzz 92, hnPoints 310, hnComments 140",
+      "<signal:buzz>92</signal:buzz>" in a1 and "<signal:hnPoints>310</signal:hnPoints>" in a1
+      and "<signal:hnComments>140</signal:hnComments>" in a1, a1[-400:])
+check("rss: a2 (looked up, not on HN) carries a measured 0", "<signal:buzz>0</signal:buzz>" in a2, a2[-300:])
+check("rss: s1 (never looked up) carries no buzz at all", bool(s1) and "signal:buzz" not in s1 and "hnPoints" not in s1)
+check("rss: every item names its category", bool(items) and all("<signal:category>" in i for i in items.values())
+      and "<signal:category>company_eng</signal:category>" in a1)
 sys.exit(1 if fails else 0)
 PY
 RC=$?

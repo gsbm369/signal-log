@@ -41,6 +41,7 @@ from typing import Any
 import feedparser
 import yaml
 
+import buzz
 import images
 import ranker
 import summarizers
@@ -1228,6 +1229,16 @@ def _run() -> int:
     removed = prune_posts(max_posts)
     if removed:
         log.info("pruned %d old post(s)", removed)
+
+    # BUZZ — external attention, for the feed's consumers, never for ranking.
+    # After the prune so only surviving posts are looked up, and over every
+    # live post rather than only the new ones, because HN points accrue after
+    # we publish. A failed lookup leaves the post as it was; see buzz.py.
+    if settings.get("buzz_lookup", True):
+        bstats = buzz.refresh(CONTENT_DIR)
+        METRICS.update(bstats)
+        log.info("buzz: %(buzz_posts)d post(s), %(buzz_on_hn)d on HN, %(buzz_changed)d changed, "
+                 "%(buzz_failed)d failed, %(buzz_skipped)d past budget", bstats)
 
     # PUBLICATION AND SURVIVAL, MEASURED SEPARATELY AND REPORTED TOGETHER.
     #

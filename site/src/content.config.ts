@@ -21,6 +21,13 @@ const posts = defineCollection({
     // is the value that can be compared across runs (used by the weekly digest).
     score: z.number().default(0),
     readMinutes: z.number().default(2),
+    // External attention, written by curator/buzz.py and refreshed every
+    // cycle. ABSENT means unknown (never looked up, or the lookup failed);
+    // 0 means looked up and not on Hacker News. Never read by the ranker or
+    // any layout — it exists for consumers of rss.xml.
+    hnPoints: z.number().int().min(0).optional(),
+    hnComments: z.number().int().min(0).optional(),
+    buzz: z.number().int().min(0).max(100).optional(),
     // Which section a story belongs to. Derived from the FEED it came from,
     // never from keywords: a gaming site covering NVIDIA earnings is still
     // gaming, and a fintech site covering a game studio is still fintech.

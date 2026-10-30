@@ -44,6 +44,10 @@
     # 90 when gadgets became the tenth category (2026-10-30).
     max_posts: 100
     per_source_cap: 3           # one prolific feed cannot dominate a run
+    # Hacker News points per live post, published as signal:buzz in rss.xml
+    # for the Instagram agent. heat is our own ranking score, not popularity.
+    # Free (Algolia's public HN API), ~100 lookups a cycle, never ranks.
+    buzz_lookup: true
 
     # ----------------------------------------------------------------------- #
     # SCORING POLICY, PER CATEGORY
