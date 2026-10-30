@@ -1,14 +1,14 @@
 ---
-title: "An open format for writing agent-native software requirements"
+title: "Go 1.28's HTTP/2 Parking: Measuring Memory Savings"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-29T16:17:42+00:00
-addedAt: 2026-10-29T22:18:35.314505+00:00
+pubDate: 2026-10-30T15:39:37+00:00
+addedAt: 2026-10-30T16:18:33.222883+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://slcr.dev/announcements#2026-10-29-slcr-launches"
+sourceUrl: "https://abdolirad.me/articles/go-1-28-http2-parking-memory/"
 tags: ["tech"]
-heat: 60
-score: 0.59498
+heat: 63
+score: 0.73154
 readMinutes: 1
 ---
 

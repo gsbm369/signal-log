@@ -1,14 +1,14 @@
 ---
-title: "If you love a website, back it up"
+title: "No, npm, “estee” is not a typo of “testem”"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T01:29:00+00:00
-addedAt: 2026-10-30T04:18:35.917768+00:00
+pubDate: 2026-10-30T15:01:56+00:00
+addedAt: 2026-10-30T16:18:33.222938+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "http://blog.mistys-internet.website/post/2026/10/29/if-you-love-a-website-back-it-up/"
+sourceUrl: "https://smoores.dev/post/no_npm_estee_is_not_a_typo/"
 tags: ["tech"]
-heat: 81
-score: 0.67271
+heat: 63
+score: 0.71406
 readMinutes: 1
 ---
 

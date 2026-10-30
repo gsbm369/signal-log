@@ -1,15 +1,16 @@
 ---
-title: "Design the interface for functionality not familiarity"
+title: "Infinite Mac: BeOS"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T01:04:38+00:00
-addedAt: 2026-10-30T04:18:35.917909+00:00
+pubDate: 2026-10-30T16:06:56+00:00
+addedAt: 2026-10-30T16:18:33.222824+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://lapcatsoftware.com/articles/2026/10/10.html"
+sourceUrl: "https://blog.persistent.info/2026/10/infinite-mac-beos.html"
 tags: ["tech"]
-heat: 81
-score: 0.66227
+heat: 64
+score: 0.74448
 readMinutes: 1
+image: "https://persistent.info/images/infinite-mac-beos-desktop.webp"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
