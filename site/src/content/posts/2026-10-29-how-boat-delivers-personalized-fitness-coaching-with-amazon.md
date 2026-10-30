@@ -12,6 +12,9 @@ score: 0.96941
 readMinutes: 1
 image: "https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2026/10/20/kaha1.jpg"
 imageAlt: "High-level architecture showing the boAt smartwatch and Crest companion app sending data through AWS Lambda to Meta Llama 3.3 on Amazon Bedrock, with historical data in Amazon RDS for MySQL and Amazon DocumentDB."
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Learn how boAt built its AI Coach feature on Amazon Bedrock and AWS Lambda to deliver personalized, real-time fitness coaching to millions of smartwatch users across India, and the design choices that made the solution scalable and cost-effective.

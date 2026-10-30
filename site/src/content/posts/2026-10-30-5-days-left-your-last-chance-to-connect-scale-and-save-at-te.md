@@ -11,6 +11,9 @@ heat: 61
 score: 0.67806
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2025/03/Early-Stage-2024-Breakout-Session.jpg?resize=1200,800"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 5 days to save up to $100, plus a second pass for free to TechCrunch Founder Summit 2026 in Boston on November 4. Register now.

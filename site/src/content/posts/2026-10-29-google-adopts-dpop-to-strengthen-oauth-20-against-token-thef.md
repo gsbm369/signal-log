@@ -11,6 +11,9 @@ heat: 74
 score: 0.83848
 readMinutes: 1
 image: "https://www.infoq.com/styles/static/images/logo/logo_bigger.jpg"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Google's OAuth Platform has recently introduces support for Demonstrating Proof-of-Possession (DPoP), an OAuth 2.0 security mechanism designed to mitigate token theft and replay attacks. By Sergio De Simone

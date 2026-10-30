@@ -12,6 +12,9 @@ score: 0.93812
 readMinutes: 1
 image: "https://devblogs.microsoft.com/dotnet/wp-content/uploads/sites/10/2026/10/syncfusion-toolkit-stock-dashboard.png"
 imageAlt: "Syncfusion toolkit stock dashboard with charts, filtering controls, and a date picker in desktop and mobile layouts."
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Microsoft and Syncfusion are collaborating on Blazor through a free, open-source component toolkit, framework contributions, and developer tooling. The post Blazor Welcomes Open-Source Contributions from Syncfusion appeared first on .NET Blog .

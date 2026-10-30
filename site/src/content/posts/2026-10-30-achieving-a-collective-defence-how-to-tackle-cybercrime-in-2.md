@@ -10,6 +10,9 @@ tags: ["tech"]
 heat: 64
 score: 0.74062
 readMinutes: 1
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 In this interview from RiskX, Mastercard's Ranjita Iyer joined FinextraTV to discuss about cyber-crime.

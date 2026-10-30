@@ -11,6 +11,9 @@ heat: 97
 score: 1.55657
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M6256EDR0931RP6THCDNZ2R5.01M6256F3NTWXMKQE0RGKEM0G2.png"
+hnPoints: 1
+hnComments: 0
+buzz: 11
 ---
 
 Cloudflare mitigated over 8,200 DDoS attacks per hour in Q3 2026 as attackers shifted to shorter, high-frequency strikes. Explore the latest threat data, including the collapse of CLDAP vectors and the impact of recent botnet takedowns.

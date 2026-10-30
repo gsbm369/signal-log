@@ -11,6 +11,9 @@ heat: 75
 score: 0.95633
 readMinutes: 1
 image: "https://res.infoq.com/presentations/ai-software-engineering-pipeline/en/mediumimage/alasdair-allan-medium-1791451156021.jpeg"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Alasdair Allan discusses empirical research from METR and Anthropic on AI coding adoption. He explains the "supervision paradox," where reliance on AI tools disrupts junior skill development, risks institutional context loss, and threatens the long-term engineering pipeline needed to oversee autonomous systems effectively. By Alasdair Allan

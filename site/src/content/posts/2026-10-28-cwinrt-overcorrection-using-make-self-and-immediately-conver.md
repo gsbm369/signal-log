@@ -11,6 +11,9 @@ heat: 78
 score: 0.92313
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
+hnPoints: 1
+hnComments: 0
+buzz: 11
 ---
 
 You are taking the scenic route. The post C++/WinRT overcorrection: Using CODE make_self /CODE and immediately converting it to the projected interface appeared first on The Old New Thing .

@@ -11,6 +11,9 @@ heat: 100
 score: 1.56133
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01KW44TXMXRJ1NFA38CJB0MT3A.png"
+hnPoints: 4
+hnComments: 0
+buzz: 26
 ---
 
 Public traffic to private origins, with WAF, bot management, caching, and Workers, is now available to every customer with Cloudflare One connectivity.

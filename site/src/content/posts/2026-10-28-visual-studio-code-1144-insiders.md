@@ -11,6 +11,9 @@ heat: 64
 score: 0.85
 readMinutes: 1
 image: "https://code.visualstudio.com/assets/updates/1_144/release-highlights.webp"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Learn what is new in Visual Studio Code 1.144 (Insiders) Read the full article

@@ -11,6 +11,9 @@ heat: 66
 score: 0.78732
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2025/03/Early-Stage-2024-networking-1.jpg?resize=1200,800"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 At TechCrunch Founder Summit 2026, happening November 4 at SoWa Power Station in Boston, networking powered by Braindate is designed to make those conversations easier to find, whether they are in 1:1 or small-group on-site meetings. Register before the event starts to save up to $100 on your pass, plus get a second for free.

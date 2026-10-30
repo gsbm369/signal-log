@@ -12,6 +12,9 @@ score: 0.99191
 readMinutes: 1
 image: "https://inside.java/resources/social-image--nAgZMYNGE8fqdi2dNsobXsdOYjHge7YemY2jQDyJc0.jpg"
 imageAlt: "Inside.java - News and views from members of the Java team at Oracle"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Get an overview of the Secure Coding Guidelines for Java and best practices. Examples will be provided to show insecure practices that may lead to security vulnerabilities. Learn how to avoid issues by applying the guidelines. We'll also cover recent updates, including expanded coverage of topics such as input validation, serialization, and more.

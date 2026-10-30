@@ -11,6 +11,9 @@ heat: 92
 score: 1.20074
 readMinutes: 1
 image: "https://snap.fly.dev/podcast/688/img"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Craig Kerstiens returns to talk about the ever-expanding world of Postgres: a deliberately boring core, a thriving extension ecosystem, and pg_lake bringing DuckDB and Iceberg into the mix. We dig into the pain of ETL, what Craig is watching in Postgres 19, the impact of AI on open source maintainers, and why the database still has plenty of room to grow.

@@ -11,6 +11,9 @@ heat: 76
 score: 0.88408
 readMinutes: 1
 image: "https://devblogs.microsoft.com/cppblog/wp-content/uploads/sites/9/2021/05/vcpkg-product-mark.png"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 This blog post summarizes changes to the vcpkg package manager as part of the 2026-10-16 registry release and the 2026-09-26 tool release. These updates include configurable binary-cache compression, improved cache reliability and diagnostics, Boost 1.92, and other improvements and bug fixes. There are now 2,877 total ports available in the vcpkg curated registry. A port [ ] The post What s New in vcpkg (Oct 2026) appeared first on C++ Team Blog .

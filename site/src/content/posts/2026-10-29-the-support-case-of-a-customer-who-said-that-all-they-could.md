@@ -11,6 +11,9 @@ heat: 73
 score: 0.82241
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
+hnPoints: 6
+hnComments: 0
+buzz: 31
 ---
 
 Then again, that is what they asked for. The post The support case of a customer who said that all they could see was a black screen appeared first on The Old New Thing .

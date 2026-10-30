@@ -11,6 +11,9 @@ heat: 74
 score: 0.84542
 readMinutes: 1
 image: "https://res.infoq.com/articles/ai-ml-data-engineering-trends-2026/en/headerimage/ai-ml-de-graph-2026-1793191771570.jpg"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 This InfoQ Trends Report offers readers a comprehensive overview of emerging trends and technologies in the areas of AI, ML, and Data Engineering. This report summarizes the InfoQ editorial team’s and external guests' view on the current trends in AI and ML technologies and what to look out for in the next 12 months. By Srini Penchikala, Chip Huyen, Daniel Dominguez, Hien Luu, Arthur Casals

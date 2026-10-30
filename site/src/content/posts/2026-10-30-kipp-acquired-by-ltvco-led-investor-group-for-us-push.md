@@ -10,6 +10,9 @@ tags: ["tech"]
 heat: 64
 score: 0.7347
 readMinutes: 1
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Kipp, a Tel Aviv-headquartered fintech platform connecting card issuers and merchants to approve more transactions, has been acquired by an investor group ahead of a push into the US market.

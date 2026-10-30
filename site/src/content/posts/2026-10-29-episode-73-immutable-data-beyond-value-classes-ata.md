@@ -12,6 +12,9 @@ score: 0.86253
 readMinutes: 1
 image: "https://inside.java/resources/ijp-73--OGaCbzOhnY35SMXr0wfqlA8NOoym9jFUSby61tzkE.jpg"
 imageAlt: "Inside.java - News and views from members of the Java team at Oracle"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Recent and upcoming Java features (e.g. value classes, withers, and lazy constants) make it easier to define, construct, copy, and access immutable data

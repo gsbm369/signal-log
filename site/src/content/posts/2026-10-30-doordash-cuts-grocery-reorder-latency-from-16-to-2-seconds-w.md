@@ -11,6 +11,9 @@ heat: 75
 score: 0.96631
 readMinutes: 1
 image: "https://www.infoq.com/styles/static/images/logo/logo_bigger.jpg"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 DoorDash reduced grocery reorder latency from 16 to 2 seconds by precomputing recurring purchase needs using batch LLM inference and deterministic validation. Live catalog resolution keeps product selections current, while an editable shopping interface avoids unnecessary model calls. The company reports that shopping list views doubled and the flow’s order rate increased by approximately 34% By Leela Kumili

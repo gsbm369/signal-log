@@ -12,6 +12,9 @@ score: 0.78633
 readMinutes: 1
 image: "https://images.ctfassets.net/l47ir7rfykkn/1nQ1Vpwd7xHyDS1nWyWOMP/d284d7e13c67083f54e807ed2ac1e244/Rebuild_the_Planet_2.png"
 imageAlt: "Open Graph image for Chainguard."
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Patching can't keep pace with AI-discovered vulnerabilities. See how Chainguard plans to eliminate entire classes of security bugs by design.

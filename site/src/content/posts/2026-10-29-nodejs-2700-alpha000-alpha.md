@@ -11,6 +11,9 @@ heat: 88
 score: 0.77264
 readMinutes: 1
 image: "https://nodejs.org/en/next-data/og/release/Node.js%20%E2%80%94%20Node.js%2027.0.0-alpha.0.0.0%20(Alpha)"
+hnPoints: 1
+hnComments: 0
+buzz: 11
 ---
 
 Node.js Blog linked this without a summary. Follow the link for the article.

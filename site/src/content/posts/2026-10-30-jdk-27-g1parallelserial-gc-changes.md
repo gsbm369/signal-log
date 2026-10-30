@@ -12,6 +12,9 @@ score: 0.86252
 readMinutes: 1
 image: "https://inside.java/resources/social-image--nAgZMYNGE8fqdi2dNsobXsdOYjHge7YemY2jQDyJc0.jpg"
 imageAlt: "Inside.java - News and views from members of the Java team at Oracle"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Now that the JDK 27 has been released, I thought it would be time to discuss interesting changes in OpenJDK’s stop-the-world collectors in the HotSpot VM once more.

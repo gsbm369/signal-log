@@ -12,6 +12,9 @@ score: 0.75286
 readMinutes: 1
 image: "https://www.microsoft.com/en-us/security/blog/wp-content/uploads/2026/10/North-Korean-use-of-AI.webp"
 imageAlt: "Diagram showing stages of AI adoption among North Korean threat actors, including Emerging, Expanding, Accelerating, and Operationalize. Jade Sleet, Coral Sleet, Jasper Sleet are in Operationalized stage."
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 As Microsoft Threat Intelligence continues to track how threat actors operationalize AI to increase the speed and efficiency of attacks, we’ve identified North Korean threat actors expanding their use of AI with varying levels of adoption. This blog breaks down how North Korean threat actors are utilizing AI across their operations, reflecting a broader trend of threat actors incorporating AI into their attack chains. The post Tracking AI adoption in North Korean threat actor tradecraft appeared first on Microsoft Security Blog .

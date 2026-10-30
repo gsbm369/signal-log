@@ -11,6 +11,9 @@ heat: 74
 score: 1.09181
 readMinutes: 1
 image: "https://engineering.fb.com/wp-content/uploads/2026/10/Meta-Andromeda-co-design-image-1.png"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 This post describes the next generation of Meta Andromeda, Meta s personalized ads retrieval engine, and how co-designing the model, system, and GPU hardware unlocks a new efficiency frontier for ads retrieval. In production, the system scores every eligible ad with near ranking-level model performance at retrieval scale and surfaces the top candidates at over one [...] Read More... The post Meta Andromeda: Powering the Next Generation of Ads Retrieval Through Model-System Co-Design appeared first on Engineering at Meta .

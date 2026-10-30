@@ -12,6 +12,9 @@ score: 0.81702
 readMinutes: 1
 image: "https://www.cncf.io/wp-content/uploads/2026/10/image-36.png"
 imageAlt: "Figure 1: The Safe Operating Model"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 An autonomous agent will do exactly what its tools let it do, and no more. This sounds like a constraint. In practice it is the whole risk, because the set of things an agent s tools let...

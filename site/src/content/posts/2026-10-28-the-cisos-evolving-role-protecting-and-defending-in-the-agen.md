@@ -11,6 +11,9 @@ heat: 69
 score: 0.75286
 readMinutes: 1
 image: "https://www.microsoft.com/en-us/security/blog/wp-content/uploads/2026/10/CISOs-protect-defend-2.jpg"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 As AI and agents reshape the enterprise, CISOs face two critical priorities: enabling innovation with the right identity and data guardrails, and modernizing defense to keep pace with AI-powered threats. Aarti Borkar shares how security leaders can approach both. The post The CISO’s evolving role: Protecting and defending in the agentic era appeared first on Microsoft Security Blog .

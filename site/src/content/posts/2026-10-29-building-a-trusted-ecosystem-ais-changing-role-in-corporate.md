@@ -10,6 +10,9 @@ tags: ["tech"]
 heat: 62
 score: 0.62277
 readMinutes: 1
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 At Sibos 2026, CoCoNet’s CEO and director of product share their thoughts on how banks can build trusted AI execution layers and connect corporate ecosystems to meet evolving client demands.

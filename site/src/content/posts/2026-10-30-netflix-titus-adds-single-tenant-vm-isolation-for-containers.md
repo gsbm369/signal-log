@@ -11,6 +11,9 @@ heat: 74
 score: 0.84892
 readMinutes: 1
 image: "https://res.infoq.com/news/2026/10/netflix-titus-kubernetes-microvm/en/headerimage/generatedHeaderImage-1793268697529.jpg"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Netflix has added single-tenant Titus, a mode that runs one task alone on its own right-sized EC2 instance. The Compute/Platform team still owns and patches the host, so application teams keep the same API and deployment path By Claudio Masolo

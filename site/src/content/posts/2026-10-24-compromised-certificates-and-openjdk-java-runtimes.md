@@ -12,6 +12,9 @@ score: 0.52572
 readMinutes: 1
 image: "https://inside.java/resources/social-image--nAgZMYNGE8fqdi2dNsobXsdOYjHge7YemY2jQDyJc0.jpg"
 imageAlt: "Inside.java - News and views from members of the Java team at Oracle"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 As has been widely reported, the private keys of eight eMudhra intermediate CA certificates have been compromised. This page summarizes how to check whether your runtime is at risk and mitigation actions.

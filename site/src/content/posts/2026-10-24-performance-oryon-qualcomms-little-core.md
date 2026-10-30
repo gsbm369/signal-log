@@ -11,6 +11,9 @@ heat: 94
 score: 0.93029
 readMinutes: 1
 image: "https://substackcdn.com/image/fetch/$s_!JZU6!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc3d2242e-3f30-4ec3-b0e9-03b21101a9a8_786x875.png"
+hnPoints: 2
+hnComments: 0
+buzz: 18
 ---
 
 Qualcomm s Snapdragon X2 Elite uses a hybrid core setup, breaking away from the all-big-core strategy that the company previously used with in-house core designs.

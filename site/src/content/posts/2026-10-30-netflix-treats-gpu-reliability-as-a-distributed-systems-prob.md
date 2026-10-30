@@ -11,6 +11,9 @@ heat: 93
 score: 1.3778
 readMinutes: 1
 image: "https://res.infoq.com/news/2026/10/netflix-gpu-distributed-systems/en/headerimage/generatedHeaderImage-1792576903003.jpg"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Netflix has detailed how it is building a reliability platform for large-scale GPU training and inference, using layered health checks, automated remediation, and fault-tolerant training to keep jobs running despite hardware failures. By Craig Risi

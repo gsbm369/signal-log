@@ -10,6 +10,9 @@ tags: ["tech"]
 heat: 79
 score: 0.94992
 readMinutes: 1
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 LWN.net linked this without a summary. Follow the link for the article.

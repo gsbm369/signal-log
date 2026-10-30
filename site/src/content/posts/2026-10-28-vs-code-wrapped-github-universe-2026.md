@@ -11,6 +11,9 @@ heat: 65
 score: 0.68572
 readMinutes: 1
 image: "https://code.visualstudio.com/assets/blogs/2026/10/28/social-image.png"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Explore how VS Code evolved between GitHub Universe 2025 and 2026, with new ways to code, collaborate with agents, and manage work across tools and environments. Read the full article

@@ -11,6 +11,9 @@ heat: 59
 score: 0.64811
 readMinutes: 1
 image: "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/community-tree.png"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 The best Steam games to wishlist this week include a shooter, some cozy gems, and a twee take on volleyball.

@@ -11,6 +11,9 @@ heat: 70
 score: 0.77742
 readMinutes: 1
 image: "https://substack-post-media.s3.amazonaws.com/public/images/743de268-886c-4762-9fff-171235a92fc0_1280x720.png"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 #197: Part 1 - Break into scalability

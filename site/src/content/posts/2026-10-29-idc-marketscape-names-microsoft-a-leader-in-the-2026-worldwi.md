@@ -12,6 +12,9 @@ score: 0.75286
 readMinutes: 1
 image: "https://www.microsoft.com/en-us/security/blog/wp-content/uploads/2026/10/IDC.webp"
 imageAlt: "Graphic that shows IDC has named Microsoft a Leader in the 2026 IDC MarketScape for Worldwide Modern Endpoint Security for Enterprises"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 IDC has named Microsoft a Leader in the 2026 IDC MarketScape for Worldwide Modern Endpoint Security for Enterprises. The post IDC MarketScape names Microsoft a Leader in the 2026 Worldwide Modern Endpoint Security for Enterprises Vendor Assessment appeared first on Microsoft Security Blog .

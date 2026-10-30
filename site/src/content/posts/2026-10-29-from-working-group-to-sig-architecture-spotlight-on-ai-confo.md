@@ -12,6 +12,9 @@ score: 0.92825
 readMinutes: 1
 image: "https://kubernetes.io/blog/2026/10/29/sig-arch-ai-conformance-2026/ai_conf_kubecon.jpg"
 imageAlt: "KubeCon stage with 4 persons in it, one of them talking."
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 In this SIG Architecture spotlight we talked with Janet Kuo (Google) and Yuan Tang (Red Hat) about the journey of AI Conformance in Kubernetes, from the initial Working Group to the integration SIG Architecture as a subproject. Introductions Frederico Muñoz and Kirti Goyal (FK): Hi Janet, Yuan, and thank you for the opportunity to learn a bit more about AI Conformance. Can you tell us a bit about yourselves and how you got involved in Kubernetes? Janet Kuo : I'm a Senior Staff Software Engineer at Google and have been a Kubernetes maintainer since 2015, joining the community just as we were racing toward the 1.0 launch. I started my journey writing the core workload controllers that standardized how applications are orchestrated on Kubernetes. Today, I lead SIG Apps as a Co-chair TL, and also lead the AI Conformance program . My current focus is to ensure Kubernetes remains the best plat

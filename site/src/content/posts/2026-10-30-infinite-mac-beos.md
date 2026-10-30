@@ -11,6 +11,9 @@ heat: 64
 score: 0.74448
 readMinutes: 1
 image: "https://persistent.info/images/infinite-mac-beos-desktop.webp"
+hnPoints: 57
+hnComments: 10
+buzz: 65
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

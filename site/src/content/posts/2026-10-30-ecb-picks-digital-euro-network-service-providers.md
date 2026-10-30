@@ -10,6 +10,9 @@ tags: ["tech"]
 heat: 63
 score: 0.72942
 readMinutes: 1
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 The European Central Bank has selected two network service providers to connect PSPs and national central banks to the digital euro service platform.

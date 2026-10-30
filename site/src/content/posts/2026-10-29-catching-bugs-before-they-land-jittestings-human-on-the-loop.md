@@ -11,6 +11,9 @@ heat: 72
 score: 0.9494
 readMinutes: 1
 image: "https://engineering.fb.com/wp-content/uploads/2026/10/Catching-JiTTests-Table-1.png"
+hnPoints: 1
+hnComments: 0
+buzz: 11
 ---
 
 Over the last year we ve been sharing our work leveraging large language models to catch bugs on the fly — a novel approach we call Catching Just-in-Time Tests (JiTTests). Now, we re sharing the results and positive impact we ve seen with Catching JiTTests deployed into production. Our paper, “Just-in-Time Catching Test Generation at Meta,” fully details [...] Read More... The post Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full Scale appeared first on Engineering at Meta .

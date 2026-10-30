@@ -11,6 +11,9 @@ heat: 73
 score: 0.92863
 readMinutes: 1
 image: "https://eu-images.contentstack.com/v3/assets/blt740a130ae3c5d529/blt2fcd5a46fa8f774d/6ae4a250fd7d52608c112aac/catandmouse.png?width=720&quality=80&disable=upscale"
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 How do you begin to understand the mind of a cheater?
