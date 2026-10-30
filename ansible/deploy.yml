@@ -36,13 +36,13 @@
     cron_minute: 17
     max_candidates: 40          # articles sent to the model per run (cost driver)
     publish_count: 5            # articles summarised and published per run
-    # 90 = CATEGORY_CEILING (10) x 9 categories. The per-category ceiling
+    # 100 = CATEGORY_CEILING (10) x 10 categories. The per-category ceiling
     # decides what each category keeps; the global cap must never evict. At 60
     # it did: the first cycle with microsoft and languages cut devops_linux
     # from 6 to 4, a quiet category losing posts to make room for busy ones.
-    # test_categories.py asserts max_posts >= ceiling x categories, so a tenth
-    # category fails the test instead of starting the evictions again.
-    max_posts: 90
+    # test_categories.py asserts max_posts >= ceiling x categories; it refused
+    # 90 when gadgets became the tenth category (2026-10-30).
+    max_posts: 100
     per_source_cap: 3           # one prolific feed cannot dominate a run
 
     # ----------------------------------------------------------------------- #
@@ -99,6 +99,10 @@
       # curve; languages is upstream and slower, so it gets the week curve.
       microsoft:     { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
       languages:     { half_life_hours: 168, ingest_days: 7, retention_days: 45,   cap: 6 }
+      # Added 2026-10-30 for the Instagram account, whose best-watched reels
+      # (measured that day) were consumer devices and games, not engineering.
+      # Consumer news goes stale faster than vendor news, hence 48h.
+      gadgets:       { half_life_hours: 48,  ingest_days: 7, retention_days: 45,   cap: 6 }
     extra_noise_filter: true    # listicle/deals/AskHN patterns on top of the ported list
 
     # Summarizer backend: none | ollama | anthropic.
@@ -284,6 +288,33 @@
       - { name: Polygon,            url: "https://www.polygon.com/rss/index.xml",         category: gaming,        weight: 0.65, fetch: 12 }
       - { name: Eurogamer,          url: "https://www.eurogamer.net/feed",                category: gaming,        weight: 0.60, fetch: 12 }
       - { name: Rock Paper Shotgun, url: "https://www.rockpapershotgun.com/feed",         category: gaming,        weight: 0.60, fetch: 12 }
+
+      # ---- gadgets ----
+      # Measured 2026-10-30 from this box, before adding: newest item, items in
+      # the last 7 days, items/week over the feed's span, and how many of the
+      # 7-day titles the noise filter already drops (deals, "everything you
+      # need to know"). Every one is LOUD; the 10-post stock, the per-run
+      # per_source_cap of 3 and the 2-per-source section rule bound them.
+      #   Ars Technica Gadgets  newest 0.2d  7d: 16   19/wk  noise  0/16
+      #   The Verge             newest 0.0d  7d: 10  277/wk  noise  0/10 (feed holds 10)
+      #   Engadget              newest 0.0d  7d: 20  140/wk  noise  1/20
+      #   MacRumors             newest 0.0d  7d: 20  133/wk  noise  0/20
+      #   9to5Mac               newest 0.0d  7d:100  173/wk  noise  4/100
+      #   9to5Google            newest 0.0d  7d: 94   99/wk  noise 14/94
+      #   Android Authority     newest 0.1d  7d: 80  362/wk  noise 10/80
+      #   GSMArena              newest 0.1d  7d: 20  132/wk  noise  1/20
+      # Rejected the same day: Wired Gear (8 of 20 titles are sales), Gizmodo
+      # (517/wk, general news), Tom's Hardware (PC components, 148/wk).
+      # Weights: reporting with depth leads (Ars, The Verge); single-platform
+      # rumour and launch sites below.
+      - { name: Ars Technica Gadgets, url: "https://feeds.arstechnica.com/arstechnica/gadgets", category: gadgets, weight: 0.95, fetch: 15 }
+      - { name: The Verge,          url: "https://www.theverge.com/rss/index.xml",        category: gadgets,       weight: 0.90, fetch: 10 }
+      - { name: Engadget,           url: "https://www.engadget.com/rss.xml",              category: gadgets,       weight: 0.80, fetch: 15 }
+      - { name: MacRumors,          url: "https://feeds.macrumors.com/MacRumors-All",     category: gadgets,       weight: 0.75, fetch: 15 }
+      - { name: 9to5Mac,            url: "https://9to5mac.com/feed/",                     category: gadgets,       weight: 0.70, fetch: 15 }
+      - { name: 9to5Google,         url: "https://9to5google.com/feed/",                  category: gadgets,       weight: 0.70, fetch: 15 }
+      - { name: Android Authority,  url: "https://www.androidauthority.com/feed/",        category: gadgets,       weight: 0.65, fetch: 15 }
+      - { name: GSMArena,           url: "https://www.gsmarena.com/rss-news-reviews.php3", category: gadgets,      weight: 0.65, fetch: 15 }
 
       # ---- microsoft ----
       # Measured 2026-09-18 from this box, before adding: HTTP, dated entries,
