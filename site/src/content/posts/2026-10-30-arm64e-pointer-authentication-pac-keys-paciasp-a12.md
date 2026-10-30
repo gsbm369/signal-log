@@ -1,15 +1,16 @@
 ---
-title: "C2PA's eMudhra Moment"
+title: "arm64e pointer authentication: PAC keys, PACIASP, A12"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-29T20:33:44+00:00
-addedAt: 2026-10-29T22:18:35.314408+00:00
+pubDate: 2026-10-30T07:39:04+00:00
+addedAt: 2026-10-30T10:18:35.595074+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.da.vidbuchanan.co.uk/blog/c2pa-four.html"
+sourceUrl: "https://sigreturn.com/blog/pointer-authentication-arm64e/"
 tags: ["tech"]
-heat: 66
-score: 0.70123
+heat: 65
+score: 0.67703
 readMinutes: 1
+image: "https://sigreturn.com/brand/og.png"
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
