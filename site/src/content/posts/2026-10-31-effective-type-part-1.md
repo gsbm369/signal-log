@@ -1,16 +1,15 @@
 ---
-title: "An LC-3 Disassembler in Haskell"
+title: "Effective Type: Part 1"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-31T16:08:42+00:00
-addedAt: 2026-10-31T16:18:33.120008+00:00
+pubDate: 2026-10-31T21:59:52+00:00
+addedAt: 2026-10-31T22:18:35.063301+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://abhinavsarkar.net/posts/lc3-disassembler/"
+sourceUrl: "https://uecker.codeberg.page/2026-10-31.html"
 tags: ["tech"]
-heat: 71
-score: 0.74531
+heat: 69
+score: 0.74106
 readMinutes: 1
-image: "https://abhinavsarkar.net/previews/posts/lc3-disassembler.png"
 hnPoints: 0
 hnComments: 0
 buzz: 0

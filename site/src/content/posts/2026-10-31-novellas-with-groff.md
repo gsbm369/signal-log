@@ -1,19 +1,18 @@
 ---
-title: "Let’s Build a Brain"
+title: "Novellas with groff"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-31T15:09:27+00:00
-addedAt: 2026-10-31T16:18:33.120199+00:00
+pubDate: 2026-10-31T20:31:13+00:00
+addedAt: 2026-10-31T22:18:35.063500+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://aatishb.com/myriad/lets-build-a-brain/"
+sourceUrl: "https://movq.de/blog/postings/2026-10-31/0/POSTING-en.html"
 tags: ["tech"]
-heat: 69
-score: 0.7175
+heat: 66
+score: 0.70008
 readMinutes: 1
-image: "https://aatishb.com/myriad/promo_behaviors.jpeg"
-hnPoints: 76
-hnComments: 13
-buzz: 70
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

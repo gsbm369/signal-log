@@ -11,8 +11,8 @@ heat: 40
 score: 0.28987
 readMinutes: 1
 image: "https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/size/w1200/2026/10/andy4.png"
-hnPoints: 287
-hnComments: 241
+hnPoints: 289
+hnComments: 247
 buzz: 91
 ---
 

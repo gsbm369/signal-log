@@ -1,19 +1,19 @@
 ---
-title: "The federated code forge"
+title: "Molly (Signal fork) has not been updated since 3 months and is vulnerable"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T15:44:29+00:00
-addedAt: 2026-10-31T10:18:30.051344+00:00
+pubDate: 2026-10-31T10:23:41+00:00
+addedAt: 2026-10-31T22:18:35.063414+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://tangled.org/blog/forge/"
-tags: ["tech"]
-heat: 43
-score: 0.34246
+sourceUrl: "https://piefed.world/post/1503394"
+tags: ["vulnerab"]
+heat: 68
+score: 0.73001
 readMinutes: 1
-image: "https://assets.tangled.network/blog/forge/og.png"
-hnPoints: 313
-hnComments: 90
-buzz: 92
+image: "https://piefed.world/static/images/piefed_logo_full_t_300x300.svg"
+hnPoints: 286
+hnComments: 165
+buzz: 91
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

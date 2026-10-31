@@ -12,9 +12,9 @@ score: 0.28173
 readMinutes: 1
 image: "https://opengraph.githubassets.com/9281fc4e213ca447a89661f8cee9b2cca7bf4e14ddffbca46e7480677182a15b/dbreunig/nesformer"
 imageAlt: "An NES CPU compiled into the weights of a stock Qwen3.5 model - dbreunig/nesformer"
-hnPoints: 274
-hnComments: 135
-buzz: 90
+hnPoints: 282
+hnComments: 144
+buzz: 91
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

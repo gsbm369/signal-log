@@ -12,7 +12,7 @@ score: 0.98682
 readMinutes: 1
 image: "https://lemire.me/blog/wp-content/uploads/2026/10/feature-150x150.jpg"
 hnPoints: 3
-hnComments: 0
+hnComments: 1
 buzz: 22
 ---
 
