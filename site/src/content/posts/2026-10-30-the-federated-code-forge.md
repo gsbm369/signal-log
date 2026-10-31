@@ -1,19 +1,19 @@
 ---
-title: "Backdoor in Claude Code for VS Code extension on the Cursor Marketplace"
+title: "The federated code forge"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T07:09:12+00:00
-addedAt: 2026-10-30T22:17:55.898814+00:00
+pubDate: 2026-10-30T15:44:29+00:00
+addedAt: 2026-10-31T10:18:30.051344+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://phorion.io/blog/offical-claude-code-vsx-compromise/"
-tags: ["claude"]
-heat: 51
-score: 0.64463
+sourceUrl: "https://tangled.org/blog/forge/"
+tags: ["tech"]
+heat: 43
+score: 0.34246
 readMinutes: 1
-image: "https://phorion.io/images/default-social-card.png"
-hnPoints: 828
-hnComments: 504
-buzz: 100
+image: "https://assets.tangled.network/blog/forge/og.png"
+hnPoints: 290
+hnComments: 85
+buzz: 91
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

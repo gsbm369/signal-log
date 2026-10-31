@@ -11,9 +11,9 @@ heat: 51
 score: 0.41071
 readMinutes: 1
 image: "https://assets.medpagetoday.net/media/images/123xxx/123553.jpg"
-hnPoints: 283
-hnComments: 268
-buzz: 91
+hnPoints: 296
+hnComments: 273
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

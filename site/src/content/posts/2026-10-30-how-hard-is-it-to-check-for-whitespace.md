@@ -11,9 +11,9 @@ heat: 63
 score: 0.59808
 readMinutes: 1
 image: "https://serce.me/images/whitespace/whitespace.png"
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

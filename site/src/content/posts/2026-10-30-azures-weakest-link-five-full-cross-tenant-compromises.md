@@ -10,9 +10,9 @@ tags: ["azure"]
 heat: 62
 score: 0.57298
 readMinutes: 1
-hnPoints: 281
-hnComments: 56
-buzz: 91
+hnPoints: 312
+hnComments: 58
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
