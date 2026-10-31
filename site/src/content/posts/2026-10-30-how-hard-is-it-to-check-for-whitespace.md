@@ -1,18 +1,19 @@
 ---
-title: "Go 1.28's HTTP/2 Parking: Measuring Memory Savings"
+title: "How hard is it to check for whitespace?"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T15:39:37+00:00
-addedAt: 2026-10-30T16:18:33.222883+00:00
+pubDate: 2026-10-30T22:25:49+00:00
+addedAt: 2026-10-31T04:18:34.429275+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://abdolirad.me/articles/go-1-28-http2-parking-memory/"
+sourceUrl: "https://serce.me/posts/2026-10-30-how-hard-is-it-to-check-for-whitespace"
 tags: ["tech"]
 heat: 63
-score: 0.73154
+score: 0.59808
 readMinutes: 1
-hnPoints: 6
+image: "https://serce.me/images/whitespace/whitespace.png"
+hnPoints: 0
 hnComments: 0
-buzz: 31
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

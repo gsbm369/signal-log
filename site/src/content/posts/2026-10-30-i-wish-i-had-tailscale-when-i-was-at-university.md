@@ -11,9 +11,9 @@ heat: 72
 score: 0.89573
 readMinutes: 1
 image: "https://cdn.sanity.io/images/w77i7m8x/production/4cb8ee7cbb0fafc969cfefb5aac05ade0bd8cd8e-1536x600.png"
-hnPoints: 13
+hnPoints: 14
 hnComments: 2
-buzz: 42
+buzz: 44
 ---
 
 The files I forgot, and the desktop I couldn't reach from campus.

@@ -11,8 +11,8 @@ heat: 51
 score: 0.64463
 readMinutes: 1
 image: "https://phorion.io/images/default-social-card.png"
-hnPoints: 682
-hnComments: 433
+hnPoints: 828
+hnComments: 504
 buzz: 100
 ---
 

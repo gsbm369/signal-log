@@ -11,9 +11,9 @@ heat: 43
 score: 0.48621
 readMinutes: 1
 image: "https://media.wired.com/photos/6ae463bdc091c8b8d1ec019e/191:100/w_1280,c_limit/102026-Binance%20Hacked.jpg"
-hnPoints: 285
-hnComments: 200
-buzz: 91
+hnPoints: 372
+hnComments: 255
+buzz: 95
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
