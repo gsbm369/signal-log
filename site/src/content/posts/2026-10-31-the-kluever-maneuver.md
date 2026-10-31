@@ -1,18 +1,18 @@
 ---
-title: "Getting Google Cast on my Soundbar"
+title: "The Kluever Maneuver"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T19:14:44+00:00
-addedAt: 2026-10-31T10:18:30.051044+00:00
+pubDate: 2026-10-31T15:05:04+00:00
+addedAt: 2026-10-31T16:18:33.120350+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://codon.org.uk/~mjg59/blog/p/getting-google-cast-on-my-soundbar/"
+sourceUrl: "https://jordi.inversethought.com/blog/the-kluever-maneuver/"
 tags: ["tech"]
-heat: 49
-score: 0.41994
+heat: 69
+score: 0.71549
 readMinutes: 1
-hnPoints: 1
+hnPoints: 0
 hnComments: 0
-buzz: 11
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

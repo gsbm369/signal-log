@@ -11,9 +11,9 @@ heat: 48
 score: 0.40962
 readMinutes: 1
 image: "https://bostonglobe-prod.cdn.arcpublishing.com/resizer/v2/CGTKMVCJ3II6DM4QQY75UQKYRQ.jpg?auth=1665db2d602a73cebcb708de2cff81cdafb1dff34e84e5e1b3f511472b91079a&amp;width=1440"
-hnPoints: 316
-hnComments: 179
-buzz: 93
+hnPoints: 349
+hnComments: 212
+buzz: 94
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

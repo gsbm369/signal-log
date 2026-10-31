@@ -12,9 +12,9 @@ score: 0.19198
 readMinutes: 1
 image: "https://opengraph.githubassets.com/4905fd7f19f4c2d327fb794742dab12f77fe6064d27dff3d6cf030d6ce18bebe/herdrdev/herdr-app"
 imageAlt: "herdr desktop app. Contribute to herdrdev/herdr-app development by creating an account on GitHub."
-hnPoints: 354
-hnComments: 248
-buzz: 94
+hnPoints: 357
+hnComments: 253
+buzz: 95
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -1,18 +1,19 @@
 ---
-title: "The top ten reasons embedded projects get into trouble (2002)"
+title: "An LC-3 Disassembler in Haskell"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T22:35:08+00:00
-addedAt: 2026-10-31T04:18:34.429193+00:00
+pubDate: 2026-10-31T16:08:42+00:00
+addedAt: 2026-10-31T16:18:33.120008+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.ganssle.com/articles/jackstoptenlist.htm"
+sourceUrl: "https://abhinavsarkar.net/posts/lc3-disassembler/"
 tags: ["tech"]
-heat: 64
-score: 0.60166
+heat: 71
+score: 0.74531
 readMinutes: 1
-hnPoints: 2
+image: "https://abhinavsarkar.net/previews/posts/lc3-disassembler.png"
+hnPoints: 0
 hnComments: 0
-buzz: 18
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

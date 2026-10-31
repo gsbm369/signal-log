@@ -1,14 +1,14 @@
 ---
-title: "Bank of England: Bringing Climate Risk into Collateral Management"
+title: "Verification of payee outside the euro area: the build behind a refund rule"
 description: "Finextra linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T18:35:18+00:00
-addedAt: 2026-10-30T22:17:55.899672+00:00
+pubDate: 2026-10-30T10:43:41+00:00
+addedAt: 2026-10-31T16:18:33.121109+00:00
 source: "Finextra"
 category: fintech
-sourceUrl: "https://www.finextra.com/blogposting/33353/bank-of-england-bringing-climate-risk-into-collateral-management?utm_medium=rssfinextra&utm_source=finextrafeed"
+sourceUrl: "https://www.finextra.com/blogposting/33349/verification-of-payee-outside-the-euro-area-the-build-behind-a-refund-rule?utm_medium=rssfinextra&utm_source=finextrafeed"
 tags: ["tech"]
-heat: 55
-score: 0.72369
+heat: 60
+score: 0.56414
 readMinutes: 1
 hnPoints: 0
 hnComments: 0

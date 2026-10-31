@@ -1,18 +1,18 @@
 ---
-title: "Azure's Weakest Link – Five Full Cross-Tenant Compromises"
+title: "Serbia just elected the world's brainiest parliament"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-30T10:06:15+00:00
-addedAt: 2026-10-31T04:18:34.429380+00:00
+pubDate: 2026-10-31T10:21:30+00:00
+addedAt: 2026-10-31T16:18:33.120516+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.binarysecurity.no/posts/2026/10/one-root-case"
-tags: ["azure"]
-heat: 62
-score: 0.57298
+sourceUrl: "https://www.science.org/content/article/serbia-just-elected-world-s-brainiest-parliament"
+tags: ["tech"]
+heat: 60
+score: 0.55667
 readMinutes: 1
-hnPoints: 312
-hnComments: 58
-buzz: 92
+hnPoints: 589
+hnComments: 342
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

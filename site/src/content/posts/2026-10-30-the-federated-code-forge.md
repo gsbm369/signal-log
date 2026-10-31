@@ -11,9 +11,9 @@ heat: 43
 score: 0.34246
 readMinutes: 1
 image: "https://assets.tangled.network/blog/forge/og.png"
-hnPoints: 290
-hnComments: 85
-buzz: 91
+hnPoints: 313
+hnComments: 90
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
