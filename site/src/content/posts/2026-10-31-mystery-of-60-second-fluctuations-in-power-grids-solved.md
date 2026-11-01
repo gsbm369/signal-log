@@ -1,18 +1,18 @@
 ---
-title: "The Kluever Maneuver"
+title: "Mystery of 60-Second Fluctuations in Power Grids Solved"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-31T15:05:04+00:00
-addedAt: 2026-10-31T16:18:33.120350+00:00
+pubDate: 2026-10-31T19:50:11+00:00
+addedAt: 2026-11-01T04:18:37.357990+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://jordi.inversethought.com/blog/the-kluever-maneuver/"
+sourceUrl: "https://www.fz-juelich.de/en/news/archive/press-release/2026/mystery-of-60-second-fluctuations-in-power-grids-solved"
 tags: ["tech"]
-heat: 69
-score: 0.71549
+heat: 68
+score: 0.54122
 readMinutes: 1
-hnPoints: 1
+hnPoints: 8
 hnComments: 0
-buzz: 11
+buzz: 35
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

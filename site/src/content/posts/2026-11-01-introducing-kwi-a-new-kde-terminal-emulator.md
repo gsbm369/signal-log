@@ -1,14 +1,14 @@
 ---
-title: "Effective Type: Part 1"
+title: "Introducing Kwi, a new KDE terminal emulator"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-31T21:59:52+00:00
-addedAt: 2026-10-31T22:18:35.063301+00:00
+pubDate: 2026-11-01T02:56:29+00:00
+addedAt: 2026-11-01T04:18:37.357841+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://uecker.codeberg.page/2026-10-31.html"
+sourceUrl: "https://blogs.kde.org/2026/11/01/introducing-kwi/"
 tags: ["tech"]
-heat: 69
-score: 0.74106
+heat: 80
+score: 0.71153
 readMinutes: 1
 hnPoints: 0
 hnComments: 0

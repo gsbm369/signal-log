@@ -11,9 +11,9 @@ heat: 63
 score: 0.63917
 readMinutes: 1
 image: "https://bearblog.dev/static/og-image.png"
-hnPoints: 325
-hnComments: 130
-buzz: 93
+hnPoints: 907
+hnComments: 285
+buzz: 100
 ---
 
 YouTube-style UI over 6,454 videos sourced from 39,834 HN comments since 2007. https://hackertube.org/

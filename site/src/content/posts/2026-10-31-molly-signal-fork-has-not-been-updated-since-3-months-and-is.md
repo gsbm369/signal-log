@@ -11,9 +11,9 @@ heat: 68
 score: 0.73001
 readMinutes: 1
 image: "https://piefed.world/static/images/piefed_logo_full_t_300x300.svg"
-hnPoints: 286
-hnComments: 165
-buzz: 91
+hnPoints: 312
+hnComments: 182
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
