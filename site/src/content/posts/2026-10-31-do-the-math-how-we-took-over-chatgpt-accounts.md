@@ -11,9 +11,9 @@ heat: 57
 score: 0.40552
 readMinutes: 1
 image: "https://www.parameter.ai/opengraph-image.png"
-hnPoints: 312
-hnComments: 153
-buzz: 92
+hnPoints: 332
+hnComments: 165
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

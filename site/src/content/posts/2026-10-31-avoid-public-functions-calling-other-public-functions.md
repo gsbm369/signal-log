@@ -1,18 +1,18 @@
 ---
-title: "Novellas with groff"
+title: "Avoid Public Functions Calling Other Public Functions"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-31T20:31:13+00:00
-addedAt: 2026-10-31T22:18:35.063500+00:00
+pubDate: 2026-10-31T18:05:03+00:00
+addedAt: 2026-11-01T10:18:30.030952+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://movq.de/blog/postings/2026-10-31/0/POSTING-en.html"
+sourceUrl: "https://matklad.github.io/2026/10/29/pub-calls-pub.html"
 tags: ["tech"]
-heat: 66
-score: 0.70008
+heat: 47
+score: 0.40156
 readMinutes: 1
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 4
+hnComments: 2
+buzz: 26
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

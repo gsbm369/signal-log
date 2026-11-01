@@ -1,19 +1,18 @@
 ---
-title: "Molly (Signal fork) has not been updated since 3 months and is vulnerable"
+title: "Show HN: To Honor Sir Patrick Stewart, Enjoy the TNG Episode Guessing Game"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-31T10:23:41+00:00
-addedAt: 2026-10-31T22:18:35.063414+00:00
+pubDate: 2026-10-30T23:51:24+00:00
+addedAt: 2026-11-01T10:18:30.031108+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://piefed.world/post/1503394"
-tags: ["vulnerab"]
-heat: 68
-score: 0.73001
+sourceUrl: "https://tng.episodle.com/"
+tags: ["tech"]
+heat: 30
+score: 0.18576
 readMinutes: 1
-image: "https://piefed.world/static/images/piefed_logo_full_t_300x300.svg"
-hnPoints: 312
-hnComments: 182
-buzz: 92
+hnPoints: 236
+hnComments: 74
+buzz: 88
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
