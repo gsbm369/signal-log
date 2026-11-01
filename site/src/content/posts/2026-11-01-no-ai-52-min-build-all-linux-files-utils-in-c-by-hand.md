@@ -1,18 +1,18 @@
 ---
-title: "Introducing Kwi, a new KDE terminal emulator"
+title: "No AI, 52 min. Build all Linux Files utils in C by Hand"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-01T02:56:29+00:00
-addedAt: 2026-11-01T04:18:37.357841+00:00
+pubDate: 2026-11-01T11:06:14+00:00
+addedAt: 2026-11-01T16:18:30.564531+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blogs.kde.org/2026/11/01/introducing-kwi/"
-tags: ["tech"]
-heat: 80
-score: 0.71153
+sourceUrl: "https://www.youtube.com/watch?v=gQRmSlcTq9c"
+tags: ["linux"]
+heat: 85
+score: 1.0128
 readMinutes: 1
-hnPoints: 1
-hnComments: 0
-buzz: 11
+hnPoints: 107
+hnComments: 94
+buzz: 75
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

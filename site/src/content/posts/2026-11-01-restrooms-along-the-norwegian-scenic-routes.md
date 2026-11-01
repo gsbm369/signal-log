@@ -1,19 +1,18 @@
 ---
-title: "Do the math: How we took over ChatGPT accounts"
+title: "Restrooms along the Norwegian Scenic Routes"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-10-31T10:30:11+00:00
-addedAt: 2026-11-01T04:18:37.358042+00:00
+pubDate: 2026-11-01T10:47:58+00:00
+addedAt: 2026-11-01T16:18:30.564936+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.parameter.ai/labs/we-found-a-gap-at-openai"
-tags: ["openai"]
-heat: 57
-score: 0.40552
+sourceUrl: "https://www.visitnorway.com/plan-your-trip/travel-tips-a-z/norwegian-scenic-routes/worlds-best-toilets/"
+tags: ["tech"]
+heat: 60
+score: 0.56622
 readMinutes: 1
-image: "https://www.parameter.ai/opengraph-image.png"
-hnPoints: 332
-hnComments: 165
-buzz: 93
+hnPoints: 598
+hnComments: 342
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -12,9 +12,9 @@ score: 0.44744
 readMinutes: 1
 image: "https://th-thumbnailer.cdn-si-edu.com/eRbB1NtZIRLijNQKhUs7CKf08r0=/fit-in/1200x0/filters:focal(1181x787:1182x788)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/37/95/3795362b-64a6-4d5f-b7df-67aa18192521/l2190910.jpg"
 imageAlt: "At his farm near Parma, Italy, Claudio Grossi offers a visual history of his miracle grain in photos, crackers and loaves."
-hnPoints: 446
-hnComments: 127
-buzz: 98
+hnPoints: 616
+hnComments: 176
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
