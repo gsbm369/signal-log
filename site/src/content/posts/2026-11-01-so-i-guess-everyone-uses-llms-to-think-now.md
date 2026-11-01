@@ -1,17 +1,17 @@
 ---
-title: "A Specialised Haskell Processor on FPGA"
+title: "so i guess everyone uses llms to think now"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-01T16:13:20+00:00
-addedAt: 2026-11-01T16:18:30.564733+00:00
+pubDate: 2026-11-01T21:13:55+00:00
+addedAt: 2026-11-01T22:18:30.596430+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://bathtub-01.github.io/technical/ouros-demo/"
+sourceUrl: "https://eva.ac/blog/llms"
 tags: ["tech"]
-heat: 71
-score: 0.74754
+heat: 60
+score: 0.71957
 readMinutes: 1
 hnPoints: 5
-hnComments: 1
+hnComments: 0
 buzz: 29
 ---
 

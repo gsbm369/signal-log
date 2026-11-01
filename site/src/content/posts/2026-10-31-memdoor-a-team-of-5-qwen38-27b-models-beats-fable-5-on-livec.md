@@ -12,9 +12,9 @@ score: 0.35629
 readMinutes: 1
 image: "https://opengraph.githubassets.com/4d4ecdd360744966229f30013fc8fd5bcb4e4a2c00b679f3d040b1573e5e3b21/guregodevo/memdoor"
 imageAlt: "A lightweight coding and automation agent in one CLI binary. Run locally or over SSH, optimize token use, and automate CI and cron with durable workflows. - guregodevo/memdoor"
-hnPoints: 351
-hnComments: 173
-buzz: 94
+hnPoints: 414
+hnComments: 202
+buzz: 97
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

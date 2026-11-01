@@ -11,9 +11,9 @@ heat: 50
 score: 0.40866
 readMinutes: 1
 image: "https://jetstream.security/wp-content/uploads/2026/07/ChatGPT-Image-Jul-1-2026-02_56_34-PM.png"
-hnPoints: 224
-hnComments: 120
-buzz: 87
+hnPoints: 300
+hnComments: 181
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

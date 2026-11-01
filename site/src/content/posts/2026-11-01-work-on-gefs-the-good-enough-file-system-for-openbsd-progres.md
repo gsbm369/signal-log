@@ -1,18 +1,18 @@
 ---
-title: "No AI, 52 min. Build all Linux Files utils in C by Hand"
+title: "Work on GEFS (the Good Enough File System) for OpenBSD progresses"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-01T11:06:14+00:00
-addedAt: 2026-11-01T16:18:30.564531+00:00
+pubDate: 2026-11-01T20:13:29+00:00
+addedAt: 2026-11-01T22:18:30.596735+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.youtube.com/watch?v=gQRmSlcTq9c"
-tags: ["linux"]
-heat: 85
-score: 1.0128
+sourceUrl: "https://www.undeadly.org/cgi?action=article;sid=20261101115637"
+tags: ["tech"]
+heat: 59
+score: 0.69219
 readMinutes: 1
-hnPoints: 107
-hnComments: 94
-buzz: 75
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
