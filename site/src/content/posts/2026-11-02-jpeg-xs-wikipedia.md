@@ -1,14 +1,14 @@
 ---
-title: "Work on GEFS (the Good Enough File System) for OpenBSD progresses"
+title: "JPEG XS - Wikipedia"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-01T20:13:29+00:00
-addedAt: 2026-11-01T22:18:30.596735+00:00
+pubDate: 2026-11-02T07:53:19+00:00
+addedAt: 2026-11-02T10:18:32.631467+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.undeadly.org/cgi?action=article;sid=20261101115637"
+sourceUrl: "https://en.wikipedia.org/wiki/JPEG_XS"
 tags: ["tech"]
-heat: 59
-score: 0.69219
+heat: 81
+score: 0.68328
 readMinutes: 1
 hnPoints: 0
 hnComments: 0

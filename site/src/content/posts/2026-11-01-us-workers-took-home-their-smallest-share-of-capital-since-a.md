@@ -12,9 +12,9 @@ score: 0.57814
 readMinutes: 1
 image: "https://fortune.com/img-assets/wp-content/uploads/2026/01/GettyImages-1322099863-e1768339483475.jpg?resize=1200,600"
 imageAlt: "A worker in a green jacket operates a welding tool."
-hnPoints: 243
-hnComments: 134
-buzz: 88
+hnPoints: 296
+hnComments: 162
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

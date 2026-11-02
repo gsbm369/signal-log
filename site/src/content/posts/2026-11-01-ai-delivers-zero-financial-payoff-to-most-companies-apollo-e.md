@@ -11,9 +11,9 @@ heat: 65
 score: 0.55282
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2023/08/GettyImages-1308803174.jpg?resize=1200,800"
-hnPoints: 208
-hnComments: 196
-buzz: 86
+hnPoints: 227
+hnComments: 223
+buzz: 87
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

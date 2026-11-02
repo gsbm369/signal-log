@@ -1,18 +1,18 @@
 ---
-title: "Postgres 19 is late, and it's AI's fault"
+title: "the lost malloc()"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-02T02:19:02+00:00
-addedAt: 2026-11-02T04:18:35.281375+00:00
+pubDate: 2026-11-02T08:46:48+00:00
+addedAt: 2026-11-02T10:18:32.629612+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "http://rhaas.blogspot.com/2026/10/postgres-19-is-late-and-its-ais-fault.html"
-tags: ["postgres"]
-heat: 100
-score: 1.14614
+sourceUrl: "https://napcakes.nekoweb.org/posts/malloc/"
+tags: ["tech"]
+heat: 82
+score: 0.70714
 readMinutes: 1
-hnPoints: 162
-hnComments: 107
-buzz: 82
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
