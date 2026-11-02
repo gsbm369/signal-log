@@ -1,18 +1,18 @@
 ---
-title: "Restrooms along the Norwegian Scenic Routes"
+title: "Mathematics has changed. Let's act like it"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-01T10:47:58+00:00
-addedAt: 2026-11-01T16:18:30.564936+00:00
+pubDate: 2026-11-01T18:28:42+00:00
+addedAt: 2026-11-02T04:18:35.281872+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.visitnorway.com/plan-your-trip/travel-tips-a-z/norwegian-scenic-routes/worlds-best-toilets/"
+sourceUrl: "https://terrytao.wordpress.com/2026/11/01/mathematics-has-changed-lets-act-like-it/"
 tags: ["tech"]
-heat: 60
-score: 0.56622
+heat: 59
+score: 0.4794
 readMinutes: 1
-hnPoints: 663
-hnComments: 386
-buzz: 100
+hnPoints: 249
+hnComments: 276
+buzz: 89
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

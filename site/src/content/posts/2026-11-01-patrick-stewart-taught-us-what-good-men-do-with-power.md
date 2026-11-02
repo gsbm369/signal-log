@@ -12,9 +12,9 @@ score: 0.58105
 readMinutes: 1
 image: "https://platform.vox.com/wp-content/uploads/sites/2/2026/10/gettyimages-459889618.jpg?quality=90&amp;strip=all&amp;crop=0%2C15.142462754721%2C100%2C69.715074490557&amp;w=1200"
 imageAlt: "Star Trek: The Next Generation"
-hnPoints: 301
-hnComments: 209
-buzz: 92
+hnPoints: 397
+hnComments: 289
+buzz: 96
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

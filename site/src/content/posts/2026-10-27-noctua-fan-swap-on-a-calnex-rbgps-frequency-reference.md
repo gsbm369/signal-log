@@ -13,7 +13,7 @@ readMinutes: 1
 image: "https://www.jeffgeerling.com/blog/2026/noctua-fan-swap-calnex-rb-gps-frequency-reference/calnex-rb-gps-frequency-reference-open.jpeg"
 imageAlt: "Calnex Rb/GPS Frequency Reference open on workbench"
 hnPoints: 45
-hnComments: 30
+hnComments: 31
 buzz: 62
 ---
 

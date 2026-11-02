@@ -11,7 +11,7 @@ heat: 52
 score: 0.57084
 readMinutes: 1
 image: "https://helios-i.mashable.com/imagery/articles/00cSAXoWdRYObLNtN71MkCO/hero-image.fill.size_1200x675.v1793455880.png"
-hnPoints: 179
+hnPoints: 181
 hnComments: 112
 buzz: 84
 ---

@@ -1,18 +1,18 @@
 ---
-title: "so i guess everyone uses llms to think now"
+title: "The Problem with C++ Safety: Modern C++ Is a Mindset, Not a Standard"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-01T21:13:55+00:00
-addedAt: 2026-11-01T22:18:30.596430+00:00
+pubDate: 2026-11-02T02:26:44+00:00
+addedAt: 2026-11-02T04:18:35.281668+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://eva.ac/blog/llms"
+sourceUrl: "https://www.modernescpp.com/index.php/cpp-and-memory-safety-part-2/"
 tags: ["tech"]
-heat: 60
-score: 0.71957
+heat: 74
+score: 0.69807
 readMinutes: 1
-hnPoints: 5
+hnPoints: 0
 hnComments: 0
-buzz: 29
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

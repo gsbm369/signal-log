@@ -10,8 +10,8 @@ tags: ["claude"]
 heat: 55
 score: 0.63078
 readMinutes: 1
-hnPoints: 685
-hnComments: 157
+hnPoints: 1063
+hnComments: 194
 buzz: 100
 ---
 

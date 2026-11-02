@@ -12,9 +12,9 @@ score: 1.27923
 readMinutes: 1
 image: "https://www.microsoft.com/en-us/security/blog/wp-content/uploads/2026/10/image-23.webp"
 imageAlt: "Five-step attack chain showing host reconnaissance, SSH key installation, reverse tunneling, cross-platform persistence, and delayed reporting to attacker infrastructure."
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 4
+hnComments: 1
+buzz: 26
 ---
 
 Microsoft analyzes a malicious Claude Code–branded extension, its persistent SSH backdoor, and guidance to detect and remediate it. The post Inside a malicious Claude Code-branded extension and its persistent SSH backdoor appeared first on Microsoft Security Blog .
