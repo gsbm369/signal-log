@@ -11,9 +11,9 @@ heat: 65
 score: 0.89273
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/10/TRMNL_Seeed_Kit_Ferengi_Rules-1152x648.jpg"
-hnPoints: 9
-hnComments: 2
-buzz: 37
+hnPoints: 34
+hnComments: 7
+buzz: 57
 ---
 
 This DIY e-paper display works in two official ecosystems or on your own server.

@@ -11,9 +11,9 @@ heat: 69
 score: 0.98749
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 74
+hnComments: 26
+buzz: 69
 ---
 
 Wait, that's not him. The post Sneaking into the auditorium for the Windows 2000 launch rehearsal appeared first on The Old New Thing .

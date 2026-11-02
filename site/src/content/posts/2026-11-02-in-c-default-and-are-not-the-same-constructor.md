@@ -11,9 +11,9 @@ heat: 69
 score: 0.9857
 readMinutes: 1
 image: "https://lemire.me/blog/wp-content/uploads/2026/11/cppinit-cover-150x150.jpg"
-hnPoints: 2
+hnPoints: 3
 hnComments: 0
-buzz: 18
+buzz: 22
 ---
 
 You can write an empty default constructor as span() = default or as span() {}. It can have remarkable effects on performance. struct span { const char *p; int len; const char *end; span() = default; // or span() {} span(const char *s, int n) : p(s), len(n), end(s + n) {} }; The constructor Continue reading In C++, = default and {} are not the same constructor
