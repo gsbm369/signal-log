@@ -11,9 +11,9 @@ heat: 52
 score: 0.32777
 readMinutes: 1
 image: "https://www.thedrive.com/wp-content/uploads/2026/10/untitled-0001-copy.jpg?w=1200"
-hnPoints: 448
-hnComments: 150
-buzz: 98
+hnPoints: 461
+hnComments: 154
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

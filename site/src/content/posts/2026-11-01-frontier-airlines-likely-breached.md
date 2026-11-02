@@ -10,8 +10,8 @@ tags: ["breach"]
 heat: 74
 score: 0.588
 readMinutes: 1
-hnPoints: 204
-hnComments: 78
+hnPoints: 214
+hnComments: 84
 buzz: 86
 ---
 

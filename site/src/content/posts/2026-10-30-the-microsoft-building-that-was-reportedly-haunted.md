@@ -11,9 +11,9 @@ heat: 73
 score: 0.82243
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 Lots of rumors, little confirmation. The post The Microsoft building that was reportedly haunted appeared first on The Old New Thing .
