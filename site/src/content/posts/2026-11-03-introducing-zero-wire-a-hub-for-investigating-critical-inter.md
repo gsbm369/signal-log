@@ -11,9 +11,9 @@ heat: 95
 score: 1.56005
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M6GJ6AY4JP65PWEN7N433797.01M6GJ6BBQ9P5FYVNPWDVKT2EY.png"
-hnPoints: 2
+hnPoints: 5
 hnComments: 0
-buzz: 18
+buzz: 29
 ---
 
 Zero Wire on Cloudflare Radar pairs plain-language briefings with global attack telemetry and remediation steps. Triage critical CVEs faster and decide how to protect your infrastructure.

@@ -11,8 +11,8 @@ heat: 54
 score: 0.60115
 readMinutes: 1
 image: "https://honnibal.dev/social.png"
-hnPoints: 573
-hnComments: 135
+hnPoints: 840
+hnComments: 187
 buzz: 100
 ---
 

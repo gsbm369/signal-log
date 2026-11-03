@@ -12,9 +12,9 @@ score: 0.39672
 readMinutes: 1
 image: "https://opengraph.githubassets.com/3a992e15d600cb3cef3cc862a427ce84fc1990871e5172b9d38f1eef569c45e6/JiaFeiMiao-K-Cat/DiscImageStudio"
 imageAlt: "Contribute to JiaFeiMiao-K-Cat/DiscImageStudio development by creating an account on GitHub."
-hnPoints: 320
-hnComments: 72
-buzz: 93
+hnPoints: 339
+hnComments: 77
+buzz: 94
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

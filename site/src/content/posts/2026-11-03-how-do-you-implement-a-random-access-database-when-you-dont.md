@@ -11,9 +11,9 @@ heat: 73
 score: 0.98749
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 0
+hnPoints: 3
 hnComments: 0
-buzz: 0
+buzz: 22
 ---
 
 You just store it all in memory, in your own program. The post How do you implement a random-access database when you don t have random-access external storage? appeared first on The Old New Thing .

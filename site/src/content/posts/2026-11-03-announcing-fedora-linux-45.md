@@ -11,9 +11,9 @@ heat: 79
 score: 1.12962
 readMinutes: 1
 image: "https://fedoramagazine.org/wp-content/uploads/2026/09/Fedora_LInux_45-300x127.jpg"
-hnPoints: 3
+hnPoints: 8
 hnComments: 0
-buzz: 22
+buzz: 35
 ---
 
 The Fedora Project is pleased to announce the release of Fedora Linux 45! Whether you use Fedora on your desktop, server, edge device, or cloud instance, Fedora Linux 45 brings polished desktop upgrades, powerful new installer features, and updated toolchains. Every Fedora release is a major community effort thank you to everyone in our [ ]

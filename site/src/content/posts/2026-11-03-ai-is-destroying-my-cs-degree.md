@@ -11,9 +11,9 @@ heat: 61
 score: 0.73907
 readMinutes: 1
 image: "https://bearblog.dev/static/og-image.png"
-hnPoints: 65
-hnComments: 27
-buzz: 67
+hnPoints: 114
+hnComments: 106
+buzz: 76
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
