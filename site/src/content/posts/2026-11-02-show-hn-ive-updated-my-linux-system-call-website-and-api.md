@@ -12,9 +12,9 @@ score: 0.70498
 readMinutes: 1
 image: "https://syscall.sh/og.png"
 imageAlt: "The syscall(2) man page"
-hnPoints: 192
-hnComments: 48
-buzz: 85
+hnPoints: 215
+hnComments: 52
+buzz: 86
 ---
 
 I first released those in back in 2020 and now I finally added more architectures, Kernel selector, syscall descriptions and a few other niceties. It should work a bit better on mobile devices too but I am no CSS expert. The API is at https://api.syscall.sh

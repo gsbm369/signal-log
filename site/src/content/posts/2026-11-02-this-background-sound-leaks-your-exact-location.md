@@ -1,16 +1,15 @@
 ---
-title: "Polyend releases the Tracker firmware source code"
+title: "This background sound leaks your exact location"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-02T15:22:16+00:00
-addedAt: 2026-11-02T16:18:31.627848+00:00
+pubDate: 2026-11-02T19:42:32+00:00
+addedAt: 2026-11-03T04:18:32.011397+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://backstage.polyend.com/t/tracker-the-biggest-update-yet/25120"
+sourceUrl: "https://youtu.be/UytYrhYLOKI"
 tags: ["tech"]
-heat: 57
-score: 0.72344
+heat: 67
+score: 0.53859
 readMinutes: 1
-image: "https://backstage.polyend.com/uploads/default/optimized/2X/c/c8b0c5d69102af68a9917ba47dd1a7d629218a20_2_1024x683.jpeg"
 hnPoints: 0
 hnComments: 0
 buzz: 0

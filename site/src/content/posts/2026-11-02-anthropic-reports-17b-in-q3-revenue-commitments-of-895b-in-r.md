@@ -11,8 +11,8 @@ heat: 63
 score: 0.85988
 readMinutes: 1
 image: "https://image.cnbcfm.com/api/v1/image/108369526-1790698647709-gettyimages-2297195052-AFP_C9PK8G7.jpeg?v=1790698665&amp;w=1920&amp;h=1080"
-hnPoints: 222
-hnComments: 249
+hnPoints: 228
+hnComments: 268
 buzz: 87
 ---
 
