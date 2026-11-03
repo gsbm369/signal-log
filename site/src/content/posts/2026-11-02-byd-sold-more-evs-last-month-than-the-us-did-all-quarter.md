@@ -11,9 +11,9 @@ heat: 68
 score: 0.54164
 readMinutes: 1
 image: "https://electrek.co/wp-content/uploads/sites/3/2026/11/BYD-EV-sales-October-record.jpeg?quality=82&strip=all&resize=1200,628"
-hnPoints: 244
-hnComments: 260
-buzz: 88
+hnPoints: 266
+hnComments: 272
+buzz: 90
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

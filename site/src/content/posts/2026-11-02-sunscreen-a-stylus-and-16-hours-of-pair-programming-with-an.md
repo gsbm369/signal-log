@@ -11,9 +11,9 @@ heat: 61
 score: 0.81904
 readMinutes: 1
 image: "https://www.collabora.com/assets/images/blog/Collabora-Hand-Recognition-AI.jpg"
-hnPoints: 6
+hnPoints: 7
 hnComments: 0
-buzz: 31
+buzz: 33
 ---
 
 An AI-assisted side project turned a missing KDE tablet feature into a working handwriting mode, combining open source recognition, stylus input, and human-led debugging across an unfamiliar software stack.

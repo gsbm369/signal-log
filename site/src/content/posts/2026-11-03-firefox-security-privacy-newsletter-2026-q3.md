@@ -1,18 +1,18 @@
 ---
-title: "A Decade of Kill Bugs"
+title: "Firefox Security & Privacy Newsletter 2026 Q3"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-02T21:23:24+00:00
-addedAt: 2026-11-02T22:18:38.835381+00:00
+pubDate: 2026-11-03T08:03:58+00:00
+addedAt: 2026-11-03T10:18:30.752959+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://alangrow.com/blog/a-decade-of-kill-bugs"
+sourceUrl: "https://attackanddefense.dev/2026/11/02/firefox-security-and-privacy-newsletter-q3.html"
 tags: ["tech"]
-heat: 57
-score: 0.72395
+heat: 75
+score: 0.68798
 readMinutes: 1
-hnPoints: 3
+hnPoints: 0
 hnComments: 0
-buzz: 22
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -1,17 +1,18 @@
 ---
-title: "My favourite laptop"
+title: "Why we're moving our warehouse off DuckDB"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-02T19:48:40+00:00
-addedAt: 2026-11-02T22:18:38.835705+00:00
+pubDate: 2026-11-03T07:33:25+00:00
+addedAt: 2026-11-03T10:18:30.752625+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blog.jsbarretto.com/post/laptop"
-tags: ["tech"]
-heat: 55
-score: 0.68124
+sourceUrl: "https://posthog.com/blog/moving-off-duckdb"
+tags: ["duckdb"]
+heat: 100
+score: 1.11312
 readMinutes: 1
-hnPoints: 175
-hnComments: 132
+image: "https://res.cloudinary.com/dmukukwp6/image/upload/moving_off_duckdb_4c95538aac.png"
+hnPoints: 174
+hnComments: 116
 buzz: 83
 ---
 
