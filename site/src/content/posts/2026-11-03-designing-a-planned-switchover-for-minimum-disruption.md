@@ -11,9 +11,9 @@ heat: 75
 score: 0.69519
 readMinutes: 1
 image: "https://planetscale.com/assets/designing-a-planned-switchover-for-minimum-disruption-social-DtLvDiix.png"
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

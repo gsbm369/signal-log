@@ -10,9 +10,9 @@ tags: ["tech"]
 heat: 62
 score: 0.50625
 readMinutes: 1
-hnPoints: 275
-hnComments: 85
-buzz: 90
+hnPoints: 413
+hnComments: 128
+buzz: 97
 ---
 
 I thought it would be fun to browse HN as if it were a newspaper. The site updates once an hour. Enjoy!

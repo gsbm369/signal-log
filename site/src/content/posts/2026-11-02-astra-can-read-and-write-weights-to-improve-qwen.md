@@ -11,8 +11,8 @@ heat: 52
 score: 0.37875
 readMinutes: 1
 image: "https://rikiyat.github.io/images/blog/weight-space-programming.png"
-hnPoints: 2538
-hnComments: 784
+hnPoints: 2887
+hnComments: 870
 buzz: 100
 ---
 

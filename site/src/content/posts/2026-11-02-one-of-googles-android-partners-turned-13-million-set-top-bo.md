@@ -11,9 +11,9 @@ heat: 78
 score: 0.7387
 readMinutes: 1
 image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/videostrong-android-tv-device.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
-hnPoints: 38
+hnPoints: 46
 hnComments: 4
-buzz: 59
+buzz: 62
 ---
 
 Google says one of its Android manufacturing partners secretly built a backdoor in 1.3 million devices and turned them into a botnet. The company says it has now dismantled the backdoor and "cut ties" with the manufacturer, the Shenzhen, China-based Videostrong Technology Co., which has been banned from building or selling certified Android devices or [ ]
