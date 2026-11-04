@@ -11,9 +11,9 @@ heat: 100
 score: 1.47055
 readMinutes: 1
 image: "https://www.collabora.com/assets/images/blog/Collabora-Kernel73.jpg"
-hnPoints: 3
+hnPoints: 4
 hnComments: 0
-buzz: 22
+buzz: 26
 ---
 
 Collabora authored 111 patches for Linux 7.3, spanning DRM core, Rust, MediaTek, Rockchip, and more. Highlights include a new color format property, per-connector hotplug events, sparse mappings in Panthor, and continued progress on Tyr.

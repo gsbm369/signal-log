@@ -11,9 +11,9 @@ heat: 52
 score: 0.62941
 readMinutes: 1
 image: "https://pavursec.com/media/logo.svg"
-hnPoints: 5
+hnPoints: 6
 hnComments: 1
-buzz: 29
+buzz: 31
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

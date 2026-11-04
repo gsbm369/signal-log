@@ -1,19 +1,19 @@
 ---
-title: "The valley of webhooks"
+title: "Fraction comparison trick revisited"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-04T02:10:26+00:00
-addedAt: 2026-11-04T04:18:35.246098+00:00
+pubDate: 2026-11-04T09:02:48+00:00
+addedAt: 2026-11-04T10:18:32.747132+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://weli.dev/blog/the-valley-of-webhooks/"
+sourceUrl: "https://www.johndcook.com/blog/2026/11/03/fraction-comparison-trick-revisited/"
 tags: ["tech"]
-heat: 55
-score: 0.69083
+heat: 67
+score: 0.71445
 readMinutes: 1
-image: "https://weli.dev/images/social_card_bg_hu_989cf0316fb7b99b.webp"
-hnPoints: 247
-hnComments: 102
-buzz: 89
+image: "https://www.johndcook.com/blog/wp-content/uploads/2022/05/twittercard.png"
+hnPoints: 2
+hnComments: 0
+buzz: 18
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

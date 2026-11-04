@@ -11,9 +11,9 @@ heat: 48
 score: 0.54172
 readMinutes: 1
 image: "https://webkit.org/wp-content/uploads/Demo-of-Adaptive-Dark-Mode_light.png"
-hnPoints: 343
-hnComments: 195
-buzz: 94
+hnPoints: 426
+hnComments: 226
+buzz: 97
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

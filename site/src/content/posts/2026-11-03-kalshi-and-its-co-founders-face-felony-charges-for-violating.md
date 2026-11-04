@@ -1,18 +1,18 @@
 ---
-title: "Qwen 3.8 27B on my laptop can interpret model weights, too"
+title: "Kalshi and its co-founders face felony charges for violating Utah gambling laws"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-03T17:40:00+00:00
-addedAt: 2026-11-03T22:18:36.426947+00:00
+pubDate: 2026-11-03T15:29:15+00:00
+addedAt: 2026-11-04T10:18:32.747574+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/"
+sourceUrl: "https://arstechnica.com/tech-policy/2026/10/trump-admin-sues-utah-to-save-kalshi-from-the-states-total-ban-on-gambling/"
 tags: ["tech"]
-heat: 58
-score: 0.58543
+heat: 43
+score: 0.33912
 readMinutes: 1
-hnPoints: 528
-hnComments: 166
-buzz: 100
+hnPoints: 474
+hnComments: 465
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
