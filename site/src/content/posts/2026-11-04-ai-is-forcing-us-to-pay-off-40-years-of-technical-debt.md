@@ -11,8 +11,8 @@ heat: 65
 score: 0.67859
 readMinutes: 1
 image: "https://spectrum.ieee.org/media-library/image.jpg?id=68544156&width=1200&height=600&coordinates=0%2C312%2C0%2C313"
-hnPoints: 524
-hnComments: 353
+hnPoints: 967
+hnComments: 588
 buzz: 100
 ---
 

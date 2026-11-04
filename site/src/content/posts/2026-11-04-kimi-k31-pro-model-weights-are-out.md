@@ -1,18 +1,19 @@
 ---
-title: "Google will turn off search for schools that reject AI"
+title: "Kimi K3.1 Pro model weights are out"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-03T15:25:47+00:00
-addedAt: 2026-11-04T10:18:32.747676+00:00
+pubDate: 2026-11-04T15:30:30+00:00
+addedAt: 2026-11-04T22:18:32.876625+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://www.nytimes.com/2026/11/03/us/google-search-schools-restrict-ai.html"
+sourceUrl: "https://huggingface.co/moonshotai/Kimi-K3.1-Pro"
 tags: ["tech"]
-heat: 43
-score: 0.33836
+heat: 45
+score: 0.53875
 readMinutes: 1
-hnPoints: 649
-hnComments: 449
-buzz: 100
+image: "https://cdn-thumbnails.huggingface.co/social-thumbnails/models/moonshotai/Kimi-K3.1-Pro.png"
+hnPoints: 289
+hnComments: 79
+buzz: 91
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -10,9 +10,9 @@ tags: ["rust"]
 heat: 89
 score: 1.13611
 readMinutes: 1
-hnPoints: 2
+hnPoints: 3
 hnComments: 0
-buzz: 18
+buzz: 22
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

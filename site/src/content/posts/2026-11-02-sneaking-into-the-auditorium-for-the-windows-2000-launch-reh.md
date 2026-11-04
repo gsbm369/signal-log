@@ -11,7 +11,7 @@ heat: 69
 score: 0.98749
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 150
+hnPoints: 151
 hnComments: 56
 buzz: 81
 ---

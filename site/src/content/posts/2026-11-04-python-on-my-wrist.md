@@ -1,18 +1,18 @@
 ---
-title: "Being of use to someone"
+title: "Python on my wrist"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-04T08:26:56+00:00
-addedAt: 2026-11-04T10:18:32.747259+00:00
+pubDate: 2026-11-04T17:31:02+00:00
+addedAt: 2026-11-04T22:18:32.875644+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://jmreiche.github.io/being-of-use-to-someone"
-tags: ["tech"]
-heat: 66
-score: 0.69819
+sourceUrl: "https://tildeweb.nl/~michiel/python-on-my-wrist.html"
+tags: ["python"]
+heat: 67
+score: 1.02905
 readMinutes: 1
-hnPoints: 3
-hnComments: 0
-buzz: 22
+hnPoints: 93
+hnComments: 12
+buzz: 73
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
