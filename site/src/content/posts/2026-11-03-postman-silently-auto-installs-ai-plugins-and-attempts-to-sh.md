@@ -12,8 +12,8 @@ score: 0.57894
 readMinutes: 1
 image: "https://opengraph.githubassets.com/9c975b46a738390ff5242d715cb750b81b4bc712e318d2a941418ea86cb87095/postmanlabs/postman-app-support/issues/14370"
 imageAlt: "Is there an existing issue for this? I have searched the tracker for existing similar issues and I know that duplicates will be closed Describe the Issue Opening Postman on my Mac was followed by u..."
-hnPoints: 860
-hnComments: 281
+hnPoints: 1109
+hnComments: 362
 buzz: 100
 ---
 

@@ -1,18 +1,19 @@
 ---
-title: "Announcing NetBSD 11.1"
+title: "Observations from Running stealmybitcoin.com"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-03T22:00:17+00:00
-addedAt: 2026-11-03T22:18:36.424607+00:00
+pubDate: 2026-11-03T23:45:21+00:00
+addedAt: 2026-11-04T04:18:35.246204+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://www.netbsd.org/releases/formal-11/NetBSD-11.1.html"
+sourceUrl: "https://pavursec.com/blog/stealmybitcoin/"
 tags: ["tech"]
-heat: 66
-score: 0.74129
+heat: 52
+score: 0.62941
 readMinutes: 1
-hnPoints: 0
-hnComments: 0
-buzz: 0
+image: "https://pavursec.com/media/logo.svg"
+hnPoints: 5
+hnComments: 1
+buzz: 29
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

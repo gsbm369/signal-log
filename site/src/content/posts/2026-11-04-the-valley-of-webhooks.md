@@ -1,19 +1,19 @@
 ---
-title: "AI is destroying my CS degree"
+title: "The valley of webhooks"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-03T15:55:36+00:00
-addedAt: 2026-11-03T16:18:36.484837+00:00
+pubDate: 2026-11-04T02:10:26+00:00
+addedAt: 2026-11-04T04:18:35.246098+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://lordtoots.bearblog.dev/ai-is-destroying-my-cs-degree/"
+sourceUrl: "https://weli.dev/blog/the-valley-of-webhooks/"
 tags: ["tech"]
-heat: 61
-score: 0.73907
+heat: 55
+score: 0.69083
 readMinutes: 1
-image: "https://bearblog.dev/static/og-image.png"
-hnPoints: 114
-hnComments: 106
-buzz: 76
+image: "https://weli.dev/images/social_card_bg_hu_989cf0316fb7b99b.webp"
+hnPoints: 247
+hnComments: 102
+buzz: 89
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

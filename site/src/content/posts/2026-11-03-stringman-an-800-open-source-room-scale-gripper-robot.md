@@ -1,19 +1,18 @@
 ---
-title: "The 'Astra can read and write weights to improve Qwen' post is misleading"
+title: "Stringman, an $800 open-source room scale gripper robot"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-03T12:21:17+00:00
-addedAt: 2026-11-03T16:18:36.484906+00:00
+pubDate: 2026-11-03T16:47:29+00:00
+addedAt: 2026-11-04T04:18:35.246418+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://honnibal.dev/blog/astra-read-write-misleading"
+sourceUrl: "https://neufangled.com/"
 tags: ["tech"]
-heat: 54
-score: 0.60115
+heat: 43
+score: 0.44926
 readMinutes: 1
-image: "https://honnibal.dev/social.png"
-hnPoints: 840
-hnComments: 187
-buzz: 100
+hnPoints: 451
+hnComments: 159
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
