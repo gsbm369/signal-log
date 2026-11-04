@@ -11,9 +11,9 @@ heat: 70
 score: 0.76353
 readMinutes: 1
 image: "https://nodejs.org/en/next-data/og/vulnerability/Node.js%20%E2%80%94%20Wednesday,%20November%2011,%202026%20Security%20Releases"
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 Node.js Blog linked this without a summary. Follow the link for the article.

@@ -12,9 +12,9 @@ score: 0.43046
 readMinutes: 1
 image: "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
 imageAlt: "arXiv logo"
-hnPoints: 334
-hnComments: 51
-buzz: 94
+hnPoints: 369
+hnComments: 57
+buzz: 95
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

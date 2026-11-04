@@ -11,9 +11,9 @@ heat: 76
 score: 0.93967
 readMinutes: 1
 image: "https://engineering.fb.com/wp-content/uploads/2026/10/Meta-F3-Lightning-Figure-1.png"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Facebook Feature Framework (F3) is Meta s framework for authoring, compiling, and serving the machine learning features underlying ads ranking models, where a single request can require more than 20,000 features. We first presented F3 at AI @ Scale 2020. F3 reduced execution computational costs by compiling all features into a single merged graph, but that [...] Read More... The post F3 Lightning: How Meta Accelerates Ads ML Features to Production at Scale appeared first on Engineering at Meta .
