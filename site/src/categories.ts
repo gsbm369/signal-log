@@ -24,6 +24,10 @@ export const CATEGORIES = [
   'microsoft',
   'languages',
   'gadgets',
+  'ai',
+  'security',
+  'apps_money',
+  'space',
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
@@ -39,7 +43,11 @@ export const SECTION_ORDER = [
   ['deep_dives', 'Deep Dives'],
   ['fintech', 'Fintech'],
   ['aggregators', 'Aggregators'],
+  ['ai', 'AI'],
+  ['security', 'Security'],
+  ['apps_money', 'Apps & Money'],
   ['gadgets', 'Gadgets'],
+  ['space', 'Space'],
   ['gaming', 'Gaming'],
 ] as const;
 

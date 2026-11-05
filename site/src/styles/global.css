@@ -76,6 +76,10 @@ body {
 [data-cat="microsoft"]     { --cat: #38bdf8; }
 [data-cat="languages"]     { --cat: #f97316; }
 [data-cat="gadgets"]       { --cat: #e879f9; }
+[data-cat="ai"]            { --cat: #f472b6; }
+[data-cat="security"]      { --cat: #ef4444; }
+[data-cat="apps_money"]    { --cat: #2dd4bf; }
+[data-cat="space"]         { --cat: #6366f1; }
 
 /* Legacy taxonomy. No feed writes these any more and the pruner has already
    emptied them, but a post carrying one must still get a colour rather than

@@ -345,6 +345,126 @@ feeds:
     category: gadgets
     weight: 0.65
     fetch: 15
+  - name: Ars Technica AI
+    url: https://arstechnica.com/ai/feed/
+    category: ai
+    weight: 1.0
+    fetch: 15
+  - name: Simon Willison
+    url: https://simonwillison.net/atom/everything/
+    category: ai
+    weight: 0.95
+    fetch: 15
+  - name: MIT Tech Review AI
+    url: https://www.technologyreview.com/topic/artificial-intelligence/feed
+    category: ai
+    weight: 0.9
+    fetch: 10
+  - name: The Verge AI
+    url: https://www.theverge.com/rss/ai-artificial-intelligence/index.xml
+    category: ai
+    weight: 0.8
+    fetch: 10
+  - name: TechCrunch AI
+    url: https://techcrunch.com/category/artificial-intelligence/feed/
+    category: ai
+    weight: 0.7
+    fetch: 15
+  - name: The Decoder
+    url: https://the-decoder.com/feed/
+    category: ai
+    weight: 0.65
+    fetch: 10
+  - name: Krebs on Security
+    url: https://krebsonsecurity.com/feed/
+    category: security
+    weight: 1.0
+    fetch: 10
+  - name: Ars Technica Security
+    url: https://arstechnica.com/security/feed/
+    category: security
+    weight: 0.95
+    fetch: 10
+  - name: BleepingComputer
+    url: https://www.bleepingcomputer.com/feed/
+    category: security
+    weight: 0.9
+    fetch: 15
+  - name: Malwarebytes Labs
+    url: https://www.malwarebytes.com/blog/feed/index.xml
+    category: security
+    weight: 0.85
+    fetch: 15
+  - name: Schneier
+    url: https://www.schneier.com/feed/atom/
+    category: security
+    weight: 0.8
+    fetch: 10
+  - name: Graham Cluley
+    url: https://grahamcluley.com/feed/
+    category: security
+    weight: 0.75
+    fetch: 10
+  - name: The Hacker News
+    url: https://feeds.feedburner.com/TheHackersNews
+    category: security
+    weight: 0.65
+    fetch: 15
+  - name: TechCrunch Apps
+    url: https://techcrunch.com/category/apps/feed/
+    category: apps_money
+    weight: 0.95
+    fetch: 15
+  - name: TechCrunch Social
+    url: https://techcrunch.com/category/social/feed/
+    category: apps_money
+    weight: 0.85
+    fetch: 10
+  - name: Social Media Today
+    url: https://www.socialmediatoday.com/feeds/news/
+    category: apps_money
+    weight: 0.85
+    fetch: 10
+  - name: Android Police
+    url: https://www.androidpolice.com/feed/
+    category: apps_money
+    weight: 0.65
+    fetch: 10
+  - name: Lifehacker
+    url: https://lifehacker.com/feed/rss
+    category: apps_money
+    weight: 0.6
+    fetch: 15
+  - name: Ars Technica Space
+    url: https://arstechnica.com/space/feed/
+    category: space
+    weight: 1.0
+    fetch: 10
+  - name: SpaceNews
+    url: https://spacenews.com/feed/
+    category: space
+    weight: 0.9
+    fetch: 10
+  - name: NASASpaceflight
+    url: https://www.nasaspaceflight.com/feed/
+    category: space
+    weight: 0.9
+    fetch: 10
+  - name: NASA News
+    url: https://www.nasa.gov/news-release/feed/
+    category: space
+    weight: 0.8
+    fetch: 10
+  - name: Universe Today
+    url: https://www.universetoday.com/feed/
+    category: space
+    weight: 0.75
+    fetch: 10
+  - name: Space.com
+    url: https://www.space.com/feeds/all
+    category: space
+    weight: 0.7
+    fetch: 15
   - name: Old New Thing
     url: https://devblogs.microsoft.com/oldnewthing/feed
     category: microsoft
@@ -490,6 +610,26 @@ scoring:
       ingest_days: 7
       retention_days: 45
       cap: 6
+    ai:
+      half_life_hours: 48
+      ingest_days: 7
+      retention_days: 45
+      cap: 6
+    security:
+      half_life_hours: 48
+      ingest_days: 7
+      retention_days: 45
+      cap: 6
+    apps_money:
+      half_life_hours: 48
+      ingest_days: 7
+      retention_days: 45
+      cap: 6
+    space:
+      half_life_hours: 72
+      ingest_days: 7
+      retention_days: 45
+      cap: 6
 
 settings:
   # Summarizer backend: none | ollama | anthropic
@@ -510,7 +650,7 @@ settings:
   # Fallback publish count for a category the scoring block does not mention.
   publish_count: 5
   # Keep at most this many posts on the site; oldest are pruned.
-  max_posts: 100
+  max_posts: 140
   # Look up every live post's Hacker News points each cycle (curator/buzz.py)
   # and publish them in rss.xml as signal:buzz. Never used for ranking.
   buzz_lookup: true

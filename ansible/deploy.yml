@@ -36,13 +36,14 @@
     cron_minute: 47             # timer: 05,11,17,23:47 local — see systemd/signal-log-cycle.timer
     max_candidates: 40          # articles sent to the model per run (cost driver)
     publish_count: 5            # articles summarised and published per run
-    # 100 = CATEGORY_CEILING (10) x 10 categories. The per-category ceiling
+    # 140 = CATEGORY_CEILING (10) x 14 categories. The per-category ceiling
     # decides what each category keeps; the global cap must never evict. At 60
     # it did: the first cycle with microsoft and languages cut devops_linux
     # from 6 to 4, a quiet category losing posts to make room for busy ones.
     # test_categories.py asserts max_posts >= ceiling x categories; it refused
-    # 90 when gadgets became the tenth category (2026-10-30).
-    max_posts: 100
+    # 90 when gadgets became the tenth category (2026-10-30), and 100 when
+    # ai/security/apps_money/space made fourteen (2026-11-05).
+    max_posts: 140
     per_source_cap: 3           # one prolific feed cannot dominate a run
     # Hacker News points per live post, published as signal:buzz in rss.xml
     # for the Instagram agent. heat is our own ranking score, not popularity.
@@ -107,6 +108,14 @@
       # (measured that day) were consumer devices and games, not engineering.
       # Consumer news goes stale faster than vendor news, hence 48h.
       gadgets:       { half_life_hours: 48,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      # Added 2026-11-05 at social-agent's request: 66 of 96 live items were
+      # developer categories and its audience is not developers. Added rather
+      # than capping the dev categories — the blog stays what it is, and 4 x 10
+      # more posts move the live mix from ~30% to ~50% non-developer.
+      ai:            { half_life_hours: 48,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      security:      { half_life_hours: 48,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      apps_money:    { half_life_hours: 48,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      space:         { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
     extra_noise_filter: true    # listicle/deals/AskHN patterns on top of the ported list
 
     # Summarizer backend: none | ollama | anthropic.
@@ -320,6 +329,69 @@
       - { name: Android Authority,  url: "https://www.androidauthority.com/feed/",        category: gadgets,       weight: 0.65, fetch: 15 }
       - { name: GSMArena,           url: "https://www.gsmarena.com/rss-news-reviews.php3", category: gadgets,      weight: 0.65, fetch: 15 }
 
+      # ---- ai / security / apps_money / space ----
+      # Measured 2026-11-05 from this box, before adding: newest item, items in
+      # the last 7 days, items/week over the feed's span, noise-filter hits.
+      # ai — weights favour reporting that tests claims over announcement
+      # feeds; the account's voice is anti-hype.
+      #   Ars Technica AI     newest 0.3d  7d:12   16/wk   noise 0
+      #   Simon Willison      newest 0.1d  7d:16   16/wk   noise 0  (held from
+      #                       deep_dives for loudness; in ai it competes with
+      #                       TechCrunch at 137/wk, not with Dan Luu)
+      #   MIT Tech Review AI  newest 1.0d  7d: 7   10/wk   noise 0
+      #   The Verge AI        newest 0.0d  7d:10   79/wk   noise 0
+      #   TechCrunch AI       newest 0.0d  7d:20  137/wk   noise 0
+      #   The Decoder         newest 0.0d  7d:10  249/wk   noise 0
+      #   REJECTED: VentureBeat AI (HTTP 429, zero entries)
+      - { name: Ars Technica AI,    url: "https://arstechnica.com/ai/feed/",              category: ai,            weight: 1.00, fetch: 15 }
+      - { name: Simon Willison,     url: "https://simonwillison.net/atom/everything/",    category: ai,            weight: 0.95, fetch: 15 }
+      - { name: MIT Tech Review AI, url: "https://www.technologyreview.com/topic/artificial-intelligence/feed", category: ai, weight: 0.90, fetch: 10 }
+      - { name: The Verge AI,       url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", category: ai, weight: 0.80, fetch: 10 }
+      - { name: TechCrunch AI,      url: "https://techcrunch.com/category/artificial-intelligence/feed/", category: ai, weight: 0.70, fetch: 15 }
+      - { name: The Decoder,        url: "https://the-decoder.com/feed/",                 category: ai,            weight: 0.65, fetch: 10 }
+      # security
+      #   Krebs on Security   newest 0.6d  7d: 2    2/wk   noise 0
+      #   Ars Technica Sec.   newest 0.9d  7d: 6    7/wk   noise 0
+      #   BleepingComputer    newest 0.0d  7d:15   84/wk   noise 0
+      #   Malwarebytes Labs   newest 0.3d  7d:14   16/wk   noise 1  (consumer-facing)
+      #   Schneier            newest 2.3d  7d: 4    6/wk   noise 0
+      #   Graham Cluley       newest 0.8d  7d: 2    3/wk   noise 0
+      #   The Hacker News     newest 0.2d  7d:50   59/wk   noise 0  (loud, vendor PR)
+      - { name: Krebs on Security,  url: "https://krebsonsecurity.com/feed/",             category: security,      weight: 1.00, fetch: 10 }
+      - { name: Ars Technica Security, url: "https://arstechnica.com/security/feed/",     category: security,      weight: 0.95, fetch: 10 }
+      - { name: BleepingComputer,   url: "https://www.bleepingcomputer.com/feed/",        category: security,      weight: 0.90, fetch: 15 }
+      - { name: Malwarebytes Labs,  url: "https://www.malwarebytes.com/blog/feed/index.xml", category: security,   weight: 0.85, fetch: 15 }
+      - { name: Schneier,           url: "https://www.schneier.com/feed/atom/",           category: security,      weight: 0.80, fetch: 10 }
+      - { name: Graham Cluley,      url: "https://grahamcluley.com/feed/",                category: security,      weight: 0.75, fetch: 10 }
+      - { name: The Hacker News,    url: "https://feeds.feedburner.com/TheHackersNews",   category: security,      weight: 0.65, fetch: 15 }
+      # apps_money — everyday apps and platforms. The "money" half is thin: no
+      # measured free feed covers consumer money/free-stuff news well.
+      #   TechCrunch Apps     newest 0.1d  7d:20   21/wk   noise 0
+      #   TechCrunch Social   newest 0.2d  7d: 8    8/wk   noise 0
+      #   Social Media Today  newest 0.8d  7d:10   34/wk   noise 0  (Instagram/WhatsApp/TikTok changes)
+      #   Android Police      newest 0.1d  7d:10  272/wk   noise 2
+      #   Lifehacker          newest 0.1d  7d:48   50/wk   noise 15 (deals, filtered)
+      #   REJECTED: How-To Geek (530/wk), MakeUseOf (378/wk) — generic how-to volume
+      - { name: TechCrunch Apps,    url: "https://techcrunch.com/category/apps/feed/",    category: apps_money,    weight: 0.95, fetch: 15 }
+      - { name: TechCrunch Social,  url: "https://techcrunch.com/category/social/feed/",  category: apps_money,    weight: 0.85, fetch: 10 }
+      - { name: Social Media Today, url: "https://www.socialmediatoday.com/feeds/news/",  category: apps_money,    weight: 0.85, fetch: 10 }
+      - { name: Android Police,     url: "https://www.androidpolice.com/feed/",           category: apps_money,    weight: 0.65, fetch: 10 }
+      - { name: Lifehacker,         url: "https://lifehacker.com/feed/rss",               category: apps_money,    weight: 0.60, fetch: 15 }
+      # space
+      #   Ars Technica Space  newest 1.0d  7d: 7    9/wk   noise 0
+      #   SpaceNews           newest 0.1d  7d: 6    7/wk   noise 0
+      #   NASASpaceflight     newest 1.0d  7d: 6    6/wk   noise 0
+      #   NASA News           newest 0.2d  7d:10   73/wk   noise 0
+      #   Universe Today      newest 0.0d  7d:20   24/wk   noise 0
+      #   Space.com           newest 0.0d  7d:50   66/wk   noise 3
+      #   REJECTED: ESA Space Science (HTTP 404)
+      - { name: Ars Technica Space, url: "https://arstechnica.com/space/feed/",           category: space,         weight: 1.00, fetch: 10 }
+      - { name: SpaceNews,          url: "https://spacenews.com/feed/",                   category: space,         weight: 0.90, fetch: 10 }
+      - { name: NASASpaceflight,    url: "https://www.nasaspaceflight.com/feed/",         category: space,         weight: 0.90, fetch: 10 }
+      - { name: NASA News,          url: "https://www.nasa.gov/news-release/feed/",       category: space,         weight: 0.80, fetch: 10 }
+      - { name: Universe Today,     url: "https://www.universetoday.com/feed/",           category: space,         weight: 0.75, fetch: 10 }
+      - { name: Space.com,          url: "https://www.space.com/feeds/all",               category: space,         weight: 0.70, fetch: 15 }
+
       # ---- microsoft ----
       # Measured 2026-09-18 from this box, before adding: HTTP, dated entries,
       # newest item, items in the last 7 days, items/week over the feed's span.
@@ -377,7 +449,7 @@
       #     non-English items), Red Hat 18.9/wk (enterprise-AI marketing),
       #     Payments Dive 17.0/wk (duplicates Finextra's role), OMG Ubuntu
       #     14.2/wk (desktop news), Vercel 21 in 7d (product changelog).
-      #     Simon Willison 23.7/wk is HELD, not rejected: the best writing of
+      #     Simon Willison — now IN, under ai (2026-11-05). Was 23.7/wk, HELD: the best writing of
       #     the set, but at that rate it would own deep_dives' whole stock and
       #     evict Dan Luu / Gregg the day they post. Needs a per-source stock
       #     limit inside a category first.

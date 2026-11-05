@@ -39,7 +39,8 @@ from pathlib import Path
 POSTS = Path(os.environ.get("CONTENT_DIR", "/app/site/src/content/posts"))
 INDEX = Path(os.environ.get("BUILT_INDEX", "/app/site/dist/index.html"))
 ORDER = ["microsoft", "system_design", "devops_linux", "languages", "company_eng",
-         "deep_dives", "fintech", "aggregators", "gadgets", "gaming"]
+         "deep_dives", "fintech", "aggregators", "ai", "security", "apps_money",
+         "gadgets", "space", "gaming"]
 PER_SOURCE = 2
 FM = lambda k: re.compile(rf'^{k}:\s*"?(.*?)"?\s*$', re.M)
 
