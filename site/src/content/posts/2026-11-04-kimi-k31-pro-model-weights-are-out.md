@@ -11,9 +11,9 @@ heat: 45
 score: 0.53875
 readMinutes: 1
 image: "https://cdn-thumbnails.huggingface.co/social-thumbnails/models/moonshotai/Kimi-K3.1-Pro.png"
-hnPoints: 289
-hnComments: 79
-buzz: 91
+hnPoints: 420
+hnComments: 122
+buzz: 97
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

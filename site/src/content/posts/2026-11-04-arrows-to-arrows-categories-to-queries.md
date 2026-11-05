@@ -1,18 +1,18 @@
 ---
-title: "Python on my wrist"
+title: "Arrows to Arrows, Categories to Queries"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-04T17:31:02+00:00
-addedAt: 2026-11-04T22:18:32.875644+00:00
+pubDate: 2026-11-04T15:49:15+00:00
+addedAt: 2026-11-05T04:18:31.322181+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://tildeweb.nl/~michiel/python-on-my-wrist.html"
-tags: ["python"]
-heat: 67
-score: 1.02905
+sourceUrl: "https://reasonablypolymorphic.com/blog/arrows-to-arrows/"
+tags: ["tech"]
+heat: 48
+score: 0.46371
 readMinutes: 1
-hnPoints: 93
-hnComments: 12
-buzz: 73
+hnPoints: 79
+hnComments: 7
+buzz: 70
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

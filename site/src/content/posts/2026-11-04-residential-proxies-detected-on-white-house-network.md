@@ -12,9 +12,9 @@ score: 0.65938
 readMinutes: 1
 image: "https://layer3intel.com/eop_proxy_activity.png"
 imageAlt: "Chart titled AS2650, day by day, covering October 5 to November 3, 2026: 236 observations, with one to three unique proxy exits on most days and a line of daily observations below"
-hnPoints: 315
-hnComments: 84
-buzz: 93
+hnPoints: 789
+hnComments: 249
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

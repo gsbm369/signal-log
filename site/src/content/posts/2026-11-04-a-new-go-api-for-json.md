@@ -11,9 +11,9 @@ heat: 50
 score: 0.63233
 readMinutes: 1
 image: "https://go.dev/doc/gopher/gopher5logo.jpg"
-hnPoints: 161
-hnComments: 69
-buzz: 82
+hnPoints: 252
+hnComments: 116
+buzz: 89
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

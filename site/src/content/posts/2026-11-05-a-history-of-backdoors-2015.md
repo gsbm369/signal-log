@@ -1,18 +1,19 @@
 ---
-title: "How to speed up the Rust compiler in November 2026"
+title: "A history of backdoors (2015)"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-04T14:05:16+00:00
-addedAt: 2026-11-04T16:18:34.980982+00:00
+pubDate: 2026-11-05T01:53:17+00:00
+addedAt: 2026-11-05T04:18:31.321983+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://nnethercote.github.io/2026/11/04/how-to-speed-up-the-rust-compiler-in-november-2026.html"
-tags: ["rust"]
-heat: 89
-score: 1.13611
+sourceUrl: "https://blog.cryptographyengineering.com/2015/07/20/a-history-of-backdoors/"
+tags: ["tech"]
+heat: 61
+score: 0.68329
 readMinutes: 1
-hnPoints: 3
+image: "https://farm7.staticflickr.com/6163/6193051356_1c0ebcb783_b.jpg"
+hnPoints: 0
 hnComments: 0
-buzz: 22
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

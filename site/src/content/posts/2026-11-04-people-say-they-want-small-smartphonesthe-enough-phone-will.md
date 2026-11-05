@@ -11,9 +11,9 @@ heat: 61
 score: 0.89285
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/Enough-Phone-in-Hand-1152x648.jpg"
-hnPoints: 20
-hnComments: 5
-buzz: 49
+hnPoints: 26
+hnComments: 8
+buzz: 53
 ---
 
 It won't win the specs race, but it will actually fit in your hand.
