@@ -12,9 +12,9 @@ score: 0.68094
 readMinutes: 1
 image: "https://servo.org/svg/servo-color-positive.svg"
 imageAlt: "Servo logo"
-hnPoints: 51
-hnComments: 9
-buzz: 64
+hnPoints: 156
+hnComments: 33
+buzz: 81
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

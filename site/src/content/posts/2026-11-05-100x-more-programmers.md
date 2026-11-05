@@ -11,9 +11,9 @@ heat: 63
 score: 0.89573
 readMinutes: 1
 image: "https://cdn.sanity.io/images/w77i7m8x/production/3bd8327bd227c7c8b6cf018092385d23d54a8194-1152x594.png"
-hnPoints: 3
+hnPoints: 6
 hnComments: 0
-buzz: 22
+buzz: 31
 ---
 
 AI could create a billion new programmers. Let's make sure they stay in control.
