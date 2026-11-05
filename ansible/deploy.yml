@@ -33,7 +33,7 @@
 
     # Cost control
     cycle_hours: 6              # how often the curator runs
-    cron_minute: 17
+    cron_minute: 47             # timer: 05,11,17,23:47 local — see systemd/signal-log-cycle.timer
     max_candidates: 40          # articles sent to the model per run (cost driver)
     publish_count: 5            # articles summarised and published per run
     # 100 = CATEGORY_CEILING (10) x 10 categories. The per-category ceiling

@@ -3,7 +3,11 @@ Description=Run the signal.log publish cycle every 6 hours
 Documentation=https://github.com/gsbm369/signal-log
 
 [Timer]
-OnCalendar=*-*-* 00,06,12,18:17:00
+# 05:47, not 06:17 (2026-11-05). social-agent starts its morning curation at
+# 06:10 local and delivers all six reels by 07:10; at :17 every morning read
+# the 00:17 feed, six hours old. :47 leaves ~20 min for the cycle (~90 s) and
+# the Pages deploy. Every run moved, not one added: same 6-hour spacing.
+OnCalendar=*-*-* 05,11,17,23:47:00
 # THE REASON THIS IS A TIMER AND NOT A CRON ENTRY.
 #
 # This guest runs on a memory-constrained Hyper-V host and has been suspended
