@@ -1,18 +1,18 @@
 ---
-title: "Lorem Ipsum Dot Gov Dot UK"
+title: "A Look at Datastar"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-04T14:50:34+00:00
-addedAt: 2026-11-05T04:18:31.322276+00:00
+pubDate: 2026-11-05T10:44:57+00:00
+addedAt: 2026-11-05T16:18:32.668937+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://shkspr.mobi/blog/2026/11/lorem-ipsum-dot-gov-dot-uk/"
+sourceUrl: "https://noteflakes.com/articles/2026-11-04-datastar"
 tags: ["tech"]
-heat: 47
-score: 0.44657
+heat: 50
+score: 0.60549
 readMinutes: 1
-hnPoints: 5
+hnPoints: 0
 hnComments: 0
-buzz: 29
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 68
 score: 0.63792
 readMinutes: 1
 image: "https://framerusercontent.com/images/u4OXzV0utwAtaPgcVxQtTXmkg.png"
-hnPoints: 294
-hnComments: 108
-buzz: 91
+hnPoints: 325
+hnComments: 116
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
