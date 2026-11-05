@@ -11,8 +11,8 @@ heat: 45
 score: 0.41055
 readMinutes: 1
 image: "https://img.semafor.com/3539e9f8436bba6661848f82fb4f45f4c0ffc41e-6500x4333.jpg?rect=0,461,6500,3413&amp;w=1200&amp;h=630&amp;q=75&amp;auto=format"
-hnPoints: 318
-hnComments: 639
+hnPoints: 333
+hnComments: 683
 buzz: 93
 ---
 

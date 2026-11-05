@@ -11,8 +11,8 @@ heat: 44
 score: 0.40606
 readMinutes: 1
 image: "https://image.theregister.com/254036.jpg?imageId=254036&x=0&y=0&cropw=100&croph=100&panox=0&panoy=0&panow=100&panoh=100&width=1200&height=683"
-hnPoints: 589
-hnComments: 364
+hnPoints: 607
+hnComments: 374
 buzz: 100
 ---
 

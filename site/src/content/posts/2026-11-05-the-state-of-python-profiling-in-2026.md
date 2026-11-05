@@ -1,19 +1,18 @@
 ---
-title: "A history of backdoors (2015)"
+title: "The State of Python Profiling in 2026"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-05T01:53:17+00:00
-addedAt: 2026-11-05T04:18:31.321983+00:00
+pubDate: 2026-11-05T09:56:49+00:00
+addedAt: 2026-11-05T10:18:30.894642+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://blog.cryptographyengineering.com/2015/07/20/a-history-of-backdoors/"
-tags: ["tech"]
-heat: 61
-score: 0.68329
+sourceUrl: "https://p403n1x87.github.io/the-state-of-python-profiling-in-2026.html"
+tags: ["python"]
+heat: 100
+score: 1.22044
 readMinutes: 1
-image: "https://farm7.staticflickr.com/6163/6193051356_1c0ebcb783_b.jpg"
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
