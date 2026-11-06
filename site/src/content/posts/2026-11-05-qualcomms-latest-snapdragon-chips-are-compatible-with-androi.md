@@ -11,9 +11,9 @@ heat: 66
 score: 0.96193
 readMinutes: 1
 image: "https://www.androidauthority.com/wp-content/uploads/2025/03/Android_Linux_Terminal_with_tabs.jpg"
-hnPoints: 3
+hnPoints: 4
 hnComments: 0
-buzz: 22
+buzz: 26
 ---
 
 Sadly, it's still not looking good for older Snapdragon-based hardware.

@@ -12,9 +12,9 @@ score: 0.74734
 readMinutes: 1
 image: "https://mcp-explained.com/og.png"
 imageAlt: "MCP Explained by Runlayer: a diagram of a model, an MCP client and GitHub, Linear and Slack MCP servers."
-hnPoints: 260
-hnComments: 116
-buzz: 90
+hnPoints: 297
+hnComments: 125
+buzz: 92
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

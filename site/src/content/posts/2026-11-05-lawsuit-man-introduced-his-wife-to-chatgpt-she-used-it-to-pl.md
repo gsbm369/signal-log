@@ -11,9 +11,9 @@ heat: 64
 score: 0.91505
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/GettyImages-2240656304-1024x648.jpg"
-hnPoints: 7
+hnPoints: 8
 hnComments: 0
-buzz: 33
+buzz: 35
 ---
 
 Bitter energy drinks turned out to be ChatGPT-steered poisoning, lawsuit says.

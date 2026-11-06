@@ -10,9 +10,9 @@ tags: ["gpt", "openai"]
 heat: 47
 score: 0.53331
 readMinutes: 1
-hnPoints: 312
-hnComments: 162
-buzz: 92
+hnPoints: 325
+hnComments: 179
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
