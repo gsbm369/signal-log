@@ -11,9 +11,9 @@ heat: 81
 score: 0.83439
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 It doesn't really handle that case. The post You shouldn t change the style of a Win32 static control after it has been created appeared first on The Old New Thing .

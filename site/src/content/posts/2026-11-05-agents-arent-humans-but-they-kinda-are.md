@@ -11,9 +11,9 @@ heat: 66
 score: 0.94075
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M6HXVQ0MH26TMB3HFFHA31DK.png"
-hnPoints: 0
+hnPoints: 3
 hnComments: 0
-buzz: 0
+buzz: 22
 ---
 
 AI agents act for millions, but servers see intermediaries that strip user visibility. This post defines the problem space and introduces a collaborative approach to safely identifying, allowing, and managing this automated traffic.

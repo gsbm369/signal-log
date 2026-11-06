@@ -12,9 +12,9 @@ score: 0.51182
 readMinutes: 1
 image: "https://opengraph.githubassets.com/e78be3e36d03aa0bc56938ad5d8e029e81e89149a75bbc261e8ecd101b7e463a/ppmpreetham/BUI"
 imageAlt: "Blender&#39;s GPU Accelerated UI, Decoupled from it&#39;s original codebase. Supports Rust, Python, JS, React, C &amp; C++. Twice as good as GPUI - ppmpreetham/BUI"
-hnPoints: 462
-hnComments: 189
-buzz: 99
+hnPoints: 650
+hnComments: 261
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
