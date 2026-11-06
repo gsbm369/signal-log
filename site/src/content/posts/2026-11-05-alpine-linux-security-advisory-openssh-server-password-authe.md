@@ -10,8 +10,8 @@ tags: ["linux"]
 heat: 64
 score: 0.8802
 readMinutes: 1
-hnPoints: 505
-hnComments: 101
+hnPoints: 610
+hnComments: 128
 buzz: 100
 ---
 

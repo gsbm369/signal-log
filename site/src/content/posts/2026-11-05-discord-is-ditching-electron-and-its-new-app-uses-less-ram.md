@@ -12,9 +12,9 @@ score: 0.50066
 readMinutes: 1
 image: "https://platform.theverge.com/wp-content/uploads/sites/2/2025/03/acastro_STK062_01.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200"
 imageAlt: "Discord logo"
-hnPoints: 333
-hnComments: 283
-buzz: 93
+hnPoints: 405
+hnComments: 345
+buzz: 97
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
