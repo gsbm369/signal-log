@@ -11,8 +11,8 @@ heat: 53
 score: 0.41225
 readMinutes: 1
 image: "https://www.salon.com/app/uploads/2026/11/Salon-Logos-Background-2.jpg"
-hnPoints: 579
-hnComments: 226
+hnPoints: 614
+hnComments: 248
 buzz: 100
 ---
 

@@ -11,9 +11,9 @@ heat: 57
 score: 0.46466
 readMinutes: 1
 image: "https://s.yimg.com/lo/mysterio/api/c7b9e208fd6dff01b9115dea6cf00d560e269c36a6987f309be6e79d843e306b/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fmoneywise_327%2F892777675c4b84ce45a666a8bfe1fb93.jpg"
-hnPoints: 325
-hnComments: 155
-buzz: 93
+hnPoints: 456
+hnComments: 211
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

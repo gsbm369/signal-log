@@ -10,9 +10,9 @@ tags: ["linux"]
 heat: 88
 score: 1.56739
 readMinutes: 1
-hnPoints: 0
+hnPoints: 5
 hnComments: 0
-buzz: 0
+buzz: 29
 ---
 
 LWN.net linked this without a summary. Follow the link for the article.
