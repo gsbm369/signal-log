@@ -12,9 +12,9 @@ score: 0.59161
 readMinutes: 1
 image: "https://cdn.sanity.io/images/pwmfmi47/production/9a5d7191d614c824c822ec90672adaf424699d3d-2400x1256.png?w=1200"
 imageAlt: "LLM Judges for Identity Resolution at 4x Lower Cost | Hightouch"
-hnPoints: 370
-hnComments: 84
-buzz: 95
+hnPoints: 471
+hnComments: 107
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
