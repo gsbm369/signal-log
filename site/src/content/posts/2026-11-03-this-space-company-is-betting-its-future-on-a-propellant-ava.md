@@ -11,9 +11,9 @@ heat: 55
 score: 0.42463
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/Argonaut-Transit-to-Moon-16x9-1-1152x648.jpg"
-hnPoints: 9
+hnPoints: 10
 hnComments: 10
-buzz: 37
+buzz: 39
 ---
 
 Is that water in your spacecraft, or are you just happy to see the delta-V?

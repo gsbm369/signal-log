@@ -11,9 +11,9 @@ heat: 55
 score: 0.41853
 readMinutes: 1
 image: "https://substackcdn.com/image/fetch/$s_!u_X_!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdd74ff70-df26-4e1a-be31-4fc3543bada8_2048x1072.png"
-hnPoints: 302
-hnComments: 246
-buzz: 92
+hnPoints: 340
+hnComments: 318
+buzz: 94
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
