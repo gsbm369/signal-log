@@ -11,9 +11,9 @@ heat: 63
 score: 0.89886
 readMinutes: 1
 image: "https://cdn.shopify.com/b/shopify-brochure2-assets/1d9a399cbbff4b5ab8df3124625b62d8.png"
-hnPoints: 2
+hnPoints: 3
 hnComments: 0
-buzz: 18
+buzz: 22
 ---
 
 Our architecture lets agents test mobile app behavior without an emulator and use one test suite to keep iOS and Android in sync.

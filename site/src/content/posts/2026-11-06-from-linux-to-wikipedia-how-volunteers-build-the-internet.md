@@ -10,9 +10,9 @@ tags: ["linux"]
 heat: 44
 score: 0.58839
 readMinutes: 1
-hnPoints: 290
-hnComments: 96
-buzz: 91
+hnPoints: 305
+hnComments: 110
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

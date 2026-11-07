@@ -12,7 +12,7 @@ score: 0.3023
 readMinutes: 1
 image: "https://thinkingmachines.ai/news/inkling-2-small/images/cover-social.png"
 imageAlt: "Introducing Inkling 2 Small"
-hnPoints: 279
+hnPoints: 283
 hnComments: 90
 buzz: 91
 ---

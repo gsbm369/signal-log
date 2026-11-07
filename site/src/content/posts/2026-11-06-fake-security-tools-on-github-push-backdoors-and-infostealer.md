@@ -11,9 +11,9 @@ heat: 55
 score: 0.86146
 readMinutes: 1
 image: "https://www.bleepstatic.com/content/hl-images/2026/11/06/github.jpg"
-hnPoints: 8
+hnPoints: 12
 hnComments: 0
-buzz: 35
+buzz: 41
 ---
 
 Cybersecurity professionals are being targeted with infected security projects on GitHub that deploy a backdoor and information stealer malware.

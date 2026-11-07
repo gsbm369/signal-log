@@ -11,8 +11,8 @@ heat: 39
 score: 0.48403
 readMinutes: 1
 image: "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/rockcms/2025-02/250213-Cybertruck-aa-1045-dd55f3.jpg"
-hnPoints: 696
-hnComments: 1482
+hnPoints: 898
+hnComments: 1749
 buzz: 100
 ---
 

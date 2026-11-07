@@ -11,9 +11,9 @@ heat: 58
 score: 0.94259
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/GettyImages-1363244761-1152x648.jpg"
-hnPoints: 5
+hnPoints: 6
 hnComments: 0
-buzz: 29
+buzz: 31
 ---
 
 Meta won't force Facebook page owners to allow AI training on linked content.
