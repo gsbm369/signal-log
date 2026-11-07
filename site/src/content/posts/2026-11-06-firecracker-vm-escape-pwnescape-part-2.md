@@ -12,9 +12,9 @@ score: 0.32098
 readMinutes: 1
 image: "https://api.pwn.ai/api/blog/images/photo-2026-11-04-22-55-56-b01dcd719e0c.jpeg"
 imageAlt: "Firecracker VM Escape: PwnEscape Part 2."
-hnPoints: 262
-hnComments: 114
-buzz: 90
+hnPoints: 277
+hnComments: 126
+buzz: 91
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

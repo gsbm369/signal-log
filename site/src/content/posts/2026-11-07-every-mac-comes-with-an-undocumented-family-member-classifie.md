@@ -12,9 +12,9 @@ score: 0.55472
 readMinutes: 1
 image: "https://8rank.ai/og-apple-intelligence-personal-knowledge-graph.png"
 imageAlt: "A black knight on e2, drawn in red, among White&#x27;s pieces, with arrows to the white king on g1, queen on c3, rook on c1 and bishop on g3; White also has a rook on f1, a knight on b3 and six pawns, and Black a king on g8, a queen on e7, rooks on d8 and f8, a bishop on f5 and six pawns."
-hnPoints: 332
-hnComments: 184
-buzz: 93
+hnPoints: 518
+hnComments: 306
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
