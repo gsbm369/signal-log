@@ -10,9 +10,9 @@ tags: ["claude"]
 heat: 62
 score: 0.69881
 readMinutes: 1
-hnPoints: 389
-hnComments: 268
-buzz: 96
+hnPoints: 488
+hnComments: 351
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
