@@ -12,7 +12,7 @@ score: 0.34044
 readMinutes: 1
 image: "https://opengraph.githubassets.com/9e5a002a4c781cf135c857f7f24073d80134dba1ce272838ae9f66024afc92d6/hedgerow-dev/coldframe"
 imageAlt: "Low-interaction honeypot for supermarket refrigeration controllers (Danfoss AK-SM 800A, Dixell XWEB 500) - hedgerow-dev/coldframe"
-hnPoints: 261
+hnPoints: 274
 hnComments: 62
 buzz: 90
 ---

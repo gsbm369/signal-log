@@ -1,18 +1,18 @@
 ---
-title: "Hacking the T-Mobile Sidekick, 20 Years Too Late"
+title: "Virtualized Redox: from Virtio-FS to Cloud Hypervisor, and beyond"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-08T08:10:08+00:00
-addedAt: 2026-11-08T09:48:33.805240+00:00
+pubDate: 2026-11-08T21:06:06+00:00
+addedAt: 2026-11-08T21:48:42.093790+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://x86.cx/blog/redanger"
+sourceUrl: "https://www.redox-os.org/news/virtualized-redox/"
 tags: ["tech"]
-heat: 62
-score: 0.70414
+heat: 61
+score: 0.72983
 readMinutes: 1
-hnPoints: 51
-hnComments: 16
-buzz: 64
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
