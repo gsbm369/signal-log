@@ -12,9 +12,9 @@ score: 0.34791
 readMinutes: 1
 image: "https://decoded.legal/blog/content/images/decoded.legal_logo.png"
 imageAlt: "A stylised d, ., and l, in white, on a black background. They look a bit like a circuit board"
-hnPoints: 245
-hnComments: 121
-buzz: 89
+hnPoints: 274
+hnComments: 129
+buzz: 90
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

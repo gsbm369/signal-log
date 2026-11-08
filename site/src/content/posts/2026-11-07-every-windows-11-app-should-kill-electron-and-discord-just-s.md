@@ -11,9 +11,9 @@ heat: 48
 score: 0.36911
 readMinutes: 1
 image: "https://www.windowslatest.com/wp-content/uploads/2026/11/Discords-current-Electron-client-and-its-new-Rust-client-launching-side-by-side-on-two-Lenovo-ThinkPads-running-Windows-11.jpg"
-hnPoints: 244
-hnComments: 227
-buzz: 88
+hnPoints: 322
+hnComments: 298
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
