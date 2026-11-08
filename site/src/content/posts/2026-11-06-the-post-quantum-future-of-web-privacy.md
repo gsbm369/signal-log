@@ -11,9 +11,9 @@ heat: 68
 score: 0.94646
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M6RNKQ9RKEJ9CKY6DGNF44RV.01M6RNKRJAQTN05BV66646AM7Z.png"
-hnPoints: 11
+hnPoints: 13
 hnComments: 0
-buzz: 40
+buzz: 42
 ---
 
 Cryptographic protocols like Privacy Pass help keep web sites safe from abuse while keeping their users private. This post looks at the quantum threat to these protocols, and some new post-quantum cryptography that may help close the gap.

@@ -11,9 +11,9 @@ heat: 65
 score: 0.88396
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Suspending all the threads stops the threads that are there now, those are not the only possible sources of change. The post Why are we all worked up about atomicity when applying hot-patches if we can just suspend all the threads? appeared first on The Old New Thing .

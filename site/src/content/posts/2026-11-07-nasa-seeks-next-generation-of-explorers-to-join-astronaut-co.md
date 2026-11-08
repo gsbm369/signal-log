@@ -12,9 +12,9 @@ score: 0.77267
 readMinutes: 1
 image: "https://www.nasa.gov/wp-content/uploads/2026/11/jsc2025e076292large.jpg?w=1920"
 imageAlt: "A group of astronaut candidates in blue flight suits wave to the audience on stage, with a NASA logo and image of the Moon behind them."
-hnPoints: 6
+hnPoints: 7
 hnComments: 0
-buzz: 31
+buzz: 33
 ---
 
 NASA is looking for the explorers who will help write the next chapter of human spaceflight. Applications are now open for the agency’s next class of astronauts, who will join NASA as America returns to the Moon, builds the Moon Base, and lays the groundwork for the first crewed missions to Mars. The next generation [ ]
