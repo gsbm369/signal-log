@@ -11,9 +11,9 @@ heat: 37
 score: 0.50008
 readMinutes: 1
 image: "https://pbs.twimg.com/media/HWjhsqYWMAALhKb?format=webp&amp;name=large"
-hnPoints: 364
-hnComments: 263
-buzz: 95
+hnPoints: 646
+hnComments: 428
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

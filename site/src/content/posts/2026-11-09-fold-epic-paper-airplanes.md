@@ -11,9 +11,9 @@ heat: 42
 score: 0.6121
 readMinutes: 1
 image: "https://static.wixstatic.com/media/0641fb_4ff6a49def494e379b4f3b585c4ac4a8%7Emv2_d_2482_1412_s_2.jpg/v1/fit/w_2500,h_1330,al_c/0641fb_4ff6a49def494e379b4f3b585c4ac4a8%7Emv2_d_2482_1412_s_2.jpg"
-hnPoints: 344
-hnComments: 66
-buzz: 94
+hnPoints: 738
+hnComments: 127
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 45
 score: 0.68197
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2026/11/Spacefast-feat.jpg?resize=1200,675"
-hnPoints: 3
+hnPoints: 10
 hnComments: 0
-buzz: 22
+buzz: 39
 ---
 
 Automattic aims to compete with likes of Lovable with Spacefast

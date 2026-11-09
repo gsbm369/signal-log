@@ -11,9 +11,9 @@ heat: 45
 score: 0.68157
 readMinutes: 1
 image: "https://benmandrew.com/assets/headers/malloc-card.png"
-hnPoints: 90
-hnComments: 18
-buzz: 73
+hnPoints: 188
+hnComments: 50
+buzz: 84
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -12,9 +12,9 @@ score: 1.35202
 readMinutes: 1
 image: "https://www.cncf.io/wp-content/uploads/2026/11/image-3.png"
 imageAlt: "An application links Hyperlight in and asks it for a micro-VM"
-hnPoints: 1
+hnPoints: 3
 hnComments: 0
-buzz: 11
+buzz: 22
 ---
 
 More and more cloud native systems run code nobody on the team wrote: the Python an AI agent generated a second ago, or a plugin a customer just uploaded. Each of them needs a boundary between...

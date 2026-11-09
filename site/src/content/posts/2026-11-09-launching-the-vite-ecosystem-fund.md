@@ -11,9 +11,9 @@ heat: 59
 score: 1.08619
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M6SMAP95G344HRNFK6NRMGZN.png"
-hnPoints: 1
+hnPoints: 2
 hnComments: 0
-buzz: 11
+buzz: 18
 ---
 
 Cloudflare is distributing the first $301,300 of the Vite Ecosystem Fund to open source projects and maintainers. The recipients were chosen by a panel of Vite stack core team members, including maintainers not employed by Cloudflare.
