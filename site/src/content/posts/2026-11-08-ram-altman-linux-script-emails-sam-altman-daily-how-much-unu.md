@@ -11,8 +11,8 @@ heat: 58
 score: 0.77189
 readMinutes: 1
 image: "https://respawnfirst.com/wp-content/uploads/2026/11/ram-altman-github.webp"
-hnPoints: 216
-hnComments: 107
+hnPoints: 229
+hnComments: 133
 buzz: 87
 ---
 

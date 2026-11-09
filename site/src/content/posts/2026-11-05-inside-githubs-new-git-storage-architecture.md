@@ -12,7 +12,7 @@ score: 0.79768
 readMinutes: 1
 image: "https://github.blog/wp-content/uploads/2026/11/customer-growth.png?resize=1024%2C483"
 imageAlt: "Line chart of daily requests to a single repository from March through May 2026. The March average is 44M requests per day and the May average is 181M requests per day, about a 4x increase."
-hnPoints: 235
+hnPoints: 236
 hnComments: 73
 buzz: 88
 ---
