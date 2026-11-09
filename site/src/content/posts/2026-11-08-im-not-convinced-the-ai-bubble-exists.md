@@ -11,9 +11,9 @@ heat: 53
 score: 0.47509
 readMinutes: 1
 image: "https://matteoraso.github.io/images/profile.jpg"
-hnPoints: 277
-hnComments: 459
-buzz: 91
+hnPoints: 451
+hnComments: 778
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
