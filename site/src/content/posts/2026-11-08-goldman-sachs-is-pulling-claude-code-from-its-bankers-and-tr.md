@@ -11,9 +11,9 @@ heat: 74
 score: 1.00778
 readMinutes: 1
 image: "https://www.thestateofai.com/media/uploads/33f913ce812c4074d207c01b6df1858a692e6bc3229dadbfcd4f56b61722a538.png"
-hnPoints: 427
-hnComments: 264
-buzz: 97
+hnPoints: 652
+hnComments: 375
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 68
 score: 0.88255
 readMinutes: 1
 image: "https://247wallst.com/wp-content/uploads/2026/11/openai-just-raised-11-billion-at-a-1-25-trillion-v-featured-1794023504517-scaled.webp"
-hnPoints: 176
-hnComments: 195
-buzz: 83
+hnPoints: 182
+hnComments: 203
+buzz: 84
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
