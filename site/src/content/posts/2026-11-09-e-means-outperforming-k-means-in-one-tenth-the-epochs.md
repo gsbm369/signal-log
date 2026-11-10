@@ -11,9 +11,9 @@ heat: 38
 score: 0.39218
 readMinutes: 1
 image: "https://e-means.github.io/assets/emeans_vs_lloyd_readme_v9.png"
-hnPoints: 400
-hnComments: 37
-buzz: 96
+hnPoints: 462
+hnComments: 64
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 62
 score: 0.90543
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2024/12/GettyImages-155376474.jpeg?resize=1200,800"
-hnPoints: 5
+hnPoints: 6
 hnComments: 3
-buzz: 29
+buzz: 31
 ---
 
 Anthropic bought billions of dollars' worth of natural gas turbines in a deal that could give it buyer's remorse.

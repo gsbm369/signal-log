@@ -11,9 +11,9 @@ heat: 42
 score: 0.46415
 readMinutes: 1
 image: "https://notesbylex.com/_media/aidens-revenge/title.jpg"
-hnPoints: 392
-hnComments: 278
-buzz: 96
+hnPoints: 444
+hnComments: 382
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

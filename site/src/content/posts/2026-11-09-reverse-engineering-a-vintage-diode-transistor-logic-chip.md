@@ -11,9 +11,9 @@ heat: 43
 score: 0.48371
 readMinutes: 1
 image: "https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_vHocEpzAV5xr25iJAKrKu-i3HWUwdDkiAW8TE-MI7fsAFM_1Ad7tDEvcYpFrn3LQcrqnM7inKtzEjwmnxYDg4k42JKPpsUK2cAC5oxLEylOdpLC4FJyQM=w1200-h630-p-k-no-nu"
-hnPoints: 17
-hnComments: 1
-buzz: 46
+hnPoints: 0
+hnComments: 0
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
