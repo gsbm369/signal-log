@@ -12,8 +12,8 @@ score: 0.48017
 readMinutes: 1
 image: "https://strandsagents.com/blog/og/amazon-saves-millions-replacing-sonnet-with-strands-decider.png"
 imageAlt: "Amazon saves millions by replacing Sonnet 4.6 with Strands Decider"
-hnPoints: 527
-hnComments: 193
+hnPoints: 675
+hnComments: 235
 buzz: 100
 ---
 

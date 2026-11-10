@@ -10,7 +10,7 @@ tags: ["tech"]
 heat: 31
 score: 0.29771
 readMinutes: 1
-hnPoints: 337
+hnPoints: 342
 hnComments: 200
 buzz: 94
 ---

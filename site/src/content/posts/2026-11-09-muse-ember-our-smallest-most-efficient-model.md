@@ -12,7 +12,7 @@ score: 0.30203
 readMinutes: 1
 image: "https://research.meta.ai/articles/muse-glint/hero/blog-header-light-v1.webp"
 imageAlt: "Abstract illustration of blue orbital curves, arrows and points looping out from a single center."
-hnPoints: 320
+hnPoints: 325
 hnComments: 139
 buzz: 93
 ---
