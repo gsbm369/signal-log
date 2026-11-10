@@ -11,9 +11,9 @@ heat: 82
 score: 1.07395
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2025/08/GettyImages-2227140868.jpg?w=1024"
-hnPoints: 5
+hnPoints: 6
 hnComments: 1
-buzz: 29
+buzz: 31
 ---
 
 Six months before Nvidia's spy scandal erupted, Culper Research was already questioning Jensen Huang's unusually close relationship with a Chinese executive.

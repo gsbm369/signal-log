@@ -12,9 +12,9 @@ score: 0.80432
 readMinutes: 1
 image: "https://opengraph.githubassets.com/5c0123d311589e1bf2013b7817ac9df6ad13abd915326ea0597fe0c0902aa94d/thisisme6598/gemini_files"
 imageAlt: "Documentation of Gemini File Leaking Behavior. Contribute to thisisme6598/gemini_files development by creating an account on GitHub."
-hnPoints: 466
-hnComments: 113
-buzz: 99
+hnPoints: 599
+hnComments: 129
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
