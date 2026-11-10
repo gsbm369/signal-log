@@ -11,9 +11,9 @@ heat: 43
 score: 0.59795
 readMinutes: 1
 image: "https://www.cnx-software.com/wp-content/uploads/2026/11/Raspberry-Pi-5-16GB-385-dollars.jpg"
-hnPoints: 230
-hnComments: 191
-buzz: 88
+hnPoints: 287
+hnComments: 254
+buzz: 91
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
