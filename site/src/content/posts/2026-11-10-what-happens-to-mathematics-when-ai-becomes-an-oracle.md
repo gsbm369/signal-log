@@ -11,9 +11,9 @@ heat: 62
 score: 0.82516
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/06/Mathematics-formula-1152x648.jpg"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Mathematician Steven Strogatz discusses his new book, Big Math: The Hidden Codes That Run Our World .

@@ -11,9 +11,9 @@ heat: 41
 score: 0.40888
 readMinutes: 1
 image: "https://images-stag.jazelc.com/uploads/theautopian-m2en/20261110110448/ScionByToyota_Family_TS3.jpg"
-hnPoints: 471
-hnComments: 313
-buzz: 99
+hnPoints: 526
+hnComments: 358
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

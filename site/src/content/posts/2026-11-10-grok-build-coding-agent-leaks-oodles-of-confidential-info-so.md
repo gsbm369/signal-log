@@ -11,9 +11,9 @@ heat: 63
 score: 0.83374
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/grok-plugin-marketplace-1152x648.webp"
-hnPoints: 2
+hnPoints: 4
 hnComments: 0
-buzz: 18
+buzz: 26
 ---
 
 Researcher finds 35,000 Grok Build apps wide open to anyone who looked for them.

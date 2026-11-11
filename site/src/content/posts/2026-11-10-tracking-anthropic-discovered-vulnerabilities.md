@@ -11,9 +11,9 @@ heat: 69
 score: 0.96618
 readMinutes: 1
 image: "https://www.vulncheck.com/_og/s/o_6eba28d38c5a4083.png"
-hnPoints: 399
-hnComments: 190
-buzz: 96
+hnPoints: 437
+hnComments: 208
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

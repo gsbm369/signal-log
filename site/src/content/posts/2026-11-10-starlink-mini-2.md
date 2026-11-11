@@ -11,9 +11,9 @@ heat: 40
 score: 0.38637
 readMinutes: 1
 image: "https://starlink.com/assets-new/images/landing/field/v4_night_sky.webp"
-hnPoints: 405
-hnComments: 409
-buzz: 97
+hnPoints: 482
+hnComments: 526
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
