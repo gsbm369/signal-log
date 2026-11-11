@@ -11,9 +11,9 @@ heat: 60
 score: 0.99485
 readMinutes: 1
 image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/gettyimages-2285784039.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
-hnPoints: 1
+hnPoints: 4
 hnComments: 0
-buzz: 11
+buzz: 26
 ---
 
 As espionage targets go, Jensen Huang is perhaps one of the least surprising on Earth. The Nvidia CEO runs one of the world's most valuable companies, controls the in-demand technology fueling the AI boom, and is cozy with presidents, CEOs, and all manner of important people. He also wears a cool leather jacket. Which makes [ ]

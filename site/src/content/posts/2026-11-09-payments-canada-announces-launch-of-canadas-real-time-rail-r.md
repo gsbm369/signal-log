@@ -12,7 +12,7 @@ score: 0.22223
 readMinutes: 1
 image: "https://www.payments.ca/sites/default/files/2026-11/CanadaLightsUp.png"
 hnPoints: 579
-hnComments: 335
+hnComments: 342
 buzz: 100
 ---
 

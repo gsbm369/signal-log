@@ -11,8 +11,8 @@ heat: 42
 score: 0.54741
 readMinutes: 1
 image: "https://docodethatmatters.com/images/home-automation/t1-07.webp"
-hnPoints: 528
-hnComments: 183
+hnPoints: 762
+hnComments: 279
 buzz: 100
 ---
 

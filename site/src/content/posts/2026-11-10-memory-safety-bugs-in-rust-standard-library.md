@@ -12,9 +12,9 @@ score: 1.14311
 readMinutes: 1
 image: "https://forge-blog.github.io/images/forge.png"
 imageAlt: "Colorful FORGE lettering beside an ink-and-wash painting of an artisan forging glowing metal."
-hnPoints: 3
+hnPoints: 6
 hnComments: 0
-buzz: 22
+buzz: 31
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 58
 score: 0.94065
 readMinutes: 1
 image: "https://engineering.fb.com/wp-content/uploads/2026/11/Your-algorithm-Figure-1.gif"
-hnPoints: 1
+hnPoints: 2
 hnComments: 0
-buzz: 11
+buzz: 18
 ---
 
 Your algorithm is a suite of AI-powered tools that makes Facebook recommendations more transparent and steerable, with a single editable view of the interests that shape Feed and Reels. We’re sharing how Your algorithm turns people’s natural language preferences into responsive recommendations, and how LLMs are tailored to specific tasks within the system. Traditionally, the [...] Read More... The post Your Algorithm: Giving People More Ways to Personalize Facebook Recommendations appeared first on Engineering at Meta .

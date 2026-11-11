@@ -11,9 +11,9 @@ heat: 43
 score: 0.5654
 readMinutes: 1
 image: "https://www.blender.org/wp-content/uploads/2026/07/splash.webp"
-hnPoints: 366
-hnComments: 51
-buzz: 95
+hnPoints: 447
+hnComments: 68
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

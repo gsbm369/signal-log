@@ -11,9 +11,9 @@ heat: 79
 score: 1.552
 readMinutes: 1
 image: "https://engineering.fb.com/wp-content/uploads/2026/11/Meta-TLX-Figure-1.png"
-hnPoints: 0
+hnPoints: 3
 hnComments: 0
-buzz: 0
+buzz: 22
 ---
 
 Triton Low-Level Extensions (TLX), is an extension to Triton that helps engineers optimize GPU performance while preserving Triton s productive programming model. TLX introduces explicit warp-group and cluster-level orchestration, letting developers adopt new hardware capabilities without sacrificing velocity. TLX has demonstrated performance improvements in RecSys training, RecSys inference, and large-scale LLM pretraining. Modern GPU architectures increasingly [...] Read More... The post How We Built TLX: A Hardware-Native GPU Compiler for Production ML at Scale appeared first on Engineering at Meta .
