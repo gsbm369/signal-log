@@ -11,8 +11,8 @@ heat: 25
 score: 0.22223
 readMinutes: 1
 image: "https://www.payments.ca/sites/default/files/2026-11/CanadaLightsUp.png"
-hnPoints: 579
-hnComments: 342
+hnPoints: 582
+hnComments: 343
 buzz: 100
 ---
 

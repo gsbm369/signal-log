@@ -11,9 +11,9 @@ heat: 60
 score: 0.64055
 readMinutes: 1
 image: "https://daniel.haxx.se/blog/wp-content/uploads/2026/10/curl-tshirt-back-lightblue.jpg"
-hnPoints: 3
+hnPoints: 6
 hnComments: 0
-buzz: 22
+buzz: 31
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

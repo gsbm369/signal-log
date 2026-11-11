@@ -11,9 +11,9 @@ heat: 63
 score: 0.99225
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2025/10/banner-oldnewthing-blue.webp"
-hnPoints: 3
-hnComments: 1
-buzz: 22
+hnPoints: 4
+hnComments: 0
+buzz: 26
 ---
 
 The Microsoft product catalog. The post Microsoft employee price list from 1987 appeared first on The Old New Thing .
