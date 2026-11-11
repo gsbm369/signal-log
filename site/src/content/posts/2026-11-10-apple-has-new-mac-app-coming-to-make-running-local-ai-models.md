@@ -11,9 +11,9 @@ heat: 37
 score: 0.34463
 readMinutes: 1
 image: "https://9to5mac.com/wp-content/uploads/sites/6/2026/10/Mac-mini.jpg?quality=82&strip=all&resize=1200,628"
-hnPoints: 417
-hnComments: 433
-buzz: 97
+hnPoints: 505
+hnComments: 518
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

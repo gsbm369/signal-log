@@ -11,9 +11,9 @@ heat: 69
 score: 0.99779
 readMinutes: 1
 image: "https://martinfowler.com/articles/tests-as-data/card.png"
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 Automated testing in the age of AI coding assistants is problematic: when AI agents write both production and test code, developers risk losing the assurance that automated tests protect against functional errors. Matteo Vaccari makes three claims: (1) when AI writes the code, developers become its customers; (2) therefore customer tests, not developer tests, become the primary contract between humans and AI; (3) moving that contract into test data rather than test code makes it easier to protect it from unexpected modifications by coding agents. All of this optimizes for human-readable tests that establish a contract between humans and AI. While in the past DSL parsers and custom test runners were expensive to write and maintain, now AI makes them cheap. more…

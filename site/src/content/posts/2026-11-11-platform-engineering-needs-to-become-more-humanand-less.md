@@ -11,9 +11,9 @@ heat: 61
 score: 0.81932
 readMinutes: 1
 image: "https://www.cncf.io/wp-content/uploads/2026/11/HAProxy-Technologies-4.jpg"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Even my family thinks I’m a little robotic. Logical, linear, sequential, methodical. But hey, I’m an engineer, and that’s part of what makes me good at my job. If I were operating on the same volatile...

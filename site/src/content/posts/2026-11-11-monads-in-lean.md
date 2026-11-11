@@ -10,9 +10,9 @@ tags: ["tech"]
 heat: 78
 score: 0.99839
 readMinutes: 1
-hnPoints: 13
+hnPoints: 15
 hnComments: 1
-buzz: 42
+buzz: 45
 ---
 
 This post demonstrates how to use monads in the Lean programming language (Lean 4, to be specific). If you're not familiar with Lean, this part of the language is very similar to other functional programming languages, like Haskell or OCaml. Motivating example - evaluating expressions Suppose we want to write a …

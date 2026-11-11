@@ -1,21 +1,20 @@
 ---
 title: "In Memoriam: Tim Peters 1952–2026"
-description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-11T14:20:17+00:00
-addedAt: 2026-11-11T15:49:21.847032+00:00
-source: "Lobsters"
-category: aggregators
-sourceUrl: "https://discuss.python.org/t/in-memoriam-tim-peters-1952-2026/110028"
-tags: ["tech"]
-heat: 56
-score: 0.70843
+description: "Guido van Rossum conveys the sad (and somewhat delayed) news of the passing of Tim Peters. It's hard to overestimate Tim's influence on Python."
+pubDate: 2026-11-11T17:12:51+00:00
+addedAt: 2026-11-11T21:48:40.578800+00:00
+source: "LWN.net"
+category: devops_linux
+sourceUrl: "https://lwn.net/Articles/1106901/"
+tags: ["python"]
+heat: 67
+score: 1.04524
 readMinutes: 1
-image: "https://us1.discourse-cdn.com/flex002/uploads/python1/original/1X/f93ff97c4f381b5e8add5a0c163b4ded29f20ed7.png"
-hnPoints: 26
-hnComments: 7
-buzz: 53
+hnPoints: 5
+hnComments: 1
+buzz: 29
 ---
 
-Lobsters linked this without a summary. Follow the link for the article.
+Guido van Rossum conveys the sad (and somewhat delayed) news of the passing of Tim Peters. It's hard to overestimate Tim's influence on Python. He's probably best known for writing the Zen of Python ( PEP 20 ), but to me he was a mentor and language co-designer long before that. Tim found Python not long after its initial release. His first deed was to convince me that Python should support mixed arithmetic between int and float, because most users would expect them to work that way. And he never stopped contributing.
 
-*Reproduced from the Lobsters feed. No model was used to write this entry — follow the link for the full article.*
+*Reproduced from the LWN.net feed. No model was used to write this entry — follow the link for the full article.*

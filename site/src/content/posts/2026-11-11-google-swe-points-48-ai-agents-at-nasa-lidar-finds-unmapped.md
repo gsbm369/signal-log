@@ -11,8 +11,8 @@ heat: 51
 score: 0.60635
 readMinutes: 1
 image: "https://pietromiotti.com/latest/maya-site/forest-vs-lidar.jpg"
-hnPoints: 530
-hnComments: 202
+hnPoints: 878
+hnComments: 318
 buzz: 100
 ---
 

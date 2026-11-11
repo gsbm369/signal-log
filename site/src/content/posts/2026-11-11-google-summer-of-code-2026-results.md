@@ -11,9 +11,9 @@ heat: 57
 score: 0.72817
 readMinutes: 1
 image: "https://www.rust-lang.org/static/images/rust-social.jpg"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
