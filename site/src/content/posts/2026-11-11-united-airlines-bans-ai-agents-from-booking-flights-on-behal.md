@@ -11,8 +11,8 @@ heat: 48
 score: 0.43427
 readMinutes: 1
 image: "https://assets3.cbsnewsstatic.com/hub/i/r/2026/11/11/abfecdbe-5571-42df-95f8-6c22131067aa/thumbnail/1200x630/526b47f241e8e11c31cb47bc82f1f68c/gettyimages-2296986024-1.jpg"
-hnPoints: 551
-hnComments: 546
+hnPoints: 632
+hnComments: 646
 buzz: 100
 ---
 

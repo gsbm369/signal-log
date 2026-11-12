@@ -13,7 +13,7 @@ readMinutes: 1
 image: "https://devblogs.microsoft.com/dotnet/wp-content/uploads/sites/10/2026/11/dotnet-11-contributors-scaled.webp"
 imageAlt: "Collage of .NET 11 contributors"
 hnPoints: 237
-hnComments: 297
+hnComments: 303
 buzz: 88
 ---
 

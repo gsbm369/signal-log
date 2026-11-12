@@ -13,7 +13,7 @@ readMinutes: 1
 image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/aux2-hero.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
 imageAlt: "A small white box on a bigger grey box on a red cabinet"
 hnPoints: 4
-hnComments: 2
+hnComments: 5
 buzz: 26
 ---
 

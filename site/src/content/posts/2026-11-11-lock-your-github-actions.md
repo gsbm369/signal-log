@@ -11,9 +11,9 @@ heat: 46
 score: 0.41226
 readMinutes: 1
 image: "https://hugovk.dev/blog/2026/lock-github-actions/feature.jpg"
-hnPoints: 251
-hnComments: 49
-buzz: 89
+hnPoints: 316
+hnComments: 60
+buzz: 93
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

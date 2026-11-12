@@ -11,9 +11,9 @@ heat: 66
 score: 0.74607
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/GettyImages-1560398364-966x648.jpg"
-hnPoints: 4
+hnPoints: 5
 hnComments: 1
-buzz: 26
+buzz: 29
 ---
 
 Apple has already made the forum read-only.
