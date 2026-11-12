@@ -11,9 +11,9 @@ heat: 73
 score: 1.08934
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M73MMXB6M86NA1F97GH7Q8TG.png"
-hnPoints: 7
+hnPoints: 8
 hnComments: 0
-buzz: 33
+buzz: 35
 ---
 
 Cloudflare is building an experimental consensus service using a never-before-deployed consensus algorithm, QuePaxa. In this post we explain how QuePaxa works and why we chose it.

@@ -11,7 +11,7 @@ heat: 46
 score: 0.5629
 readMinutes: 1
 image: "https://ftrain.com/art/uploads/aboard-newsletter/the-web-is-more-than-enough-header.png"
-hnPoints: 210
+hnPoints: 212
 hnComments: 168
 buzz: 86
 ---

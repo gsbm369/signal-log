@@ -10,9 +10,9 @@ tags: ["nvidia"]
 heat: 50
 score: 0.64533
 readMinutes: 1
-hnPoints: 287
-hnComments: 309
-buzz: 91
+hnPoints: 362
+hnComments: 448
+buzz: 95
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

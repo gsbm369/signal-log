@@ -11,9 +11,9 @@ heat: 50
 score: 0.64737
 readMinutes: 1
 image: "https://foss.life/og.png"
-hnPoints: 3
+hnPoints: 6
 hnComments: 0
-buzz: 22
+buzz: 31
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
