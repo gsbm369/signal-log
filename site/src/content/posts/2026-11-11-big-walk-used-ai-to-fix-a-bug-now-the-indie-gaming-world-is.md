@@ -11,9 +11,9 @@ heat: 63
 score: 0.9414
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/bigwalkdebate-1152x648.png"
-hnPoints: 4
-hnComments: 2
-buzz: 26
+hnPoints: 7
+hnComments: 3
+buzz: 33
 ---
 
 Any amount of AI coding is too much for many Independent Games Festival judges.

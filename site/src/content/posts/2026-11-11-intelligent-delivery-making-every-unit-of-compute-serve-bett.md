@@ -11,9 +11,9 @@ heat: 68
 score: 1.08174
 readMinutes: 1
 image: "https://engineering.fb.com/wp-content/uploads/2026/11/Meta-Intelligent-Delivery-image-1.png"
-hnPoints: 2
+hnPoints: 3
 hnComments: 0
-buzz: 18
+buzz: 22
 ---
 
 Ads ranking models are growing toward LLM scale faster than the hardware to run them can keep up. An extra unit of compute has more impact on some ad requests, models, and chips than on others. The challenge is deciding where to allocate it to get the best outcome for the entire system. We built [...] Read More... The post Intelligent Delivery: Making Every Unit of Compute Serve Better Ads appeared first on Engineering at Meta .

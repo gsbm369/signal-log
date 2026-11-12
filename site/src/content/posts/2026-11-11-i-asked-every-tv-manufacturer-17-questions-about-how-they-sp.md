@@ -12,9 +12,9 @@ score: 0.51693
 readMinutes: 1
 image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/268797_What_data_are_your_TVs_collecting_and_is_it_protected__CVirginia.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200"
 imageAlt: "Multiple squares of TV static in front of an illustration of a TV and stand on a dark blue background."
-hnPoints: 326
-hnComments: 218
-buzz: 93
+hnPoints: 342
+hnComments: 238
+buzz: 94
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 63
 score: 0.94679
 readMinutes: 1
 image: "https://michael.bacarella.com/assets/mbacface.jpg"
-hnPoints: 330
-hnComments: 165
-buzz: 93
+hnPoints: 435
+hnComments: 222
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 51
 score: 0.66866
 readMinutes: 1
 image: "https://herecomesthemoon.net/2026/11/cpp26-failed-the-national-bodies/images/dithers/bjarne_dithered.png"
-hnPoints: 2
+hnPoints: 3
 hnComments: 1
-buzz: 18
+buzz: 22
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
