@@ -12,9 +12,9 @@ score: 0.74418
 readMinutes: 1
 image: "https://libreagi.com/og.png"
 imageAlt: "LibreAGI: open models should outlive the places that host them."
-hnPoints: 28
-hnComments: 11
-buzz: 54
+hnPoints: 106
+hnComments: 22
+buzz: 75
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

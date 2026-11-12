@@ -11,9 +11,9 @@ heat: 49
 score: 0.49653
 readMinutes: 1
 image: "https://forums.spacebattles.com/data/svg/12/1/1794175159/sb_2022_favicon_192x192.png"
-hnPoints: 325
-hnComments: 199
-buzz: 93
+hnPoints: 356
+hnComments: 216
+buzz: 95
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

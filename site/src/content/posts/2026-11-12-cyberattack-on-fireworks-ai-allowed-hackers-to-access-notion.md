@@ -11,9 +11,9 @@ heat: 65
 score: 0.79625
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2021/02/notion-glitch-hero.jpg?resize=1200,827"
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 2
+hnComments: 1
+buzz: 18
 ---
 
 This is Fireworks' second data breach in as many months.

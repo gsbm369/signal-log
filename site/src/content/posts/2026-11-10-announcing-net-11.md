@@ -12,8 +12,8 @@ score: 0.63635
 readMinutes: 1
 image: "https://devblogs.microsoft.com/dotnet/wp-content/uploads/sites/10/2026/11/dotnet-11-contributors-scaled.webp"
 imageAlt: "Collage of .NET 11 contributors"
-hnPoints: 237
-hnComments: 303
+hnPoints: 238
+hnComments: 305
 buzz: 88
 ---
 
