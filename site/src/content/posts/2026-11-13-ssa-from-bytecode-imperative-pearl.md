@@ -11,9 +11,9 @@ heat: 61
 score: 0.64144
 readMinutes: 1
 image: "https://bernsteinbear.com/favicon.ico"
-hnPoints: 1
+hnPoints: 3
 hnComments: 0
-buzz: 11
+buzz: 22
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

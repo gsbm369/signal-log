@@ -11,9 +11,9 @@ heat: 42
 score: 0.35124
 readMinutes: 1
 image: "https://assets-prd.ignimgs.com/2024/02/05/nintendo-blogroll-logos-1707165316914.jpg?width=1280&amp;format=jpg&amp;auto=webp&amp;quality=80"
-hnPoints: 309
-hnComments: 242
-buzz: 92
+hnPoints: 314
+hnComments: 247
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

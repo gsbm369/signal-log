@@ -11,9 +11,9 @@ heat: 84
 score: 1.53281
 readMinutes: 1
 image: "https://substackcdn.com/image/youtube/w_728,c_limit/AdyPoLBp4No"
-hnPoints: 218
-hnComments: 5
-buzz: 87
+hnPoints: 236
+hnComments: 8
+buzz: 88
 ---
 
 Chips and Cheese linked this without a summary. Follow the link for the article.

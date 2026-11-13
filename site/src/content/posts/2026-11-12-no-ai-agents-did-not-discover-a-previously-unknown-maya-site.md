@@ -11,9 +11,9 @@ heat: 61
 score: 0.64714
 readMinutes: 1
 image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/maya-sites.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
-hnPoints: 6
+hnPoints: 7
 hnComments: 1
-buzz: 31
+buzz: 33
 ---
 
 Armed with a team of AI agents, Google researcher Pietro Miotti claimed earlier this week to have discovered a potentially unmapped Maya site in Mexico. There was just one problem: The site had already been discovered and was published in an academic journal last year. The incident, which sparked criticism among archeologists online, underscores a [ ]

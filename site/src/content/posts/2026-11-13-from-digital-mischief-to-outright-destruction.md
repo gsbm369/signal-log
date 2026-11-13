@@ -11,9 +11,9 @@ heat: 63
 score: 0.67962
 readMinutes: 1
 image: "https://unsung.aresluna.org/_media/from-digital-mischief-to-outright-destruction/ogimage.jpg"
-hnPoints: 1
+hnPoints: 2
 hnComments: 0
-buzz: 11
+buzz: 18
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
