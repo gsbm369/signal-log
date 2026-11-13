@@ -12,9 +12,9 @@ score: 0.46263
 readMinutes: 1
 image: "https://opengraph.githubassets.com/3d4028a016677a0ede6b2123ece71abd404650230f30758d4e107483ada2e5a8/simpsoka/zigzag"
 imageAlt: "Free, open-source embroidery software for Mac and Windows. Turn SVG artwork into machine embroidery, edit stitches visually, and create designs with AI agents via MCP. - simpsoka/zigzag"
-hnPoints: 381
-hnComments: 148
-buzz: 96
+hnPoints: 529
+hnComments: 183
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
