@@ -11,9 +11,9 @@ heat: 68
 score: 0.99893
 readMinutes: 1
 image: "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-4-hydrogen__key-art__lockup__16-9.width-1300.jpg"
-hnPoints: 382
-hnComments: 249
-buzz: 96
+hnPoints: 482
+hnComments: 304
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

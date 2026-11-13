@@ -11,9 +11,9 @@ heat: 61
 score: 0.89381
 readMinutes: 1
 image: "https://cdn.shopify.com/b/shopify-brochure2-assets/0187f12af5318229e577911c50193a6b.png"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 How we train and serve a shared generative model for personalized search and recommendation at Shopify scale.
