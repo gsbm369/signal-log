@@ -11,9 +11,9 @@ heat: 57
 score: 0.71254
 readMinutes: 1
 image: "https://us1.discourse-cdn.com/flex002/uploads/haskell/original/1X/89166504e40f4869ea825dd70048017861ec8578.png"
-hnPoints: 22
-hnComments: 2
-buzz: 50
+hnPoints: 218
+hnComments: 131
+buzz: 87
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

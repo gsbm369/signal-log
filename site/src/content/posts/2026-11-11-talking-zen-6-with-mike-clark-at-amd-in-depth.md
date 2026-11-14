@@ -11,7 +11,7 @@ heat: 84
 score: 1.53281
 readMinutes: 1
 image: "https://substackcdn.com/image/youtube/w_728,c_limit/AdyPoLBp4No"
-hnPoints: 236
+hnPoints: 239
 hnComments: 8
 buzz: 88
 ---

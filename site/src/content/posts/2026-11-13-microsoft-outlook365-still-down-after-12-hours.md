@@ -12,9 +12,9 @@ score: 0.46446
 readMinutes: 1
 image: "https://pbs.twimg.com/profile_images/1040007539088211968/f9H6EzjO_400x400.jpg"
 imageAlt: "Microsoft 365 Status profile picture"
-hnPoints: 419
-hnComments: 288
-buzz: 97
+hnPoints: 467
+hnComments: 308
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

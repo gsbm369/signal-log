@@ -11,9 +11,9 @@ heat: 54
 score: 0.64948
 readMinutes: 1
 image: "https://www.joshka.net/cell-borders/og.png"
-hnPoints: 4
-hnComments: 0
-buzz: 26
+hnPoints: 314
+hnComments: 138
+buzz: 93
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

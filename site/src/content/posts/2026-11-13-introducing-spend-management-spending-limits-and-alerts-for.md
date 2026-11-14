@@ -11,9 +11,9 @@ heat: 92
 score: 1.56171
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M79507GNA08VSCSPAXM0NCC3.png"
-hnPoints: 3
+hnPoints: 6
 hnComments: 0
-buzz: 22
+buzz: 31
 ---
 
 Spend Management adds opt-in spending caps for Cloudflare Workers and Durable Objects, and more products soon. Here is how we built the metering pipeline that turns usage into runtime decisions.
