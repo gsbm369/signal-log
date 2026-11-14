@@ -12,9 +12,9 @@ score: 0.64265
 readMinutes: 1
 image: "https://images.ctfassets.net/l47ir7rfykkn/1ZYE7BoVOqRzXuMDf28B2m/bbd079e4fa17b86be5702aa5c4535fbe/Project_Theseus_-_Dark.png"
 imageAlt: "Open Graph image for Chainguard."
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Chainguard launches Project Theseus to move beyond reactive patching with safer open source components, starting with the Rust-based challoc allocator.

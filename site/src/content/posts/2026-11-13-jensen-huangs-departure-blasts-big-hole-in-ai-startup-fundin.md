@@ -11,9 +11,9 @@ heat: 56
 score: 0.62897
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2026/11/Jensen-Huang-nvidia.jpg?w=1024"
-hnPoints: 0
+hnPoints: 7
 hnComments: 0
-buzz: 0
+buzz: 33
 ---
 
 Nvidia poured tens of billions into AI startups under Huang. Without him at the helm, founders and VCs are bracing for smaller checks and lower valuations.

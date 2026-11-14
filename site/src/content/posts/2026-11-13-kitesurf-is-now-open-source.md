@@ -11,9 +11,9 @@ heat: 86
 score: 1.05501
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M7B8M53647Q1KNRABY8VM2G7.png"
-hnPoints: 2
+hnPoints: 3
 hnComments: 1
-buzz: 18
+buzz: 22
 ---
 
 Kitesurf, our experimental browser engine for AI agents, is now open source. Inspect the code, run it locally, or deploy your own instance on Cloudflare Workers.

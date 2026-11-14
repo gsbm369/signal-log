@@ -12,9 +12,9 @@ score: 0.45105
 readMinutes: 1
 image: "https://monkeyisland.pages.dev/og-image.jpg"
 imageAlt: "The Monkey Island title screen in the site&#x27;s viewer: CGA on the left of the divider, VGA on the right."
-hnPoints: 310
-hnComments: 94
-buzz: 92
+hnPoints: 436
+hnComments: 140
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
