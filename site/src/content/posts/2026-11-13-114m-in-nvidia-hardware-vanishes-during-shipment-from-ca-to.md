@@ -11,8 +11,8 @@ heat: 59
 score: 0.56456
 readMinutes: 1
 image: "https://www.freightwaves.com/wp-content/uploads/2026/11/09/NVIDIA-Endeavor-1200x628-1.jpg"
-hnPoints: 362
-hnComments: 194
+hnPoints: 369
+hnComments: 198
 buzz: 95
 ---
 
