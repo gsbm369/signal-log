@@ -11,9 +11,9 @@ heat: 47
 score: 0.51281
 readMinutes: 1
 image: "https://tube.kockatoo.org/lazy-static/thumbnails/02935b80-28d9-4fd7-bc33-9d0cb76f2e80.webp"
-hnPoints: 317
-hnComments: 68
-buzz: 93
+hnPoints: 407
+hnComments: 87
+buzz: 97
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

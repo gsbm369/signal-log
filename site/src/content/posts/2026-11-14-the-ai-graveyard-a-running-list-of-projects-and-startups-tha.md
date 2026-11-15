@@ -11,9 +11,9 @@ heat: 59
 score: 0.75648
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2019/12/GettyImages-95927766-1.jpg?resize=1200,797"
-hnPoints: 0
+hnPoints: 4
 hnComments: 0
-buzz: 0
+buzz: 26
 ---
 
 From Apple's repeatedly delayed Siri AI to OpenAI's messy "super app" launch, here's a look at the AI projects that shut down or missed expectations.

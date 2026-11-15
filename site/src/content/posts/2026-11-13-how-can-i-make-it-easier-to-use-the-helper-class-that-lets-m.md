@@ -11,9 +11,9 @@ heat: 73
 score: 0.80705
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Remove the need to have to type out the name of the helper. The post How can I make it easier to use the helper class that lets me pass more than one parameter to CODE co_await /CODE ? appeared first on The Old New Thing .

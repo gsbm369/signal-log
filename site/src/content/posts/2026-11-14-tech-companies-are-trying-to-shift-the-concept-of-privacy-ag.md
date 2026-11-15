@@ -11,9 +11,9 @@ heat: 46
 score: 0.49416
 readMinutes: 1
 image: "https://www.eff.org/files/banner_library/mobile-privacy.png"
-hnPoints: 382
-hnComments: 150
-buzz: 96
+hnPoints: 492
+hnComments: 181
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

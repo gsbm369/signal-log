@@ -11,9 +11,9 @@ heat: 76
 score: 1.15307
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2025/05/GettyImages-2216028442.jpg?w=1024"
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 3
+hnComments: 4
+buzz: 22
 ---
 
 The petition had attracted more than 115,000 signatures as of Saturday afternoon.
