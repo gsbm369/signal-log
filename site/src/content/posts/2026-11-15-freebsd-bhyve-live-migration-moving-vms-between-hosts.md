@@ -1,18 +1,19 @@
 ---
-title: "Someone's impersonating this blog"
+title: "FreeBSD bhyve Live Migration: Moving VMs Between Hosts"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-13T20:39:53+00:00
-addedAt: 2026-11-14T21:48:25.463239+00:00
+pubDate: 2026-11-15T06:44:44+00:00
+addedAt: 2026-11-15T09:48:35.485260+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://mattbee.mataroa.blog/p/someones-impersonating-this-blog/"
+sourceUrl: "https://gyptazy.com/blog/freebsd-bhyve-live-migration-support-rfc/"
 tags: ["tech"]
-heat: 33
-score: 0.28485
+heat: 65
+score: 0.66664
 readMinutes: 1
-hnPoints: 70
-hnComments: 9
-buzz: 69
+image: "https://cdn.gyptazy.com/img/freebsd-bhyve-live-migration.jpg"
+hnPoints: 139
+hnComments: 49
+buzz: 79
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

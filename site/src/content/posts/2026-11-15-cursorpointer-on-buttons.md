@@ -1,18 +1,18 @@
 ---
-title: "25 of my favourite modern NES games"
+title: "cursor:pointer on buttons"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-15T02:40:40+00:00
-addedAt: 2026-11-15T03:48:26.282532+00:00
+pubDate: 2026-11-15T09:15:40+00:00
+addedAt: 2026-11-15T09:48:35.483383+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://jordi.inversethought.com/blog/25-of-my-favourite-modern-nes-games/"
+sourceUrl: "https://blog.kizu.dev/cursors/"
 tags: ["tech"]
-heat: 57
-score: 0.71813
+heat: 68
+score: 0.73444
 readMinutes: 1
-hnPoints: 2
+hnPoints: 0
 hnComments: 0
-buzz: 18
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

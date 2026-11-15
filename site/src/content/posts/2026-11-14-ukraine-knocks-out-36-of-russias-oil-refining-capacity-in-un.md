@@ -11,8 +11,8 @@ heat: 30
 score: 0.25101
 readMinutes: 1
 image: "https://static.nv.ua/shared/system/Article/posters/003/400/667/original/641dcb95ac384dd3b9c9b9adde85bff0.png?q=85&amp;stamp=20261112140909&amp;f=webp"
-hnPoints: 309
-hnComments: 233
+hnPoints: 313
+hnComments: 237
 buzz: 92
 ---
 

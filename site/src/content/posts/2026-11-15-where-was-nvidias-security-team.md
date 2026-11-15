@@ -11,9 +11,9 @@ heat: 74
 score: 1.09538
 readMinutes: 1
 image: "https://techcrunch.com/wp-content/uploads/2026/11/Jensen-Huang-1.jpg?w=1024"
-hnPoints: 1
+hnPoints: 3
 hnComments: 0
-buzz: 11
+buzz: 22
 ---
 
 Nvidia’s security chief quietly left in August, and now that CEO Jensen Huang has stepped down over his relationships, including one with an executive at a company suspected of funneling chips to China, a former intelligence officer says it’s the kind of leak that runs everyday conversations, which most corporate security teams are poorly equipped to catch.

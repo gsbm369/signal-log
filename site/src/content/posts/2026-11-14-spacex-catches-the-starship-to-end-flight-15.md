@@ -11,8 +11,8 @@ heat: 49
 score: 0.54642
 readMinutes: 1
 image: "https://www.spacex.com/assets/images/share.jpg"
-hnPoints: 860
-hnComments: 588
+hnPoints: 1207
+hnComments: 811
 buzz: 100
 ---
 
