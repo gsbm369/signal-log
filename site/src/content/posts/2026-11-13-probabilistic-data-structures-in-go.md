@@ -11,9 +11,9 @@ heat: 20
 score: 0.11929
 readMinutes: 1
 image: "https://antonz.org/probabilistic-data-structures/cover.png"
-hnPoints: 57
+hnPoints: 61
 hnComments: 7
-buzz: 65
+buzz: 66
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

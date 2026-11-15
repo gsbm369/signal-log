@@ -11,9 +11,9 @@ heat: 41
 score: 0.41158
 readMinutes: 1
 image: "https://www.eff.org/files/banner_library/siren_v._san_jose.png"
-hnPoints: 294
-hnComments: 87
-buzz: 91
+hnPoints: 326
+hnComments: 108
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

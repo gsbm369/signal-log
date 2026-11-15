@@ -1,19 +1,19 @@
 ---
-title: "Project Zero will disclose vulnerabilities 90 days after reporting"
+title: "The MacBook Pro's OLED PWM problem"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-14T11:13:17+00:00
-addedAt: 2026-11-15T09:48:35.485426+00:00
+pubDate: 2026-11-15T13:15:22+00:00
+addedAt: 2026-11-15T21:48:30.461636+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://projectzero.google/2026/11/disclosure-policy.html"
-tags: ["vulnerab"]
+sourceUrl: "https://macanorak.com/the-macbook-pros-oled-pwm-problem-when-a-better-display-becomes-worse-to-use/"
+tags: ["tech"]
 heat: 53
-score: 0.48405
+score: 0.50363
 readMinutes: 1
-image: "https://projectzero.google/images/preview_image.png"
-hnPoints: 296
-hnComments: 166
-buzz: 92
+image: "https://macanorak.com/content/images/2026/11/PROLED-Display-XDR-1.png"
+hnPoints: 357
+hnComments: 186
+buzz: 95
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

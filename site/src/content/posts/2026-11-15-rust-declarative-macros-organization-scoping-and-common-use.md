@@ -1,18 +1,18 @@
 ---
-title: "A NES emulator written in Odin"
+title: "Rust Declarative Macros: Organization, Scoping, and Common Use-Cases"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-15T12:37:33+00:00
-addedAt: 2026-11-15T15:48:29.802263+00:00
+pubDate: 2026-11-15T19:40:13+00:00
+addedAt: 2026-11-15T21:48:30.459849+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://lucypero.com/lucynes.html"
-tags: ["tech"]
-heat: 55
-score: 0.66356
+sourceUrl: "https://sigseis.dev/articles/2026/11/10"
+tags: ["rust"]
+heat: 86
+score: 1.1398
 readMinutes: 1
-hnPoints: 42
-hnComments: 3
-buzz: 61
+hnPoints: 1
+hnComments: 0
+buzz: 11
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

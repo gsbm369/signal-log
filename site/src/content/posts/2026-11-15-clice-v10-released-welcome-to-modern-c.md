@@ -1,18 +1,19 @@
 ---
-title: "Memory management in 40 major C projects, a survey"
+title: "clice v1.0 Released: Welcome to Modern C++"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-15T12:50:03+00:00
-addedAt: 2026-11-15T15:48:29.800259+00:00
+pubDate: 2026-11-15T21:19:35+00:00
+addedAt: 2026-11-15T21:48:30.461073+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://theconsensus.dev/p/2026/11/08/c-memory-management-survey.html"
+sourceUrl: "https://www.ykiko.me/en/articles/2105384023094834022/"
 tags: ["tech"]
-heat: 56
-score: 0.6689
+heat: 66
+score: 0.73628
 readMinutes: 1
-hnPoints: 3
+image: "https://www.ykiko.me/en/articles/2105384023094834022/featured.png"
+hnPoints: 0
 hnComments: 0
-buzz: 22
+buzz: 0
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

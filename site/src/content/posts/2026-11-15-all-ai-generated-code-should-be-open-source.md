@@ -1,18 +1,19 @@
 ---
-title: "A family tree of software job titles"
+title: "All AI-generated code should be Open Source"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-14T17:45:19+00:00
-addedAt: 2026-11-15T09:48:35.485574+00:00
+pubDate: 2026-11-15T14:46:58+00:00
+addedAt: 2026-11-15T21:48:30.461354+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://zwischenzugs.com/2026/11/03/a-family-tree-of-software-job-titles/"
+sourceUrl: "https://jakub.jankiewicz.org/blog/ai-code-open-source/"
 tags: ["tech"]
-heat: 46
-score: 0.37729
+heat: 55
+score: 0.53413
 readMinutes: 1
-hnPoints: 378
-hnComments: 189
-buzz: 96
+image: "https://jakub.jankiewicz.org/img/en/ai-code-open-source.png"
+hnPoints: 963
+hnComments: 534
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -12,9 +12,9 @@ score: 0.40056
 readMinutes: 1
 image: "https://litnews.ai/og/default.png"
 imageAlt: "LitNews.ai: federal litigation, decided daily"
-hnPoints: 346
-hnComments: 146
-buzz: 94
+hnPoints: 471
+hnComments: 210
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
