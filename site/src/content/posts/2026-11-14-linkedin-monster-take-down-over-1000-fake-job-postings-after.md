@@ -10,9 +10,9 @@ tags: ["tech"]
 heat: 47
 score: 0.395
 readMinutes: 1
-hnPoints: 251
-hnComments: 142
-buzz: 89
+hnPoints: 265
+hnComments: 163
+buzz: 90
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

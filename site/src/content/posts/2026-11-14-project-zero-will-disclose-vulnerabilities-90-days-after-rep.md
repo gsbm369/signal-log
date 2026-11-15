@@ -11,9 +11,9 @@ heat: 53
 score: 0.48405
 readMinutes: 1
 image: "https://projectzero.google/images/preview_image.png"
-hnPoints: 249
-hnComments: 118
-buzz: 89
+hnPoints: 296
+hnComments: 166
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
