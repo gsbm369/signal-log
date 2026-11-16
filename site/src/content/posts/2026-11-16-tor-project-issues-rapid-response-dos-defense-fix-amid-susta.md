@@ -11,9 +11,9 @@ heat: 40
 score: 0.38625
 readMinutes: 1
 image: "https://forum.torproject.org/uploads/default/original/1X/9176a8951ba6126cfb4661731943b74ee92c82dd.png"
-hnPoints: 208
-hnComments: 55
-buzz: 86
+hnPoints: 238
+hnComments: 64
+buzz: 88
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

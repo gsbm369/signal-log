@@ -12,9 +12,9 @@ score: 0.33073
 readMinutes: 1
 image: "https://baron.by.dai.studio/og-image.png"
 imageAlt: "Baron: a red cartoon biplane banking over green hills, mountains and an airfield runway. A biplane in every browser, built with DAI Studio."
-hnPoints: 209
-hnComments: 52
-buzz: 86
+hnPoints: 225
+hnComments: 59
+buzz: 87
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 66
 score: 0.89941
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/GettyImages-2298538124-1152x648.jpg"
-hnPoints: 1
-hnComments: 0
-buzz: 11
+hnPoints: 3
+hnComments: 1
+buzz: 22
 ---
 
 For those who have lived under armed drones, the sound overhead can be distressing.

@@ -11,9 +11,9 @@ heat: 79
 score: 0.91112
 readMinutes: 1
 image: "https://engineering.fb.com/wp-content/uploads/2026/11/Cuttlefish-on-Mac-image-1.png"
-hnPoints: 1
+hnPoints: 2
 hnComments: 0
-buzz: 11
+buzz: 18
 ---
 
 How Meta's Reality Labs brought Cuttlefish and its QEMU backend to macOS and Apple silicon. [...] Read More... The post Cuttlefish on Mac: Running Android s Virtual Device Framework Natively on Apple Silicon appeared first on Engineering at Meta .
