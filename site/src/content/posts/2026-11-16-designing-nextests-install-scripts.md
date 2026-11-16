@@ -11,9 +11,9 @@ heat: 46
 score: 0.51907
 readMinutes: 1
 image: "https://sunshowers.io/images/nextest-install-scripts-card.png"
-hnPoints: 0
+hnPoints: 3
 hnComments: 0
-buzz: 0
+buzz: 22
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

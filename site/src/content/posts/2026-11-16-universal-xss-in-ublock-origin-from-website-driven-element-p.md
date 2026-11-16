@@ -12,9 +12,9 @@ score: 0.51986
 readMinutes: 1
 image: "https://iter.ca//ubo-epicker.png"
 imageAlt: "uBlock Origin&#39;s element picker showing a cosmetic filter and the Pick, Preview, and Create buttons."
-hnPoints: 347
-hnComments: 95
-buzz: 94
+hnPoints: 504
+hnComments: 145
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
