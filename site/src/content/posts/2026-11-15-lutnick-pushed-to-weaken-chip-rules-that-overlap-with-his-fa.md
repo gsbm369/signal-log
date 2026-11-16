@@ -12,9 +12,9 @@ score: 0.47399
 readMinutes: 1
 image: "https://static01.nyt.com/images/2026/11/14/multimedia/14dc-lutnick-commerce-01-bqtl/14dc-lutnick-commerce-01-bqtl-videoSixteenByNineJumbo1600.jpg"
 imageAlt: "Howard Lutnick has been sparring with others in the Trump administration over restrictions that could clamp down on the flow of Nvidia’s A.I. chips to data centers that serve Chinese customers around the world."
-hnPoints: 414
-hnComments: 185
-buzz: 97
+hnPoints: 477
+hnComments: 219
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

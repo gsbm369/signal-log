@@ -1,18 +1,18 @@
 ---
-title: "How did Woz write the Apple 1 BASIC before building the computer?"
+title: "Protomaps: Self-hosting map tiles has gotten cheap and easy"
 description: "Hacker News Best linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-14T22:22:49+00:00
-addedAt: 2026-11-15T15:48:29.803212+00:00
+pubDate: 2026-11-15T19:26:22+00:00
+addedAt: 2026-11-16T03:48:29.647412+00:00
 source: "Hacker News Best"
 category: aggregators
-sourceUrl: "https://retrocomputing.stackexchange.com/questions/17957"
+sourceUrl: "https://bruceroettgers.eu/blog/protomaps/"
 tags: ["tech"]
-heat: 38
-score: 0.35783
+heat: 66
+score: 0.5072
 readMinutes: 1
-hnPoints: 307
-hnComments: 159
-buzz: 92
+hnPoints: 208
+hnComments: 46
+buzz: 86
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -11,8 +11,8 @@ heat: 55
 score: 0.53413
 readMinutes: 1
 image: "https://jakub.jankiewicz.org/img/en/ai-code-open-source.png"
-hnPoints: 963
-hnComments: 534
+hnPoints: 1114
+hnComments: 597
 buzz: 100
 ---
 

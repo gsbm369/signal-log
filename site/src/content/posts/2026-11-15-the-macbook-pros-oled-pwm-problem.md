@@ -11,9 +11,9 @@ heat: 53
 score: 0.50363
 readMinutes: 1
 image: "https://macanorak.com/content/images/2026/11/PROLED-Display-XDR-1.png"
-hnPoints: 357
-hnComments: 186
-buzz: 95
+hnPoints: 433
+hnComments: 244
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
