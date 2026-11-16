@@ -11,9 +11,9 @@ heat: 97
 score: 0.95661
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/GettyImages-2304790934-1152x648.jpg"
-hnPoints: 3
+hnPoints: 4
 hnComments: 1
-buzz: 22
+buzz: 26
 ---
 
 This was the first total mission failure in United Launch Alliance's 20-year history.

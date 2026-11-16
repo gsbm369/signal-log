@@ -12,9 +12,9 @@ score: 0.56399
 readMinutes: 1
 image: "https://ransomnews.com/wp-content/uploads/2026/11/burger-king-tweet-bitly-link-hijack-2026-cover-1024x576.png"
 imageAlt: "A 2011 Burger King tweet now links to a list of Nazi camps: illustration of a short link splitting between a crossed-out 2011 box and a lit 2026 box"
-hnPoints: 205
-hnComments: 110
-buzz: 86
+hnPoints: 279
+hnComments: 144
+buzz: 91
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
