@@ -12,9 +12,9 @@ score: 0.37307
 readMinutes: 1
 image: "https://news.cornell.edu/sites/default/files/styles/story_thumbnail_lg/public/2026-10/2026_1407_aer_009-n.jpg?itok=01dhmnjw"
 imageAlt: "A solar farm in Lansing, New York."
-hnPoints: 272
-hnComments: 263
-buzz: 90
+hnPoints: 309
+hnComments: 311
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

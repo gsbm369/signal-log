@@ -11,8 +11,8 @@ heat: 48
 score: 0.42303
 readMinutes: 1
 image: "https://www.cs.cmu.edu/site-images/gates_web.jpg"
-hnPoints: 1498
-hnComments: 204
+hnPoints: 1984
+hnComments: 267
 buzz: 100
 ---
 
