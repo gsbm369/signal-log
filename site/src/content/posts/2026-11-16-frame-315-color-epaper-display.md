@@ -11,8 +11,8 @@ heat: 39
 score: 0.2841
 readMinutes: 1
 image: "https://trmnl-public.s3.us-east-2.amazonaws.com/zzswly4kqlbg9cqf982toa8anyeg"
-hnPoints: 490
-hnComments: 347
+hnPoints: 521
+hnComments: 395
 buzz: 100
 ---
 

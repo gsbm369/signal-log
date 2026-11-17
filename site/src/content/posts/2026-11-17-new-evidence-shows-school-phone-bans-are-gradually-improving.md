@@ -12,8 +12,8 @@ score: 0.59909
 readMinutes: 1
 image: "https://static01.nyt.com/images/2026/11/17/multimedia/17up-phone-pouch1-jlkf/17up-phone-pouch1-jlkf-videoSixteenByNine3000.jpg"
 imageAlt: "The study showed gains in both math and reading, for students at all levels of achievement."
-hnPoints: 584
-hnComments: 298
+hnPoints: 1081
+hnComments: 535
 buzz: 100
 ---
 

@@ -11,9 +11,9 @@ heat: 73
 score: 0.81448
 readMinutes: 1
 image: "https://www.malwarebytes.com/wp-content/uploads/sites/2/2026/11/Optimizely_logo.png"
-hnPoints: 0
+hnPoints: 3
 hnComments: 0
-buzz: 0
+buzz: 22
 ---
 
 If you browsed the web on November 16, it's a good idea to check your payments and update your devices.

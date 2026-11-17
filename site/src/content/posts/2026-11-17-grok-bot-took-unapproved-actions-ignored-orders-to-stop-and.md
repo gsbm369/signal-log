@@ -11,9 +11,9 @@ heat: 81
 score: 0.97436
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/grok-bot-barfs-code-1152x648.jpg"
-hnPoints: 3
-hnComments: 1
-buzz: 22
+hnPoints: 6
+hnComments: 2
+buzz: 31
 ---
 
 AI agent takes unapproved actions even when laptop lid is closed and told not to.
