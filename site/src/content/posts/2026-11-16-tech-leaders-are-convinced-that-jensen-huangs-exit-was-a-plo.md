@@ -12,9 +12,9 @@ score: 0.96967
 readMinutes: 1
 image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/gettyimages-2299645290.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
 imageAlt: "A photo of Jensen Huang"
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 25
+hnComments: 15
+buzz: 52
 ---
 
 Jensen Huang's stunning resignation from Nvidia after more than 33 years has sent shockwaves throughout the tech industry. Now prominent figures are calling for Huang's reinstatement, and many are also hopping on board with a theory spreading throughout Silicon Valley: that the scandal is the result of a plot against the former CEO. At the [ ]

@@ -11,9 +11,9 @@ heat: 60
 score: 0.61525
 readMinutes: 1
 image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgddutNwjGyoPAqVySy66feWh7iohqv11w75McVPWIoAW49DaClcX26EhS-ULyPcYmLRoOySk_6BUjpls-O_qcAzf2qrrxyG9sjFrFxvz0yUbd5r0kh-7rAaXDxWnSwwaV-FfKwkXyikJpF-w-IaoGLmwWYlQzrVHadty8c4DZzAjmZUupxrFxXS9ReUjo/w1200-h630-p-k-no-nu/before.png"
-hnPoints: 5
+hnPoints: 12
 hnComments: 0
-buzz: 29
+buzz: 41
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -11,9 +11,9 @@ heat: 58
 score: 0.58107
 readMinutes: 1
 image: "https://xusheng.dev/posts/windows-coding-agent-telemetry/agent-names.jpeg"
-hnPoints: 327
-hnComments: 196
-buzz: 93
+hnPoints: 598
+hnComments: 436
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
