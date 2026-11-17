@@ -12,7 +12,7 @@ score: 0.73093
 readMinutes: 1
 image: "https://maxanti.com/icons/link.png"
 hnPoints: 2
-hnComments: 3
+hnComments: 4
 buzz: 18
 ---
 
