@@ -11,9 +11,9 @@ heat: 52
 score: 0.48768
 readMinutes: 1
 image: "https://microsoft.ai/wp-content/uploads/2026/11/MAI-Code-2-Ignite-WithHeader-16x9-1.jpg"
-hnPoints: 308
-hnComments: 140
-buzz: 92
+hnPoints: 358
+hnComments: 154
+buzz: 95
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

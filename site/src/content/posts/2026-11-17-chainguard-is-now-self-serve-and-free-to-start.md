@@ -12,9 +12,9 @@ score: 0.64851
 readMinutes: 1
 image: "https://images.ctfassets.net/l47ir7rfykkn/253VI9RcIntW2N3dYm94pf/debe6f3378283af15256b47000e42732/Self-serve-3.png"
 imageAlt: "Open Graph image for Chainguard."
-hnPoints: 5
+hnPoints: 6
 hnComments: 0
-buzz: 29
+buzz: 31
 ---
 
 Get started with Chainguard for free. Explore new Starter and Team plans for secure containers, libraries, AI agent sandboxes, and CI workflows.

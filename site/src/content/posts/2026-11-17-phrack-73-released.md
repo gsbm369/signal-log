@@ -11,9 +11,9 @@ heat: 52
 score: 0.48963
 readMinutes: 1
 image: "https://phrack.org/images/phrack-new.webp"
-hnPoints: 305
-hnComments: 46
-buzz: 92
+hnPoints: 379
+hnComments: 53
+buzz: 96
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
