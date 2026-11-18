@@ -11,9 +11,9 @@ heat: 66
 score: 0.89066
 readMinutes: 1
 image: "https://tailscale.com/api/og-image?id=8d118c0a-04cb-4503-bdd8-3e9c7fcd4ce7"
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 Tailscale can now start from a saved copy of your tailnet map, speeding everybody's startup times and mitigating some rough connections.

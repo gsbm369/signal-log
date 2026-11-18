@@ -11,9 +11,9 @@ heat: 55
 score: 0.65535
 readMinutes: 1
 image: "https://substackcdn.com/image/fetch/$s_!Csev!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F68f1b660-1ce0-49ef-a0c7-a73377b3f70a_461x229.png"
-hnPoints: 1
+hnPoints: 2
 hnComments: 0
-buzz: 11
+buzz: 18
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

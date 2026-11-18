@@ -12,9 +12,9 @@ score: 0.94265
 readMinutes: 1
 image: "https://devblogs.microsoft.com/dotnet/wp-content/uploads/sites/10/2026/11/nuget-staged-publishing-manage-packages.webp"
 imageAlt: "NuGet.org package management showing staging groups, package counts, validation status, and the Create Staging Group button."
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Stage and validate packages privately on NuGet.org, then approve their release when you are ready. The post Introducing staged publishing on NuGet.org appeared first on .NET Blog .

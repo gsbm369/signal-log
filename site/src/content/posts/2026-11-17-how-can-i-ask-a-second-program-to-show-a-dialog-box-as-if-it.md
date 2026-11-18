@@ -11,9 +11,9 @@ heat: 78
 score: 0.9631
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 You have to explicitly coordinate the window management. The post How can I ask a second program to show a dialog box as if it were shown by my first program? appeared first on The Old New Thing .

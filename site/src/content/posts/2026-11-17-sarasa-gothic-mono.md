@@ -11,9 +11,9 @@ heat: 56
 score: 0.66786
 readMinutes: 1
 image: "https://picaq.github.io/sarasa/sarasa-gothic-mono.png"
-hnPoints: 1
+hnPoints: 2
 hnComments: 0
-buzz: 11
+buzz: 18
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

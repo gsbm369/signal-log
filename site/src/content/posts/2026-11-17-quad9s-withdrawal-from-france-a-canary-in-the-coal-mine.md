@@ -11,9 +11,9 @@ heat: 69
 score: 0.94726
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M7NJ9YQG0JNP2HSE7YEGCHJB.png"
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 351
+hnComments: 110
+buzz: 94
 ---
 
 Quad9's forced withdrawal from France highlights the dangers of mandating DNS-level blocking. We explore why forcing public resolvers to act as content filters is technically flawed and threatens the open Internet.
