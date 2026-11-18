@@ -11,9 +11,9 @@ heat: 54
 score: 0.49607
 readMinutes: 1
 image: "https://consumerrights.wiki/images/logo/new_fixed_logo.png"
-hnPoints: 355
-hnComments: 159
-buzz: 95
+hnPoints: 441
+hnComments: 227
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

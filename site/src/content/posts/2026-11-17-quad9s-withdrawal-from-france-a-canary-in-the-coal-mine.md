@@ -11,8 +11,8 @@ heat: 69
 score: 0.94726
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M7NJ9YQG0JNP2HSE7YEGCHJB.png"
-hnPoints: 592
-hnComments: 191
+hnPoints: 832
+hnComments: 380
 buzz: 100
 ---
 

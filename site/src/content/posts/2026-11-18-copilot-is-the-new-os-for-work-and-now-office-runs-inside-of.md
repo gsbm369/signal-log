@@ -11,9 +11,9 @@ heat: 73
 score: 0.83005
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/MS_Ignite_Perception.png"
-hnPoints: 7
+hnPoints: 10
 hnComments: 1
-buzz: 33
+buzz: 39
 ---
 
 Word, Excel, and PowerPoint now live inside Copilot; always-on agents are next.
