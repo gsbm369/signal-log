@@ -11,9 +11,9 @@ heat: 31
 score: 0.31932
 readMinutes: 1
 image: "https://image.sciencenorway.no/2734539.jpg?imageId=2734539&x=0&y=12.76&cropw=100&croph=38.28&panox=0&panoy=12.76&panow=100&panoh=38.28&width=1200&height=683"
-hnPoints: 383
-hnComments: 125
-buzz: 96
+hnPoints: 421
+hnComments: 144
+buzz: 97
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

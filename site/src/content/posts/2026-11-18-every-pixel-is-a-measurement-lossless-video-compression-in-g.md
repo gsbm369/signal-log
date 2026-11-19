@@ -11,9 +11,9 @@ heat: 56
 score: 0.84549
 readMinutes: 1
 image: "https://www.collabora.com/assets/images/blog/Collabora-Lossless-video-GStreamer.jpg"
-hnPoints: 7
+hnPoints: 10
 hnComments: 0
-buzz: 33
+buzz: 39
 ---
 
 Lossy codecs discard data that geospatial analysis needs. GStreamer now adds lossless zlib, deflate, and Brotli compression for raw and Bayer video in standard MP4, shrinking files up to 1.9× with every pixel preserved.
