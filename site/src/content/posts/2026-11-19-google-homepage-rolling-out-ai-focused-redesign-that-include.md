@@ -11,9 +11,9 @@ heat: 72
 score: 1.1499
 readMinutes: 1
 image: "https://9to5google.com/wp-content/uploads/sites/4/2026/11/google-search-gemini-homepage.jpg?quality=82&#038;strip=all&#038;w=1600"
-hnPoints: 0
+hnPoints: 4
 hnComments: 0
-buzz: 0
+buzz: 26
 ---
 
 The Google Search homepage is embracing Gemini in a big way, with a new sidebar redesign that puts your chat history just a click away. more…

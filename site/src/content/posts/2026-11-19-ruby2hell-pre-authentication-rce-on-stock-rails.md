@@ -12,9 +12,9 @@ score: 0.58714
 readMinutes: 1
 image: "https://verialabs.com/og/ruby2shell.png"
 imageAlt: "Ruby2Shell (CVE-2026-132825)"
-hnPoints: 364
-hnComments: 155
-buzz: 95
+hnPoints: 389
+hnComments: 166
+buzz: 96
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

@@ -10,8 +10,8 @@ tags: ["anthropic"]
 heat: 64
 score: 0.92814
 readMinutes: 1
-hnPoints: 746
-hnComments: 1369
+hnPoints: 988
+hnComments: 1922
 buzz: 100
 ---
 

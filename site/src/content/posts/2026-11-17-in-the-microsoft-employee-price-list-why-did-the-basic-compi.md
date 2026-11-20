@@ -11,9 +11,9 @@ heat: 73
 score: 0.8344
 readMinutes: 1
 image: "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-hnPoints: 4
+hnPoints: 5
 hnComments: 0
-buzz: 26
+buzz: 29
 ---
 
 Understanding the pricing scheme. The post In the Microsoft employee price list, why did the BASIC compiler cost less than the BASIC interpreter? appeared first on The Old New Thing .

@@ -11,9 +11,9 @@ heat: 48
 score: 0.57083
 readMinutes: 1
 image: "https://www.newscientist.com/wp-content/uploads/2026/05/28111438/SEI_299218241.jpg"
-hnPoints: 366
-hnComments: 50
-buzz: 95
+hnPoints: 650
+hnComments: 101
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

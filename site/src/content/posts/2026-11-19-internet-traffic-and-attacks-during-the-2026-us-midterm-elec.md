@@ -11,9 +11,9 @@ heat: 70
 score: 1.07302
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M7R61QF048WWQ6F9XZ3TXEG9.01M7R61R40AS8MPD7CDPFJVBQG.png"
-hnPoints: 3
+hnPoints: 4
 hnComments: 0
-buzz: 22
+buzz: 26
 ---
 
 On November 3, 2026 U.S. voters headed to the polls. Here’s what Cloudflare data across more than 1,400 protected sites tells us about Election Day Internet traffic and cyberattacks.
