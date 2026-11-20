@@ -11,8 +11,8 @@ heat: 36
 score: 0.45037
 readMinutes: 1
 image: "https://macanorak.com/content/images/2026/11/Apple.jpg"
-hnPoints: 556
-hnComments: 248
+hnPoints: 677
+hnComments: 331
 buzz: 100
 ---
 

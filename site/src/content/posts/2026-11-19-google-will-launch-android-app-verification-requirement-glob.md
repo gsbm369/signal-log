@@ -11,9 +11,9 @@ heat: 51
 score: 0.82471
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2025/06/Android-IO-1152x648.jpg"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Google says almost all developers have already gotten on board with verification.

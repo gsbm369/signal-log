@@ -12,9 +12,9 @@ score: 0.83399
 readMinutes: 1
 image: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/DSC04239.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
 imageAlt: "A person holding an iPhone 18 Pro phone showing the lock screen."
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 15
+hnComments: 11
+buzz: 45
 ---
 
 Apple is working on its own AI agent that can perform a range of tasks for you, including browsing the web, working across apps, writing code, and calling services. That's according to a job listing spotted by Bloomberg, which says Apple is looking for an engineer to lead the creation of an agentic AI assistant. [ ]

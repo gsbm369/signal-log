@@ -11,9 +11,9 @@ heat: 42
 score: 0.5912
 readMinutes: 1
 image: "https://zerodha.tech//static/images/blobasaur-og.png"
-hnPoints: 269
-hnComments: 70
-buzz: 90
+hnPoints: 282
+hnComments: 72
+buzz: 91
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

@@ -12,8 +12,8 @@ score: 0.45305
 readMinutes: 1
 image: "https://ounapuu.ee/posts/2026/11/19/unsafeguards/media/cover_hu_5a6285e4518135fc.jpg"
 imageAlt: "Fuck your AI safeguards"
-hnPoints: 493
-hnComments: 203
+hnPoints: 579
+hnComments: 236
 buzz: 100
 ---
 

@@ -11,8 +11,8 @@ heat: 47
 score: 0.71865
 readMinutes: 1
 image: "https://harrison.page/harrison.jpg"
-hnPoints: 784
-hnComments: 323
+hnPoints: 893
+hnComments: 384
 buzz: 100
 ---
 

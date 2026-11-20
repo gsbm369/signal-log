@@ -11,9 +11,9 @@ heat: 53
 score: 0.87713
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/GettyImages-1243765669-1024x648.jpg"
-hnPoints: 4
-hnComments: 1
-buzz: 26
+hnPoints: 6
+hnComments: 6
+buzz: 31
 ---
 
 Amazon now uses its shopping platform for political purposes.
