@@ -11,9 +11,9 @@ heat: 73
 score: 1.19548
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/ai-privacy-leakage-1152x648.jpg"
-hnPoints: 38
+hnPoints: 45
 hnComments: 6
-buzz: 59
+buzz: 62
 ---
 
 Test using prompts with unique, trackable secrets proves that data doesn't stay private.

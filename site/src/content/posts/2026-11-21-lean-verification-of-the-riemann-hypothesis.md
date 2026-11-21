@@ -11,8 +11,8 @@ heat: 48
 score: 0.5844
 readMinutes: 1
 image: "https://leanprover-community.github.io/blog/meta-twitter.png"
-hnPoints: 516
-hnComments: 406
+hnPoints: 679
+hnComments: 543
 buzz: 100
 ---
 

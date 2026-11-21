@@ -10,8 +10,8 @@ tags: ["nvidia"]
 heat: 42
 score: 0.4778
 readMinutes: 1
-hnPoints: 297
-hnComments: 162
+hnPoints: 300
+hnComments: 164
 buzz: 92
 ---
 

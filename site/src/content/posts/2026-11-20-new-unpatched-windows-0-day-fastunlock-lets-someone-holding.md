@@ -1,0 +1,21 @@
+---
+title: "New Unpatched Windows 0-Day FastUnlock Lets Someone Holding a Locked PC Run Programs on It"
+description: "A newly disclosed unpatched zero-day technique called FastUnlock lets someone with physical access to a locked Windows computer start programs without signing in. Whoever uses it gets only a limited account, not administ"
+pubDate: 2026-11-20T05:30:01+00:00
+addedAt: 2026-11-21T22:00:35.125139+00:00
+source: "The Hacker News"
+category: security
+sourceUrl: "https://thehackernews.com/2026/11/new-unpatched-windows-0-day-fastunlock.html"
+tags: ["0-day", "zero-day"]
+heat: 54
+score: 0.59752
+readMinutes: 1
+image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRnUdcazdCteyaE1EC_aLit8CioDaJ5yvsWnawFVWQrJvYFktNRJXlW9MOJLimG_-aS1IZChVHJbjPI4CXjIbNFLjn5W686xynepfC0oWyEG81NX5CxdS-9ayumfRljgy32e2bYXDD72T6VpIFFzeCcPKwG48RDKiZExwNdF-4XDFicISSaaRtT3W2dt0/s1600/windows-lockscreen.jpg"
+hnPoints: 0
+hnComments: 0
+buzz: 0
+---
+
+A newly disclosed unpatched zero-day technique called FastUnlock lets someone with physical access to a locked Windows computer start programs without signing in. Whoever uses it gets only a limited account, not administrator control of the machine. The method was posted yesterday by a researcher who uses the handles MSNightmare and Nightmare Eclipse, and the endpoint-security firm ThreatLocker
+
+*Reproduced from the The Hacker News feed. No model was used to write this entry — follow the link for the full article.*
