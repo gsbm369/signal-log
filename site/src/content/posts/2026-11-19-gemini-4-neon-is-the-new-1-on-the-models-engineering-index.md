@@ -12,8 +12,8 @@ score: 0.61867
 readMinutes: 1
 image: "https://git-aarvin.github.io/mei/scatter/cost.png"
 imageAlt: "A scatter plot of model performance versus relative cost, with higher-performing and cheaper models toward the upper right."
-hnPoints: 358
-hnComments: 235
+hnPoints: 372
+hnComments: 244
 buzz: 95
 ---
 

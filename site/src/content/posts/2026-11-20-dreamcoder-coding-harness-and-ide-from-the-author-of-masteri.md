@@ -11,9 +11,9 @@ heat: 56
 score: 0.62898
 readMinutes: 1
 image: "https://www.masteringemacs.org/static/uploads/article-images/dreamcoder-moon.webp"
-hnPoints: 3
-hnComments: 0
-buzz: 22
+hnPoints: 265
+hnComments: 109
+buzz: 90
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
