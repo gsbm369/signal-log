@@ -11,7 +11,7 @@ heat: 28
 score: 0.21069
 readMinutes: 1
 image: "https://www.motherjones.com/wp-content/uploads/2026/11/google-chromebook-la-school-covid.jpg?w=1200&amp;h=630&amp;crop=1"
-hnPoints: 280
+hnPoints: 282
 hnComments: 228
 buzz: 91
 ---

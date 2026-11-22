@@ -12,9 +12,9 @@ score: 0.48066
 readMinutes: 1
 image: "https://opengraph.githubassets.com/1b897066487e077c2b35fa9a35f72a841de1a398b033187eabfcfa7adb2abf79/ShinMegamiBoson/lookatmyquant"
 imageAlt: "A quantization compiler that delivers 12× lower KL than Q4_K_M at the same file size - ShinMegamiBoson/lookatmyquant"
-hnPoints: 384
-hnComments: 98
-buzz: 96
+hnPoints: 458
+hnComments: 116
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
