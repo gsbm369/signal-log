@@ -11,8 +11,8 @@ heat: 38
 score: 0.33031
 readMinutes: 1
 image: "https://i.guim.co.uk/img/media/578833ee207aab76c1b6a542f17226703dbd735b/686_0_5336_4269/master/5336.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=a36857abb7bd0660d819105186f898a0"
-hnPoints: 487
-hnComments: 844
+hnPoints: 503
+hnComments: 881
 buzz: 100
 ---
 

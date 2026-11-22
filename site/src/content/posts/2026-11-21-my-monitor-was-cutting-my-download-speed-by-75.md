@@ -11,9 +11,9 @@ heat: 46
 score: 0.4513
 readMinutes: 1
 image: "https://blog.tymscar.com/studio-display-ethernet/og-card.png"
-hnPoints: 401
-hnComments: 206
-buzz: 96
+hnPoints: 520
+hnComments: 254
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

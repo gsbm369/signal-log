@@ -11,9 +11,9 @@ heat: 35
 score: 0.28325
 readMinutes: 1
 image: "https://ninlive.com/static/ninlive-socialshare.png"
-hnPoints: 347
-hnComments: 99
-buzz: 94
+hnPoints: 364
+hnComments: 104
+buzz: 95
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
