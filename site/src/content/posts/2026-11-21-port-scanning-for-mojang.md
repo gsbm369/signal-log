@@ -11,9 +11,9 @@ heat: 41
 score: 0.50796
 readMinutes: 1
 image: "https://sipacid.com/blog/port-scanning-for-mojang/index.png"
-hnPoints: 8
+hnPoints: 9
 hnComments: 0
-buzz: 35
+buzz: 37
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
