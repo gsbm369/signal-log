@@ -10,9 +10,9 @@ tags: ["tech"]
 heat: 35
 score: 0.25406
 readMinutes: 1
-hnPoints: 0
+hnPoints: 2
 hnComments: 0
-buzz: 0
+buzz: 18
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

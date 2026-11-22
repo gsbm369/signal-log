@@ -11,9 +11,9 @@ heat: 27
 score: 0.17224
 readMinutes: 1
 image: "https://cdn.prod.website-files.com/63d32de856f6323a43a277f2/64b1b1605e73b516e5712f82_Backblaze_Social-Card.webp"
-hnPoints: 238
-hnComments: 88
-buzz: 88
+hnPoints: 252
+hnComments: 93
+buzz: 89
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

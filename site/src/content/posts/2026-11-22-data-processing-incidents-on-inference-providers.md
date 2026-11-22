@@ -12,9 +12,9 @@ score: 0.6851
 readMinutes: 1
 image: "https://openrouter.ai/og.png"
 imageAlt: "Data Processing Incidents on Inference Providers"
-hnPoints: 230
-hnComments: 82
-buzz: 88
+hnPoints: 272
+hnComments: 90
+buzz: 90
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
