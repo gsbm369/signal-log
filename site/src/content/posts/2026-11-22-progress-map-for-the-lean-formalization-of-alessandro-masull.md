@@ -12,9 +12,9 @@ score: 0.67439
 readMinutes: 1
 image: "https://claude.ai/images/claude_ogimage.png"
 imageAlt: "Claude Artifact"
-hnPoints: 175
-hnComments: 150
-buzz: 83
+hnPoints: 233
+hnComments: 171
+buzz: 88
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

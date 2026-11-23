@@ -11,9 +11,9 @@ heat: 68
 score: 0.63406
 readMinutes: 1
 image: "https://spelunkr.tv/og-image.png"
-hnPoints: 181
-hnComments: 29
-buzz: 84
+hnPoints: 512
+hnComments: 79
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

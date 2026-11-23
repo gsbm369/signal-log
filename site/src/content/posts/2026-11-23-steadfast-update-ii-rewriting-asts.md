@@ -1,14 +1,14 @@
 ---
-title: "Gliver completes the Guix desktop"
+title: "Steadfast Update II - Rewriting ASTs"
 description: "Lobsters linked this without a summary. Follow the link for the article."
-pubDate: 2026-11-22T20:10:15+00:00
-addedAt: 2026-11-22T21:48:06.806189+00:00
+pubDate: 2026-11-23T07:49:26+00:00
+addedAt: 2026-11-23T09:48:10.558996+00:00
 source: "Lobsters"
 category: aggregators
-sourceUrl: "https://dustycloud.org/blog/gliver-completes-the-guix-desktop/"
+sourceUrl: "https://noteflakes.com/articles/2026-11-22-steadfast-update-2"
 tags: ["tech"]
-heat: 61
-score: 0.70439
+heat: 55
+score: 0.69504
 readMinutes: 1
 hnPoints: 1
 hnComments: 0

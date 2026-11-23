@@ -12,9 +12,9 @@ score: 0.53917
 readMinutes: 1
 image: "https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth/opengraph-image-17m7t5?6653c98c6cd84ba6"
 imageAlt: "GPU Partner"
-hnPoints: 309
-hnComments: 129
-buzz: 92
+hnPoints: 499
+hnComments: 205
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
