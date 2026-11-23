@@ -12,9 +12,9 @@ score: 0.76731
 readMinutes: 1
 image: "https://www.jeffgeerling.com/blog/2026/i-joined-the-ntp-pool/clock-rack-in-studio.jpg"
 imageAlt: "Clock rack in studio"
-hnPoints: 99
-hnComments: 26
-buzz: 74
+hnPoints: 135
+hnComments: 44
+buzz: 79
 ---
 
 Before I get too deep into the time-nuts rabbit hole, I figured I should share a little bit of the good time I now have in my studio, with everyone else . Thus, I've finally joined the NTP Pool , offering one public Stratum 2 NTP time server ( ntp-01.jeffgeerling.com ), which gets its time from my Stratum 1 time server ( time.jeffgeerling.com ) in the studio. My Time Pi is connected to an outside GNSS antenna through a TimeHAT v6 , which I paired with a high quality timing-grade GNSS module, the u-blox ZED-F9T .
