@@ -12,9 +12,9 @@ score: 0.67789
 readMinutes: 1
 image: "https://gpp.telga.in/logo.png"
 imageAlt: "GPP logo"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
