@@ -11,9 +11,9 @@ heat: 55
 score: 0.69363
 readMinutes: 1
 image: "https://gynvael.coldwind.pl/img/gynvael_logo.png"
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

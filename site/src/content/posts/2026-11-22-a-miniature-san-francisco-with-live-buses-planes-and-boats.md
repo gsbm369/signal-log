@@ -11,9 +11,9 @@ heat: 41
 score: 0.42035
 readMinutes: 1
 image: "https://smallsf.com/share.gif?v=5"
-hnPoints: 270
-hnComments: 93
-buzz: 90
+hnPoints: 327
+hnComments: 107
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
