@@ -12,9 +12,9 @@ score: 0.62369
 readMinutes: 1
 image: "https://opengraph.githubassets.com/6ffea309f85ed97869c3b78c189a48d8d64ff8c2f775724d1730980d0bf84ad9/glushchenko/fsnotes/discussions/2056"
 imageAlt: "Hi everyone! For those who don&#39;t know me, let me introduce myself. I&#39;m the independent developer behind FSNotes, an open-source note-taking app for macOS and iOS. I&#39;ve been developing FSNotes for 9..."
-hnPoints: 370
-hnComments: 73
-buzz: 95
+hnPoints: 539
+hnComments: 120
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

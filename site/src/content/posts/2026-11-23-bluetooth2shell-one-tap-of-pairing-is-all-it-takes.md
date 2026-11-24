@@ -11,7 +11,7 @@ heat: 57
 score: 0.72585
 readMinutes: 1
 hnPoints: 3
-hnComments: 1
+hnComments: 2
 buzz: 22
 ---
 

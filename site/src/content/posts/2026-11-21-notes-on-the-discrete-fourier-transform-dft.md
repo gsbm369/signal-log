@@ -10,9 +10,9 @@ tags: ["tech"]
 heat: 69
 score: 0.9781
 readMinutes: 1
-hnPoints: 101
+hnPoints: 104
 hnComments: 14
-buzz: 74
+buzz: 75
 ---
 
 In the previous post on this topic , we’ve seen how the Discrete-Time Fourier Series (DTFS) and transform (DTFT) are used to analyze infinite-duration periodic and non-periodic discrete signals. Now, it’s time to turn to realistic digital signal processing where signals are not only discrete, but also finite in …

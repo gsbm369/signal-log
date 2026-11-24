@@ -11,9 +11,9 @@ heat: 86
 score: 1.46209
 readMinutes: 1
 image: "https://www.collabora.com/assets/images/blog/Collabora-Aavaaz.jpg"
-hnPoints: 5
+hnPoints: 6
 hnComments: 0
-buzz: 29
+buzz: 31
 ---
 
 Aavaaz brings the features of commercial transcription services to your own servers: real-time Whisper transcription, speaker names, PII redaction, and scaling, all Open Source.
