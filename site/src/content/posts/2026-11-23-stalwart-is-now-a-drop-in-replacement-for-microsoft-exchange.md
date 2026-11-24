@@ -11,9 +11,9 @@ heat: 56
 score: 0.57167
 readMinutes: 1
 image: "https://stalw.art/og/blog/microsoft-exchange-replacement.png"
-hnPoints: 271
-hnComments: 137
-buzz: 90
+hnPoints: 462
+hnComments: 245
+buzz: 99
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

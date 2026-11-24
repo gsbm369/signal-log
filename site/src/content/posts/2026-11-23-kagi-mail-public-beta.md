@@ -12,9 +12,9 @@ score: 0.46689
 readMinutes: 1
 image: "https://blog.kagi.com/og-image.png"
 imageAlt: "Kagi Blog mascot reading beside the Kagi Blog wordmark"
-hnPoints: 373
-hnComments: 280
-buzz: 95
+hnPoints: 424
+hnComments: 342
+buzz: 97
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

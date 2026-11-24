@@ -12,8 +12,8 @@ score: 0.76731
 readMinutes: 1
 image: "https://www.jeffgeerling.com/blog/2026/i-joined-the-ntp-pool/clock-rack-in-studio.jpg"
 imageAlt: "Clock rack in studio"
-hnPoints: 170
-hnComments: 71
+hnPoints: 171
+hnComments: 72
 buzz: 83
 ---
 
