@@ -12,8 +12,8 @@ score: 0.3683
 readMinutes: 1
 image: "https://pbs.twimg.com/profile_images/1483577865056702469/rWA-3_T7_400x400.jpg"
 imageAlt: "Yann LeCun profile picture"
-hnPoints: 1651
-hnComments: 930
+hnPoints: 1886
+hnComments: 1089
 buzz: 100
 ---
 

@@ -11,9 +11,9 @@ heat: 51
 score: 0.53507
 readMinutes: 1
 image: "https://foreignpolicy.com/wp-content/uploads/2026/11/jensen-huang-GettyImages-2205754284.jpg"
-hnPoints: 300
-hnComments: 234
-buzz: 92
+hnPoints: 320
+hnComments: 247
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

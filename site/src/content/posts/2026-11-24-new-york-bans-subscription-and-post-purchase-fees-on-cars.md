@@ -11,9 +11,9 @@ heat: 55
 score: 0.60656
 readMinutes: 1
 image: "https://www.governor.ny.gov/sites/default/files/styles/cover_image_660x400_/public/thumbnails/image/cars.cr_.jpg?h=b5f6a62e&amp;itok=FV7N-hBe"
-hnPoints: 348
-hnComments: 100
-buzz: 94
+hnPoints: 593
+hnComments: 283
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
