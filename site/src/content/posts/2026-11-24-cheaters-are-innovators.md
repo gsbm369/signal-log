@@ -12,9 +12,9 @@ score: 0.99661
 readMinutes: 1
 image: "https://lemire.me/blog/wp-content/uploads/2026/11/cheaters-2026-cover-150x150.jpg"
 imageAlt: "A closed wooden gate beside an open iron gate"
-hnPoints: 2
-hnComments: 1
-buzz: 18
+hnPoints: 5
+hnComments: 2
+buzz: 29
 ---
 
 If you seek approval above all else, you are unlikely to innovate outside the rigid bounds of the current system. But if you are willing to cheat, you can innovate. You do not convince traditional media or academic publishers to loosen up. You start your own site or a Substack, you build the audience directly. Continue reading Cheaters are Innovators

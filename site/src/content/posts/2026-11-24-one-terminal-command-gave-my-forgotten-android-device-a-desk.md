@@ -11,9 +11,9 @@ heat: 61
 score: 0.90266
 readMinutes: 1
 image: "https://cdn.arstechnica.net/wp-content/uploads/2026/11/PhoneBox_Tablet_Home_Screen_TYS-1152x648.jpg"
-hnPoints: 0
-hnComments: 0
-buzz: 0
+hnPoints: 4
+hnComments: 2
+buzz: 26
 ---
 
 The free, open source PhoneBox dashboard puts old Android screens back to work.

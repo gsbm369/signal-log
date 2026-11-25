@@ -11,9 +11,9 @@ heat: 54
 score: 0.72366
 readMinutes: 1
 image: "https://hex.pm/images/favicon-160-3770bc59f1f8ba7656b4db5a1eacd8e3.png?vsn=d"
-hnPoints: 7
+hnPoints: 19
 hnComments: 0
-buzz: 33
+buzz: 48
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.

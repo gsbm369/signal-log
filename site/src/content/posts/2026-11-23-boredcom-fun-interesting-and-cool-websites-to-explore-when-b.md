@@ -12,9 +12,9 @@ score: 0.33965
 readMinutes: 1
 image: "https://www.bored.com/og-image.png"
 imageAlt: "Bored.com: weird and wonderful websites for bored people"
-hnPoints: 302
-hnComments: 62
-buzz: 92
+hnPoints: 333
+hnComments: 66
+buzz: 93
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.
