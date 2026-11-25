@@ -11,8 +11,8 @@ heat: 44
 score: 0.3602
 readMinutes: 1
 image: "https://cdn.prod.website-files.com/667dd40ebb8095e89f27565d/6b00b96c7176ac8c286ffb00_GreyNoise-Blog-Check-Point-1600x900.png"
-hnPoints: 282
-hnComments: 140
+hnPoints: 293
+hnComments: 146
 buzz: 91
 ---
 

@@ -12,9 +12,9 @@ score: 0.54695
 readMinutes: 1
 image: "https://buttons.joshwcomeau.com/og-button-sounds.png"
 imageAlt: "Button Sounds - A free collection of 50+ professionally-recorded multi-sampled clicks and toggles. Distributed via NPM."
-hnPoints: 365
-hnComments: 47
-buzz: 95
+hnPoints: 643
+hnComments: 103
+buzz: 100
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

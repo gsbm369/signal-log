@@ -12,8 +12,8 @@ score: 0.58099
 readMinutes: 1
 image: "https://opengraph.githubassets.com/fdd25ac06d99ce6fdb35086d84d10be8368b183dc2e8bc8ed4f04cfef992af26/openai/math"
 imageAlt: "Contribute to openai/math development by creating an account on GitHub."
-hnPoints: 620
-hnComments: 322
+hnPoints: 842
+hnComments: 466
 buzz: 100
 ---
 
