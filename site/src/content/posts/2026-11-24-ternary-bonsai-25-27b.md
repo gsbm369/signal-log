@@ -11,9 +11,9 @@ heat: 53
 score: 0.4999
 readMinutes: 1
 image: "https://cdn.prod.website-files.com/699604cc2b9dd89bdbda0608/6a6d0e0bc0d5f9a97a5164c0_69cc089669ab0df26e921aac_prism-og-img%2520(2).png"
-hnPoints: 381
-hnComments: 129
-buzz: 96
+hnPoints: 444
+hnComments: 140
+buzz: 98
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

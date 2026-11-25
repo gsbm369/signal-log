@@ -10,9 +10,9 @@ tags: ["anthropic"]
 heat: 61
 score: 0.63634
 readMinutes: 1
-hnPoints: 367
-hnComments: 724
-buzz: 95
+hnPoints: 394
+hnComments: 762
+buzz: 96
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

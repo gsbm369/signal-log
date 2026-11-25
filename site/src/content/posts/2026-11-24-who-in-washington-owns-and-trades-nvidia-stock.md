@@ -12,7 +12,7 @@ score: 0.59958
 readMinutes: 1
 image: "https://www.kadoa.com/congress/og/trump-nvidia.png"
 imageAlt: "Who in Washington owns and trades Nvidia stock: Trump held $12.5 million to $58 million of Nvidia at the end of last year and traded it 43 times since. 37 members of Congress traded it too."
-hnPoints: 281
+hnPoints: 286
 hnComments: 164
 buzz: 91
 ---
