@@ -42,8 +42,9 @@
     # from 6 to 4, a quiet category losing posts to make room for busy ones.
     # test_categories.py asserts max_posts >= ceiling x categories; it refused
     # 90 when gadgets became the tenth category (2026-10-30), and 100 when
-    # ai/security/apps_money/space made fourteen (2026-11-05).
-    max_posts: 140
+    # ai/security/apps_money/space made fourteen (2026-11-05), and 140 when
+    # viral made fifteen (2026-11-27).
+    max_posts: 150
     per_source_cap: 3           # one prolific feed cannot dominate a run
     # Hacker News points per live post, published as signal:buzz in rss.xml
     # for the Instagram agent. heat is our own ranking score, not popularity.
@@ -116,6 +117,11 @@
       security:      { half_life_hours: 48,  ingest_days: 7, retention_days: 45,   cap: 6 }
       apps_money:    { half_life_hours: 48,  ingest_days: 7, retention_days: 45,   cap: 6 }
       space:         { half_life_hours: 72,  ingest_days: 7, retention_days: 45,   cap: 6 }
+      # Added 2026-11-27 at the owner's request: "crazy viral" material for the
+      # Instagram page. Sources whose headlines are written to be shared
+      # (robots, inventions, weird science). Virality fades in hours, not days,
+      # hence the aggregators-like 24h curve and 3-day ingest.
+      viral:         { half_life_hours: 24,  ingest_days: 3, retention_days: 45,   cap: 6 }
     extra_noise_filter: true    # listicle/deals/AskHN patterns on top of the ported list
 
     # Summarizer backend: none | ollama | anthropic.
@@ -391,6 +397,25 @@
       - { name: NASA News,          url: "https://www.nasa.gov/news-release/feed/",       category: space,         weight: 0.80, fetch: 10 }
       - { name: Universe Today,     url: "https://www.universetoday.com/feed/",           category: space,         weight: 0.75, fetch: 10 }
       - { name: Space.com,          url: "https://www.space.com/feeds/all",               category: space,         weight: 0.70, fetch: 15 }
+
+      # ---- viral ----
+      # Measured 2026-11-27 from this box with the curator's User-Agent:
+      #   Interesting Engineering 200  n=10  24h:10  robots, EVs, inventions
+      #   ScienceAlert            200  n=10  24h:10  weird-science headlines
+      #   New Atlas               200  n=60  24h: 9  72h:26
+      #   Futurism                200  n=83  24h: 1  72h:19  tabloid tone, tech/science
+      #   Yanko Design            200  n=16  24h:16  visual gadget concepts; some gift lists
+      # REJECTED: Reddit top-of-day RSS (HTTP 429/404 for this host — blocked),
+      #   Digg (404), IFLScience (403), Dexerto (death stories; owner: never joke
+      #   about deaths), Electrek (deals), Boing Boing (deals), Techmeme (business,
+      #   not viral), Product Hunt (titles are bare product names), Kottke (slow).
+      # "Viral" here is editorial style, not a measurement: the measured signal
+      # stays signal:buzz (HN points), which the ranker never reads.
+      - { name: Interesting Engineering, url: "https://interestingengineering.com/feed", category: viral,       weight: 1.00, fetch: 10 }
+      - { name: ScienceAlert,       url: "https://www.sciencealert.com/feed",             category: viral,         weight: 0.90, fetch: 10 }
+      - { name: New Atlas,          url: "https://newatlas.com/index.rss",                category: viral,         weight: 0.85, fetch: 15 }
+      - { name: Futurism,           url: "https://futurism.com/feed",                     category: viral,         weight: 0.80, fetch: 15 }
+      - { name: Yanko Design,       url: "https://www.yankodesign.com/feed/",             category: viral,         weight: 0.65, fetch: 10 }
 
       # ---- microsoft ----
       # Measured 2026-09-18 from this box, before adding: HTTP, dated entries,

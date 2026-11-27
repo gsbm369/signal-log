@@ -28,6 +28,7 @@ export const CATEGORIES = [
   'security',
   'apps_money',
   'space',
+  'viral',
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
@@ -43,6 +44,7 @@ export const SECTION_ORDER = [
   ['deep_dives', 'Deep Dives'],
   ['fintech', 'Fintech'],
   ['aggregators', 'Aggregators'],
+  ['viral', 'Viral'],
   ['ai', 'AI'],
   ['security', 'Security'],
   ['apps_money', 'Apps & Money'],
