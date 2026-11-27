@@ -12,9 +12,9 @@ score: 0.88829
 readMinutes: 1
 image: "https://www.microsoft.com/en-us/security/blog/wp-content/uploads/2026/11/ARTEX-AI-agent-architecture.webp"
 imageAlt: "Diagram of ARTEX agent architecture, including goals agent, planner agent, worker agents, and reporter agent."
-hnPoints: 0
+hnPoints: 1
 hnComments: 0
-buzz: 0
+buzz: 11
 ---
 
 The AI-powered penetration testing framework ARTEX has been abused by threat actors like Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon to accelerate their existing workflows related to network reconnaissance, credential attacks, and web application exploitation. The post What defenders need to know about ARTEX, the agentic AI framework threat actors abuse appeared first on Microsoft Security Blog .

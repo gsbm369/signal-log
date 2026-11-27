@@ -12,9 +12,9 @@ score: 0.23106
 readMinutes: 1
 image: "https://commandcode.ai/moat/og.png"
 imageAlt: "MOAT membership - Command Code"
-hnPoints: 291
-hnComments: 156
-buzz: 91
+hnPoints: 304
+hnComments: 160
+buzz: 92
 ---
 
 Hacker News Best linked this without a summary. Follow the link for the article.

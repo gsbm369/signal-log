@@ -11,8 +11,8 @@ heat: 40
 score: 0.21952
 readMinutes: 1
 image: "https://fosscomics.com/posts/17. Lions"
-hnPoints: 283
-hnComments: 77
+hnPoints: 286
+hnComments: 78
 buzz: 91
 ---
 
