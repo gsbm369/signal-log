@@ -11,9 +11,9 @@ heat: 66
 score: 0.94649
 readMinutes: 1
 image: "https://blog.cloudflare.com/_emdash/api/media/file/01M87EH6J3AHBJGMX9NR8JGR2V.png"
-hnPoints: 3
+hnPoints: 5
 hnComments: 0
-buzz: 22
+buzz: 29
 ---
 
 Flip one toggle to make your site searchable by AI agents — complete with automatic content indexing, a discoverable search API, and native HTTP QUERY support.
