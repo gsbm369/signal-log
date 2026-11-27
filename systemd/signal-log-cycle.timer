@@ -1,13 +1,16 @@
 [Unit]
-Description=Run the signal.log publish cycle every 6 hours
+Description=Run the signal.log publish cycle four times a day (00, 05, 12, 17 local)
 Documentation=https://github.com/gsbm369/signal-log
 
 [Timer]
-# 05:47, not 06:17 (2026-11-05). social-agent starts its morning curation at
-# 06:10 local and delivers all six reels by 07:10; at :17 every morning read
-# the 00:17 feed, six hours old. :47 leaves ~20 min for the cycle (~90 s) and
-# the Pages deploy. Every run moved, not one added: same 6-hour spacing.
-OnCalendar=*-*-* 05,11,17,23:47:00
+# 00:00 05:00 12:00 17:00 local, the owner's schedule (2026-11-27). Gaps are
+# 5h/7h/5h/7h, not an even 6h. Constraints it still meets:
+#   - social-agent curates at 06:10: the 05:00 run is ~70 min old by then
+#     (it was ~20 min at 05:47; still the same morning's feed).
+#   - the Grafana 12h no-publish warning: one missed run makes the longest
+#     gap 7h + 5h = 12h, the same as 6h + 6h on the even spacing. Unchanged.
+# History: 00,06,12,18:17 -> 05,11,17,23:47 (2026-11-05) -> this.
+OnCalendar=*-*-* 00,05,12,17:00:00
 # THE REASON THIS IS A TIMER AND NOT A CRON ENTRY.
 #
 # This guest runs on a memory-constrained Hyper-V host and has been suspended

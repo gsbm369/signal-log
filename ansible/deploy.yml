@@ -32,8 +32,8 @@
     loki_job: signal-log
 
     # Cost control
-    cycle_hours: 6              # how often the curator runs
-    cron_minute: 47             # timer: 05,11,17,23:47 local — see systemd/signal-log-cycle.timer
+    cycle_hours: 6              # nominal; real schedule is 00,05,12,17 (5h/7h gaps)
+    cron_minute: 0              # timer: 00,05,12,17:00 local — see systemd/signal-log-cycle.timer
     max_candidates: 40          # articles sent to the model per run (cost driver)
     publish_count: 5            # articles summarised and published per run
     # 140 = CATEGORY_CEILING (10) x 14 categories. The per-category ceiling

@@ -199,7 +199,7 @@ README.md                     long; §"Controls that were never exercised" is th
 
 | var | value | note |
 |---|---|---|
-| `cycle_hours` / `cron_minute` | 6 / 47 | 05,11,17,23 at :47 local (was :17 until 2026-11-05; social-agent reads at 06:10) |
+| `cycle_hours` / `cron_minute` | 6 (nominal) / 0 | 00,05,12,17 at :00 local, owner's schedule 2026-11-27 (was 05,11,17,23:47; social-agent reads at 06:10) |
 | `max_posts` | 90 | = ceiling 10 × 9 categories; must never be the thing that evicts |
 | `per_source_cap` | 3 | per source per run |
 | `scoring_categories` | 9 entries | half_life / ingest_days (≤ 7, capped in code) / retention / cap 6 |
