@@ -67,15 +67,37 @@ if ! timeout 120 "$GIT_BIN" fetch --quiet origin "$GH_BRANCH" 2>/dev/null; then
   log "WARN: could not fetch origin/${GH_BRANCH} — the ahead-check may be stale"
 fi
 
+# A commit is THIS SCRIPT'S OWN only if all three hold: curator identity,
+# "content: " subject, and every path it touches is under CONTENT_PATH. Such a
+# commit is what a failed push leaves behind (2026-11-25: GitHub HTTP 500), and
+# refusing it froze production for ~42 hours — the guard blocking the very
+# retry the end of this script promises. Anything else stays foreign: an
+# owner's commit, a hand-made content commit, a curator-named commit that also
+# touches code. Forging the identity buys nothing: the commit can still only
+# carry what this script would have pushed anyway. scripts/test-push-content.sh
+own_commit() {
+  [ "$("$GIT_BIN" log -1 --format=%ae "$1")" = "curator@gs-bm.com" ] || return 1
+  case "$("$GIT_BIN" log -1 --format=%s "$1")" in "content: "*) ;; *) return 1;; esac
+  ! "$GIT_BIN" diff-tree --no-commit-id --name-only -r --root "$1" \
+      | grep -qv "^${CONTENT_PATH}/"
+}
+
+STRANDED_N=0
 if "$GIT_BIN" rev-parse --verify --quiet "origin/${GH_BRANCH}" >/dev/null; then
-  EXTRA_N=$("$GIT_BIN" rev-list --count "origin/${GH_BRANCH}..HEAD" 2>/dev/null || echo 0)
+  FOREIGN=()
+  for c in $("$GIT_BIN" rev-list "origin/${GH_BRANCH}..HEAD" 2>/dev/null); do
+    if own_commit "$c"; then STRANDED_N=$((STRANDED_N+1)); else FOREIGN+=("$c"); fi
+  done
+  EXTRA_N=${#FOREIGN[@]}
+  [ "$STRANDED_N" -gt 0 ] && [ "$EXTRA_N" -eq 0 ] && \
+    log "retrying ${STRANDED_N} stranded content commit(s) from an earlier failed push"
   if [ "${EXTRA_N:-0}" -gt 0 ]; then
     if [ "${PUSH_LOCAL_COMMITS:-0}" = "1" ]; then
       log "WARN: PUSH_LOCAL_COMMITS=1 — shipping ${EXTRA_N} local commit(s) with this content:"
-      "$GIT_BIN" log --oneline "origin/${GH_BRANCH}..HEAD" | while read -r l; do log "         $l"; done
+      for c in "${FOREIGN[@]}"; do log "         $("$GIT_BIN" log -1 --oneline "$c")"; done
     else
       log "REFUSING TO PUSH: ${EXTRA_N} local commit(s) on HEAD that this script did not create."
-      "$GIT_BIN" log --oneline "origin/${GH_BRANCH}..HEAD" | while read -r l; do log "         $l"; done
+      for c in "${FOREIGN[@]}"; do log "         $("$GIT_BIN" log -1 --oneline "$c")"; done
       log "       A content push would ship them to production unreviewed."
       log "       Push them yourself when they are ready, or re-run with"
       log "       PUSH_LOCAL_COMMITS=1 to ship them deliberately."
@@ -89,10 +111,12 @@ fi
 # and the Actions log into noise inside a week, and triggers a pointless deploy.
 "$GIT_BIN" add -- "$CONTENT_PATH"
 if "$GIT_BIN" diff --cached --quiet -- "$CONTENT_PATH"; then
-  log "no content changes — nothing to push"
-  exit 10
-fi
-
+  if [ "$STRANDED_N" -eq 0 ]; then
+    log "no content changes — nothing to push"
+    exit 10
+  fi
+  log "no new content changes — pushing the stranded commit(s) only"
+else
 STAT="$("$GIT_BIN" diff --cached --name-status -- "$CONTENT_PATH")"
 ADDED=$(printf '%s\n'   "$STAT" | grep -c '^A' || true)
 DELETED=$(printf '%s\n' "$STAT" | grep -c '^D' || true)
@@ -103,6 +127,7 @@ log "staged: +${ADDED} ~${MODIFIED} -${DELETED}"
            -c user.email="curator@gs-bm.com" \
            commit -q -m "content: +${ADDED} ~${MODIFIED} -${DELETED} ($(date -u '+%Y-%m-%d %H:%M UTC'))" \
   || { log "FATAL: commit failed"; exit 1; }
+fi
 
 # Push by remote NAME. The helper supplies credentials; nothing secret is in
 # this command line, this script, or the repo config.
