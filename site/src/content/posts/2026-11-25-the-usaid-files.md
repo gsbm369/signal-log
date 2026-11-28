@@ -12,8 +12,8 @@ score: 0.15143
 readMinutes: 1
 image: "https://media.reclaimthenet.org/images/2026/11/E3oQZkbD6YJg.jpg"
 imageAlt: "USAID documents with highlighted lines and a laptop, in front of the US Capitol"
-hnPoints: 314
-hnComments: 389
+hnPoints: 330
+hnComments: 451
 buzz: 93
 ---
 

@@ -11,9 +11,9 @@ heat: 65
 score: 0.6809
 readMinutes: 1
 image: "https://marmot.gaurav.zip/og.png"
-hnPoints: 4
+hnPoints: 23
 hnComments: 0
-buzz: 26
+buzz: 51
 ---
 
 Lobsters linked this without a summary. Follow the link for the article.
